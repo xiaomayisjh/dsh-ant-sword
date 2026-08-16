@@ -36,13 +36,6 @@
         memberMaxDepth: 1
         maxMembers: 8
 
-    # The autonomous-loop decision-graph Web view (a dsh.client row). The
-    # modules node half discovers it from this live Loader entry at runtime —
-    # no edit to the stock web-app roster is needed, so the bundle is
-    # self-contained and installs on any official dsh with one command.
-    - id: ui-autograph
-      name: '@deepseek-ai/dsh-client-ui-autograph'
-
     # The in-app plugin market (Web settings section + HTTP routes).
     - id: dsh-market
       name: 'dshmarket'
