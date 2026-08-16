@@ -16,6 +16,7 @@ import { applyRewind, RewindConfigSchema } from './rewind/index.ts'
 import type { RewindPluginConfig } from './rewind/index.ts'
 import { applyAutoLoop, AutoLoopConfigSchema } from './auto/index.ts'
 import type { AutoLoopConfig } from './auto/index.ts'
+import { applyRuntimeStatus } from './runtime-status.ts'
 import { applyMcpServers, DEFAULT_MCP_SERVERS, McpServerSchema } from './mcp-servers.ts'
 import type { McpServerConfig } from './mcp-servers.ts'
 
@@ -64,7 +65,11 @@ export function apply(ctx: Context, config: Config): void {
   ctx.skills.registerProvider(() => skillProvider)
   applyRewind(ctx, config.rewind ?? {})
   applyAutoLoop(ctx, config.autoLoop ?? {})
-  applyMcpServers(ctx, config.mcpServers ?? DEFAULT_MCP_SERVERS, config.pentestswarmApiKey)
+  const mcpServers = config.mcpServers === undefined || config.mcpServers.length === 0
+    ? DEFAULT_MCP_SERVERS
+    : config.mcpServers
+  applyRuntimeStatus(ctx, mcpServers)
+  applyMcpServers(ctx, mcpServers, config.pentestswarmApiKey)
   if (config.syncRedTeamPreset ?? true) {
     // Materialize both presets into the harness's writable preset root so the
     // roster discovers them; a sync failure never blocks the composition.

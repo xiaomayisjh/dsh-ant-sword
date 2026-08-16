@@ -27,6 +27,7 @@ window.__ModuleLoader__.load({
 			enumerable: true
 		}) : target, mod));
 		//#endregion
+		let _deepseek_ai_dsh_client_runtime_client = require("@deepseek-ai/dsh-client-runtime/client");
 		let react = require("react");
 		react = __toESM(react, 1);
 		let react_jsx_runtime = require("react/jsx-runtime");
@@ -10594,6 +10595,180 @@ window.__ModuleLoader__.load({
 		}
 		(0, react.memo)(ResizeControl);
 		//#endregion
+		//#region \0dsh-css:C:\Users\Admin\Desktop\ant-dsh\packages\client\ui-autograph\src\client\RuntimeStatus.module.css.mjs
+		const css$1 = ".pBCICa_rail{border-bottom:1px solid var(--dsh-border,#21262d);background:color-mix(in srgb, var(--dsh-bg-soft,#161b22) 88%, transparent);align-items:center;gap:10px;padding:7px 16px;font-size:11px;display:flex}.pBCICa_metric{color:var(--dsh-fg-muted,#8b949e)}.pBCICa_metric strong{color:var(--dsh-fg,#e6edf3)}.pBCICa_warning{color:#d97706;margin-left:auto}.pBCICa_settings{color:var(--dsh-fg,#e6edf3);flex-direction:column;gap:14px;display:flex}.pBCICa_settingsHeader{justify-content:space-between;align-items:flex-start;gap:20px;display:flex}.pBCICa_settingsHeader h2{margin:0 0 6px;font-size:18px}.pBCICa_settingsHeader p,.pBCICa_card p{color:var(--dsh-fg-muted,#8b949e);margin:0;font-size:12px;line-height:1.5}.pBCICa_summary{gap:8px;display:flex}.pBCICa_summary span,.pBCICa_cardTitle span{background:var(--dsh-bg-soft,#161b22);white-space:nowrap;border-radius:999px;padding:3px 8px;font-size:11px}.pBCICa_skillCard,.pBCICa_card{border:1px solid var(--dsh-border,#30363d);background:var(--dsh-bg-soft,#11161d);border-radius:8px;padding:12px}.pBCICa_skillCard{grid-template-columns:auto auto 1fr;align-items:center;gap:12px;display:grid}.pBCICa_skillCard small{color:var(--dsh-fg-muted,#8b949e);text-align:right}.pBCICa_grid{grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;display:grid}.pBCICa_card{flex-direction:column;gap:9px;display:flex}.pBCICa_card[data-state=missing]{border-color:#6e5314}.pBCICa_card[data-state=available],.pBCICa_card[data-state=configured]{border-color:#1f6f3d}.pBCICa_cardTitle{justify-content:space-between;align-items:center;display:flex}.pBCICa_card code,.pBCICa_card pre{background:var(--dsh-bg,#0b0f14);color:var(--dsh-fg,#e6edf3);white-space:pre-wrap;word-break:break-all;border-radius:5px;margin:0;padding:7px;font-size:11px;overflow-x:auto}";
+		const tagId$1 = "@deepseek-ai/dsh-ant-sword-harness/ui-autograph/RuntimeStatus.module.css";
+		if (typeof document !== "undefined" && document.querySelector("style[data-plugin-css=" + JSON.stringify(tagId$1) + "]") === null) {
+			const tag = document.createElement("style");
+			tag.dataset.plugin = "@deepseek-ai/dsh-ant-sword-harness/ui-autograph";
+			tag.dataset.pluginCss = tagId$1;
+			tag.textContent = css$1;
+			document.head.appendChild(tag);
+		}
+		var RuntimeStatus_module_css_default = {
+			"summary": "pBCICa_summary",
+			"warning": "pBCICa_warning",
+			"settingsHeader": "pBCICa_settingsHeader",
+			"skillCard": "pBCICa_skillCard",
+			"settings": "pBCICa_settings",
+			"rail": "pBCICa_rail",
+			"grid": "pBCICa_grid",
+			"cardTitle": "pBCICa_cardTitle",
+			"metric": "pBCICa_metric",
+			"card": "pBCICa_card"
+		};
+		//#endregion
+		//#region src/client/RuntimeStatus.tsx
+		const STATE_LABEL = {
+			available: "可用",
+			configured: "已配置",
+			missing: "未安装",
+			disabled: "已停用"
+		};
+		const INITIAL_RUNTIME_STATUS = {
+			checkedAt: 0,
+			skills: {
+				available: 0,
+				provider: "ant-sword-skills",
+				state: "ready"
+			},
+			mcp: [
+				[
+					"kali",
+					"stdio",
+					"kali-server-mcp",
+					"pip install kali-server-mcp",
+					"安装 kali-server-mcp，并确保命令已加入 PATH。"
+				],
+				[
+					"metasploit",
+					"stdio",
+					"metasploitmcp",
+					"pip install metasploit-mcp",
+					"安装 Metasploit MCP bridge，并先完成 Metasploit 初始化。"
+				],
+				[
+					"hexstrike",
+					"stdio",
+					"hexstrike-ai",
+					"pip install hexstrike-ai",
+					"安装 HexStrike AI MCP 服务并将命令加入 PATH。"
+				],
+				[
+					"pentestswarm",
+					"stdio",
+					"pentestswarm",
+					"pip install pentestswarm",
+					"安装 PentestSwarm，并配置编排器 API key。"
+				],
+				[
+					"jshook",
+					"stdio",
+					"npx",
+					"npm install -g @jshookmcp/jshook",
+					"需要 Node.js；也可保留 npx 按需下载模式。"
+				],
+				[
+					"anything",
+					"streamable-http",
+					"http://localhost:23816/mcp",
+					void 0,
+					"启动 AnythingLLM MCP 服务。"
+				],
+				[
+					"idapro",
+					"streamable-http",
+					"http://127.0.0.1:13337/mcp",
+					void 0,
+					"在 IDA Pro 中启动 MCP 插件。"
+				],
+				[
+					"ghidra",
+					"streamable-http",
+					"http://localhost:8765/mcp",
+					void 0,
+					"在 Ghidra 中启动 MCP 插件。"
+				]
+			].map(([serverName, transport, target, installCommand, installHint]) => ({
+				serverName,
+				transport,
+				availability: "missing",
+				target,
+				...installCommand === void 0 ? {} : { installCommand },
+				installHint
+			}))
+		};
+		function RuntimeStatus({ runtimeStatus, compact = false }) {
+			const snapshot = (0, react.useSyncExternalStore)(runtimeStatus.subscribe, runtimeStatus.getSnapshot);
+			const available = snapshot.mcp.filter((item) => item.availability === "available" || item.availability === "configured").length;
+			const missing = snapshot.mcp.filter((item) => item.availability === "missing").length;
+			if (compact) return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+				className: RuntimeStatus_module_css_default.rail,
+				"data-runtime-status": true,
+				children: [
+					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("span", {
+						className: RuntimeStatus_module_css_default.metric,
+						children: ["Skills ", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: snapshot.skills.available })]
+					}),
+					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("span", {
+						className: RuntimeStatus_module_css_default.metric,
+						children: ["MCP ", /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("strong", { children: [
+							available,
+							"/",
+							snapshot.mcp.length
+						] })]
+					}),
+					missing > 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("span", {
+						className: RuntimeStatus_module_css_default.warning,
+						children: [missing, " 项待安装"]
+					})
+				]
+			});
+			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("section", {
+				className: RuntimeStatus_module_css_default.settings,
+				"data-runtime-settings": true,
+				children: [
+					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("header", {
+						className: RuntimeStatus_module_css_default.settingsHeader,
+						children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("h2", { children: "Red Team 运行环境" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", { children: "Skill 与 MCP 使用同一实时状态源；缺失组件不会从配置中消失。" })] }), /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+							className: RuntimeStatus_module_css_default.summary,
+							children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("span", { children: ["Skills ", snapshot.skills.available] }), /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("span", { children: [
+								"MCP ",
+								available,
+								"/",
+								snapshot.mcp.length
+							] })]
+						})]
+					}),
+					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+						className: RuntimeStatus_module_css_default.skillCard,
+						"data-state": snapshot.skills.state,
+						children: [
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: "Skills" }),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: snapshot.skills.state === "ready" ? `${snapshot.skills.available} 个已发现` : "加载异常" }),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: snapshot.skills.error ?? `Provider: ${snapshot.skills.provider}` })
+						]
+					}),
+					/* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
+						className: RuntimeStatus_module_css_default.grid,
+						children: snapshot.mcp.map((server) => /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("article", {
+							className: RuntimeStatus_module_css_default.card,
+							"data-state": server.availability,
+							children: [
+								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+									className: RuntimeStatus_module_css_default.cardTitle,
+									children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: server.serverName }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: STATE_LABEL[server.availability] })]
+								}),
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("code", { children: server.target }),
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", { children: server.installHint }),
+								server.installCommand !== void 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("pre", { children: server.installCommand })
+							]
+						}, server.serverName))
+					})
+				]
+			});
+		}
+		//#endregion
 		//#region \0dsh-css:C:\Users\Admin\Desktop\ant-dsh\packages\client\ui-autograph\src\client\AutoGraphView.module.css.mjs
 		const css = ".dSySha_panel{background:var(--dsh-bg,#0b0f14);color:var(--dsh-fg,#e6edf3);pointer-events:auto;z-index:30;flex-direction:column;display:flex;position:absolute;inset:0}.dSySha_header{border-bottom:1px solid var(--dsh-border,#21262d);align-items:center;gap:12px;padding:10px 16px;font-size:13px;display:flex}.dSySha_title{font-weight:600}.dSySha_meta{color:var(--dsh-fg-muted,#8b949e)}.dSySha_status{color:#3fb950;background:#12331f;border-radius:10px;margin-left:auto;padding:2px 8px;font-size:11px}.dSySha_status[data-paused=true]{color:#d97706;background:#3a2f0b}.dSySha_status[data-complete=true]{color:#58a6ff;background:#0d2a4a}.dSySha_canvas{flex:1;min-height:0}.dSySha_canvas .react-flow{width:100%;height:100%}.dSySha_canvas .react-flow__node{border-radius:6px;font-size:11px}.dSySha_canvas .react-flow__controls{box-shadow:none}.dSySha_canvas .react-flow__controls-button{background:var(--dsh-bg-soft,#161b22);border-bottom:1px solid var(--dsh-border,#30363d);fill:var(--dsh-fg,#e6edf3)}.dSySha_empty{height:100%;color:var(--dsh-fg-muted,#8b949e);text-align:center;justify-content:center;align-items:center;padding:24px;font-size:13px;display:flex}.dSySha_node{background:var(--dsh-bg-soft,#11161d);border:1.5px solid;border-radius:6px;max-width:220px;font-size:11px}.dSySha_controls{border-top:1px solid var(--dsh-border,#21262d);gap:8px;padding:10px 16px;display:flex}.dSySha_controls button{border:1px solid var(--dsh-border,#30363d);background:var(--dsh-bg-soft,#161b22);color:inherit;cursor:pointer;border-radius:6px;padding:6px 14px;font-size:12px}.dSySha_controls button:disabled{opacity:.5;cursor:default}.dSySha_controls input{border:1px solid var(--dsh-border,#30363d);background:var(--dsh-bg,#0b0f14);color:inherit;border-radius:6px;flex:1;padding:6px 10px;font-size:12px}";
 		const tagId = "@deepseek-ai/dsh-ant-sword-harness/ui-autograph/AutoGraphView.module.css";
@@ -10605,15 +10780,15 @@ window.__ModuleLoader__.load({
 			document.head.appendChild(tag);
 		}
 		var AutoGraphView_module_css_default = {
-			"canvas": "dSySha_canvas",
-			"title": "dSySha_title",
-			"panel": "dSySha_panel",
-			"meta": "dSySha_meta",
-			"header": "dSySha_header",
-			"controls": "dSySha_controls",
-			"node": "dSySha_node",
 			"status": "dSySha_status",
-			"empty": "dSySha_empty"
+			"canvas": "dSySha_canvas",
+			"empty": "dSySha_empty",
+			"title": "dSySha_title",
+			"node": "dSySha_node",
+			"panel": "dSySha_panel",
+			"header": "dSySha_header",
+			"meta": "dSySha_meta",
+			"controls": "dSySha_controls"
 		};
 		//#endregion
 		//#region src/client/AutoGraphView.tsx
@@ -10669,7 +10844,7 @@ window.__ModuleLoader__.load({
 			paused: false,
 			complete: false
 		};
-		function AutoGraphView({ isAutoMode, onPause, onResume, onHint, useProjection, t }) {
+		function AutoGraphView({ isAutoMode, runtimeStatus, onPause, onResume, onHint, useProjection, t }) {
 			const [hint, setHint] = (0, react.useState)("");
 			const [pending, setPending] = (0, react.useState)(false);
 			const board = useProjection("board") ?? EMPTY_BOARD;
@@ -10707,6 +10882,10 @@ window.__ModuleLoader__.load({
 								children: status
 							})
 						]
+					}),
+					/* @__PURE__ */ (0, react_jsx_runtime.jsx)(RuntimeStatus, {
+						runtimeStatus,
+						compact: true
 					}),
 					/* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
 						className: AutoGraphView_module_css_default.canvas,
@@ -10827,6 +11006,33 @@ window.__ModuleLoader__.load({
 				en
 			}), "ui-autograph: dictionaries");
 			const t = ctx.locale.bind(NS);
+			const runtimeStatus = (0, _deepseek_ai_dsh_client_runtime_client.createSnapshotStore)(INITIAL_RUNTIME_STATUS);
+			const refreshRuntimeStatus = async () => {
+				const response = await fetch("/ant-sword/runtime-status", { cache: "no-store" });
+				if (!response.ok) throw new Error(`runtime status request failed: ${response.status}`);
+				runtimeStatus.set(await response.json());
+			};
+			ctx.effect(() => {
+				let disposed = false;
+				const refresh = () => {
+					refreshRuntimeStatus().catch((error) => {
+						if (!disposed) ctx.logger.warn(error);
+					});
+				};
+				refresh();
+				const timer = setInterval(refresh, 5e3);
+				return () => {
+					disposed = true;
+					clearInterval(timer);
+				};
+			}, "ui-autograph: runtime status polling");
+			ctx.slots.inject("settings.section", () => ctx.slots.register({
+				name: "settings.section",
+				id: "red-team-runtime",
+				order: 18,
+				label: () => "Red Team 环境",
+				inject: () => ({ runtimeStatus })
+			}, RuntimeStatus));
 			ctx.slots.inject("conversation.view", () => ctx.slots.register({
 				name: "conversation.view",
 				id: "autograph",
@@ -10841,6 +11047,7 @@ window.__ModuleLoader__.load({
 					};
 					return {
 						isAutoMode: ctx.sessions.list.getSnapshot().byId[sessionId]?.agentPreset === "red-team-auto",
+						runtimeStatus,
 						onPause: () => run("/auto pause"),
 						onResume: () => run("/auto resume"),
 						onHint: (text) => run(`/auto hint ${text}`)
