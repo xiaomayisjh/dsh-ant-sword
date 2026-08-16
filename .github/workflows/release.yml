@@ -20,12 +20,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v4
-
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
-          cache: 'pnpm'
+
+      # The repo is a bare bundle without a lockfile; Node 24's built-in
+      # corepack reads the `packageManager` field and installs pnpm itself.
+      - name: Enable pnpm via corepack
+        shell: pwsh
+        run: |
+          corepack enable
+          pnpm --version
 
       - name: Resolve tag and package metadata
         id: meta
