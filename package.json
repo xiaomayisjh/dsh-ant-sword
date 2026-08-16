@@ -2,6 +2,7 @@
   "name": "@deepseek-ai/dsh-ant-sword-harness",
   "description": "Security-research agent bundle: a bundled reverse/CTF skill pack plus a self-contained workspace snapshot + /rewind capability, composed with the agent-teams and plugin-market bundles",
   "version": "0.1.0-rc.5",
+  "packageManager": "pnpm@11.7.0",
   "publishConfig": {
     "access": "public"
   },
@@ -58,7 +59,7 @@
     "zod": "^4.4.3"
   },
   "peerDependencies": {
-    "@deepseek-ai/cordis": "^4.0.1",
+    "@deepseek-ai/cordis": "^0.1.0-rc.5",
     "@deepseek-ai/dsh-agent": "^0.1.0-rc.5",
     "@deepseek-ai/dsh-commands": "^0.1.0-rc.5",
     "@deepseek-ai/dsh-fs": "^0.1.0-rc.5",
@@ -71,7 +72,7 @@
     "@deepseek-ai/dsh-tools": "^0.1.0-rc.5"
   },
   "devDependencies": {
-    "@deepseek-ai/cordis": "^4.0.1",
+    "@deepseek-ai/cordis": "^0.1.0-rc.5",
     "@deepseek-ai/dsh-agent": "^0.1.0-rc.5",
     "@deepseek-ai/dsh-commands": "^0.1.0-rc.5",
     "@deepseek-ai/dsh-fs": "^0.1.0-rc.5",
@@ -82,5 +83,6 @@
     "@deepseek-ai/dsh-skill": "^0.1.0-rc.5",
     "@deepseek-ai/dsh-storage-domain": "^0.1.0-rc.5",
     "@deepseek-ai/dsh-tools": "^0.1.0-rc.5"
-  }
+  },
+  "packageManager": "pnpm@11.7.0"
 }
