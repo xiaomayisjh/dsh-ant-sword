@@ -36,6 +36,12 @@
         memberMaxDepth: 1
         maxMembers: 8
 
+    # The autonomous-loop decision graph. This resolves to the vendored client
+    # package installed from this repository, so Git installs do not depend on
+    # an unpublished monorepo workspace package.
+    - id: ui-autograph
+      name: '@deepseek-ai/dsh-ant-sword-harness/ui-autograph'
+
     # The in-app plugin market (Web settings section + HTTP routes).
     - id: dsh-market
       name: 'dshmarket'

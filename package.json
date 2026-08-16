@@ -1,7 +1,7 @@
 {
   "name": "@deepseek-ai/dsh-ant-sword-harness",
   "description": "Security-research agent bundle: a bundled reverse/CTF skill pack plus a self-contained workspace snapshot + /rewind capability, composed with the agent-teams and plugin-market bundles",
-  "version": "0.1.0-rc.5",
+  "version": "0.1.0-rc.6",
   "packageManager": "pnpm@11.7.0",
   "publishConfig": {
     "access": "public"
@@ -24,12 +24,15 @@
       "default": "./lib/invariant.js"
     },
     "./cordis.patch.yml": "./cordis.patch.yml",
+    "./ui-autograph": "./vendor/ui-autograph/lib/index.js",
+    "./ui-autograph/package.json": "./vendor/ui-autograph/package.json",
     "./package.json": "./package.json"
   },
   "files": [
     "lib/index.js",
     "lib/invariant.js",
     "cordis.patch.yml",
+    "vendor/ui-autograph",
     "skills",
     "preset",
     "lib/types/**/*.d.ts",
