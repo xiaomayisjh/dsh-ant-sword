@@ -1,0 +1,1 @@
+{"version":3,"file":"preset-sync.d.ts","sourceRoot":"","sources":["../../src/preset-sync.ts"],"names":[],"mappings":"AAAA;;;;;;;;;GASG;AAWH,kFAAkF;AAClF,eAAO,MAAM,kBAAkB,aAAa,CAAA;AAE5C,yCAAyC;AACzC,eAAO,MAAM,uBAAuB,kBAAkB,CAAA;AAmDtD,uCAAuC;AACvC,wBAAsB,iBAAiB,IAAI,OAAO,CAAC,MAAM,CAAC,CAEzD;AAED,gDAAgD;AAChD,wBAAsB,qBAAqB,IAAI,OAAO,CAAC,MAAM,CAAC,CAE7D"}

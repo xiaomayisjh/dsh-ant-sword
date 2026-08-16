@@ -1,0 +1,4 @@
+interface:
+  display_name: "Security Research"
+  short_description: "Evidence-driven CTF analysis, security verification, writeups, and authorized security research"
+  default_prompt: "Use $security-research to scope, route, progressively verify, and document this authorized security task."

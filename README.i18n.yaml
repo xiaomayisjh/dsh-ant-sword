@@ -1,0 +1,6 @@
+# Bilingual-pair consistency record (docs/i18n/README.md): the git blob hash of each
+# side as of the last confirmed-consistent state. Both languages carry equal authority;
+# after editing either side, bring the other along and re-record with:
+#   pnpm run verify-translation-pairing --write packages/bundle/ant-sword-harness/README.md
+README.md: fe96f82ab871b415b70548f4d867d40b2b7e442d
+README.zh.md: d0ae5092283afa6315d60df05b0ac2ec9474b377

@@ -1,0 +1,54 @@
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "lib/types"
+  },
+  "include": [
+    "src"
+  ],
+  "references": [
+    {
+      "path": "../../../vendor/cordis"
+    },
+    {
+      "path": "../../../vendor/schemastery"
+    },
+    {
+      "path": "../../skill/skill"
+    },
+    {
+      "path": "../../runtime-diagnostics/invariants"
+    },
+    {
+      "path": "../../core/session"
+    },
+    {
+      "path": "../../core/agent"
+    },
+    {
+      "path": "../../storage/storage-domain"
+    },
+    {
+      "path": "../../fs/fs"
+    },
+    {
+      "path": "../../core/tools"
+    },
+    {
+      "path": "../../llm/llm"
+    },
+    {
+      "path": "../../mcp/mcp-client"
+    },
+    {
+      "path": "../../session/session-projection"
+    },
+    {
+      "path": "../../interaction/commands"
+    },
+    {
+      "path": "../../util/home-paths"
+    }
+  ]
+}

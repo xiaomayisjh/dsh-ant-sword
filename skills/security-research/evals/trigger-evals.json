@@ -1,0 +1,130 @@
+[
+  {
+    "query": "帮我审计 challenge/src/auth.ts，这个 CTF 的 JWT 校验可能存在 key confusion，要求给出可复现请求和修复测试。",
+    "should_trigger": true
+  },
+  {
+    "query": "远程 pwn 题给了 chall、ld-linux 和 libc，菜单第 3 项长输入会 crash，先算 offset 和保护再写完整 exp。",
+    "should_trigger": true
+  },
+  {
+    "query": "我有一份 memory.raw 和同一主机的 traffic.pcapng，授权 DFIR 题里要还原恶意进程下载的配置。",
+    "should_trigger": true
+  },
+  {
+    "query": "分析 samples/app.apk 里的动态 DEX 和 native sign，Frida 一启动就被检测，目标是本地复现 token。",
+    "should_trigger": true
+  },
+  {
+    "query": "这道 crypto 题给 n1/n2/n3、e=3 和三个 ciphertext，帮我检查 Hastad 前提并写可验证 solver。",
+    "should_trigger": true
+  },
+  {
+    "query": "这个 PowerShell 样本分了六层 base64+gzip，提取配置、IoC，并给能在样本和 benign fixture 上测试的 YARA。",
+    "should_trigger": true
+  },
+  {
+    "query": "RAG Agent 靶场会读取上传文档并自动调用内部工具，测试 indirect prompt injection 的真实工具边界。",
+    "should_trigger": true
+  },
+  {
+    "query": "OSINT CTF 只有一张铁路站牌照片和 2019 年线索，证明具体车站并保存可复核来源。",
+    "should_trigger": true
+  },
+  {
+    "query": "写一个只扫描我给定 lab CIDR 的服务指纹工具，默认只读，JSON 输出，含 timeout、rate limit 和 fixture tests。",
+    "should_trigger": true
+  },
+  {
+    "query": "这段未知 C 代码从 socket 读数据后 memcpy 到固定栈缓冲区，它具体做什么，是否能在题目服务中触发？",
+    "should_trigger": true
+  },
+  {
+    "query": "challenge 已经打通了，目录里有 solve.py、curl-history.txt 和反编译截图。按题目信息、分析、思路、过程、代码、AI 使用说明写一份能提交的 CTF WriteUp。",
+    "should_trigger": true
+  },
+  {
+    "query": "帮我把这道 RSA 广播攻击题的真实解题记录整理成题解，重点说明为什么满足 Hastad 条件、每一步怎么验证，不要只贴 flag。",
+    "should_trigger": true
+  },
+  {
+    "query": "React 登录页想加一个密码强度条和显示/隐藏密码按钮，按现有设计系统实现响应式组件。",
+    "should_trigger": false
+  },
+  {
+    "query": "Python 里怎么把一个 list reverse，最好解释切片和 reversed() 的区别。",
+    "should_trigger": false
+  },
+  {
+    "query": "实现一个二叉 heap priority queue，支持 push、pop 和 decrease-key，再补单元测试。",
+    "should_trigger": false
+  },
+  {
+    "query": "给客户支持产品设计一个叫 Agent 的会话列表页面，只做 UI，不涉及模型、工具权限或安全测试。",
+    "should_trigger": false
+  },
+  {
+    "query": "把旅游照片批量旋转到正确 EXIF orientation 后压缩成 WebP，保留拍摄日期。",
+    "should_trigger": false
+  },
+  {
+    "query": "为一篇科幻小说设计 C2 章节标题和人物关系，不需要代码或真实网络内容。",
+    "should_trigger": false
+  },
+  {
+    "query": "普通 SaaS 项目接入 Auth0 OAuth 登录，按官方 SDK 写 callback 页面和 logout 按钮，不做漏洞研究。",
+    "should_trigger": false
+  },
+  {
+    "query": "在 PDF 合同模板底部加一个可见的手写签名图片和日期栏，保持打印布局。",
+    "should_trigger": false
+  },
+  {
+    "query": "做一个 malware 主题的万圣节海报图标，霓虹绿色，不需要分析任何样本。",
+    "should_trigger": false
+  },
+  {
+    "query": "整理竞品公开定价页面做市场分析表格，不需要身份调查、域名取证或安全测试。",
+    "should_trigger": false
+  },
+  {
+    "query": "审查 services/upload.go 的安全边界：multipart 文件名会进入对象存储 key，后台 worker 还会解压归档。请给可复现测试和修复回归用例。",
+    "should_trigger": true
+  },
+  {
+    "query": "给实验室里的自研二进制协议写 coverage-guided fuzz harness，记录 crash 去重、最小化和可利用性验证流程。",
+    "should_trigger": true
+  },
+  {
+    "query": "授权 Azure/AD 靶场里拿到一个低权限测试账号，梳理 token、角色、服务主体和容器工作负载身份的实际权限链。",
+    "should_trigger": true
+  },
+  {
+    "query": "路由器固件解包后有 squashfs、MIPS CGI 和启动脚本，目标是定位配置泄漏并在 QEMU 中复现。",
+    "should_trigger": true
+  },
+  {
+    "query": "Node 服务接入 jose 做正常 JWT 登录，帮我实现签发、刷新和 middleware 类型定义。",
+    "should_trigger": false
+  },
+  {
+    "query": "Chrome 导出的 HAR 太大，想统计每个接口的 TTFB 和资源体积来优化首屏性能。",
+    "should_trigger": false
+  },
+  {
+    "query": "做一个客服知识库 RAG 产品，给文档分块、向量检索、重排和回答引用写基础实现。",
+    "should_trigger": false
+  },
+  {
+    "query": "给 Python coding challenge 实现 feature flag 配置合并，要求支持环境覆盖和单元测试。",
+    "should_trigger": false
+  },
+  {
+    "query": "解析供应商十年前的未知二进制库存格式，迁移成 CSV；这是业务数据兼容任务，没有执行文件或安全分析。",
+    "should_trigger": false
+  },
+  {
+    "query": "按公司安全基线把现有登录服务的 Cookie 属性、OAuth redirect 校验和 TLS 配置加固，并补防回退的集成测试。",
+    "should_trigger": true
+  }
+]

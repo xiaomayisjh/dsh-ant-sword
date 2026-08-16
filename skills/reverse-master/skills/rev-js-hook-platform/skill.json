@@ -1,0 +1,684 @@
+{
+  "name": "jshook-reverse",
+  "version": "0.1.1",
+  "description": "AI-powered JavaScript reverse engineering tool - 资深JavaScript逆向工程专家助手",
+  "author": "wuji1",
+  "license": "MIT",
+  "entrypoint": "dist/skill.js",
+
+  "systemPrompt": "你是资深JavaScript逆向工程专家，精通浏览器自动化、代码分析和反混淆。\n\n核心能力：\n- 逆向工程：混淆代码分析、VM破解、Webpack解包、AST转换\n- 浏览器自动化：Puppeteer/CDP、反检测、指纹伪造\n- 加密识别：AES/RSA/MD5/SHA识别、参数提取、算法还原\n- 反爬虫绕过：Canvas/WebGL指纹、WebDriver隐藏、行为模拟\n- 调试分析：CDP调试、断点分析、动态追踪、Hook注入\n- Hook注入：函数拦截、网络监控、属性劫持、事件追踪、反调试绕过\n- 反检测伪装：Stealth脚本注入、指纹伪造、平台预设、WebDriver隐藏\n- DOM检查：元素查询、结构分析、可点击元素定位\n- 页面控制：导航、点击、输入、截图、性能监控\n\n逆向的本质：理解需求 → 定位目标 → 分析实现 → 复现逻辑\n\n核心技巧：从结果反推过程\n- 看到加密参数 → 反推生成函数\n- 看到混淆代码 → 反推原始逻辑\n- 看到网络请求 → 反推调用链路\n\n工作流程：\n1. 快速侦查：了解技术栈、加密方式、反爬虫手段\n2. 加密参数定位：从结果反推过程，定位生成位置\n3. 加密算法识别：深入分析实现，识别算法类型\n4. 代码复现：转化为可执行代码，完成逆向闭环\n\n可用工具：\n- collect: 智能代码收集（支持摘要/优先级模式）\n- search: 搜索关键词（支持正则、上下文）\n- deobfuscate: AI驱动的代码反混淆\n- understand: AI辅助的代码语义理解\n- summarize: AI生成代码摘要（单文件/批量/项目级）\n- detect-crypto: 检测和分析加密算法\n- browser: 浏览器控制（launch/status/close）\n- debugger: 调试器控制（enable/disable/status）\n- breakpoint: 断点管理（设置/删除/列表）\n- debug-step: 执行控制（pause/resume/step）\n- debug-eval: 表达式求值（运行时求值）\n- debug-vars: 变量查看（作用域变量）\n- script: 脚本管理（list/get/find/search）\n- stealth: 反检测伪装（inject/inject-preset/set-ua/presets/status/features）\n- dom: DOM检查器（query/query-all/structure/clickable/style/wait）\n- page: 页面控制器（navigate/click/type/scroll/screenshot/eval/metrics）\n- stats: 获取收集和缓存统计\n- clear: 清除所有收集数据\n\n最佳实践：\n1. 使用智能摘要模式避免数据过大\n2. 优先收集关键代码（encrypt、crypto、sign）\n3. 使用增量模式按需获取\n4. 从结果反推过程，避免盲目调试\n5. 使用断点和变量查看进行动态分析\n6. 使用dom命令定位页面元素，避免盲目点击\n7. 使用page命令进行页面交互和自动化操作",
+
+  "commands": [
+    {
+      "name": "collect",
+      "description": "收集JavaScript代码（智能模式：摘要/优先级/增量）",
+      "usage": "collect <url> [--smart-mode=summary|priority] [--priorities=encrypt,crypto,sign]",
+      "examples": [
+        "collect https://example.com",
+        "collect https://example.com --smart-mode=summary",
+        "collect https://example.com --smart-mode=priority --priorities=encrypt,sign"
+      ]
+    },
+    {
+      "name": "search",
+      "description": "在收集的脚本中搜索关键词（支持正则表达式）",
+      "usage": "search <keyword> [--regex] [--context=5] [--max-matches=100]",
+      "examples": [
+        "search encrypt",
+        "search \"X-Bogus\" --context=10",
+        "search \"function.*encrypt\" --regex"
+      ]
+    },
+    {
+      "name": "deobfuscate",
+      "description": "AI驱动的代码反混淆（支持20+种混淆类型）",
+      "usage": "deobfuscate <code>",
+      "examples": [
+        "deobfuscate \"var _0x1234=['test'];\"",
+        "deobfuscate \"eval(function(p,a,c,k,e,d){...}))\""
+      ]
+    },
+    {
+      "name": "understand",
+      "description": "AI辅助的代码语义理解和分析",
+      "usage": "understand <code> [--focus=all|structure|business|security] [--json <options>]",
+      "examples": [
+        "understand \"function sign(data) {...}\"",
+        "understand \"const encrypt = ...\" --focus=security",
+        "understand --json {\"code\":\"...\",\"focus\":\"business\"}"
+      ]
+    },
+    {
+      "name": "summarize",
+      "description": "AI生成代码摘要（单文件/批量/项目级）",
+      "usage": "summarize <action> [options]",
+      "actions": {
+        "code": "对代码片段生成AI摘要",
+        "collected": "对已收集的脚本生成摘要",
+        "collected --batch": "批量并发生成摘要"
+      },
+      "examples": [
+        "summarize code \"function encrypt(data) {...}\"",
+        "summarize collected",
+        "summarize collected --batch"
+      ]
+    },
+    {
+      "name": "detect-crypto",
+      "description": "检测和分析加密算法（AES/RSA/MD5/SHA/自定义）",
+      "usage": "detect-crypto <code>",
+      "examples": [
+        "detect-crypto \"CryptoJS.AES.encrypt(...)\"",
+        "detect-crypto \"function hash(str) {...}\""
+      ]
+    },
+    {
+      "name": "browser",
+      "description": "浏览器生命周期管理",
+      "usage": "browser <action> [args]",
+      "actions": {
+        "launch": "启动浏览器（自动检测Chrome/Edge，支持任意盘符）",
+        "status": "获取浏览器状态",
+        "close": "关闭浏览器"
+      },
+      "examples": [
+        "browser launch",
+        "browser status",
+        "browser close"
+      ]
+    },
+    {
+      "name": "stats",
+      "description": "获取收集和缓存统计信息",
+      "usage": "stats [--type=cache|compression|collector]",
+      "examples": [
+        "stats",
+        "stats --type=cache"
+      ]
+    },
+    {
+      "name": "clear",
+      "description": "清除所有收集数据（换网站时使用）",
+      "usage": "clear",
+      "examples": [
+        "clear"
+      ]
+    },
+    {
+      "name": "hook",
+      "description": "Hook注入管理（拦截和监控JavaScript函数调用）",
+      "usage": "hook <action> [args]",
+      "actions": {
+        "create": "创建自定义Hook（支持完整配置）",
+        "generate": "快速生成Hook（function/fetch/xhr/websocket/property/event/eval/cookie/localstorage/timer）",
+        "remove": "删除Hook",
+        "enable": "启用Hook",
+        "disable": "禁用Hook",
+        "clear": "清除所有Hook",
+        "anti-debug": "生成反调试绕过脚本",
+        "export": "导出Hook数据（json/csv）"
+      },
+      "examples": [
+        "hook generate function encryptData",
+        "hook generate fetch */api/*",
+        "hook generate xhr *sign*",
+        "hook generate property window.navigator",
+        "hook generate cookie",
+        "hook anti-debug",
+        "hook export json"
+      ]
+    },
+    {
+      "name": "hook-list",
+      "description": "获取Hook统计信息（已创建的Hook列表和状态）",
+      "usage": "hook-list",
+      "examples": [
+        "hook-list"
+      ]
+    },
+    {
+      "name": "hook-data",
+      "description": "获取Hook捕获的数据记录",
+      "usage": "hook-data [hookId]",
+      "examples": [
+        "hook-data",
+        "hook-data hook_123"
+      ]
+    },
+    {
+      "name": "hook-types",
+      "description": "获取所有已注册的Hook类型（查看支持的Hook类型列表）",
+      "usage": "hook-types",
+      "examples": [
+        "hook-types"
+      ]
+    },
+    {
+      "name": "debugger",
+      "description": "调试器控制（启用/禁用/状态/高级功能）",
+      "usage": "debugger <action>",
+      "actions": {
+        "enable": "启用调试器",
+        "disable": "禁用调试器",
+        "status": "获取调试器状态",
+        "init-advanced": "初始化高级功能（Watch/XHR/Event/Blackbox）"
+      },
+      "examples": [
+        "debugger enable",
+        "debugger status",
+        "debugger init-advanced"
+      ]
+    },
+    {
+      "name": "breakpoint",
+      "description": "断点管理（设置/删除/列表/清除）",
+      "usage": "breakpoint <action> [args]",
+      "actions": {
+        "set-url": "按URL设置断点",
+        "set-script": "按脚本ID设置断点",
+        "remove": "删除断点",
+        "list": "列出所有断点",
+        "clear": "清除所有断点"
+      },
+      "examples": [
+        "breakpoint set-url https://example.com/app.js 100",
+        "breakpoint set-url https://example.com/app.js 100 0 'x > 10'",
+        "breakpoint list",
+        "breakpoint remove bp_123"
+      ]
+    },
+    {
+      "name": "debug-step",
+      "description": "执行控制（暂停/继续/单步）",
+      "usage": "debug-step <action>",
+      "actions": {
+        "pause": "暂停执行",
+        "resume": "继续执行",
+        "into": "单步进入",
+        "over": "单步跳过",
+        "out": "单步跳出"
+      },
+      "examples": [
+        "debug-step pause",
+        "debug-step resume",
+        "debug-step into"
+      ]
+    },
+    {
+      "name": "debug-eval",
+      "description": "表达式求值（运行时求值JavaScript表达式）",
+      "usage": "debug-eval <expression>",
+      "examples": [
+        "debug-eval window.location.href",
+        "debug-eval document.cookie",
+        "debug-eval JSON.stringify(userData)"
+      ]
+    },
+    {
+      "name": "debug-vars",
+      "description": "变量查看（获取当前作用域的所有变量）",
+      "usage": "debug-vars [callFrameId]",
+      "examples": [
+        "debug-vars",
+        "debug-vars frame_123"
+      ]
+    },
+    {
+      "name": "script",
+      "description": "脚本管理（列表/获取/查找/搜索）",
+      "usage": "script <action> [args]",
+      "actions": {
+        "list": "列出所有脚本",
+        "get": "获取脚本源码",
+        "find": "按URL模式查找脚本",
+        "search": "搜索关键词"
+      },
+      "examples": [
+        "script list",
+        "script get script_123",
+        "script find *app.js",
+        "script search encrypt"
+      ]
+    },
+    {
+      "name": "watch",
+      "description": "Watch表达式管理（监控变量和表达式的值变化）",
+      "usage": "watch <action> [args]",
+      "actions": {
+        "add": "添加Watch表达式",
+        "remove": "删除Watch表达式",
+        "enable": "启用Watch表达式",
+        "disable": "禁用Watch表达式",
+        "list": "列出所有Watch表达式",
+        "evaluate": "求值所有Watch表达式",
+        "clear": "清除所有Watch表达式",
+        "export": "导出Watch表达式",
+        "import": "导入Watch表达式"
+      },
+      "examples": [
+        "watch add \"window.location.href\" \"当前URL\"",
+        "watch add \"userData.token\"",
+        "watch list",
+        "watch evaluate",
+        "watch remove watch_123",
+        "watch export"
+      ]
+    },
+    {
+      "name": "xhr-breakpoint",
+      "description": "XHR断点管理（在网络请求时暂停执行）",
+      "usage": "xhr-breakpoint <action> [args]",
+      "actions": {
+        "set": "设置XHR断点（URL模式）",
+        "remove": "删除XHR断点",
+        "list": "列出所有XHR断点",
+        "clear": "清除所有XHR断点"
+      },
+      "examples": [
+        "xhr-breakpoint set */api/*",
+        "xhr-breakpoint set *sign*",
+        "xhr-breakpoint list",
+        "xhr-breakpoint remove xhr_bp_123",
+        "xhr-breakpoint clear"
+      ]
+    },
+    {
+      "name": "event-breakpoint",
+      "description": "事件断点管理（在特定事件触发时暂停执行）",
+      "usage": "event-breakpoint <action> [args]",
+      "actions": {
+        "set": "设置事件断点",
+        "remove": "删除事件断点",
+        "set-mouse": "设置所有鼠标事件断点",
+        "set-keyboard": "设置所有键盘事件断点",
+        "set-timer": "设置定时器事件断点",
+        "set-websocket": "设置WebSocket事件断点",
+        "list": "列出所有事件断点",
+        "clear": "清除所有事件断点"
+      },
+      "examples": [
+        "event-breakpoint set click",
+        "event-breakpoint set-mouse",
+        "event-breakpoint set-keyboard",
+        "event-breakpoint list",
+        "event-breakpoint remove event_bp_123"
+      ]
+    },
+    {
+      "name": "blackbox",
+      "description": "脚本黑盒化管理（调试时跳过指定脚本）",
+      "usage": "blackbox <action> [args]",
+      "actions": {
+        "set": "黑盒化脚本（支持通配符*）",
+        "remove": "取消黑盒化",
+        "set-common": "黑盒化常用库（jquery/react/vue等）",
+        "list": "列出所有黑盒化模式",
+        "clear": "清除所有黑盒化"
+      },
+      "examples": [
+        "blackbox set *jquery*.js",
+        "blackbox set *node_modules/*",
+        "blackbox set-common",
+        "blackbox list",
+        "blackbox remove *jquery*.js",
+        "blackbox clear"
+      ]
+    },
+    {
+      "name": "stealth",
+      "description": "反检测伪装（注入Stealth脚本、平台预设、UA设置、功能查看）",
+      "usage": "stealth <action> [args]",
+      "actions": {
+        "inject": "注入反检测脚本（可传JSON选项）",
+        "inject-preset": "使用平台预设注入（windows-chrome/mac-chrome/mac-safari/linux-chrome/windows-edge）",
+        "set-ua": "设置User-Agent（windows/mac/linux）",
+        "presets": "列出所有可用平台预设",
+        "status": "查看当前stealth注入状态",
+        "features": "列出所有反检测功能及默认值"
+      },
+      "examples": [
+        "stealth inject",
+        "stealth inject-preset windows-chrome",
+        "stealth inject-preset mac-safari",
+        "stealth inject {\"preset\":\"windows-chrome\",\"performanceNoise\":true}",
+        "stealth set-ua windows",
+        "stealth presets",
+        "stealth status",
+        "stealth features"
+      ]
+    },
+    {
+      "name": "dom",
+      "description": "DOM检查器（查询元素、获取结构、查找可点击元素）",
+      "usage": "dom <action> [args]",
+      "actions": {
+        "query": "查询单个元素（类似querySelector）",
+        "query-all": "查询所有匹配元素（类似querySelectorAll）",
+        "structure": "获取页面DOM结构（用于AI理解页面布局）",
+        "clickable": "查找所有可点击元素（按钮、链接等）",
+        "style": "获取元素的计算样式",
+        "wait": "等待元素出现（动态DOM监控）"
+      },
+      "examples": [
+        "dom query #login-button",
+        "dom query-all .product-item 20",
+        "dom structure 3 true",
+        "dom clickable 登录",
+        "dom style #header",
+        "dom wait .loading-spinner 5000"
+      ]
+    },
+    {
+      "name": "page",
+      "description": "页面控制器（导航、点击、输入、截图等）",
+      "usage": "page <action> [args]",
+      "actions": {
+        "navigate": "导航到指定URL",
+        "reload": "重新加载页面",
+        "back": "后退",
+        "forward": "前进",
+        "click": "点击元素",
+        "type": "输入文本",
+        "select": "选择下拉框选项",
+        "hover": "鼠标悬停",
+        "scroll": "滚动页面",
+        "wait-selector": "等待选择器出现",
+        "wait-nav": "等待导航完成",
+        "eval": "执行JavaScript代码",
+        "url": "获取页面URL",
+        "title": "获取页面标题",
+        "content": "获取页面HTML内容",
+        "screenshot": "截图",
+        "metrics": "获取页面性能指标"
+      },
+      "examples": [
+        "page navigate https://example.com",
+        "page reload",
+        "page back",
+        "page click #submit-button",
+        "page type #username admin",
+        "page select #country US",
+        "page hover .menu-item",
+        "page scroll 0 500",
+        "page wait-selector .result",
+        "page eval document.title",
+        "page url",
+        "page screenshot output.png",
+        "page metrics"
+      ]
+    }
+  ],
+
+  "tools": [
+    {
+      "category": "代码收集",
+      "tools": [
+        {
+          "name": "collect_code",
+          "description": "智能代码收集，支持摘要/优先级/增量模式",
+          "features": [
+            "自动收集页面内联脚本",
+            "收集外部脚本文件",
+            "收集动态加载的脚本",
+            "智能摘要模式（防止Token溢出）",
+            "优先级模式（关键词优先）",
+            "增量模式（按需获取）"
+          ]
+        },
+        {
+          "name": "search_in_scripts",
+          "description": "搜索关键词，支持正则表达式和上下文",
+          "features": [
+            "正则表达式搜索",
+            "上下文行数控制",
+            "最大匹配数限制",
+            "高亮显示匹配结果"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "代码分析",
+      "tools": [
+        {
+          "name": "deobfuscate",
+          "description": "AI驱动的代码反混淆",
+          "features": [
+            "支持20+种混淆类型",
+            "变量名还原",
+            "控制流平坦化还原",
+            "字符串解密",
+            "死代码消除"
+          ]
+        },
+        {
+          "name": "understand",
+          "description": "AI辅助的代码语义理解",
+          "features": [
+            "业务逻辑分析",
+            "加密算法识别",
+            "API调用分析",
+            "数据流追踪"
+          ]
+        },
+        {
+          "name": "summarize",
+          "description": "AI生成代码摘要",
+          "features": [
+            "单文件AI摘要生成",
+            "批量文件并发摘要",
+            "项目级摘要分析",
+            "加密/API/混淆特征检测",
+            "安全风险评估",
+            "复杂度评估和建议"
+          ]
+        },
+        {
+          "name": "detect_crypto",
+          "description": "检测和分析加密算法",
+          "features": [
+            "标准算法识别（AES/RSA/MD5/SHA）",
+            "自定义算法检测",
+            "参数提取",
+            "密钥定位"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "浏览器控制",
+      "tools": [
+        {
+          "name": "browser_launch",
+          "description": "启动浏览器（自动检测和启动）",
+          "features": [
+            "自动检测Chrome/Edge",
+            "支持任意盘符（C-Z）",
+            "多浏览器选择",
+            "CDP远程调试连接",
+            "反检测脚本注入"
+          ]
+        },
+        {
+          "name": "browser_status",
+          "description": "获取浏览器状态",
+          "features": [
+            "连接状态",
+            "当前页面信息",
+            "CDP会话状态"
+          ]
+        },
+        {
+          "name": "browser_close",
+          "description": "关闭浏览器",
+          "features": [
+            "优雅断开连接",
+            "清理CDP会话",
+            "进程管理"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "调试分析",
+      "tools": [
+        {
+          "name": "debugger_control",
+          "description": "调试器控制和状态管理",
+          "features": [
+            "启用/禁用调试器",
+            "获取调试器状态",
+            "初始化高级功能",
+            "Watch表达式管理",
+            "XHR断点管理",
+            "事件断点管理"
+          ]
+        },
+        {
+          "name": "breakpoint_manager",
+          "description": "断点管理（URL/脚本ID/条件断点）",
+          "features": [
+            "按URL设置断点",
+            "按脚本ID设置断点",
+            "条件断点支持",
+            "断点列表查看",
+            "断点删除和清除"
+          ]
+        },
+        {
+          "name": "execution_control",
+          "description": "执行控制（暂停/继续/单步）",
+          "features": [
+            "暂停执行",
+            "继续执行",
+            "单步进入（Step Into）",
+            "单步跳过（Step Over）",
+            "单步跳出（Step Out）"
+          ]
+        },
+        {
+          "name": "runtime_evaluator",
+          "description": "运行时表达式求值",
+          "features": [
+            "在当前上下文求值表达式",
+            "访问全局变量",
+            "访问局部变量",
+            "执行任意JavaScript代码"
+          ]
+        },
+        {
+          "name": "variable_inspector",
+          "description": "变量查看和作用域分析",
+          "features": [
+            "查看当前作用域变量",
+            "查看调用帧变量",
+            "对象属性展开",
+            "变量类型识别"
+          ]
+        },
+        {
+          "name": "script_manager",
+          "description": "脚本管理和源码获取",
+          "features": [
+            "列出所有已加载脚本",
+            "获取脚本源码",
+            "按URL模式查找脚本",
+            "脚本内容搜索",
+            "支持内联和外部脚本"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "反检测伪装",
+      "tools": [
+        {
+          "name": "stealth_inject",
+          "description": "注入反检测脚本到浏览器页面",
+          "features": [
+            "5种平台预设（Windows Chrome/Mac Chrome/Mac Safari/Linux Chrome/Windows Edge）",
+            "Chrome 131+ UA字符串（2025-2026）",
+            "隐藏 navigator.webdriver 属性",
+            "模拟真实 window.chrome 对象",
+            "Canvas 指纹噪声（会话级随机种子）",
+            "WebGL/WebGL2 厂商和渲染器覆盖",
+            "AudioContext 指纹噪声",
+            "navigator 属性一致性（platform/vendor/hardwareConcurrency/deviceMemory）",
+            "Permissions API 修复",
+            "Battery/MediaDevices/Notifications API 模拟",
+            "NetworkInformation API 模拟",
+            "document.hasFocus() 覆盖",
+            "16项独立可控的反检测功能"
+          ]
+        },
+        {
+          "name": "stealth_presets",
+          "description": "平台预设管理",
+          "features": [
+            "windows-chrome: Windows 10 + Chrome 131",
+            "mac-chrome: macOS + Chrome 131",
+            "mac-safari: macOS + Safari 18.2",
+            "linux-chrome: Linux + Chrome 131",
+            "windows-edge: Windows 10 + Edge 131"
+          ]
+        }
+      ]
+    },
+    {
+      "category": "数据管理",
+      "tools": [
+        {
+          "name": "stats",
+          "description": "获取统计信息",
+          "features": [
+            "缓存统计（文件数、大小、命中率）",
+            "压缩统计（压缩率、节省空间）",
+            "收集统计（URL数、文件数）"
+          ]
+        },
+        {
+          "name": "clear",
+          "description": "清除所有数据",
+          "features": [
+            "清除文件缓存",
+            "清除压缩缓存",
+            "重置收集状态"
+          ]
+        }
+      ]
+    }
+  ],
+
+  "features": [
+    "🔍 智能代码收集 - 支持摘要/优先级/增量模式，防止Token溢出",
+    "🔓 AI驱动反混淆 - 支持20+种混淆类型，自动还原代码",
+    "🧠 代码语义理解 - AI辅助分析业务逻辑和加密算法",
+    "📝 AI代码摘要 - 单文件/批量/项目级摘要，自动检测加密/API/混淆特征",
+    "🔐 加密算法检测 - 自动识别AES/RSA/MD5/SHA和自定义算法",
+    "🌐 浏览器自动化 - 自动检测和启动Chrome/Edge，支持任意盘符",
+    "🛡️ 反检测伪装 - 16项反检测功能，5种平台预设，Canvas/WebGL/AudioContext指纹伪造",
+    "🐛 CDP调试器 - 完整的断点管理、执行控制、变量查看",
+    "📜 脚本管理 - 脚本列表、源码获取、模式查找、内容搜索",
+    "⚡ 运行时分析 - 表达式求值、作用域变量、动态追踪",
+    "📊 统计和缓存 - 完善的缓存机制和统计信息",
+    "🚀 高性能 - 智能压缩、增量收集、按需加载"
+  ],
+
+  "requirements": {
+    "node": ">=18.0.0",
+    "browser": "Chrome 或 Edge（自动检测）",
+    "dependencies": [
+      "puppeteer",
+      "openai 或 anthropic（AI功能）"
+    ]
+  },
+
+  "configuration": {
+    "env": {
+      "OPENAI_API_KEY": "OpenAI API密钥（可选）",
+      "ANTHROPIC_API_KEY": "Anthropic API密钥（可选）",
+      "DEFAULT_LLM_PROVIDER": "默认LLM提供商（openai/anthropic）",
+      "REMOTE_DEBUGGING_PORT": "远程调试端口（默认9222）"
+    }
+  }
+}

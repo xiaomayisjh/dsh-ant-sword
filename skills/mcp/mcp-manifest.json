@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "1.0",
+  "meta": {
+    "description": "Portable MCP server registry. Every server here is resolvable with npx or installs into this package (%SKILL_ROOT%), and its data directory stays inside skills/mcp/data/ — copy the whole bundle to another machine and re-run register.ps1 / register.sh to plug back in.",
+    "hosts": ["claude", "codex"],
+    "dataRoot": "%SKILL_ROOT%/mcp/data"
+  },
+  "servers": [
+    {
+      "name": "firecrawl",
+      "description": "Web scraping, crawling, and search MCP server (Firecrawl). Use for recon, OSINT, documentation mining, and page-content extraction during authorized assessments.",
+      "command": "npx",
+      "args": ["-y", "firecrawl-mcp@3.24.0"],
+      "env": {
+        "FIRECRAWL_API_KEY": "%FIRECRAWL_API_KEY%"
+      },
+      "apiKeyEnv": "FIRECRAWL_API_KEY",
+      "dataDir": null,
+      "source": "https://github.com/firecrawl/firecrawl-mcp-server"
+    },
+    {
+      "name": "codebase-memory",
+      "description": "Code intelligence MCP server that indexes codebases into a persistent knowledge graph (single static binary, no runtime deps). Use for long-lived research memory across sessions; the graph data is portable.",
+      "command": "%SKILL_ROOT%/mcp/bin/codebase-memory/codebase-memory-mcp",
+      "args": [],
+      "env": {},
+      "apiKeyEnv": null,
+      "dataDir": "%SKILL_ROOT%/mcp/data/codebase-memory",
+      "source": "https://github.com/DeusData/codebase-memory-mcp"
+    }
+  ]
+}

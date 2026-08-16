@@ -1,0 +1,52 @@
+html,
+body,
+#__nuxt {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+html.dark {
+  color-scheme: dark;
+  background-color: var(--c-bg-base);
+}
+
+.splitpanes__splitter {
+  width: 0.25rem;
+  --at-apply: bg-zinc50 dark-bg-zinc800;
+}
+
+.splitpanes__splitter:before {
+  left: -0.125rem;
+  right: -0.125rem;
+  height: 100%;
+}
+
+.splitpanes.splitpanes--horizontal > .splitpanes__splitter {
+  height: .5rem;
+  width: 100%;
+  background: none;
+  position: relative;
+  cursor: row-resize;
+}
+.splitpanes.splitpanes--horizontal > .splitpanes__splitter::after {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 28px;
+  height: 5px;
+  background: #e5e7eb; 
+  border-radius: 3px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+  transform: translate(-50%, -50%);
+  transition: background 0.2s;
+}
+html.dark .splitpanes.splitpanes--horizontal > .splitpanes__splitter::after {
+  background: #3a3a3a;
+}
+.splitpanes.splitpanes--horizontal > .splitpanes__splitter:hover::after,
+html.dark .splitpanes.splitpanes--horizontal > .splitpanes__splitter:hover::after {
+  background: #999999;
+}

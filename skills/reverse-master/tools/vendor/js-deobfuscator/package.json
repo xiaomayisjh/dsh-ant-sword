@@ -1,0 +1,34 @@
+{
+  "name": "js-de-obfuscator",
+  "type": "module",
+  "version": "0.4.0",
+  "packageManager": "pnpm@10.28.2",
+  "license": "MIT",
+  "scripts": {
+    "web:dev": "pnpm run -F website dev",
+    "web:build": "pnpm run -F website build",
+    "web:generate": "pnpm run -F website generate",
+    "web:serve": "pnpm run -F website serve",
+    "tmp": "npx deob tmp/input.js -o tmp",
+    "lint": "eslint './{packages,website,scripts,meta}/**/*.{js,ts,tsx,vue,md,json}'",
+    "lint:fix": "pnpm lint --fix",
+    "release": "bumpp -r",
+    "test": "vitest"
+  },
+  "workspaces": [
+    "website",
+    "example",
+    "packages/*"
+  ],
+  "devDependencies": {
+    "@antfu/eslint-config": "^7.2.0",
+    "bumpp": "^10.4.0",
+    "deob": "workspace:*",
+    "eslint": "^9.39.2",
+    "esm": "^3.2.25",
+    "prettier": "^3.8.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "vitest": "^3.1.1"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "captured_at": "2026-07-10T10:00:00Z",
+  "trigger": "click Export Report in the currently served application",
+  "request": {
+    "method": "POST",
+    "path": "/api/report",
+    "initiator": "https://challenge.invalid/assets/app.9f31c2.js"
+  },
+  "response": {
+    "status": 202,
+    "job_id": "fixture-job-1"
+  }
+}

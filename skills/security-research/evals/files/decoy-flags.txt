@@ -1,0 +1,5 @@
+docs/example.md: flag{example_only_do_not_submit}
+tests/fixture.json: flag{unit_test_fixture}
+analysis/runtime-response.txt: CTF{candidate_from_verified_admin_export}
+
+The file lists candidate locations only. A valid solution must inspect provenance and reproduce the intended runtime workflow.

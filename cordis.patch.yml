@@ -1,0 +1,48 @@
+# The ant-sword-harness bundle patch: composes three capabilities over the
+# profile's existing layers as ONE insert. Later bundle patches and the user's
+# profile cordis.patch.yml address these rows by id; the last write wins per row.
+#
+# The first-party row mounts this package's single Cordis plugin, which serves
+# the bundled reverse/CTF skill pack on ctx.skills and mounts the self-contained
+# rewind capability. Two further rows mount the third-party agent-teams and
+# plugin-market bundles, whose forward compatibility with the official harness
+# is owned by their respective authors and followed through their npm version
+# ranges in package.json.
+#
+# Row order carries no load semantics (activation is service-availability
+# driven); the grouping is for readers.
+
+- insert:
+    # This package's plugin: bundled reverse/CTF skills + workspace snapshot /rewind
+    # + the autonomous OODA loop (blackboard service, board_* tools, /auto command).
+    - id: ant-sword-harness
+      name: '@deepseek-ai/dsh-ant-sword-harness'
+      config:
+        rewind:
+          provider: auto
+          preRewindCheckpoint: warn
+          pruneOnTurnEnd: true
+        autoLoop:
+          enabled: true
+          maxCycles: 64
+          stallThreshold: 3
+
+    # Multi-agent teams: captain-led delegation, dependency-aware tasks, mailbox.
+    - id: agent-teams
+      name: '@nanmicoder/dsh-agent-teams'
+      config:
+        stateDir: .agent-teams
+        memberProvider: spawn
+        memberMaxDepth: 1
+        maxMembers: 8
+
+    # The autonomous-loop decision-graph Web view (a dsh.client row). The
+    # modules node half discovers it from this live Loader entry at runtime —
+    # no edit to the stock web-app roster is needed, so the bundle is
+    # self-contained and installs on any official dsh with one command.
+    - id: ui-autograph
+      name: '@deepseek-ai/dsh-client-ui-autograph'
+
+    # The in-app plugin market (Web settings section + HTTP routes).
+    - id: dsh-market
+      name: 'dshmarket'

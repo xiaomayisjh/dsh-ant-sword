@@ -1,0 +1,172 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/security-research/research-result.schema.json",
+  "title": "Security Research Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "objective",
+    "mode",
+    "scope",
+    "route",
+    "samples",
+    "evidence",
+    "hypotheses",
+    "primitive",
+    "reproduction",
+    "validation",
+    "deliverables",
+    "residual_risks",
+    "experience_action"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "objective": {"type": "string", "minLength": 1},
+    "mode": {
+      "enum": ["ctf", "lab", "authorized-assessment", "sample-analysis", "defensive-review", "tool-development"]
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["in_scope", "out_of_scope", "allowed_state_changes", "reset_method"],
+      "properties": {
+        "in_scope": {"type": "array", "items": {"type": "string"}},
+        "out_of_scope": {"type": "array", "items": {"type": "string"}},
+        "allowed_state_changes": {"type": "array", "items": {"type": "string"}},
+        "reset_method": {"type": "string"}
+      }
+    },
+    "route": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["primary_domain", "supporting_domains", "stage", "read_now", "exit_condition"],
+      "properties": {
+        "primary_domain": {
+          "enum": ["web", "pwn", "reverse", "crypto", "forensics", "malware", "misc", "osint", "ai-ml", "assessment-tooling"]
+        },
+        "supporting_domains": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "stage": {"enum": ["intake", "triage", "evidence", "primitive", "chain", "verify", "report", "retain"]},
+        "read_now": {"type": "array", "items": {"type": "string"}, "maxItems": 4},
+        "exit_condition": {"type": "string", "minLength": 1}
+      }
+    },
+    "samples": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "sha256", "role"],
+        "properties": {
+          "path": {"type": "string", "minLength": 1},
+          "sha256": {"type": ["string", "null"], "pattern": "^[0-9a-fA-F]{64}$"},
+          "role": {"enum": ["original", "capture", "derived", "fixture", "runtime"]}
+        }
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "level", "fact", "source"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^E-[0-9]{3}$"},
+          "level": {"enum": ["observed", "inferred", "assumed"]},
+          "fact": {"type": "string", "minLength": 1},
+          "source": {"type": "string", "minLength": 1},
+          "artifact": {"type": ["string", "null"]},
+          "reproduction": {"type": ["string", "null"]}
+        }
+      }
+    },
+    "hypotheses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "claim", "status", "supporting_evidence", "disconfirming_test"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^H-[0-9]{3}$"},
+          "claim": {"type": "string", "minLength": 1},
+          "status": {"enum": ["open", "supported", "invalidated"]},
+          "supporting_evidence": {"type": "array", "items": {"type": "string", "pattern": "^E-[0-9]{3}$"}},
+          "disconfirming_test": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "primitive": {
+      "oneOf": [
+        {"type": "null"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["description", "preconditions", "reproducer", "effect"],
+          "properties": {
+            "description": {"type": "string", "minLength": 1},
+            "preconditions": {"type": "array", "items": {"type": "string"}},
+            "reproducer": {"type": "string", "minLength": 1},
+            "effect": {"type": "string", "minLength": 1}
+          }
+        }
+      ]
+    },
+    "reproduction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["environment", "commands", "checkpoints"],
+      "properties": {
+        "environment": {"type": "object", "additionalProperties": {"type": "string"}},
+        "commands": {"type": "array", "items": {"type": "string"}},
+        "checkpoints": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["step", "expected", "observed", "passed"],
+            "properties": {
+              "step": {"type": "string", "minLength": 1},
+              "expected": {"type": "string"},
+              "observed": {"type": "string"},
+              "passed": {"type": "boolean"}
+            }
+          }
+        }
+      }
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "clean_baseline", "negative_control"],
+      "properties": {
+        "status": {"enum": ["untested", "partial", "validated", "failed"]},
+        "clean_baseline": {"type": "string"},
+        "negative_control": {"type": "string"}
+      }
+    },
+    "deliverables": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "sha256", "purpose"],
+        "properties": {
+          "path": {"type": "string", "minLength": 1},
+          "sha256": {"type": ["string", "null"], "pattern": "^[0-9a-fA-F]{64}$"},
+          "purpose": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "residual_risks": {"type": "array", "items": {"type": "string"}},
+    "experience_action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["action", "path", "reason"],
+      "properties": {
+        "action": {"enum": ["none", "candidate", "promote", "deprecate"]},
+        "path": {"type": ["string", "null"]},
+        "reason": {"type": "string"}
+      }
+    }
+  }
+}

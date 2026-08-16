@@ -1,0 +1,6 @@
+interface:
+  display_name: "Mission Keeper"
+  short_description: "Anchors long reverse and pentest work."
+  default_prompt: "Use $mission-keeper to keep this reverse-engineering or penetration-testing task anchored, evidence-based, and moving forward."
+policy:
+  allow_implicit_invocation: true

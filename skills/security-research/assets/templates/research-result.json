@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "objective": "State the exact security question or challenge success condition.",
+  "mode": "ctf",
+  "scope": {
+    "in_scope": ["<challenge-root>"],
+    "out_of_scope": ["unrelated user data and accounts"],
+    "allowed_state_changes": [],
+    "reset_method": "Describe the clean/reset baseline."
+  },
+  "route": {
+    "primary_domain": "web",
+    "supporting_domains": [],
+    "stage": "triage",
+    "read_now": ["skills/sec-web-api/INSTRUCTIONS.md"],
+    "exit_condition": "One normal request chain and the decisive trust boundary are proven."
+  },
+  "samples": [],
+  "evidence": [],
+  "hypotheses": [],
+  "primitive": null,
+  "reproduction": {
+    "environment": {},
+    "commands": [],
+    "checkpoints": []
+  },
+  "validation": {
+    "status": "untested",
+    "clean_baseline": "",
+    "negative_control": ""
+  },
+  "deliverables": [],
+  "residual_risks": [],
+  "experience_action": {
+    "action": "none",
+    "path": null,
+    "reason": "No reusable experience has been validated yet."
+  }
+}

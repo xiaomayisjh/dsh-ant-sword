@@ -1,0 +1,58 @@
+{
+  "name": "deob",
+  "type": "module",
+  "version": "0.4.0",
+  "description": "javascript deobfuscate",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "main": "dist/index.cjs",
+  "types": "dist/index.d.ts",
+  "bin": "dist/cli.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "node esbuild.config.js && tsc -p tsconfig.build.json",
+    "watch": "node esbuild.config.js --watch",
+    "start": "node dist/cli.js",
+    "tmp": "node esbuild.config.js && node --enable-source-maps dist/cli.js tmp/input.js -f -o tmp/out",
+    "postinstall": "npm run build",
+    "lint": "eslint src test",
+    "lint:fix": "eslint src test --fix",
+    "test": "vitest --pool=vmThreads"
+  },
+  "dependencies": {
+    "@babel/code-frame": "^7.28.6",
+    "@babel/generator": "^7.28.6",
+    "@babel/helper-validator-identifier": "^7.28.5",
+    "@babel/parser": "^7.28.6",
+    "@babel/template": "^7.28.6",
+    "@babel/traverse": "^7.28.6",
+    "@babel/types": "^7.28.6",
+    "@codemod/matchers": "^1.7.1",
+    "commander": "^14.0.2",
+    "debug": "^4.4.3",
+    "isolated-vm": "^6.0.2"
+  },
+  "devDependencies": {
+    "@types/babel__code-frame": "^7.27.0",
+    "@types/babel__generator": "^7.27.0",
+    "@types/babel__helper-validator-identifier": "^7.15.2",
+    "@types/babel__template": "^7.4.4",
+    "@types/babel__traverse": "^7.28.0",
+    "@types/debug": "^4.1.12",
+    "@types/node": "^25.1.0",
+    "esbuild": "^0.27.2",
+    "typescript": "^5.9.3"
+  }
+}

@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.env
+*.log
+debugger-sessions/
+.DS_Store
+Thumbs.db
+.claude/settings.local.json
+tisc1.txt
+save_response.js

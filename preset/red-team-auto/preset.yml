@@ -1,0 +1,9 @@
+name: Red Team (Auto)
+description: >-
+  ⚠ 免责声明：本预设为授权安全研究专用，不对外发布，也不作为产品提供。
+  选择即表示：你仅对已获授权的目标（自有系统 / 实验沙箱 / CTF / 受委托测试）
+  执行操作，并对全部行为及其后果负责。全自动模式：agent 在 Fact/Intent/Hint
+  黑板上跑 OODA 循环（观察→定向→决策→行动），全流程自决策完成渗透，
+  内嵌 Kali/Metasploit/HexStrike/PentestSwarm/JSHook/IDA/Ghidra 等 8 个 MCP，
+  无需人工干预；Web 图界面可实时查看决策图并随时打断或注入提示。
+order: 6
