@@ -3,13 +3,14 @@
  * MCP servers the autonomous preset bridges in, declared as plugin Config so
  * each server's transport/command/env/credentials is editable in the dsh
  * plugin-config UI (never via environment-variable overrides). `applyMcpServers`
- * mounts one `@deepseek-ai/dsh-mcp-client` instance per enabled server;
- * a server that is absent fails soft (`failOnStartupError: false`), so the
- * loop notes the gap and continues.
+ * mounts one `@deepseek-ai/dsh-mcp-client` instance per enabled and resolvable
+ * server. Missing stdio commands remain visible in configuration and runtime
+ * status but are not mounted, so no reconnect loop repeatedly invokes them.
  *
  * @module @deepseek-ai/dsh-ant-sword-harness/mcp-servers
  */
 
+import { spawnSync } from 'node:child_process'
 import type { Context } from '@deepseek-ai/cordis'
 import z from '@deepseek-ai/schemastery'
 import * as mcpClient from '@deepseek-ai/dsh-mcp-client'
@@ -65,22 +66,33 @@ export const DEFAULT_MCP_SERVERS: readonly McpServerConfig[] = [
   { enabled: true, serverName: 'ghidra', transport: 'streamable-http', url: 'http://localhost:8765/mcp' },
 ]
 
+/** Return whether a stdio command can be resolved without invoking a shell. */
+export function commandExists(command: string): boolean {
+  if (command === '') return false
+  const locator = process.platform === 'win32' ? 'where.exe' : 'which'
+  return spawnSync(locator, [command], { stdio: 'ignore', windowsHide: true }).status === 0
+}
+
 /**
- * Mount one mcp-client instance per enabled server. A server whose initial
- * connection fails is logged and left to its reconnect loop (fail-soft), so
- * one missing tool never blocks the composition.
+ * Mount one mcp-client instance per enabled and locally resolvable server.
+ * Missing stdio commands remain in the runtime-status catalog but are not
+ * mounted, preventing the client's reconnect loop from repeatedly spawning
+ * an executable that is not installed.
  * @param ctx - bundle plugin context.
  * @param servers - the resolved server list (defaults merged by the caller).
  * @param pentestswarmApiKey - optional orchestrator key injected into the
  * pentestswarm server's env.
+ * @param canResolveCommand - executable probe, injectable for deterministic tests.
  */
 export function applyMcpServers(
   ctx: Context,
   servers: readonly McpServerConfig[],
   pentestswarmApiKey?: string,
+  canResolveCommand: (command: string) => boolean = commandExists,
 ): void {
   for (const server of servers) {
     if (server.enabled === false) continue
+    if (server.transport === 'stdio' && !canResolveCommand(server.command ?? '')) continue
     const env: Record<string, string> = { ...server.env }
     if (server.serverName === 'pentestswarm' && pentestswarmApiKey !== undefined && pentestswarmApiKey !== '') {
       env['PENTESTSWARM_ORCHESTRATOR_API_KEY'] = pentestswarmApiKey
