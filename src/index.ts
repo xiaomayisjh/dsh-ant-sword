@@ -10,21 +10,23 @@
 
 import type { Context } from '@deepseek-ai/cordis'
 import z from '@deepseek-ai/schemastery'
-import { skillProvider } from './skills.ts'
 import { syncRedTeamPreset, syncRedTeamAutoPreset } from './preset-sync.ts'
 import { applyRewind, RewindConfigSchema } from './rewind/index.ts'
 import type { RewindPluginConfig } from './rewind/index.ts'
 import { applyAutoLoop, AutoLoopConfigSchema } from './auto/index.ts'
 import type { AutoLoopConfig } from './auto/index.ts'
 import { applyRuntimeStatus } from './runtime-status.ts'
-import { applyMcpServers, DEFAULT_MCP_SERVERS, McpServerSchema } from './mcp-servers.ts'
+import { applyInstallApi } from './installer/api.ts'
+import { DEFAULT_MCP_SERVERS, McpServerSchema } from './mcp-servers.ts'
+import { applyDynamicRuntime } from './dynamic-runtime.ts'
+import { applySkillApi, SkillsReconciler } from './skill-runtime.ts'
 import type { McpServerConfig } from './mcp-servers.ts'
 
 /** Cordis plugin name. */
 export const name = 'ant-sword-harness'
 
 /** Services required by the bundled skill provider, rewind, the auto loop, and MCP tools. */
-export const inject = ['skills', 'sessions', 'storageDomain', 'commands', 'tools', 'agents']
+export const inject = ['skills', 'sessions', 'storageDomain', 'commands', 'tools', 'agents', 'webServer', 'subprocess', 'settings', 'systemPrompt']
 
 /**
  * Plugin config. Every tunable lives here — the dsh plugin-config UI renders
@@ -62,14 +64,17 @@ export const Config: z<Config> = z.object({
  * @param config - validated plugin config.
  */
 export function apply(ctx: Context, config: Config): void {
-  ctx.skills.registerProvider(() => skillProvider)
+  const skillsReconciler = new SkillsReconciler()
+  ctx.skills.registerProvider(control => skillsReconciler.provider(control))
   applyRewind(ctx, config.rewind ?? {})
   applyAutoLoop(ctx, config.autoLoop ?? {})
   const mcpServers = config.mcpServers === undefined || config.mcpServers.length === 0
     ? DEFAULT_MCP_SERVERS
     : config.mcpServers
-  applyRuntimeStatus(ctx, mcpServers)
-  applyMcpServers(ctx, mcpServers, config.pentestswarmApiKey)
+  const controller = applyDynamicRuntime(ctx, mcpServers, config.pentestswarmApiKey, skillsReconciler)
+  applyRuntimeStatus(ctx, () => controller.snapshot().config.mcpServers)
+  applyInstallApi(ctx)
+  applySkillApi(ctx, skillsReconciler)
   if (config.syncRedTeamPreset ?? true) {
     // Materialize both presets into the harness's writable preset root so the
     // roster discovers them; a sync failure never blocks the composition.

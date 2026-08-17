@@ -28,6 +28,10 @@ export interface McpServerConfig {
   command?: string
   /** stdio: arguments. */
   args?: string[]
+  /** stdio: working directory; empty uses the Harness working directory. */
+  cwd?: string
+  /** Per-tool call timeout in milliseconds. */
+  toolCallTimeoutMs?: number
   /** stdio: extra env merged over the scrubbed ambient env. */
   env?: Record<string, string>
   /** streamable-http: server URL. */
@@ -43,6 +47,8 @@ export const McpServerSchema: z<McpServerConfig> = z.object({
   transport: z.union(['stdio', 'streamable-http'] as const).required().description('stdio=拉起子进程；streamable-http=连接已在运行的服务。'),
   command: z.string().description('stdio：要启动的可执行文件。'),
   args: z.array(z.string()).description('stdio：命令参数。'),
+  cwd: z.string().description('stdio：工作目录；留空使用 Harness 工作目录。'),
+  toolCallTimeoutMs: z.number().min(1).max(2_147_483_647).default(60_000).description('单次工具调用超时（毫秒）。'),
   env: z.dict(z.string()).description('stdio：额外环境变量（不含密钥，密钥走 secret 字段）。'),
   url: z.string().description('streamable-http：服务器地址。'),
   headers: z.dict(z.string()).description('streamable-http：额外请求头。'),

@@ -36,7 +36,7 @@ describe('embedded MCP server catalog', () => {
       { serverName: 'kali', transport: 'stdio', command: 'kali-server-mcp', args: ['--port', '5000'] },
       { serverName: 'ghidra', transport: 'streamable-http', url: 'http://localhost:8765/mcp', enabled: false },
     ]
-    applyMcpServers(ctx, servers)
+    applyMcpServers(ctx, servers, undefined, () => true)
     expect(mounted).toHaveLength(1)
     const cfg = mounted[0]?.config as { transport: string; serverName: string; command: string; failOnStartupError: boolean }
     expect(cfg.transport).toBe('stdio')
@@ -62,7 +62,7 @@ describe('embedded MCP server catalog', () => {
 
   it('injects the pentestswarm orchestrator key into that server env only', () => {
     const { ctx, mounted } = recordingCtx()
-    applyMcpServers(ctx, DEFAULT_MCP_SERVERS, 'sk-orchestrator')
+    applyMcpServers(ctx, DEFAULT_MCP_SERVERS, 'sk-orchestrator', () => true)
     const swarm = mounted.find(m => (m.config as { serverName: string }).serverName === 'pentestswarm')
     const kali = mounted.find(m => (m.config as { serverName: string }).serverName === 'kali')
     expect((swarm?.config as { env: Record<string, string> }).env['PENTESTSWARM_ORCHESTRATOR_API_KEY']).toBe('sk-orchestrator')
@@ -71,9 +71,20 @@ describe('embedded MCP server catalog', () => {
 
   it('omits the key env when no credential is configured', () => {
     const { ctx, mounted } = recordingCtx()
-    applyMcpServers(ctx, DEFAULT_MCP_SERVERS)
+    applyMcpServers(ctx, DEFAULT_MCP_SERVERS, undefined, () => true)
     const swarm = mounted.find(m => (m.config as { serverName: string }).serverName === 'pentestswarm')
     expect((swarm?.config as { env: Record<string, string> }).env['PENTESTSWARM_ORCHESTRATOR_API_KEY']).toBeUndefined()
+  })
+
+  it('keeps missing stdio servers unmounted instead of entering reconnect loops', () => {
+    const { ctx, mounted } = recordingCtx()
+    const servers: McpServerConfig[] = [
+      { serverName: 'missing', transport: 'stdio', command: 'missing-mcp' },
+      { serverName: 'present', transport: 'stdio', command: 'present-mcp' },
+      { serverName: 'remote', transport: 'streamable-http', url: 'http://localhost:8765/mcp' },
+    ]
+    applyMcpServers(ctx, servers, undefined, command => command === 'present-mcp')
+    expect(mounted.map(m => (m.config as { serverName: string }).serverName)).toEqual(['present', 'remote'])
   })
 
   it('validates a server entry through the schema', () => {

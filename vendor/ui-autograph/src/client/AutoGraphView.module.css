@@ -1,0 +1,122 @@
+.panel {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--dsh-bg, #0b0f14);
+  color: var(--dsh-fg, #e6edf3);
+  pointer-events: auto;
+  z-index: 30;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--dsh-border, #21262d);
+  font-size: 13px;
+}
+
+.title {
+  font-weight: 600;
+}
+
+.meta {
+  color: var(--dsh-fg-muted, #8b949e);
+}
+
+.status {
+  margin-left: auto;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  background: #12331f;
+  color: #3fb950;
+}
+
+.status[data-paused='true'] {
+  background: #3a2f0b;
+  color: #d97706;
+}
+
+.status[data-complete='true'] {
+  background: #0d2a4a;
+  color: #58a6ff;
+}
+
+.canvas {
+  flex: 1;
+  min-height: 0;
+}
+
+.canvas :global(.react-flow) {
+  width: 100%;
+  height: 100%;
+}
+
+.canvas :global(.react-flow__node) {
+  font-size: 11px;
+  border-radius: 6px;
+}
+
+.canvas :global(.react-flow__controls) {
+  box-shadow: none;
+}
+
+.canvas :global(.react-flow__controls-button) {
+  background: var(--dsh-bg-soft, #161b22);
+  border-bottom: 1px solid var(--dsh-border, #30363d);
+  fill: var(--dsh-fg, #e6edf3);
+}
+
+.empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--dsh-fg-muted, #8b949e);
+  font-size: 13px;
+  padding: 24px;
+  text-align: center;
+}
+
+.node {
+  font-size: 11px;
+  border: 1.5px solid;
+  border-radius: 6px;
+  background: var(--dsh-bg-soft, #11161d);
+  max-width: 220px;
+}
+
+.controls {
+  display: flex;
+  gap: 8px;
+  padding: 10px 16px;
+  border-top: 1px solid var(--dsh-border, #21262d);
+}
+
+.controls button {
+  padding: 6px 14px;
+  border: 1px solid var(--dsh-border, #30363d);
+  border-radius: 6px;
+  background: var(--dsh-bg-soft, #161b22);
+  color: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.controls button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.controls input {
+  flex: 1;
+  padding: 6px 10px;
+  border: 1px solid var(--dsh-border, #30363d);
+  border-radius: 6px;
+  background: var(--dsh-bg, #0b0f14);
+  color: inherit;
+  font-size: 12px;
+}

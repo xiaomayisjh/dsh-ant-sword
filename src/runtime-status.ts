@@ -69,13 +69,13 @@ function mcpStatus(server: McpServerConfig): McpRuntimeStatus {
   }
 }
 
-export function applyRuntimeStatus(ctx: Context, servers: readonly McpServerConfig[]): void {
+export function applyRuntimeStatus(ctx: Context, getServers: () => readonly McpServerConfig[]): void {
   let disposed = false
   let running = false
   let latest: RedTeamRuntimeStatus = {
     checkedAt: Date.now(),
     skills: { available: 0, provider: skillProvider.name, state: 'ready' },
-    mcp: servers.map(mcpStatus),
+    mcp: getServers().map(mcpStatus),
   }
 
   const publish = async (): Promise<void> => {
@@ -83,8 +83,8 @@ export function applyRuntimeStatus(ctx: Context, servers: readonly McpServerConf
     running = true
     let skills: RedTeamRuntimeStatus['skills']
     try {
-      const candidates = await skillProvider.list({ signal: new AbortController().signal })
-      const available = 'candidates' in candidates ? candidates.candidates.length : candidates.length
+      const candidates = await ctx.skills.list({ signal: new AbortController().signal })
+      const available = candidates.length
       skills = { available, provider: skillProvider.name, state: 'ready' }
     } catch (error) {
       skills = { available: 0, provider: skillProvider.name, state: 'error', error: String(error) }
@@ -93,7 +93,7 @@ export function applyRuntimeStatus(ctx: Context, servers: readonly McpServerConf
       latest = {
         checkedAt: Date.now(),
         skills,
-        mcp: servers.map(mcpStatus),
+        mcp: getServers().map(mcpStatus),
       }
       ctx.emit('ant-sword/runtime-status', latest)
     }
@@ -107,7 +107,7 @@ export function applyRuntimeStatus(ctx: Context, servers: readonly McpServerConf
     disposed = true
     clearInterval(timer)
   }, 'ant-sword-runtime-status: publisher')
-  ctx.inject(['webServer'], scope => {
+  ctx.inject(['webServer'], (scope) => {
     scope.effect(() => scope.webServer.register({
       kind: 'exact',
       path: '/ant-sword/runtime-status',

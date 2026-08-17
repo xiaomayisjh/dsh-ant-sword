@@ -1,0 +1,280 @@
+.rail {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 16px;
+  border-bottom: 1px solid var(--dsh-border, #21262d);
+  background: color-mix(in srgb, var(--dsh-bg-soft, #161b22) 88%, transparent);
+  font-size: 11px;
+}
+
+.metric {
+  color: var(--dsh-fg-muted, #8b949e);
+}
+
+.metric strong {
+  color: var(--dsh-fg, #e6edf3);
+}
+
+.warning {
+  margin-left: auto;
+  color: #d97706;
+}
+
+.settings {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  color: var(--dsh-fg, #e6edf3);
+}
+
+.settingsHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.settingsHeader h2 {
+  margin: 0 0 6px;
+  font-size: 18px;
+}
+
+.settingsHeader p,
+.card p {
+  margin: 0;
+  color: var(--dsh-fg-muted, #8b949e);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.summary {
+  display: flex;
+  gap: 8px;
+}
+
+.summary span,
+.cardTitle span {
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--dsh-bg-soft, #161b22);
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.skillCard,
+.card {
+  padding: 12px;
+  border: 1px solid var(--dsh-border, #30363d);
+  border-radius: 8px;
+  background: var(--dsh-bg-soft, #11161d);
+}
+
+.skillCard {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  gap: 12px;
+  align-items: center;
+}
+
+.skillCard small {
+  color: var(--dsh-fg-muted, #8b949e);
+  text-align: right;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 10px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.card[data-state='missing'] {
+  border-color: #6e5314;
+}
+
+.card[data-state='available'],
+.card[data-state='configured'] {
+  border-color: #1f6f3d;
+}
+
+.cardTitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card code,
+.card pre {
+  overflow-x: auto;
+  margin: 0;
+  padding: 7px;
+  border-radius: 5px;
+  background: var(--dsh-bg, #0b0f14);
+  color: var(--dsh-fg, #e6edf3);
+  font-size: 11px;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.installToolbar,
+.installActions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.installToolbar label {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  color: var(--dsh-fg-muted, #8b949e);
+  font-size: 12px;
+}
+
+.installToolbar select,
+.installActions button {
+  border: 1px solid var(--dsh-border, #30363d);
+  border-radius: 6px;
+  background: var(--dsh-bg-soft, #161b22);
+  color: var(--dsh-fg, #e6edf3);
+  padding: 6px 9px;
+}
+
+.installActions button:focus-visible,
+.installToolbar select:focus-visible {
+  outline: 2px solid var(--dsh-focus, #2f81f7);
+  outline-offset: 2px;
+}
+
+.installActions button:disabled {
+  opacity: 0.5;
+}
+
+.installError {
+  color: var(--dsh-danger, #f85149);
+  font-size: 12px;
+}
+
+.installProgress {
+  display: grid;
+  flex: 1 1 100%;
+  gap: 4px;
+  color: var(--dsh-fg-muted, #8b949e);
+  font-size: 11px;
+}
+
+.installProgress progress {
+  width: 100%;
+  accent-color: var(--dsh-accent, #2f81f7);
+}
+
+.configEditor {
+  display: grid;
+  gap: 12px;
+  padding-top: 14px;
+  border-top: 1px solid var(--dsh-border, #30363d);
+}
+
+.tabs,
+.editorActions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tabs button,
+.editorActions button,
+.editorList fieldset > button {
+  border: 1px solid var(--dsh-border, #30363d);
+  border-radius: 6px;
+  padding: 6px 10px;
+  background: var(--dsh-bg-soft, #161b22);
+  color: var(--dsh-fg, #e6edf3);
+}
+
+.tabs button[data-active='true'] {
+  border-color: var(--dsh-accent, #2f81f7);
+  color: var(--dsh-accent, #2f81f7);
+}
+
+.editorList {
+  display: grid;
+  gap: 10px;
+}
+
+.editorList fieldset {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+  min-width: 0;
+  border: 1px solid var(--dsh-border, #30363d);
+  border-radius: 8px;
+}
+
+.editorList label {
+  display: grid;
+  gap: 5px;
+  color: var(--dsh-fg-muted, #8b949e);
+  font-size: 11px;
+}
+
+.editorList input,
+.editorList select,
+.editorList textarea {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--dsh-border, #30363d);
+  border-radius: 6px;
+  padding: 7px;
+  background: var(--dsh-bg, #0b0f14);
+  color: var(--dsh-fg, #e6edf3);
+}
+
+.editorList textarea {
+  min-height: 84px;
+  resize: vertical;
+}
+
+.keyValues {
+  display: grid;
+  gap: 5px;
+}
+
+.keyValues > div {
+  display: grid;
+  grid-template-columns: minmax(80px, 1fr) minmax(100px, 2fr) auto;
+  gap: 5px;
+}
+
+.keyValues button {
+  border: 1px solid var(--dsh-border, #30363d);
+  border-radius: 5px;
+  background: var(--dsh-bg-soft, #161b22);
+  color: var(--dsh-fg, #e6edf3);
+}
+
+.editorList :is(input, select, textarea, button):focus-visible,
+.tabs button:focus-visible {
+  outline: 2px solid var(--dsh-focus, #2f81f7);
+  outline-offset: 2px;
+}
+
+@media (max-width: 640px) {
+  .settingsHeader,
+  .skillCard {
+    grid-template-columns: 1fr;
+    flex-direction: column;
+  }
+
+  .skillCard small {
+    text-align: left;
+  }
+}
