@@ -2,7 +2,8 @@
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import type { SettingsScope, SettingsScopeSnapshot } from '@deepseek-ai/dsh-client-runtime/client'
-import { RuntimeConfigEditor, type RuntimeConfigValue } from '../src/client/RuntimeConfigEditor.tsx'
+import { RuntimeConfigEditor } from '../src/client/RuntimeConfigEditor.tsx'
+import type { RuntimeConfigValue } from '../src/client/runtime-config-types.ts'
 
 const value: RuntimeConfigValue = {
   mcpServers: [{ serverName: 'filesystem', enabled: true, transport: 'stdio', command: 'npx', args: [], env: {}, toolCallTimeoutMs: 60_000 }],

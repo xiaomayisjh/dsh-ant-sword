@@ -1,6 +1,7 @@
 import { useEffect, useState, useSyncExternalStore } from 'react'
 import type { SnapshotStore, SettingsScope } from '@deepseek-ai/dsh-client-runtime/client'
-import { RuntimeConfigEditor, type RuntimeConfigValue } from './RuntimeConfigEditor.tsx'
+import { RuntimeConfigEditor } from './RuntimeConfigEditor.tsx'
+import type { RuntimeConfigValue } from './runtime-config-types.ts'
 import css from './RuntimeStatus.module.css'
 
 export type RuntimeAvailability = 'available' | 'missing' | 'configured' | 'disabled'

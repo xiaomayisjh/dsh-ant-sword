@@ -19,7 +19,8 @@ import type {} from '@deepseek-ai/dsh-client-ui-settings/client'
 import type {} from '@deepseek-ai/dsh-api-remotes/client'
 import { AutoGraphView, type AutoGraphActions } from './AutoGraphView.tsx'
 import { INITIAL_RUNTIME_STATUS, RuntimeStatus, type RedTeamRuntimeStatus } from './RuntimeStatus.tsx'
-import type { RuntimeConfigValue } from './RuntimeConfigEditor.tsx'
+import { RuntimeConfigScope } from './runtime-config-scope.ts'
+import type { RuntimeConfigValue } from './runtime-config-types.ts'
 import { en, zh, type AutographKey } from './locales.ts'
 
 declare module '@deepseek-ai/dsh-client-ui-slots' {
@@ -45,7 +46,9 @@ export function apply(ctx: Context): void {
   ctx.effect(() => ctx.locale.register(NS, { zh, en }), 'ui-autograph: dictionaries')
   const t = ctx.locale.bind(NS)
   const runtimeStatus = createSnapshotStore<RedTeamRuntimeStatus>(INITIAL_RUNTIME_STATUS)
-  const configScope = ctx.settingsScope.bind<RuntimeConfigValue>({ namespace: 'ant-sword-runtime' })
+  const nativeConfigScope = ctx.settingsScope.bind<RuntimeConfigValue>({ namespace: 'ant-sword-runtime' })
+  const configScope = new RuntimeConfigScope(nativeConfigScope)
+  ctx.effect(() => () => configScope.dispose(), 'ui-autograph: runtime config scope')
 
   const refreshRuntimeStatus = async (): Promise<void> => {
     const response = await fetch('/ant-sword/runtime-status', { cache: 'no-store' })

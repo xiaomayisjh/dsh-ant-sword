@@ -14,6 +14,7 @@ import { syncRedTeamPreset, syncRedTeamAutoPreset } from './preset-sync.ts'
 import { applyAutoLoop, AutoLoopConfigSchema } from './auto/index.ts'
 import type { AutoLoopConfig } from './auto/index.ts'
 import { applyRuntimeStatus } from './runtime-status.ts'
+import { applyRuntimeConfigApi } from './runtime-config-api.ts'
 import { applyInstallApi } from './installer/api.ts'
 import { DEFAULT_MCP_SERVERS, McpServerSchema } from './mcp-servers.ts'
 import { applyDynamicRuntime } from './dynamic-runtime.ts'
@@ -74,6 +75,7 @@ export function apply(ctx: Context, config: Config): void {
     serverName => runtime.mcp.probe(serverName),
     serverName => runtime.mcp.isMounted(serverName),
   )
+  applyRuntimeConfigApi(ctx, runtime.controller)
   applyInstallApi(ctx)
   applySkillApi(ctx, skillsReconciler)
   if (config.syncRedTeamPreset ?? true) {

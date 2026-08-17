@@ -1,24 +1,11 @@
 /* eslint-disable @stylistic/max-len -- compact controlled form markup stays readable as field-level JSX. */
 import { useEffect, useState, useSyncExternalStore } from 'react'
 import type { SettingsScope } from '@deepseek-ai/dsh-client-runtime/client'
-import type { McpConfig } from './mcp-config-json.ts'
 import { McpConfigEditor } from './McpConfigEditor.tsx'
+import type { RuntimeConfigValue, RuntimeRuleConfig } from './runtime-config-types.ts'
 import css from './RuntimeStatus.module.css'
 
-interface RuleConfig {
-  id: string
-  title: string
-  enabled: boolean
-  order: number
-  placement: 'before-persona' | 'after-persona' | 'before-tools' | 'after-tools'
-  content: string
-}
-
-export interface RuntimeConfigValue {
-  mcpServers: McpConfig[]
-  disabledSkills: string[]
-  rules: RuleConfig[]
-}
+type RuleConfig = RuntimeRuleConfig
 
 interface Props {
   configScope: SettingsScope<RuntimeConfigValue>

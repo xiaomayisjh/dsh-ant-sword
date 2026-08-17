@@ -27,7 +27,7 @@ dsh web
 可通过参数指定 profile 或 Release tag：
 
 ```powershell
-& ([scriptblock]::Create((irm 'https://raw.githubusercontent.com/xiaomayisjh/dsh-ant-sword/main/install-ant-sword.ps1'))) -Profile web -Tag v0.1.0-rc.13
+& ([scriptblock]::Create((irm 'https://raw.githubusercontent.com/xiaomayisjh/dsh-ant-sword/main/install-ant-sword.ps1'))) -Profile web -Tag v0.1.0-rc.14
 ```
 
 ## 从本地 Release 安装
@@ -60,7 +60,7 @@ manifest 记录每项资产的包名、版本、文件名与 SHA-256。安装器
 | 独立 Rewind | 单独的 `@deepseek-ai/dsh-ant-sword-harness/rewind` Cordis 行，仅依赖 sessions、storageDomain、commands、tools |
 | 红队 agent 预设 | `red-team` 与 `red-team-auto` 两个预设 |
 | 自主 loop | `src/auto/` blackboard（Fact/Intent/Hint/Goal 图）驱动 |
-| MCP 管理 | Codex 风格服务器列表与详情；可视化/JSON 双模式，支持直接粘贴常见 MCP JSON 格式 |
+| MCP 管理 | Codex 风格服务器列表与详情；可视化/JSON 双模式，支持直接粘贴常见 MCP JSON 格式；基础 DSH 未暴露私有 settings namespace 时自动使用仅限 loopback、仍复用同一 Host settings 事务的兼容桥接 |
 | 多智能体团队 | `@nanmicoder/dsh-agent-teams` |
 | 插件市场 | `dshmarket` |
 
@@ -83,7 +83,7 @@ Actions 中手动运行 **release** workflow；tag 默认取 `v<package.json ver
 本地 dry-run 会保留可直接安装的 Release 目录，不上传 GitHub：
 
 ```powershell
-node scripts/release-github.mjs --repo xiaomayisjh/dsh-ant-sword --tag v0.1.0-rc.13 --output .release\v0.1.0-rc.13 --dry-run
+node scripts/release-github.mjs --repo xiaomayisjh/dsh-ant-sword --tag v0.1.0-rc.14 --output .release\v0.1.0-rc.14 --dry-run
 ```
 
 正式上传去掉 `--dry-run`。同一 tag 重跑会替换同名资产。

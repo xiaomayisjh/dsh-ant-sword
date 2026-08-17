@@ -1,6 +1,7 @@
 import { createSnapshotStore } from '@deepseek-ai/dsh-client-runtime/client';
 import { AutoGraphView } from "./AutoGraphView.js";
 import { INITIAL_RUNTIME_STATUS, RuntimeStatus } from "./RuntimeStatus.js";
+import { RuntimeConfigScope } from "./runtime-config-scope.js";
 import { en, zh } from "./locales.js";
 /** Dictionary namespace owned by this plugin. */
 const NS = 'autograph';
@@ -16,7 +17,9 @@ export function apply(ctx) {
     ctx.effect(() => ctx.locale.register(NS, { zh, en }), 'ui-autograph: dictionaries');
     const t = ctx.locale.bind(NS);
     const runtimeStatus = createSnapshotStore(INITIAL_RUNTIME_STATUS);
-    const configScope = ctx.settingsScope.bind({ namespace: 'ant-sword-runtime' });
+    const nativeConfigScope = ctx.settingsScope.bind({ namespace: 'ant-sword-runtime' });
+    const configScope = new RuntimeConfigScope(nativeConfigScope);
+    ctx.effect(() => () => configScope.dispose(), 'ui-autograph: runtime config scope');
     const refreshRuntimeStatus = async () => {
         const response = await fetch('/ant-sword/runtime-status', { cache: 'no-store' });
         if (!response.ok)

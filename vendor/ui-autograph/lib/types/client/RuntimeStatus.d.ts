@@ -1,5 +1,5 @@
 import type { SnapshotStore, SettingsScope } from '@deepseek-ai/dsh-client-runtime/client';
-import { type RuntimeConfigValue } from './RuntimeConfigEditor.tsx';
+import type { RuntimeConfigValue } from './runtime-config-types.ts';
 export type RuntimeAvailability = 'available' | 'missing' | 'configured' | 'disabled';
 export interface McpRuntimeStatus {
     readonly serverName: string;

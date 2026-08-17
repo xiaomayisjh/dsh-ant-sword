@@ -28,11 +28,11 @@ window.__ModuleLoader__.load({
 		}) : target, mod));
 		//#endregion
 		let _deepseek_ai_dsh_client_runtime_client = require("@deepseek-ai/dsh-client-runtime/client");
-		let react_jsx_runtime = require("react/jsx-runtime");
 		let react = require("react");
 		react = __toESM(react, 1);
+		let react_jsx_runtime = require("react/jsx-runtime");
 		require("react-dom");
-		//#region ../../../node_modules/.pnpm/classcat@5.0.5/node_modules/classcat/index.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/classcat@5.0.5/node_modules/classcat/index.js
 		function cc(names) {
 			if (typeof names === "string" || typeof names === "number") return "" + names;
 			let out = "";
@@ -42,7 +42,7 @@ window.__ModuleLoader__.load({
 			return out;
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-dispatch@3.0.1/node_modules/d3-dispatch/src/dispatch.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-dispatch@3.0.1/node_modules/d3-dispatch/src/dispatch.js
 		var noop = { value: () => {} };
 		function dispatch() {
 			for (var i = 0, n = arguments.length, _ = {}, t; i < n; ++i) {
@@ -108,7 +108,7 @@ window.__ModuleLoader__.load({
 			return type;
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/matcher.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/matcher.js
 		function matcher_default(selector) {
 			return function() {
 				return this.matches(selector);
@@ -127,7 +127,7 @@ window.__ModuleLoader__.load({
 			xmlns: "http://www.w3.org/2000/xmlns/"
 		};
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/namespace.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/namespace.js
 		function namespace_default(name) {
 			var prefix = name += "", i = prefix.indexOf(":");
 			if (i >= 0 && (prefix = name.slice(0, i)) !== "xmlns") name = name.slice(i + 1);
@@ -137,14 +137,14 @@ window.__ModuleLoader__.load({
 			} : name;
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/sourceEvent.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/sourceEvent.js
 		function sourceEvent_default(event) {
 			let sourceEvent;
 			while (sourceEvent = event.sourceEvent) event = sourceEvent;
 			return event;
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/pointer.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/pointer.js
 		function pointer_default(event, node) {
 			event = sourceEvent_default(event);
 			if (node === void 0) node = event.currentTarget;
@@ -164,7 +164,7 @@ window.__ModuleLoader__.load({
 			return [event.pageX, event.pageY];
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selector.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selector.js
 		function none() {}
 		function selector_default(selector) {
 			return selector == null ? none : function() {
@@ -172,7 +172,7 @@ window.__ModuleLoader__.load({
 			};
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/select.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/select.js
 		function select_default$2(select) {
 			if (typeof select !== "function") select = selector_default(select);
 			for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) for (var group = groups[j], n = group.length, subgroup = subgroups[j] = new Array(n), node, subnode, i = 0; i < n; ++i) if ((node = group[i]) && (subnode = select.call(node, node.__data__, i, group))) {
@@ -182,12 +182,12 @@ window.__ModuleLoader__.load({
 			return new Selection$1(subgroups, this._parents);
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/array.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/array.js
 		function array(x) {
 			return x == null ? [] : Array.isArray(x) ? x : Array.from(x);
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selectorAll.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selectorAll.js
 		function empty() {
 			return [];
 		}
@@ -197,7 +197,7 @@ window.__ModuleLoader__.load({
 			};
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/selectAll.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/selectAll.js
 		function arrayAll(select) {
 			return function() {
 				return array(select.apply(this, arguments));
@@ -213,7 +213,7 @@ window.__ModuleLoader__.load({
 			return new Selection$1(subgroups, parents);
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/selectChild.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/selectChild.js
 		var find = Array.prototype.find;
 		function childFind(match) {
 			return function() {
@@ -227,7 +227,7 @@ window.__ModuleLoader__.load({
 			return this.select(match == null ? childFirst : childFind(typeof match === "function" ? match : childMatcher(match)));
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/selectChildren.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/selectChildren.js
 		var filter = Array.prototype.filter;
 		function children() {
 			return Array.from(this.children);
@@ -241,19 +241,19 @@ window.__ModuleLoader__.load({
 			return this.selectAll(match == null ? children : childrenFilter(typeof match === "function" ? match : childMatcher(match)));
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/filter.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/filter.js
 		function filter_default$1(match) {
 			if (typeof match !== "function") match = matcher_default(match);
 			for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) for (var group = groups[j], n = group.length, subgroup = subgroups[j] = [], node, i = 0; i < n; ++i) if ((node = group[i]) && match.call(node, node.__data__, i, group)) subgroup.push(node);
 			return new Selection$1(subgroups, this._parents);
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/sparse.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/sparse.js
 		function sparse_default(update) {
 			return new Array(update.length);
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/enter.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/enter.js
 		function enter_default() {
 			return new Selection$1(this._enter || this._groups.map(sparse_default), this._parents);
 		}
@@ -280,14 +280,14 @@ window.__ModuleLoader__.load({
 			}
 		};
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/constant.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/constant.js
 		function constant_default$3(x) {
 			return function() {
 				return x;
 			};
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/data.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/data.js
 		function bindIndex(parent, group, enter, update, exit, data) {
 			var i = 0, node, groupLength = group.length, dataLength = data.length;
 			for (; i < dataLength; ++i) if (node = group[i]) {
@@ -338,12 +338,12 @@ window.__ModuleLoader__.load({
 			return typeof data === "object" && "length" in data ? data : Array.from(data);
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/exit.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/exit.js
 		function exit_default() {
 			return new Selection$1(this._exit || this._groups.map(sparse_default), this._parents);
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/join.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/join.js
 		function join_default(onenter, onupdate, onexit) {
 			var enter = this.enter(), update = this, exit = this.exit();
 			if (typeof onenter === "function") {
@@ -359,7 +359,7 @@ window.__ModuleLoader__.load({
 			return enter && update ? enter.merge(update).order() : update;
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/merge.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/merge.js
 		function merge_default$1(context) {
 			var selection = context.selection ? context.selection() : context;
 			for (var groups0 = this._groups, groups1 = selection._groups, m0 = groups0.length, m1 = groups1.length, m = Math.min(m0, m1), merges = new Array(m0), j = 0; j < m; ++j) for (var group0 = groups0[j], group1 = groups1[j], n = group0.length, merge = merges[j] = new Array(n), node, i = 0; i < n; ++i) if (node = group0[i] || group1[i]) merge[i] = node;
@@ -367,7 +367,7 @@ window.__ModuleLoader__.load({
 			return new Selection$1(merges, this._parents);
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/order.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/order.js
 		function order_default() {
 			for (var groups = this._groups, j = -1, m = groups.length; ++j < m;) for (var group = groups[j], i = group.length - 1, next = group[i], node; --i >= 0;) if (node = group[i]) {
 				if (next && node.compareDocumentPosition(next) ^ 4) next.parentNode.insertBefore(node, next);
@@ -376,7 +376,7 @@ window.__ModuleLoader__.load({
 			return this;
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/sort.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/sort.js
 		function sort_default(compare) {
 			if (!compare) compare = ascending;
 			function compareNode(a, b) {
@@ -392,7 +392,7 @@ window.__ModuleLoader__.load({
 			return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/call.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/call.js
 		function call_default() {
 			var callback = arguments[0];
 			arguments[0] = this;
@@ -400,12 +400,12 @@ window.__ModuleLoader__.load({
 			return this;
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/nodes.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/nodes.js
 		function nodes_default() {
 			return Array.from(this);
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/node.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/node.js
 		function node_default() {
 			for (var groups = this._groups, j = 0, m = groups.length; j < m; ++j) for (var group = groups[j], i = 0, n = group.length; i < n; ++i) {
 				var node = group[i];
@@ -414,25 +414,25 @@ window.__ModuleLoader__.load({
 			return null;
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/size.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/size.js
 		function size_default() {
 			let size = 0;
 			for (const node of this) ++size;
 			return size;
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/empty.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/empty.js
 		function empty_default() {
 			return !this.node();
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/each.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/each.js
 		function each_default(callback) {
 			for (var groups = this._groups, j = 0, m = groups.length; j < m; ++j) for (var group = groups[j], i = 0, n = group.length, node; i < n; ++i) if (node = group[i]) callback.call(node, node.__data__, i, group);
 			return this;
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/attr.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/attr.js
 		function attrRemove$1(name) {
 			return function() {
 				this.removeAttribute(name);
@@ -476,12 +476,12 @@ window.__ModuleLoader__.load({
 			return this.each((value == null ? fullname.local ? attrRemoveNS$1 : attrRemove$1 : typeof value === "function" ? fullname.local ? attrFunctionNS$1 : attrFunction$1 : fullname.local ? attrConstantNS$1 : attrConstant$1)(fullname, value));
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/window.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/window.js
 		function window_default(node) {
 			return node.ownerDocument && node.ownerDocument.defaultView || node.document && node || node.defaultView;
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/style.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/style.js
 		function styleRemove$1(name) {
 			return function() {
 				this.style.removeProperty(name);
@@ -506,7 +506,7 @@ window.__ModuleLoader__.load({
 			return node.style.getPropertyValue(name) || window_default(node).getComputedStyle(node, null).getPropertyValue(name);
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/property.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/property.js
 		function propertyRemove(name) {
 			return function() {
 				delete this[name];
@@ -528,7 +528,7 @@ window.__ModuleLoader__.load({
 			return arguments.length > 1 ? this.each((value == null ? propertyRemove : typeof value === "function" ? propertyFunction : propertyConstant)(name, value)) : this.node()[name];
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/classed.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/classed.js
 		function classArray(string) {
 			return string.trim().split(/^|\s+/);
 		}
@@ -590,7 +590,7 @@ window.__ModuleLoader__.load({
 			return this.each((typeof value === "function" ? classedFunction : value ? classedTrue : classedFalse)(names, value));
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/text.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/text.js
 		function textRemove() {
 			this.textContent = "";
 		}
@@ -609,7 +609,7 @@ window.__ModuleLoader__.load({
 			return arguments.length ? this.each(value == null ? textRemove : (typeof value === "function" ? textFunction$1 : textConstant$1)(value)) : this.node().textContent;
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/html.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/html.js
 		function htmlRemove() {
 			this.innerHTML = "";
 		}
@@ -628,7 +628,7 @@ window.__ModuleLoader__.load({
 			return arguments.length ? this.each(value == null ? htmlRemove : (typeof value === "function" ? htmlFunction : htmlConstant)(value)) : this.node().innerHTML;
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/raise.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/raise.js
 		function raise() {
 			if (this.nextSibling) this.parentNode.appendChild(this);
 		}
@@ -636,7 +636,7 @@ window.__ModuleLoader__.load({
 			return this.each(raise);
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/lower.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/lower.js
 		function lower() {
 			if (this.previousSibling) this.parentNode.insertBefore(this, this.parentNode.firstChild);
 		}
@@ -644,7 +644,7 @@ window.__ModuleLoader__.load({
 			return this.each(lower);
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/creator.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/creator.js
 		function creatorInherit(name) {
 			return function() {
 				var document = this.ownerDocument, uri = this.namespaceURI;
@@ -661,7 +661,7 @@ window.__ModuleLoader__.load({
 			return (fullname.local ? creatorFixed : creatorInherit)(fullname);
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/append.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/append.js
 		function append_default(name) {
 			var create = typeof name === "function" ? name : creator_default(name);
 			return this.select(function() {
@@ -669,7 +669,7 @@ window.__ModuleLoader__.load({
 			});
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/insert.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/insert.js
 		function constantNull() {
 			return null;
 		}
@@ -680,7 +680,7 @@ window.__ModuleLoader__.load({
 			});
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/remove.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/remove.js
 		function remove() {
 			var parent = this.parentNode;
 			if (parent) parent.removeChild(this);
@@ -689,7 +689,7 @@ window.__ModuleLoader__.load({
 			return this.each(remove);
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/clone.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/clone.js
 		function selection_cloneShallow() {
 			var clone = this.cloneNode(false), parent = this.parentNode;
 			return parent ? parent.insertBefore(clone, this.nextSibling) : clone;
@@ -702,12 +702,12 @@ window.__ModuleLoader__.load({
 			return this.select(deep ? selection_cloneDeep : selection_cloneShallow);
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/datum.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/datum.js
 		function datum_default(value) {
 			return arguments.length ? this.property("__data__", value) : this.node().__data__;
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/on.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/on.js
 		function contextListener(listener) {
 			return function(event) {
 				listener.call(this, event, this.__data__);
@@ -770,7 +770,7 @@ window.__ModuleLoader__.load({
 			return this;
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/dispatch.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/dispatch.js
 		function dispatchEvent(node, type, params) {
 			var window = window_default(node), event = window.CustomEvent;
 			if (typeof event === "function") event = new event(type, params);
@@ -795,12 +795,12 @@ window.__ModuleLoader__.load({
 			return this.each((typeof params === "function" ? dispatchFunction : dispatchConstant)(type, params));
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/iterator.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/iterator.js
 		function* iterator_default() {
 			for (var groups = this._groups, j = 0, m = groups.length; j < m; ++j) for (var group = groups[j], i = 0, n = group.length, node; i < n; ++i) if (node = group[i]) yield node;
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/index.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/selection/index.js
 		var root = [null];
 		function Selection$1(groups, parents) {
 			this._groups = groups;
@@ -851,12 +851,12 @@ window.__ModuleLoader__.load({
 			[Symbol.iterator]: iterator_default
 		};
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/select.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/select.js
 		function select_default$1(selector) {
 			return typeof selector === "string" ? new Selection$1([[document.querySelector(selector)]], [document.documentElement]) : new Selection$1([[selector]], root);
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-drag@3.0.0/node_modules/d3-drag/src/noevent.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-drag@3.0.0/node_modules/d3-drag/src/noevent.js
 		const nonpassive = { passive: false };
 		const nonpassivecapture = {
 			capture: true,
@@ -870,7 +870,7 @@ window.__ModuleLoader__.load({
 			event.stopImmediatePropagation();
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-drag@3.0.0/node_modules/d3-drag/src/nodrag.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-drag@3.0.0/node_modules/d3-drag/src/nodrag.js
 		function nodrag_default(view) {
 			var root = view.document.documentElement, selection = select_default$1(view).on("dragstart.drag", noevent_default$1, nonpassivecapture);
 			if ("onselectstart" in root) selection.on("selectstart.drag", noevent_default$1, nonpassivecapture);
@@ -894,10 +894,10 @@ window.__ModuleLoader__.load({
 			}
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-drag@3.0.0/node_modules/d3-drag/src/constant.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-drag@3.0.0/node_modules/d3-drag/src/constant.js
 		var constant_default$2 = (x) => () => x;
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-drag@3.0.0/node_modules/d3-drag/src/event.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-drag@3.0.0/node_modules/d3-drag/src/event.js
 		function DragEvent(type, { sourceEvent, subject, target, identifier, active, x, y, dx, dy, dispatch }) {
 			Object.defineProperties(this, {
 				type: {
@@ -958,7 +958,7 @@ window.__ModuleLoader__.load({
 			return value === this._ ? this : value;
 		};
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-drag@3.0.0/node_modules/d3-drag/src/drag.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-drag@3.0.0/node_modules/d3-drag/src/drag.js
 		function defaultFilter$1(event) {
 			return !event.ctrlKey && !event.button;
 		}
@@ -1093,7 +1093,7 @@ window.__ModuleLoader__.load({
 			return drag;
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-color@3.1.0/node_modules/d3-color/src/define.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-color@3.1.0/node_modules/d3-color/src/define.js
 		function define_default(constructor, factory, prototype) {
 			constructor.prototype = factory.prototype = prototype;
 			prototype.constructor = constructor;
@@ -1104,7 +1104,7 @@ window.__ModuleLoader__.load({
 			return prototype;
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-color@3.1.0/node_modules/d3-color/src/color.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-color@3.1.0/node_modules/d3-color/src/color.js
 		function Color() {}
 		var darker = .7;
 		var brighter = 1 / darker;
@@ -1422,10 +1422,10 @@ window.__ModuleLoader__.load({
 			return (h < 60 ? m1 + (m2 - m1) * h / 60 : h < 180 ? m2 : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60 : m1) * 255;
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-interpolate@3.0.1/node_modules/d3-interpolate/src/constant.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-interpolate@3.0.1/node_modules/d3-interpolate/src/constant.js
 		var constant_default$1 = (x) => () => x;
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-interpolate@3.0.1/node_modules/d3-interpolate/src/color.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-interpolate@3.0.1/node_modules/d3-interpolate/src/color.js
 		function linear(a, d) {
 			return function(t) {
 				return a + t * d;
@@ -1446,7 +1446,7 @@ window.__ModuleLoader__.load({
 			return d ? linear(a, d) : constant_default$1(isNaN(a) ? b : a);
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-interpolate@3.0.1/node_modules/d3-interpolate/src/rgb.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-interpolate@3.0.1/node_modules/d3-interpolate/src/rgb.js
 		var rgb_default = (function rgbGamma(y) {
 			var color = gamma(y);
 			function rgb$1(start, end) {
@@ -1463,7 +1463,7 @@ window.__ModuleLoader__.load({
 			return rgb$1;
 		})(1);
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-interpolate@3.0.1/node_modules/d3-interpolate/src/numberArray.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-interpolate@3.0.1/node_modules/d3-interpolate/src/numberArray.js
 		function numberArray_default(a, b) {
 			if (!b) b = [];
 			var n = a ? Math.min(b.length, a.length) : 0, c = b.slice(), i;
@@ -1476,7 +1476,7 @@ window.__ModuleLoader__.load({
 			return ArrayBuffer.isView(x) && !(x instanceof DataView);
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-interpolate@3.0.1/node_modules/d3-interpolate/src/array.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-interpolate@3.0.1/node_modules/d3-interpolate/src/array.js
 		function genericArray(a, b) {
 			var nb = b ? b.length : 0, na = a ? Math.min(nb, a.length) : 0, x = new Array(na), c = new Array(nb), i;
 			for (i = 0; i < na; ++i) x[i] = value_default(a[i], b[i]);
@@ -1487,7 +1487,7 @@ window.__ModuleLoader__.load({
 			};
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-interpolate@3.0.1/node_modules/d3-interpolate/src/date.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-interpolate@3.0.1/node_modules/d3-interpolate/src/date.js
 		function date_default(a, b) {
 			var d = /* @__PURE__ */ new Date();
 			return a = +a, b = +b, function(t) {
@@ -1495,14 +1495,14 @@ window.__ModuleLoader__.load({
 			};
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-interpolate@3.0.1/node_modules/d3-interpolate/src/number.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-interpolate@3.0.1/node_modules/d3-interpolate/src/number.js
 		function number_default(a, b) {
 			return a = +a, b = +b, function(t) {
 				return a * (1 - t) + b * t;
 			};
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-interpolate@3.0.1/node_modules/d3-interpolate/src/object.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-interpolate@3.0.1/node_modules/d3-interpolate/src/object.js
 		function object_default(a, b) {
 			var i = {}, c = {}, k;
 			if (a === null || typeof a !== "object") a = {};
@@ -1515,7 +1515,7 @@ window.__ModuleLoader__.load({
 			};
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-interpolate@3.0.1/node_modules/d3-interpolate/src/string.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-interpolate@3.0.1/node_modules/d3-interpolate/src/string.js
 		var reA = /[-+]?(?:\d+\.?\d*|\.?\d+)(?:[eE][-+]?\d+)?/g, reB = new RegExp(reA.source, "g");
 		function zero(b) {
 			return function() {
@@ -1558,13 +1558,13 @@ window.__ModuleLoader__.load({
 			});
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-interpolate@3.0.1/node_modules/d3-interpolate/src/value.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-interpolate@3.0.1/node_modules/d3-interpolate/src/value.js
 		function value_default(a, b) {
 			var t = typeof b, c;
 			return b == null || t === "boolean" ? constant_default$1(b) : (t === "number" ? number_default : t === "string" ? (c = color(b)) ? (b = c, rgb_default) : string_default : b instanceof color ? rgb_default : b instanceof Date ? date_default : isNumberArray(b) ? numberArray_default : Array.isArray(b) ? genericArray : typeof b.valueOf !== "function" && typeof b.toString !== "function" || isNaN(b) ? object_default : number_default)(a, b);
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-interpolate@3.0.1/node_modules/d3-interpolate/src/transform/decompose.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-interpolate@3.0.1/node_modules/d3-interpolate/src/transform/decompose.js
 		var degrees = 180 / Math.PI;
 		var identity$1 = {
 			translateX: 0,
@@ -1590,7 +1590,7 @@ window.__ModuleLoader__.load({
 			};
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-interpolate@3.0.1/node_modules/d3-interpolate/src/transform/parse.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-interpolate@3.0.1/node_modules/d3-interpolate/src/transform/parse.js
 		var svgNode;
 		function parseCss(value) {
 			const m = new (typeof DOMMatrix === "function" ? DOMMatrix : WebKitCSSMatrix)(value + "");
@@ -1605,7 +1605,7 @@ window.__ModuleLoader__.load({
 			return decompose_default(value.a, value.b, value.c, value.d, value.e, value.f);
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-interpolate@3.0.1/node_modules/d3-interpolate/src/transform/index.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-interpolate@3.0.1/node_modules/d3-interpolate/src/transform/index.js
 		function interpolateTransform(parse, pxComma, pxParen, degParen) {
 			function pop(s) {
 				return s.length ? s.pop() + " " : "";
@@ -1669,7 +1669,7 @@ window.__ModuleLoader__.load({
 		var interpolateTransformCss = interpolateTransform(parseCss, "px, ", "px)", "deg)");
 		var interpolateTransformSvg = interpolateTransform(parseSvg, ", ", ")", ")");
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-interpolate@3.0.1/node_modules/d3-interpolate/src/zoom.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-interpolate@3.0.1/node_modules/d3-interpolate/src/zoom.js
 		var epsilon2 = 1e-12;
 		function cosh(x) {
 			return ((x = Math.exp(x)) + 1 / x) / 2;
@@ -1714,7 +1714,7 @@ window.__ModuleLoader__.load({
 			return zoom;
 		})(Math.SQRT2, 2, 4);
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-timer@3.0.1/node_modules/d3-timer/src/timer.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-timer@3.0.1/node_modules/d3-timer/src/timer.js
 		var frame = 0, timeout = 0, interval = 0, pokeDelay = 1e3, taskHead, taskTail, clockLast = 0, clockNow = 0, clockSkew = 0, clock = typeof performance === "object" && performance.now ? performance : Date, setFrame = typeof window === "object" && window.requestAnimationFrame ? window.requestAnimationFrame.bind(window) : function(f) {
 			setTimeout(f, 17);
 		};
@@ -1803,7 +1803,7 @@ window.__ModuleLoader__.load({
 			}
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-timer@3.0.1/node_modules/d3-timer/src/timeout.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-timer@3.0.1/node_modules/d3-timer/src/timeout.js
 		function timeout_default(callback, delay, time) {
 			var t = new Timer();
 			delay = delay == null ? 0 : +delay;
@@ -1814,7 +1814,7 @@ window.__ModuleLoader__.load({
 			return t;
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/schedule.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/schedule.js
 		var emptyOn = dispatch("start", "end", "cancel", "interrupt");
 		var emptyTween = [];
 		function schedule_default(node, name, id, index, group, timing) {
@@ -1910,7 +1910,7 @@ window.__ModuleLoader__.load({
 			}
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/interrupt.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/interrupt.js
 		function interrupt_default$1(node, name) {
 			var schedules = node.__transition, schedule, active, empty = true, i;
 			if (!schedules) return;
@@ -1929,14 +1929,14 @@ window.__ModuleLoader__.load({
 			if (empty) delete node.__transition;
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/selection/interrupt.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/selection/interrupt.js
 		function interrupt_default(name) {
 			return this.each(function() {
 				interrupt_default$1(this, name);
 			});
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/tween.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/tween.js
 		function tweenRemove(id, name) {
 			var tween0, tween1;
 			return function() {
@@ -1992,13 +1992,13 @@ window.__ModuleLoader__.load({
 			};
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/interpolate.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/interpolate.js
 		function interpolate_default(a, b) {
 			var c;
 			return (typeof b === "number" ? number_default : b instanceof color ? rgb_default : (c = color(b)) ? (b = c, rgb_default) : string_default)(a, b);
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/attr.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/attr.js
 		function attrRemove(name) {
 			return function() {
 				this.removeAttribute(name);
@@ -2048,7 +2048,7 @@ window.__ModuleLoader__.load({
 			return this.attrTween(name, typeof value === "function" ? (fullname.local ? attrFunctionNS : attrFunction)(fullname, i, tweenValue(this, "attr." + name, value)) : value == null ? (fullname.local ? attrRemoveNS : attrRemove)(fullname) : (fullname.local ? attrConstantNS : attrConstant)(fullname, i, value));
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/attrTween.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/attrTween.js
 		function attrInterpolate(name, i) {
 			return function(t) {
 				this.setAttribute(name, i.call(this, t));
@@ -2088,7 +2088,7 @@ window.__ModuleLoader__.load({
 			return this.tween(key, (fullname.local ? attrTweenNS : attrTween)(fullname, value));
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/delay.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/delay.js
 		function delayFunction(id, value) {
 			return function() {
 				init(this, id).delay = +value.apply(this, arguments);
@@ -2104,7 +2104,7 @@ window.__ModuleLoader__.load({
 			return arguments.length ? this.each((typeof value === "function" ? delayFunction : delayConstant)(id, value)) : get(this.node(), id).delay;
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/duration.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/duration.js
 		function durationFunction(id, value) {
 			return function() {
 				set(this, id).duration = +value.apply(this, arguments);
@@ -2120,7 +2120,7 @@ window.__ModuleLoader__.load({
 			return arguments.length ? this.each((typeof value === "function" ? durationFunction : durationConstant)(id, value)) : get(this.node(), id).duration;
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/ease.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/ease.js
 		function easeConstant(id, value) {
 			if (typeof value !== "function") throw new Error();
 			return function() {
@@ -2132,7 +2132,7 @@ window.__ModuleLoader__.load({
 			return arguments.length ? this.each(easeConstant(id, value)) : get(this.node(), id).ease;
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/easeVarying.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/easeVarying.js
 		function easeVarying(id, value) {
 			return function() {
 				var v = value.apply(this, arguments);
@@ -2145,14 +2145,14 @@ window.__ModuleLoader__.load({
 			return this.each(easeVarying(this._id, value));
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/filter.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/filter.js
 		function filter_default(match) {
 			if (typeof match !== "function") match = matcher_default(match);
 			for (var groups = this._groups, m = groups.length, subgroups = new Array(m), j = 0; j < m; ++j) for (var group = groups[j], n = group.length, subgroup = subgroups[j] = [], node, i = 0; i < n; ++i) if ((node = group[i]) && match.call(node, node.__data__, i, group)) subgroup.push(node);
 			return new Transition(subgroups, this._parents, this._name, this._id);
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/merge.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/merge.js
 		function merge_default(transition) {
 			if (transition._id !== this._id) throw new Error();
 			for (var groups0 = this._groups, groups1 = transition._groups, m0 = groups0.length, m1 = groups1.length, m = Math.min(m0, m1), merges = new Array(m0), j = 0; j < m; ++j) for (var group0 = groups0[j], group1 = groups1[j], n = group0.length, merge = merges[j] = new Array(n), node, i = 0; i < n; ++i) if (node = group0[i] || group1[i]) merge[i] = node;
@@ -2160,7 +2160,7 @@ window.__ModuleLoader__.load({
 			return new Transition(merges, this._parents, this._name, this._id);
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/on.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/on.js
 		function start(name) {
 			return (name + "").trim().split(/^|\s+/).every(function(t) {
 				var i = t.indexOf(".");
@@ -2181,7 +2181,7 @@ window.__ModuleLoader__.load({
 			return arguments.length < 2 ? get(this.node(), id).on.on(name) : this.each(onFunction(id, name, listener));
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/remove.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/remove.js
 		function removeFunction(id) {
 			return function() {
 				var parent = this.parentNode;
@@ -2193,7 +2193,7 @@ window.__ModuleLoader__.load({
 			return this.on("end.remove", removeFunction(this._id));
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/select.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/select.js
 		function select_default(select) {
 			var name = this._name, id = this._id;
 			if (typeof select !== "function") select = selector_default(select);
@@ -2205,7 +2205,7 @@ window.__ModuleLoader__.load({
 			return new Transition(subgroups, this._parents, name, id);
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/selectAll.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/selectAll.js
 		function selectAll_default(select) {
 			var name = this._name, id = this._id;
 			if (typeof select !== "function") select = selectorAll_default(select);
@@ -2217,13 +2217,13 @@ window.__ModuleLoader__.load({
 			return new Transition(subgroups, parents, name, id);
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/selection.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/selection.js
 		var Selection = selection.prototype.constructor;
 		function selection_default() {
 			return new Selection(this._groups, this._parents);
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/style.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/style.js
 		function styleNull(name, interpolate) {
 			var string00, string10, interpolate0;
 			return function() {
@@ -2264,7 +2264,7 @@ window.__ModuleLoader__.load({
 			return value == null ? this.styleTween(name, styleNull(name, i)).on("end.style." + name, styleRemove(name)) : typeof value === "function" ? this.styleTween(name, styleFunction(name, i, tweenValue(this, "style." + name, value))).each(styleMaybeRemove(this._id, name)) : this.styleTween(name, styleConstant(name, i, value), priority).on("end.style." + name, null);
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/styleTween.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/styleTween.js
 		function styleInterpolate(name, i, priority) {
 			return function(t) {
 				this.style.setProperty(name, i.call(this, t), priority);
@@ -2288,7 +2288,7 @@ window.__ModuleLoader__.load({
 			return this.tween(key, styleTween(name, value, priority == null ? "" : priority));
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/text.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/text.js
 		function textConstant(value) {
 			return function() {
 				this.textContent = value;
@@ -2304,7 +2304,7 @@ window.__ModuleLoader__.load({
 			return this.tween("text", typeof value === "function" ? textFunction(tweenValue(this, "text", value)) : textConstant(value == null ? "" : value + ""));
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/textTween.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/textTween.js
 		function textInterpolate(i) {
 			return function(t) {
 				this.textContent = i.call(this, t);
@@ -2328,7 +2328,7 @@ window.__ModuleLoader__.load({
 			return this.tween(key, textTween(value));
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/transition.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/transition.js
 		function transition_default$1() {
 			var name = this._name, id0 = this._id, id1 = newId();
 			for (var groups = this._groups, m = groups.length, j = 0; j < m; ++j) for (var group = groups[j], n = group.length, node, i = 0; i < n; ++i) if (node = group[i]) {
@@ -2343,7 +2343,7 @@ window.__ModuleLoader__.load({
 			return new Transition(groups, this._parents, name, id1);
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/end.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/end.js
 		function end_default() {
 			var on0, on1, that = this, id = that._id, size = that.size();
 			return new Promise(function(resolve, reject) {
@@ -2364,7 +2364,7 @@ window.__ModuleLoader__.load({
 			});
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/index.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/index.js
 		var id = 0;
 		function Transition(groups, parents, name, id) {
 			this._groups = groups;
@@ -2412,12 +2412,12 @@ window.__ModuleLoader__.load({
 			[Symbol.iterator]: selection_prototype[Symbol.iterator]
 		};
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-ease@3.0.1/node_modules/d3-ease/src/cubic.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-ease@3.0.1/node_modules/d3-ease/src/cubic.js
 		function cubicInOut(t) {
 			return ((t *= 2) <= 1 ? t * t * t : (t -= 2) * t * t + 2) / 2;
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/selection/transition.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/selection/transition.js
 		var defaultTiming = {
 			time: null,
 			delay: 0,
@@ -2437,14 +2437,14 @@ window.__ModuleLoader__.load({
 			return new Transition(groups, this._parents, name, id);
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/selection/index.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/selection/index.js
 		selection.prototype.interrupt = interrupt_default;
 		selection.prototype.transition = transition_default;
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-zoom@3.0.0/node_modules/d3-zoom/src/constant.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-zoom@3.0.0/node_modules/d3-zoom/src/constant.js
 		var constant_default = (x) => () => x;
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-zoom@3.0.0/node_modules/d3-zoom/src/event.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-zoom@3.0.0/node_modules/d3-zoom/src/event.js
 		function ZoomEvent(type, { sourceEvent, target, transform, dispatch }) {
 			Object.defineProperties(this, {
 				type: {
@@ -2471,7 +2471,7 @@ window.__ModuleLoader__.load({
 			});
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-zoom@3.0.0/node_modules/d3-zoom/src/transform.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-zoom@3.0.0/node_modules/d3-zoom/src/transform.js
 		function Transform(k, x, y) {
 			this.k = k;
 			this.x = x;
@@ -2520,7 +2520,7 @@ window.__ModuleLoader__.load({
 			return node.__zoom;
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-zoom@3.0.0/node_modules/d3-zoom/src/noevent.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-zoom@3.0.0/node_modules/d3-zoom/src/noevent.js
 		function nopropagation(event) {
 			event.stopImmediatePropagation();
 		}
@@ -2529,7 +2529,7 @@ window.__ModuleLoader__.load({
 			event.stopImmediatePropagation();
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/d3-zoom@3.0.0/node_modules/d3-zoom/src/zoom.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/d3-zoom@3.0.0/node_modules/d3-zoom/src/zoom.js
 		function defaultFilter(event) {
 			return (!event.ctrlKey || event.type === "wheel") && !event.button;
 		}
@@ -2828,7 +2828,7 @@ window.__ModuleLoader__.load({
 			return zoom;
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/@xyflow+system@0.0.80/node_modules/@xyflow/system/dist/esm/index.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/@xyflow+system@0.0.80/node_modules/@xyflow/system/dist/esm/index.js
 		const errorMessages = {
 			error001: (lib = "react") => `Seems like you have not used ${lib === "svelte" ? "SvelteFlowProvider" : "ReactFlowProvider"} as an ancestor. Help: https://${lib}flow.dev/error#001`,
 			error002: () => "It looks like you've created a new nodeTypes or edgeTypes object. If this wasn't on purpose please define the nodeTypes/edgeTypes outside of the component or memoize them.",
@@ -5637,7 +5637,7 @@ window.__ModuleLoader__.load({
 			};
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/use-sync-external-store@1.2.0_react@18.3.1/node_modules/use-sync-external-store/cjs/use-sync-external-store-shim.production.min.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/use-sync-external-store@1.2.0_react@18.3.1/node_modules/use-sync-external-store/cjs/use-sync-external-store-shim.production.min.js
 		/**
 		* @license React
 		* use-sync-external-store-shim.production.min.js
@@ -5693,12 +5693,12 @@ window.__ModuleLoader__.load({
 			exports.useSyncExternalStore = void 0 !== e.useSyncExternalStore ? e.useSyncExternalStore : u;
 		}));
 		//#endregion
-		//#region ../../../node_modules/.pnpm/use-sync-external-store@1.2.0_react@18.3.1/node_modules/use-sync-external-store/shim/index.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/use-sync-external-store@1.2.0_react@18.3.1/node_modules/use-sync-external-store/shim/index.js
 		var require_shim = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 			module.exports = require_use_sync_external_store_shim_production_min();
 		}));
 		//#endregion
-		//#region ../../../node_modules/.pnpm/use-sync-external-store@1.2.0_react@18.3.1/node_modules/use-sync-external-store/cjs/use-sync-external-store-shim/with-selector.production.min.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/use-sync-external-store@1.2.0_react@18.3.1/node_modules/use-sync-external-store/cjs/use-sync-external-store-shim/with-selector.production.min.js
 		/**
 		* @license React
 		* use-sync-external-store-shim/with-selector.production.min.js
@@ -5764,7 +5764,7 @@ window.__ModuleLoader__.load({
 			};
 		}));
 		//#endregion
-		//#region ../../../node_modules/.pnpm/zustand@4.4.7_@types+react@18.3.31_immer@10.2.0_react@18.3.1/node_modules/zustand/esm/vanilla.mjs
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/zustand@4.4.7_@types+react@18.3.31_immer@10.2.0_react@18.3.1/node_modules/zustand/esm/vanilla.mjs
 		var import_with_selector = /* @__PURE__ */ __toESM((/* @__PURE__ */ __commonJSMin(((exports, module) => {
 			module.exports = require_with_selector_production_min();
 		})))(), 1);
@@ -5798,7 +5798,7 @@ window.__ModuleLoader__.load({
 		};
 		const createStore$1 = (createState) => createState ? createStoreImpl(createState) : createStoreImpl;
 		//#endregion
-		//#region ../../../node_modules/.pnpm/zustand@4.4.7_@types+react@18.3.31_immer@10.2.0_react@18.3.1/node_modules/zustand/esm/traditional.mjs
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/zustand@4.4.7_@types+react@18.3.31_immer@10.2.0_react@18.3.1/node_modules/zustand/esm/traditional.mjs
 		const { useDebugValue } = react.default;
 		const { useSyncExternalStoreWithSelector } = import_with_selector.default;
 		function useStoreWithEqualityFn(api, selector = api.getState, equalityFn) {
@@ -5814,7 +5814,7 @@ window.__ModuleLoader__.load({
 		};
 		const createWithEqualityFn = (createState, defaultEqualityFn) => createState ? createWithEqualityFnImpl(createState, defaultEqualityFn) : createWithEqualityFnImpl;
 		//#endregion
-		//#region ../../../node_modules/.pnpm/zustand@4.4.7_@types+react@18.3.31_immer@10.2.0_react@18.3.1/node_modules/zustand/esm/shallow.mjs
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/zustand@4.4.7_@types+react@18.3.31_immer@10.2.0_react@18.3.1/node_modules/zustand/esm/shallow.mjs
 		function shallow$1(objA, objB) {
 			if (Object.is(objA, objB)) return true;
 			if (typeof objA !== "object" || objA === null || typeof objB !== "object" || objB === null) return false;
@@ -5834,7 +5834,7 @@ window.__ModuleLoader__.load({
 			return true;
 		}
 		//#endregion
-		//#region ../../../node_modules/.pnpm/@xyflow+react@12.11.3_@type_c8ad5535bc0eee7278731c29742ea953/node_modules/@xyflow/react/dist/esm/index.js
+		//#region ../../../../../../Desktop/ant-dsh/node_modules/.pnpm/@xyflow+react@12.11.3_@type_c8ad5535bc0eee7278731c29742ea953/node_modules/@xyflow/react/dist/esm/index.js
 		const StoreContext = (0, react.createContext)(null);
 		const Provider$1 = StoreContext.Provider;
 		const zustandErrorMessage = errorMessages["error001"]("react");
@@ -10632,8 +10632,7 @@ window.__ModuleLoader__.load({
 		}
 		(0, react.memo)(ResizeControl);
 		//#endregion
-		//#region lib/types/client/mcp-config-json.js
-		/** MCP runtime configuration JSON conversion for the WebUI editor. */
+		//#region src/client/mcp-config-json.ts
 		/** A user-actionable import failure that leaves the visual draft unchanged. */
 		var McpJsonError = class extends Error {
 			name = "McpJsonError";
@@ -10717,7 +10716,7 @@ window.__ModuleLoader__.load({
 			return JSON.stringify({ mcpServers: Object.fromEntries(servers.map(({ serverName, ...config }) => [serverName, config])) }, void 0, 2);
 		}
 		//#endregion
-		//#region lib/types/client/mcp-editor-state.js
+		//#region src/client/mcp-editor-state.ts
 		/** Create a new editable stdio server with a collision-free name. */
 		function createMcpServer(servers) {
 			const names = new Set(servers.map((server) => server.serverName));
@@ -10797,8 +10796,8 @@ window.__ModuleLoader__.load({
 			return JSON.stringify(left) === JSON.stringify(right);
 		}
 		//#endregion
-		//#region \0dsh-css:C:\Users\Admin\Desktop\ant-dsh\packages\client\ui-autograph\src\client\RuntimeStatus.module.css.mjs
-		const css$1 = ".pBCICa_rail{border-bottom:1px solid var(--dsw-alias-border-l2);background:color-mix(in srgb, var(--dsw-alias-bg-layer-2) 88%, transparent);align-items:center;gap:10px;padding:7px 16px;font-size:11px;display:flex}.pBCICa_metric{color:var(--dsw-alias-label-secondary)}.pBCICa_metric strong{color:var(--dsw-alias-label-primary)}.pBCICa_warning{color:var(--dsw-alias-state-warn-label);margin-left:auto}.pBCICa_settings{color:var(--dsw-alias-label-primary);--dsh-scrollbar-thumb:var(--dsw-alias-scrollbar-bg-l2);--dsh-scrollbar-thumb-hover:var(--dsw-alias-scrollbar-hover-l2);flex-direction:column;gap:14px;display:flex}.pBCICa_settingsHeader{justify-content:space-between;align-items:flex-start;gap:20px;display:flex}.pBCICa_settingsHeader h2{margin:0 0 6px;font-size:18px}.pBCICa_settingsHeader p,.pBCICa_card p{color:var(--dsw-alias-label-secondary);margin:0;font-size:12px;line-height:1.5}.pBCICa_summary{gap:8px;display:flex}.pBCICa_summary span,.pBCICa_cardTitle span{background:var(--dsw-alias-bg-layer-2);white-space:nowrap;border-radius:999px;padding:3px 8px;font-size:11px}.pBCICa_skillCard,.pBCICa_card{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-3);border-radius:8px;padding:12px}.pBCICa_skillCard{grid-template-columns:auto auto 1fr;align-items:center;gap:12px;display:grid}.pBCICa_skillCard small{color:var(--dsw-alias-label-secondary);text-align:right}.pBCICa_grid{grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;display:grid}.pBCICa_card{flex-direction:column;gap:9px;display:flex}.pBCICa_card[data-state=missing]{border-color:var(--dsw-alias-state-warn-primary)}.pBCICa_card[data-state=available],.pBCICa_card[data-state=configured]{border-color:var(--dsw-alias-state-success-primary)}.pBCICa_cardTitle{justify-content:space-between;align-items:center;display:flex}.pBCICa_card code,.pBCICa_card pre{background:var(--dsw-alias-bg-layer-1);color:var(--dsw-alias-label-primary);white-space:pre-wrap;word-break:break-all;border-radius:5px;margin:0;padding:7px;font-size:11px;overflow-x:auto}.pBCICa_installToolbar,.pBCICa_installActions{flex-wrap:wrap;align-items:center;gap:8px;display:flex}.pBCICa_installToolbar label{color:var(--dsw-alias-label-secondary);align-items:center;gap:8px;font-size:12px;display:flex}.pBCICa_installToolbar select,.pBCICa_installActions button{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-2);color:var(--dsw-alias-label-primary);border-radius:6px;padding:6px 9px}.pBCICa_installActions button:focus-visible,.pBCICa_installToolbar select:focus-visible{outline:2px solid var(--dsw-alias-state-business-primary);outline-offset:2px}.pBCICa_installActions button:disabled{opacity:.5}.pBCICa_installError{color:var(--dsw-alias-state-error-primary);font-size:12px}.pBCICa_installProgress{color:var(--dsw-alias-label-secondary);flex:100%;gap:4px;font-size:11px;display:grid}.pBCICa_installProgress progress{width:100%;accent-color:var(--dsw-alias-state-business-primary)}.pBCICa_configEditor{border-top:1px solid var(--dsw-alias-border-l2);gap:12px;padding-top:14px;display:grid}.pBCICa_tabs,.pBCICa_editorActions{flex-wrap:wrap;gap:8px;display:flex}.pBCICa_tabs button,.pBCICa_editorActions button,.pBCICa_editorList fieldset>button{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-2);color:var(--dsw-alias-label-primary);border-radius:6px;padding:6px 10px}.pBCICa_tabs button[data-active=true]{border-color:var(--dsw-alias-state-business-primary);color:var(--dsw-alias-state-business-primary)}.pBCICa_editorList{gap:10px;display:grid}.pBCICa_editorList fieldset{border:1px solid var(--dsw-alias-border-l2);border-radius:8px;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;min-width:0;display:grid}.pBCICa_editorList label{color:var(--dsw-alias-label-secondary);gap:5px;font-size:11px;display:grid}.pBCICa_editorList input,.pBCICa_editorList select,.pBCICa_editorList textarea{box-sizing:border-box;border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-1);width:100%;min-width:0;color:var(--dsw-alias-label-primary);border-radius:6px;padding:7px}.pBCICa_editorList textarea{resize:vertical;min-height:84px}.pBCICa_keyValues{gap:5px;display:grid}.pBCICa_keyValues>div{grid-template-columns:minmax(80px,1fr) minmax(100px,2fr) auto;gap:5px;display:grid}.pBCICa_keyValues button{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-2);color:var(--dsw-alias-label-primary);border-radius:5px}.pBCICa_editorList :is(input,select,textarea,button):focus-visible,.pBCICa_tabs button:focus-visible{outline:2px solid var(--dsw-alias-state-business-primary);outline-offset:2px}.pBCICa_card details,.pBCICa_editorList details{color:var(--dsw-alias-label-secondary);font-size:11px}.pBCICa_card details ul,.pBCICa_editorList details ul{gap:6px;max-height:220px;padding-left:18px;display:grid;overflow:auto}.pBCICa_card details li,.pBCICa_editorList details li{gap:3px;display:grid}.pBCICa_card details small,.pBCICa_editorList details small{line-height:1.4}.pBCICa_mcpEditor{gap:12px;min-width:0;display:grid}.pBCICa_mcpHeader,.pBCICa_serverRailHeader,.pBCICa_detailToolbar,.pBCICa_runtimeActions,.pBCICa_saveBar{justify-content:space-between;align-items:center;gap:10px;display:flex}.pBCICa_mcpHeader h3,.pBCICa_mcpHeader p,.pBCICa_serverRail p,.pBCICa_emptyDetail p,.pBCICa_editorMessage{margin:0}.pBCICa_mcpHeader p,.pBCICa_jsonEditor p,.pBCICa_serverRail p,.pBCICa_emptyDetail p{color:var(--dsw-alias-label-secondary);font-size:12px}.pBCICa_modeSwitch,.pBCICa_detailToolbar,.pBCICa_runtimeActions,.pBCICa_saveBar{flex-wrap:wrap;display:flex}.pBCICa_modeSwitch button,.pBCICa_serverRail button,.pBCICa_detailToolbar button,.pBCICa_runtimeActions button,.pBCICa_saveBar button,.pBCICa_emptyDetail button{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-2);color:var(--dsw-alias-label-primary);border-radius:6px;padding:7px 10px}.pBCICa_modeSwitch button[aria-pressed=true]{border-color:var(--dsw-alias-state-business-primary);color:var(--dsw-alias-state-business-primary)}.pBCICa_masterDetail{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-2);border-radius:9px;grid-template-columns:minmax(190px,28%) minmax(0,1fr);min-height:430px;display:grid;overflow:hidden}.pBCICa_serverRail{border-right:1px solid var(--dsw-alias-border-l2);align-content:start;gap:10px;padding:12px;display:grid}.pBCICa_serverRail [role=listbox]{gap:4px;display:grid}.pBCICa_serverRail [role=option]{text-align:left;gap:3px;width:100%;display:grid}.pBCICa_serverRail [role=option] small{color:var(--dsw-alias-label-secondary)}.pBCICa_serverRail [role=option][aria-selected=true]{border-color:var(--dsw-alias-state-business-primary);background:var(--dsw-alias-bg-layer-3)}.pBCICa_serverDetail{background:var(--dsw-alias-bg-layer-1);min-width:0;padding:16px}.pBCICa_detailFields,.pBCICa_jsonEditor,.pBCICa_emptyDetail{gap:12px;display:grid}.pBCICa_detailFields{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:14px}.pBCICa_detailFields label,.pBCICa_jsonEditor label{color:var(--dsw-alias-label-secondary);gap:5px;font-size:12px;display:grid}.pBCICa_detailFields input,.pBCICa_detailFields select,.pBCICa_detailFields textarea,.pBCICa_jsonEditor textarea{box-sizing:border-box;border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-2);width:100%;min-width:0;color:var(--dsw-alias-label-primary);border-radius:6px;padding:8px}.pBCICa_detailFields textarea{resize:vertical;min-height:86px}.pBCICa_jsonEditor textarea{resize:vertical;min-height:360px;font-family:monospace}.pBCICa_detailFields .pBCICa_keyValues{grid-column:1/-1;min-width:0}.pBCICa_runtimeActions{justify-content:flex-start;margin-top:14px}.pBCICa_runtimeActions span[data-state=error],.pBCICa_validation{color:var(--dsw-alias-state-error-primary)}.pBCICa_runtimeActions span[data-state=success]{color:var(--dsw-alias-state-success-primary)}.pBCICa_validation{margin:0;padding-left:20px;font-size:12px}.pBCICa_editorMessage{color:var(--dsw-alias-label-secondary);font-size:12px}.pBCICa_saveBar{border-top:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-2);justify-content:flex-end;padding:10px;position:sticky;bottom:0}.pBCICa_saveBar span{color:var(--dsw-alias-label-secondary);margin-right:auto;font-size:12px}.pBCICa_mcpEditor :is(button,input,select,textarea):focus-visible{outline:2px solid var(--dsw-alias-state-business-primary);outline-offset:2px}@media (width<=760px){.pBCICa_masterDetail,.pBCICa_detailFields{grid-template-columns:1fr}.pBCICa_serverRail{border-right:0;border-bottom:1px solid var(--dsw-alias-border-l2)}}@media (width<=640px){.pBCICa_settingsHeader,.pBCICa_skillCard{flex-direction:column;grid-template-columns:1fr}.pBCICa_skillCard small{text-align:left}}";
+		//#region \0dsh-css:C:\Users\Admin\AppData\Local\Temp\dsh-ant-sword-publish\vendor\ui-autograph\src\client\RuntimeStatus.module.css.mjs
+		const css$1 = ".Wx3G8q_rail{border-bottom:1px solid var(--dsw-alias-border-l2);background:color-mix(in srgb, var(--dsw-alias-bg-layer-2) 88%, transparent);align-items:center;gap:10px;padding:7px 16px;font-size:11px;display:flex}.Wx3G8q_metric{color:var(--dsw-alias-label-secondary)}.Wx3G8q_metric strong{color:var(--dsw-alias-label-primary)}.Wx3G8q_warning{color:var(--dsw-alias-state-warn-label);margin-left:auto}.Wx3G8q_settings{color:var(--dsw-alias-label-primary);--dsh-scrollbar-thumb:var(--dsw-alias-scrollbar-bg-l2);--dsh-scrollbar-thumb-hover:var(--dsw-alias-scrollbar-hover-l2);flex-direction:column;gap:14px;display:flex}.Wx3G8q_settingsHeader{justify-content:space-between;align-items:flex-start;gap:20px;display:flex}.Wx3G8q_settingsHeader h2{margin:0 0 6px;font-size:18px}.Wx3G8q_settingsHeader p,.Wx3G8q_card p{color:var(--dsw-alias-label-secondary);margin:0;font-size:12px;line-height:1.5}.Wx3G8q_summary{gap:8px;display:flex}.Wx3G8q_summary span,.Wx3G8q_cardTitle span{background:var(--dsw-alias-bg-layer-2);white-space:nowrap;border-radius:999px;padding:3px 8px;font-size:11px}.Wx3G8q_skillCard,.Wx3G8q_card{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-3);border-radius:8px;padding:12px}.Wx3G8q_skillCard{grid-template-columns:auto auto 1fr;align-items:center;gap:12px;display:grid}.Wx3G8q_skillCard small{color:var(--dsw-alias-label-secondary);text-align:right}.Wx3G8q_grid{grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;display:grid}.Wx3G8q_card{flex-direction:column;gap:9px;display:flex}.Wx3G8q_card[data-state=missing]{border-color:var(--dsw-alias-state-warn-primary)}.Wx3G8q_card[data-state=available],.Wx3G8q_card[data-state=configured]{border-color:var(--dsw-alias-state-success-primary)}.Wx3G8q_cardTitle{justify-content:space-between;align-items:center;display:flex}.Wx3G8q_card code,.Wx3G8q_card pre{background:var(--dsw-alias-bg-layer-1);color:var(--dsw-alias-label-primary);white-space:pre-wrap;word-break:break-all;border-radius:5px;margin:0;padding:7px;font-size:11px;overflow-x:auto}.Wx3G8q_installToolbar,.Wx3G8q_installActions{flex-wrap:wrap;align-items:center;gap:8px;display:flex}.Wx3G8q_installToolbar label{color:var(--dsw-alias-label-secondary);align-items:center;gap:8px;font-size:12px;display:flex}.Wx3G8q_installToolbar select,.Wx3G8q_installActions button{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-2);color:var(--dsw-alias-label-primary);border-radius:6px;padding:6px 9px}.Wx3G8q_installActions button:focus-visible,.Wx3G8q_installToolbar select:focus-visible{outline:2px solid var(--dsw-alias-state-business-primary);outline-offset:2px}.Wx3G8q_installActions button:disabled{opacity:.5}.Wx3G8q_installError{color:var(--dsw-alias-state-error-primary);font-size:12px}.Wx3G8q_installProgress{color:var(--dsw-alias-label-secondary);flex:100%;gap:4px;font-size:11px;display:grid}.Wx3G8q_installProgress progress{width:100%;accent-color:var(--dsw-alias-state-business-primary)}.Wx3G8q_configEditor{border-top:1px solid var(--dsw-alias-border-l2);gap:12px;padding-top:14px;display:grid}.Wx3G8q_tabs,.Wx3G8q_editorActions{flex-wrap:wrap;gap:8px;display:flex}.Wx3G8q_tabs button,.Wx3G8q_editorActions button,.Wx3G8q_editorList fieldset>button{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-2);color:var(--dsw-alias-label-primary);border-radius:6px;padding:6px 10px}.Wx3G8q_tabs button[data-active=true]{border-color:var(--dsw-alias-state-business-primary);color:var(--dsw-alias-state-business-primary)}.Wx3G8q_editorList{gap:10px;display:grid}.Wx3G8q_editorList fieldset{border:1px solid var(--dsw-alias-border-l2);border-radius:8px;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;min-width:0;display:grid}.Wx3G8q_editorList label{color:var(--dsw-alias-label-secondary);gap:5px;font-size:11px;display:grid}.Wx3G8q_editorList input,.Wx3G8q_editorList select,.Wx3G8q_editorList textarea{box-sizing:border-box;border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-1);width:100%;min-width:0;color:var(--dsw-alias-label-primary);border-radius:6px;padding:7px}.Wx3G8q_editorList textarea{resize:vertical;min-height:84px}.Wx3G8q_keyValues{gap:5px;display:grid}.Wx3G8q_keyValues>div{grid-template-columns:minmax(80px,1fr) minmax(100px,2fr) auto;gap:5px;display:grid}.Wx3G8q_keyValues button{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-2);color:var(--dsw-alias-label-primary);border-radius:5px}.Wx3G8q_editorList :is(input,select,textarea,button):focus-visible,.Wx3G8q_tabs button:focus-visible{outline:2px solid var(--dsw-alias-state-business-primary);outline-offset:2px}.Wx3G8q_card details,.Wx3G8q_editorList details{color:var(--dsw-alias-label-secondary);font-size:11px}.Wx3G8q_card details ul,.Wx3G8q_editorList details ul{gap:6px;max-height:220px;padding-left:18px;display:grid;overflow:auto}.Wx3G8q_card details li,.Wx3G8q_editorList details li{gap:3px;display:grid}.Wx3G8q_card details small,.Wx3G8q_editorList details small{line-height:1.4}.Wx3G8q_mcpEditor{gap:12px;min-width:0;display:grid}.Wx3G8q_mcpHeader,.Wx3G8q_serverRailHeader,.Wx3G8q_detailToolbar,.Wx3G8q_runtimeActions,.Wx3G8q_saveBar{justify-content:space-between;align-items:center;gap:10px;display:flex}.Wx3G8q_mcpHeader h3,.Wx3G8q_mcpHeader p,.Wx3G8q_serverRail p,.Wx3G8q_emptyDetail p,.Wx3G8q_editorMessage{margin:0}.Wx3G8q_mcpHeader p,.Wx3G8q_jsonEditor p,.Wx3G8q_serverRail p,.Wx3G8q_emptyDetail p{color:var(--dsw-alias-label-secondary);font-size:12px}.Wx3G8q_modeSwitch,.Wx3G8q_detailToolbar,.Wx3G8q_runtimeActions,.Wx3G8q_saveBar{flex-wrap:wrap;display:flex}.Wx3G8q_modeSwitch button,.Wx3G8q_serverRail button,.Wx3G8q_detailToolbar button,.Wx3G8q_runtimeActions button,.Wx3G8q_saveBar button,.Wx3G8q_emptyDetail button{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-2);color:var(--dsw-alias-label-primary);border-radius:6px;padding:7px 10px}.Wx3G8q_modeSwitch button[aria-pressed=true]{border-color:var(--dsw-alias-state-business-primary);color:var(--dsw-alias-state-business-primary)}.Wx3G8q_masterDetail{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-2);border-radius:9px;grid-template-columns:minmax(190px,28%) minmax(0,1fr);min-height:430px;display:grid;overflow:hidden}.Wx3G8q_serverRail{border-right:1px solid var(--dsw-alias-border-l2);align-content:start;gap:10px;padding:12px;display:grid}.Wx3G8q_serverRail [role=listbox]{gap:4px;display:grid}.Wx3G8q_serverRail [role=option]{text-align:left;gap:3px;width:100%;display:grid}.Wx3G8q_serverRail [role=option] small{color:var(--dsw-alias-label-secondary)}.Wx3G8q_serverRail [role=option][aria-selected=true]{border-color:var(--dsw-alias-state-business-primary);background:var(--dsw-alias-bg-layer-3)}.Wx3G8q_serverDetail{background:var(--dsw-alias-bg-layer-1);min-width:0;padding:16px}.Wx3G8q_detailFields,.Wx3G8q_jsonEditor,.Wx3G8q_emptyDetail{gap:12px;display:grid}.Wx3G8q_detailFields{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:14px}.Wx3G8q_detailFields label,.Wx3G8q_jsonEditor label{color:var(--dsw-alias-label-secondary);gap:5px;font-size:12px;display:grid}.Wx3G8q_detailFields input,.Wx3G8q_detailFields select,.Wx3G8q_detailFields textarea,.Wx3G8q_jsonEditor textarea{box-sizing:border-box;border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-2);width:100%;min-width:0;color:var(--dsw-alias-label-primary);border-radius:6px;padding:8px}.Wx3G8q_detailFields textarea{resize:vertical;min-height:86px}.Wx3G8q_jsonEditor textarea{resize:vertical;min-height:360px;font-family:monospace}.Wx3G8q_detailFields .Wx3G8q_keyValues{grid-column:1/-1;min-width:0}.Wx3G8q_runtimeActions{justify-content:flex-start;margin-top:14px}.Wx3G8q_runtimeActions span[data-state=error],.Wx3G8q_validation{color:var(--dsw-alias-state-error-primary)}.Wx3G8q_runtimeActions span[data-state=success]{color:var(--dsw-alias-state-success-primary)}.Wx3G8q_validation{margin:0;padding-left:20px;font-size:12px}.Wx3G8q_editorMessage{color:var(--dsw-alias-label-secondary);font-size:12px}.Wx3G8q_saveBar{border-top:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-2);justify-content:flex-end;padding:10px;position:sticky;bottom:0}.Wx3G8q_saveBar span{color:var(--dsw-alias-label-secondary);margin-right:auto;font-size:12px}.Wx3G8q_mcpEditor :is(button,input,select,textarea):focus-visible{outline:2px solid var(--dsw-alias-state-business-primary);outline-offset:2px}@media (width<=760px){.Wx3G8q_masterDetail,.Wx3G8q_detailFields{grid-template-columns:1fr}.Wx3G8q_serverRail{border-right:0;border-bottom:1px solid var(--dsw-alias-border-l2)}}@media (width<=640px){.Wx3G8q_settingsHeader,.Wx3G8q_skillCard{flex-direction:column;grid-template-columns:1fr}.Wx3G8q_skillCard small{text-align:left}}";
 		const tagId$1 = "@deepseek-ai/dsh-client-ui-autograph/RuntimeStatus.module.css";
 		if (typeof document !== "undefined" && document.querySelector("style[data-plugin-css=" + JSON.stringify(tagId$1) + "]") === null) {
 			const tag = document.createElement("style");
@@ -10808,55 +10807,55 @@ window.__ModuleLoader__.load({
 			document.head.appendChild(tag);
 		}
 		var RuntimeStatus_module_css_default = {
-			"skillCard": "pBCICa_skillCard",
-			"metric": "pBCICa_metric",
-			"configEditor": "pBCICa_configEditor",
-			"serverRail": "pBCICa_serverRail",
-			"installProgress": "pBCICa_installProgress",
-			"installError": "pBCICa_installError",
-			"keyValues": "pBCICa_keyValues",
-			"detailToolbar": "pBCICa_detailToolbar",
-			"masterDetail": "pBCICa_masterDetail",
-			"detailFields": "pBCICa_detailFields",
-			"editorList": "pBCICa_editorList",
-			"settingsHeader": "pBCICa_settingsHeader",
-			"editorMessage": "pBCICa_editorMessage",
-			"installToolbar": "pBCICa_installToolbar",
-			"mcpHeader": "pBCICa_mcpHeader",
-			"warning": "pBCICa_warning",
-			"mcpEditor": "pBCICa_mcpEditor",
-			"serverRailHeader": "pBCICa_serverRailHeader",
-			"emptyDetail": "pBCICa_emptyDetail",
-			"grid": "pBCICa_grid",
-			"cardTitle": "pBCICa_cardTitle",
-			"serverDetail": "pBCICa_serverDetail",
-			"editorActions": "pBCICa_editorActions",
-			"jsonEditor": "pBCICa_jsonEditor",
-			"saveBar": "pBCICa_saveBar",
-			"settings": "pBCICa_settings",
-			"tabs": "pBCICa_tabs",
-			"summary": "pBCICa_summary",
-			"rail": "pBCICa_rail",
-			"validation": "pBCICa_validation",
-			"runtimeActions": "pBCICa_runtimeActions",
-			"installActions": "pBCICa_installActions",
-			"card": "pBCICa_card",
-			"modeSwitch": "pBCICa_modeSwitch"
+			"rail": "Wx3G8q_rail",
+			"card": "Wx3G8q_card",
+			"installProgress": "Wx3G8q_installProgress",
+			"settings": "Wx3G8q_settings",
+			"warning": "Wx3G8q_warning",
+			"tabs": "Wx3G8q_tabs",
+			"detailToolbar": "Wx3G8q_detailToolbar",
+			"installToolbar": "Wx3G8q_installToolbar",
+			"saveBar": "Wx3G8q_saveBar",
+			"summary": "Wx3G8q_summary",
+			"editorActions": "Wx3G8q_editorActions",
+			"serverRail": "Wx3G8q_serverRail",
+			"masterDetail": "Wx3G8q_masterDetail",
+			"mcpEditor": "Wx3G8q_mcpEditor",
+			"serverDetail": "Wx3G8q_serverDetail",
+			"jsonEditor": "Wx3G8q_jsonEditor",
+			"metric": "Wx3G8q_metric",
+			"installError": "Wx3G8q_installError",
+			"configEditor": "Wx3G8q_configEditor",
+			"installActions": "Wx3G8q_installActions",
+			"grid": "Wx3G8q_grid",
+			"modeSwitch": "Wx3G8q_modeSwitch",
+			"runtimeActions": "Wx3G8q_runtimeActions",
+			"keyValues": "Wx3G8q_keyValues",
+			"serverRailHeader": "Wx3G8q_serverRailHeader",
+			"settingsHeader": "Wx3G8q_settingsHeader",
+			"validation": "Wx3G8q_validation",
+			"mcpHeader": "Wx3G8q_mcpHeader",
+			"emptyDetail": "Wx3G8q_emptyDetail",
+			"detailFields": "Wx3G8q_detailFields",
+			"skillCard": "Wx3G8q_skillCard",
+			"editorList": "Wx3G8q_editorList",
+			"editorMessage": "Wx3G8q_editorMessage",
+			"cardTitle": "Wx3G8q_cardTitle"
 		};
 		//#endregion
-		//#region lib/types/client/McpKeyValueEditor.js
+		//#region src/client/McpKeyValueEditor.tsx
 		/** Edit string key/value maps used by MCP environment variables and headers. */
 		function McpKeyValueEditor({ label, value, onChange }) {
 			const entries = Object.entries(value);
 			const update = (index, key, itemValue) => {
 				onChange(Object.fromEntries(entries.map((entry, at) => at === index ? [key, itemValue] : entry)));
 			};
-			return (0, react_jsx_runtime.jsxs)("fieldset", {
+			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("fieldset", {
 				className: RuntimeStatus_module_css_default.keyValues,
 				children: [
-					(0, react_jsx_runtime.jsx)("legend", { children: label }),
-					entries.map(([key, itemValue], index) => (0, react_jsx_runtime.jsxs)("div", { children: [
-						(0, react_jsx_runtime.jsx)("input", {
+					/* @__PURE__ */ (0, react_jsx_runtime.jsx)("legend", { children: label }),
+					entries.map(([key, itemValue], index) => /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [
+						/* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
 							"aria-label": `${label}名称 ${index + 1}`,
 							placeholder: "名称",
 							value: key,
@@ -10864,7 +10863,7 @@ window.__ModuleLoader__.load({
 								update(index, event.target.value, itemValue);
 							}
 						}),
-						(0, react_jsx_runtime.jsx)("input", {
+						/* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
 							"aria-label": `${label}值 ${index + 1}`,
 							placeholder: "值",
 							value: itemValue,
@@ -10872,7 +10871,7 @@ window.__ModuleLoader__.load({
 								update(index, key, event.target.value);
 							}
 						}),
-						(0, react_jsx_runtime.jsx)("button", {
+						/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 							type: "button",
 							"aria-label": `删除${label} ${key || index + 1}`,
 							onClick: () => {
@@ -10881,7 +10880,7 @@ window.__ModuleLoader__.load({
 							children: "删除"
 						})
 					] }, `${index}-${key}`)),
-					(0, react_jsx_runtime.jsxs)("button", {
+					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("button", {
 						type: "button",
 						onClick: () => {
 							onChange({
@@ -10902,7 +10901,7 @@ window.__ModuleLoader__.load({
 			};
 		}
 		//#endregion
-		//#region lib/types/client/McpConfigEditor.js
+		//#region src/client/McpConfigEditor.tsx
 		function replaceServer(servers, index, value) {
 			return servers.map((server, at) => at === index ? value : server);
 		}
@@ -11018,27 +11017,27 @@ window.__ModuleLoader__.load({
 					}));
 				}
 			};
-			return (0, react_jsx_runtime.jsxs)("section", {
+			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("section", {
 				className: RuntimeStatus_module_css_default.mcpEditor,
 				"aria-labelledby": "mcp-editor-title",
 				children: [
-					(0, react_jsx_runtime.jsxs)("header", {
+					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("header", {
 						className: RuntimeStatus_module_css_default.mcpHeader,
-						children: [(0, react_jsx_runtime.jsxs)("div", { children: [(0, react_jsx_runtime.jsx)("h3", {
+						children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("h3", {
 							id: "mcp-editor-title",
 							children: "MCP 服务器"
-						}), (0, react_jsx_runtime.jsx)("p", { children: "配置本地 stdio 或远程 HTTP MCP 服务。" })] }), (0, react_jsx_runtime.jsxs)("div", {
+						}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", { children: "配置本地 stdio 或远程 HTTP MCP 服务。" })] }), /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 							className: RuntimeStatus_module_css_default.modeSwitch,
 							role: "group",
 							"aria-label": "MCP 编辑模式",
-							children: [(0, react_jsx_runtime.jsx)("button", {
+							children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 								type: "button",
 								"aria-pressed": mode === "visual",
 								onClick: () => {
 									setMode("visual");
 								},
 								children: "可视化"
-							}), (0, react_jsx_runtime.jsx)("button", {
+							}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 								type: "button",
 								"aria-pressed": mode === "json",
 								onClick: () => {
@@ -11049,14 +11048,14 @@ window.__ModuleLoader__.load({
 							})]
 						})]
 					}),
-					mode === "json" ? (0, react_jsx_runtime.jsxs)("div", {
+					mode === "json" ? /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 						className: RuntimeStatus_module_css_default.jsonEditor,
 						children: [
-							(0, react_jsx_runtime.jsx)("label", {
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("label", {
 								htmlFor: "mcp-json-source",
 								children: "MCP JSON"
 							}),
-							(0, react_jsx_runtime.jsx)("textarea", {
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("textarea", {
 								id: "mcp-json-source",
 								spellCheck: false,
 								value: jsonDraft,
@@ -11065,38 +11064,38 @@ window.__ModuleLoader__.load({
 								},
 								"aria-describedby": "mcp-json-help"
 							}),
-							(0, react_jsx_runtime.jsx)("p", {
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", {
 								id: "mcp-json-help",
 								children: "支持直接粘贴 mcpServers 命名对象、mcpServers 数组或服务器数组。解析失败不会覆盖当前可视化草稿。"
 							}),
-							(0, react_jsx_runtime.jsx)("div", {
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
 								className: RuntimeStatus_module_css_default.editorActions,
-								children: (0, react_jsx_runtime.jsx)("button", {
+								children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 									type: "button",
 									onClick: importJson,
 									children: "应用到可视化"
 								})
 							})
 						]
-					}) : (0, react_jsx_runtime.jsxs)("div", {
+					}) : /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 						className: RuntimeStatus_module_css_default.masterDetail,
-						children: [(0, react_jsx_runtime.jsxs)("aside", {
+						children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("aside", {
 							className: RuntimeStatus_module_css_default.serverRail,
 							"aria-label": "MCP 服务器列表",
 							children: [
-								(0, react_jsx_runtime.jsxs)("div", {
+								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 									className: RuntimeStatus_module_css_default.serverRailHeader,
-									children: [(0, react_jsx_runtime.jsx)("strong", { children: "服务器" }), (0, react_jsx_runtime.jsx)("button", {
+									children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: "服务器" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 										type: "button",
 										onClick: add,
 										children: "添加"
 									})]
 								}),
-								(0, react_jsx_runtime.jsx)("div", {
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
 									role: "listbox",
 									"aria-label": "MCP 服务器",
 									"aria-activedescendant": selected === void 0 ? void 0 : `mcp-server-${selectedIndex}`,
-									children: servers.map((server, index) => (0, react_jsx_runtime.jsxs)("button", {
+									children: servers.map((server, index) => /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("button", {
 										id: `mcp-server-${index}`,
 										type: "button",
 										role: "option",
@@ -11109,27 +11108,27 @@ window.__ModuleLoader__.load({
 											event.preventDefault();
 											setSelectedIndex((index + (event.key === "ArrowDown" ? 1 : -1) + servers.length) % servers.length);
 										},
-										children: [(0, react_jsx_runtime.jsx)("span", { children: server.serverName || "未命名服务器" }), (0, react_jsx_runtime.jsx)("small", { children: server.enabled === false ? "已停用" : server.transport })]
+										children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: server.serverName || "未命名服务器" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: server.enabled === false ? "已停用" : server.transport })]
 									}, `${index}-${server.serverName}`))
 								}),
-								servers.length === 0 && (0, react_jsx_runtime.jsx)("p", { children: "尚未配置服务器。" })
+								servers.length === 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", { children: "尚未配置服务器。" })
 							]
-						}), (0, react_jsx_runtime.jsx)("div", {
+						}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
 							className: RuntimeStatus_module_css_default.serverDetail,
-							children: selected === void 0 ? (0, react_jsx_runtime.jsxs)("div", {
+							children: selected === void 0 ? /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 								className: RuntimeStatus_module_css_default.emptyDetail,
-								children: [(0, react_jsx_runtime.jsx)("p", { children: "添加服务器后在此编辑详情。" }), (0, react_jsx_runtime.jsx)("button", {
+								children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", { children: "添加服务器后在此编辑详情。" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 									type: "button",
 									onClick: add,
 									children: "添加 MCP 服务器"
 								})]
-							}) : (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [
-								(0, react_jsx_runtime.jsxs)("div", {
+							}) : /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [
+								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 									className: RuntimeStatus_module_css_default.detailToolbar,
 									children: [
-										(0, react_jsx_runtime.jsxs)("label", {
+										/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", {
 											className: RuntimeStatus_module_css_default.enableToggle,
-											children: [(0, react_jsx_runtime.jsx)("input", {
+											children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
 												type: "checkbox",
 												checked: selected.enabled !== false,
 												onChange: (event) => {
@@ -11140,22 +11139,22 @@ window.__ModuleLoader__.load({
 												}
 											}), "启用"]
 										}),
-										(0, react_jsx_runtime.jsx)("button", {
+										/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 											type: "button",
 											onClick: copy,
 											children: "复制"
 										}),
-										(0, react_jsx_runtime.jsx)("button", {
+										/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 											type: "button",
 											onClick: remove,
 											children: "删除"
 										})
 									]
 								}),
-								(0, react_jsx_runtime.jsxs)("div", {
+								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 									className: RuntimeStatus_module_css_default.detailFields,
 									children: [
-										(0, react_jsx_runtime.jsxs)("label", { children: ["名称", (0, react_jsx_runtime.jsx)("input", {
+										/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["名称", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
 											value: selected.serverName,
 											onChange: (event) => {
 												update(selectedIndex, {
@@ -11164,28 +11163,28 @@ window.__ModuleLoader__.load({
 												});
 											}
 										})] }),
-										(0, react_jsx_runtime.jsxs)("label", { children: ["传输", (0, react_jsx_runtime.jsxs)("select", {
+										/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["传输", /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("select", {
 											value: selected.transport,
 											onChange: (event) => {
 												update(selectedIndex, switchMcpTransport(selected, event.target.value));
 											},
 											children: [
-												(0, react_jsx_runtime.jsx)("option", {
+												/* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
 													value: "stdio",
 													children: "stdio"
 												}),
-												(0, react_jsx_runtime.jsx)("option", {
+												/* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
 													value: "sse",
 													children: "HTTP + SSE（旧版）"
 												}),
-												(0, react_jsx_runtime.jsx)("option", {
+												/* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
 													value: "streamable-http",
 													children: "Streamable HTTP"
 												})
 											]
 										})] }),
-										selected.transport === "stdio" ? (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [
-											(0, react_jsx_runtime.jsxs)("label", { children: ["命令", (0, react_jsx_runtime.jsx)("input", {
+										selected.transport === "stdio" ? /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [
+											/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["命令", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
 												value: selected.command ?? "",
 												onChange: (event) => {
 													update(selectedIndex, {
@@ -11194,7 +11193,7 @@ window.__ModuleLoader__.load({
 													});
 												}
 											})] }),
-											(0, react_jsx_runtime.jsxs)("label", { children: ["参数（每行一项）", (0, react_jsx_runtime.jsx)("textarea", {
+											/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["参数（每行一项）", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("textarea", {
 												value: (selected.args ?? []).join("\n"),
 												onChange: (event) => {
 													update(selectedIndex, {
@@ -11203,7 +11202,7 @@ window.__ModuleLoader__.load({
 													});
 												}
 											})] }),
-											(0, react_jsx_runtime.jsxs)("label", { children: ["工作目录", (0, react_jsx_runtime.jsx)("input", {
+											/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["工作目录", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
 												value: selected.cwd ?? "",
 												onChange: (event) => {
 													update(selectedIndex, {
@@ -11212,14 +11211,14 @@ window.__ModuleLoader__.load({
 													});
 												}
 											})] }),
-											(0, react_jsx_runtime.jsx)(McpKeyValueEditor, {
+											/* @__PURE__ */ (0, react_jsx_runtime.jsx)(McpKeyValueEditor, {
 												label: "环境变量",
 												value: selected.env ?? {},
 												onChange: (value) => {
 													update(selectedIndex, withMcpMap(selected, "env", value));
 												}
 											})
-										] }) : (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [(0, react_jsx_runtime.jsxs)("label", { children: ["URL", (0, react_jsx_runtime.jsx)("input", {
+										] }) : /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["URL", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
 											type: "url",
 											value: selected.url ?? "",
 											onChange: (event) => {
@@ -11228,14 +11227,14 @@ window.__ModuleLoader__.load({
 													url: event.target.value
 												});
 											}
-										})] }), (0, react_jsx_runtime.jsx)(McpKeyValueEditor, {
+										})] }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)(McpKeyValueEditor, {
 											label: "请求头",
 											value: selected.headers ?? {},
 											onChange: (value) => {
 												update(selectedIndex, withMcpMap(selected, "headers", value));
 											}
 										})] }),
-										(0, react_jsx_runtime.jsxs)("label", { children: ["工具超时（毫秒）", (0, react_jsx_runtime.jsx)("input", {
+										/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["工具超时（毫秒）", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
 											type: "number",
 											min: 1,
 											value: selected.toolCallTimeoutMs ?? 6e4,
@@ -11248,10 +11247,10 @@ window.__ModuleLoader__.load({
 										})] })
 									]
 								}),
-								(0, react_jsx_runtime.jsxs)("div", {
+								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 									className: RuntimeStatus_module_css_default.runtimeActions,
 									children: [
-										(0, react_jsx_runtime.jsx)("button", {
+										/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 											type: "button",
 											disabled: !selected.serverName || operations[selected.serverName]?.status === "pending",
 											onClick: () => {
@@ -11259,7 +11258,7 @@ window.__ModuleLoader__.load({
 											},
 											children: "测活"
 										}),
-										(0, react_jsx_runtime.jsx)("button", {
+										/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 											type: "button",
 											disabled: !selected.serverName || operations[selected.serverName]?.status === "pending",
 											onClick: () => {
@@ -11267,42 +11266,42 @@ window.__ModuleLoader__.load({
 											},
 											children: "热重载"
 										}),
-										operations[selected.serverName] !== void 0 && (0, react_jsx_runtime.jsx)("span", {
+										operations[selected.serverName] !== void 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
 											role: "status",
 											"data-state": operations[selected.serverName]?.status,
 											children: operations[selected.serverName]?.message
 										})
 									]
 								}),
-								probes[selected.serverName] !== void 0 && (0, react_jsx_runtime.jsxs)("details", { children: [(0, react_jsx_runtime.jsxs)("summary", { children: [
+								probes[selected.serverName] !== void 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("details", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("summary", { children: [
 									"已发现 ",
 									probes[selected.serverName]?.toolCount,
 									" 个工具"
-								] }), (0, react_jsx_runtime.jsx)("ul", { children: probes[selected.serverName]?.tools.map((tool) => (0, react_jsx_runtime.jsxs)("li", { children: [(0, react_jsx_runtime.jsx)("code", { children: tool.name }), tool.description === void 0 ? null : (0, react_jsx_runtime.jsx)("small", { children: tool.description })] }, tool.name)) })] })
+								] }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("ul", { children: probes[selected.serverName]?.tools.map((tool) => /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("li", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("code", { children: tool.name }), tool.description === void 0 ? null : /* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: tool.description })] }, tool.name)) })] })
 							] })
 						})]
 					}),
-					issues.length > 0 && (0, react_jsx_runtime.jsx)("ul", {
+					issues.length > 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("ul", {
 						className: RuntimeStatus_module_css_default.validation,
 						"aria-label": "MCP 配置问题",
-						children: issues.map((issue, index) => (0, react_jsx_runtime.jsx)("li", { children: issue.message }, index))
+						children: issues.map((issue, index) => /* @__PURE__ */ (0, react_jsx_runtime.jsx)("li", { children: issue.message }, index))
 					}),
-					message !== void 0 && (0, react_jsx_runtime.jsx)("p", {
+					message !== void 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", {
 						className: RuntimeStatus_module_css_default.editorMessage,
 						role: "status",
 						children: message
 					}),
-					(0, react_jsx_runtime.jsxs)("footer", {
+					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("footer", {
 						className: RuntimeStatus_module_css_default.saveBar,
 						children: [
-							(0, react_jsx_runtime.jsx)("span", { children: dirty ? "有未保存更改" : "所有更改已保存" }),
-							(0, react_jsx_runtime.jsx)("button", {
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: dirty ? "有未保存更改" : "所有更改已保存" }),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 								type: "button",
 								disabled: !dirty || saving,
 								onClick: reset,
 								children: "重置"
 							}),
-							(0, react_jsx_runtime.jsx)("button", {
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 								type: "button",
 								disabled: !dirty || saving || issues.length > 0,
 								onClick: () => {
@@ -11316,7 +11315,7 @@ window.__ModuleLoader__.load({
 			});
 		}
 		//#endregion
-		//#region lib/types/client/RuntimeConfigEditor.js
+		//#region src/client/RuntimeConfigEditor.tsx
 		const EMPTY = {
 			mcpServers: [],
 			disabledSkills: [],
@@ -11380,21 +11379,21 @@ window.__ModuleLoader__.load({
 				});
 				if (!response.ok) setSkillError((await response.json()).error ?? "Skill 删除失败");
 			};
-			if (snapshot.status !== "ready" || snapshot.value === void 0) return (0, react_jsx_runtime.jsx)("p", {
+			if (snapshot.status !== "ready" || snapshot.value === void 0) return /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", {
 				className: RuntimeStatus_module_css_default.installError,
 				children: "动态配置尚未连接到本机 Host。"
 			});
-			return (0, react_jsx_runtime.jsxs)("section", {
+			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("section", {
 				className: RuntimeStatus_module_css_default.configEditor,
 				children: [
-					(0, react_jsx_runtime.jsx)("nav", {
+					/* @__PURE__ */ (0, react_jsx_runtime.jsx)("nav", {
 						className: RuntimeStatus_module_css_default.tabs,
 						"aria-label": "Red Team 配置",
 						children: [
 							"mcp",
 							"skills",
 							"rules"
-						].map((value) => (0, react_jsx_runtime.jsx)("button", {
+						].map((value) => /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 							type: "button",
 							"aria-current": tab === value ? "page" : void 0,
 							"data-active": tab === value,
@@ -11404,7 +11403,7 @@ window.__ModuleLoader__.load({
 							children: value === "mcp" ? "MCP" : value === "skills" ? "Skills" : "Rules"
 						}, value))
 					}),
-					tab === "mcp" && (0, react_jsx_runtime.jsx)(McpConfigEditor, {
+					tab === "mcp" && /* @__PURE__ */ (0, react_jsx_runtime.jsx)(McpConfigEditor, {
 						servers: draft.mcpServers,
 						savedServers: snapshot.value.mcpServers,
 						saving,
@@ -11416,10 +11415,10 @@ window.__ModuleLoader__.load({
 						},
 						onSave: () => save("mcpServers")
 					}),
-					tab === "skills" && (0, react_jsx_runtime.jsxs)("div", {
+					tab === "skills" && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 						className: RuntimeStatus_module_css_default.editorList,
 						children: [
-							(0, react_jsx_runtime.jsxs)("label", { children: ["停用 Skill（每行一个名称）", (0, react_jsx_runtime.jsx)("textarea", {
+							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["停用 Skill（每行一个名称）", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("textarea", {
 								value: draft.disabledSkills.join("\n"),
 								onChange: (event) => {
 									setDraft((current) => ({
@@ -11428,9 +11427,9 @@ window.__ModuleLoader__.load({
 									}));
 								}
 							})] }),
-							(0, react_jsx_runtime.jsx)("div", {
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
 								className: RuntimeStatus_module_css_default.editorActions,
-								children: (0, react_jsx_runtime.jsx)("button", {
+								children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 									type: "button",
 									disabled: saving,
 									onClick: () => {
@@ -11439,9 +11438,9 @@ window.__ModuleLoader__.load({
 									children: "保存 Skill 状态"
 								})
 							}),
-							(0, react_jsx_runtime.jsxs)("fieldset", { children: [
-								(0, react_jsx_runtime.jsx)("legend", { children: "用户 Skill overlay" }),
-								(0, react_jsx_runtime.jsxs)("label", { children: ["名称", (0, react_jsx_runtime.jsx)("input", {
+							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("fieldset", { children: [
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("legend", { children: "用户 Skill overlay" }),
+								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["名称", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
 									value: skillDraft.name,
 									onChange: (event) => {
 										setSkillDraft((current) => ({
@@ -11450,7 +11449,7 @@ window.__ModuleLoader__.load({
 										}));
 									}
 								})] }),
-								(0, react_jsx_runtime.jsxs)("label", { children: ["描述", (0, react_jsx_runtime.jsx)("input", {
+								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["描述", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
 									value: skillDraft.description,
 									onChange: (event) => {
 										setSkillDraft((current) => ({
@@ -11459,7 +11458,7 @@ window.__ModuleLoader__.load({
 										}));
 									}
 								})] }),
-								(0, react_jsx_runtime.jsxs)("label", { children: ["使用时机", (0, react_jsx_runtime.jsx)("input", {
+								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["使用时机", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
 									value: skillDraft.whenToUse,
 									onChange: (event) => {
 										setSkillDraft((current) => ({
@@ -11468,7 +11467,7 @@ window.__ModuleLoader__.load({
 										}));
 									}
 								})] }),
-								(0, react_jsx_runtime.jsxs)("label", { children: ["模型可调用", (0, react_jsx_runtime.jsx)("input", {
+								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["模型可调用", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
 									type: "checkbox",
 									checked: skillDraft.modelInvocable,
 									onChange: (event) => {
@@ -11478,7 +11477,7 @@ window.__ModuleLoader__.load({
 										}));
 									}
 								})] }),
-								(0, react_jsx_runtime.jsxs)("label", { children: ["用户可调用", (0, react_jsx_runtime.jsx)("input", {
+								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["用户可调用", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
 									type: "checkbox",
 									checked: skillDraft.userInvocable,
 									onChange: (event) => {
@@ -11488,7 +11487,7 @@ window.__ModuleLoader__.load({
 										}));
 									}
 								})] }),
-								(0, react_jsx_runtime.jsxs)("label", { children: ["正文", (0, react_jsx_runtime.jsx)("textarea", {
+								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["正文", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("textarea", {
 									value: skillDraft.content,
 									onChange: (event) => {
 										setSkillDraft((current) => ({
@@ -11497,15 +11496,15 @@ window.__ModuleLoader__.load({
 										}));
 									}
 								})] }),
-								(0, react_jsx_runtime.jsxs)("div", {
+								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 									className: RuntimeStatus_module_css_default.editorActions,
-									children: [(0, react_jsx_runtime.jsx)("button", {
+									children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 										type: "button",
 										onClick: () => {
 											saveSkill();
 										},
 										children: "保存 overlay"
-									}), (0, react_jsx_runtime.jsx)("button", {
+									}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 										type: "button",
 										onClick: () => {
 											deleteSkill();
@@ -11513,18 +11512,18 @@ window.__ModuleLoader__.load({
 										children: "删除 overlay"
 									})]
 								}),
-								skillError !== void 0 && (0, react_jsx_runtime.jsx)("span", {
+								skillError !== void 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
 									className: RuntimeStatus_module_css_default.installError,
 									children: skillError
 								})
 							] })
 						]
 					}),
-					tab === "rules" && (0, react_jsx_runtime.jsxs)("div", {
+					tab === "rules" && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 						className: RuntimeStatus_module_css_default.editorList,
-						children: [draft.rules.map((rule, index) => (0, react_jsx_runtime.jsxs)("fieldset", { children: [
-							(0, react_jsx_runtime.jsx)("legend", { children: rule.title }),
-							(0, react_jsx_runtime.jsxs)("label", { children: ["标题", (0, react_jsx_runtime.jsx)("input", {
+						children: [draft.rules.map((rule, index) => /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("fieldset", { children: [
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("legend", { children: rule.title }),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["标题", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
 								value: rule.title,
 								onChange: (event) => {
 									setDraft((current) => ({
@@ -11536,7 +11535,7 @@ window.__ModuleLoader__.load({
 									}));
 								}
 							})] }),
-							(0, react_jsx_runtime.jsxs)("label", { children: ["启用", (0, react_jsx_runtime.jsx)("input", {
+							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["启用", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
 								type: "checkbox",
 								checked: rule.enabled,
 								onChange: (event) => {
@@ -11549,7 +11548,7 @@ window.__ModuleLoader__.load({
 									}));
 								}
 							})] }),
-							(0, react_jsx_runtime.jsxs)("label", { children: ["位置", (0, react_jsx_runtime.jsxs)("select", {
+							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["位置", /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("select", {
 								value: rule.placement,
 								onChange: (event) => {
 									setDraft((current) => ({
@@ -11561,25 +11560,25 @@ window.__ModuleLoader__.load({
 									}));
 								},
 								children: [
-									(0, react_jsx_runtime.jsx)("option", {
+									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
 										value: "before-persona",
 										children: "Persona 前"
 									}),
-									(0, react_jsx_runtime.jsx)("option", {
+									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
 										value: "after-persona",
 										children: "Persona 后"
 									}),
-									(0, react_jsx_runtime.jsx)("option", {
+									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
 										value: "before-tools",
 										children: "工具前"
 									}),
-									(0, react_jsx_runtime.jsx)("option", {
+									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
 										value: "after-tools",
 										children: "工具后"
 									})
 								]
 							})] }),
-							(0, react_jsx_runtime.jsxs)("label", { children: ["顺序", (0, react_jsx_runtime.jsx)("input", {
+							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["顺序", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
 								type: "number",
 								value: rule.order,
 								onChange: (event) => {
@@ -11592,7 +11591,7 @@ window.__ModuleLoader__.load({
 									}));
 								}
 							})] }),
-							(0, react_jsx_runtime.jsxs)("label", { children: ["正文", (0, react_jsx_runtime.jsx)("textarea", {
+							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["正文", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("textarea", {
 								value: rule.content,
 								onChange: (event) => {
 									setDraft((current) => ({
@@ -11604,7 +11603,7 @@ window.__ModuleLoader__.load({
 									}));
 								}
 							})] }),
-							(0, react_jsx_runtime.jsx)("button", {
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 								type: "button",
 								onClick: () => {
 									setDraft((current) => ({
@@ -11614,9 +11613,9 @@ window.__ModuleLoader__.load({
 								},
 								children: "删除"
 							})
-						] }, rule.id)), (0, react_jsx_runtime.jsxs)("div", {
+						] }, rule.id)), /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 							className: RuntimeStatus_module_css_default.editorActions,
-							children: [(0, react_jsx_runtime.jsx)("button", {
+							children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 								type: "button",
 								onClick: () => {
 									setDraft((current) => ({
@@ -11625,7 +11624,7 @@ window.__ModuleLoader__.load({
 									}));
 								},
 								children: "添加 Rule"
-							}), (0, react_jsx_runtime.jsx)("button", {
+							}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 								type: "button",
 								disabled: saving,
 								onClick: () => {
@@ -11639,7 +11638,7 @@ window.__ModuleLoader__.load({
 			});
 		}
 		//#endregion
-		//#region lib/types/client/RuntimeStatus.js
+		//#region src/client/RuntimeStatus.tsx
 		const STATE_LABEL = {
 			available: "可用",
 			configured: "已配置",
@@ -11741,7 +11740,7 @@ window.__ModuleLoader__.load({
 			}
 		}
 		function RuntimeStatus({ runtimeStatus, configScope, compact = false }) {
-			const snapshot = (0, react.useSyncExternalStore)(runtimeStatus.subscribe, runtimeStatus.getSnapshot);
+			const snapshot = (0, react.useSyncExternalStore)((onStoreChange) => runtimeStatus.subscribe(onStoreChange), () => runtimeStatus.getSnapshot());
 			const [installView, setInstallView] = (0, react.useState)(EMPTY_INSTALL_VIEW);
 			const [sourcePolicy, setSourcePolicy] = (0, react.useState)("auto");
 			const [installError, setInstallError] = (0, react.useState)();
@@ -11792,37 +11791,37 @@ window.__ModuleLoader__.load({
 					setInstallError(error instanceof Error ? error.message : String(error));
 				}
 			};
-			if (compact) return (0, react_jsx_runtime.jsxs)("div", {
+			if (compact) return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 				className: RuntimeStatus_module_css_default.rail,
 				"data-runtime-status": true,
 				children: [
-					(0, react_jsx_runtime.jsxs)("span", {
+					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("span", {
 						className: RuntimeStatus_module_css_default.metric,
-						children: ["Skills ", (0, react_jsx_runtime.jsx)("strong", { children: snapshot.skills.available })]
+						children: ["Skills ", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: snapshot.skills.available })]
 					}),
-					(0, react_jsx_runtime.jsxs)("span", {
+					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("span", {
 						className: RuntimeStatus_module_css_default.metric,
-						children: ["MCP ", (0, react_jsx_runtime.jsxs)("strong", { children: [
+						children: ["MCP ", /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("strong", { children: [
 							available,
 							"/",
 							snapshot.mcp.length
 						] })]
 					}),
-					missing > 0 && (0, react_jsx_runtime.jsxs)("span", {
+					missing > 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("span", {
 						className: RuntimeStatus_module_css_default.warning,
 						children: [missing, " 项待安装"]
 					})
 				]
 			});
-			return (0, react_jsx_runtime.jsxs)("section", {
+			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("section", {
 				className: RuntimeStatus_module_css_default.settings,
 				"data-runtime-settings": true,
 				children: [
-					(0, react_jsx_runtime.jsxs)("header", {
+					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("header", {
 						className: RuntimeStatus_module_css_default.settingsHeader,
-						children: [(0, react_jsx_runtime.jsxs)("div", { children: [(0, react_jsx_runtime.jsx)("h2", { children: "Red Team 运行环境" }), (0, react_jsx_runtime.jsx)("p", { children: "Skill 与 MCP 使用同一实时状态源；缺失组件不会从配置中消失。" })] }), (0, react_jsx_runtime.jsxs)("div", {
+						children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("h2", { children: "Red Team 运行环境" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", { children: "Skill 与 MCP 使用同一实时状态源；缺失组件不会从配置中消失。" })] }), /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 							className: RuntimeStatus_module_css_default.summary,
-							children: [(0, react_jsx_runtime.jsxs)("span", { children: ["Skills ", snapshot.skills.available] }), (0, react_jsx_runtime.jsxs)("span", { children: [
+							children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("span", { children: ["Skills ", snapshot.skills.available] }), /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("span", { children: [
 								"MCP ",
 								available,
 								"/",
@@ -11830,61 +11829,63 @@ window.__ModuleLoader__.load({
 							] })]
 						})]
 					}),
-					(0, react_jsx_runtime.jsxs)("div", {
+					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 						className: RuntimeStatus_module_css_default.installToolbar,
-						children: [(0, react_jsx_runtime.jsxs)("label", { children: ["下载源", (0, react_jsx_runtime.jsxs)("select", {
+						children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["下载源", /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("select", {
 							value: sourcePolicy,
-							onChange: (event) => setSourcePolicy(event.target.value),
+							onChange: (event) => {
+								setSourcePolicy(event.target.value);
+							},
 							children: [
-								(0, react_jsx_runtime.jsx)("option", {
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
 									value: "auto",
 									children: "自动"
 								}),
-								(0, react_jsx_runtime.jsx)("option", {
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
 									value: "domestic-first",
 									children: "国内优先"
 								}),
-								(0, react_jsx_runtime.jsx)("option", {
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
 									value: "official-first",
 									children: "官方优先"
 								})
 							]
-						})] }), installError !== void 0 && (0, react_jsx_runtime.jsx)("span", {
+						})] }), installError !== void 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
 							className: RuntimeStatus_module_css_default.installError,
 							children: installError
 						})]
 					}),
-					(0, react_jsx_runtime.jsxs)("div", {
+					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 						className: RuntimeStatus_module_css_default.skillCard,
 						"data-state": snapshot.skills.state,
 						children: [
-							(0, react_jsx_runtime.jsx)("strong", { children: "Skills" }),
-							(0, react_jsx_runtime.jsx)("span", { children: snapshot.skills.state === "ready" ? `${snapshot.skills.available} 个已发现` : "加载异常" }),
-							(0, react_jsx_runtime.jsx)("small", { children: snapshot.skills.error ?? `Provider: ${snapshot.skills.provider}` })
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: "Skills" }),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: snapshot.skills.state === "ready" ? `${snapshot.skills.available} 个已发现` : "加载异常" }),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: snapshot.skills.error ?? `Provider: ${snapshot.skills.provider}` })
 						]
 					}),
-					(0, react_jsx_runtime.jsx)("div", {
+					/* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
 						className: RuntimeStatus_module_css_default.grid,
-						children: snapshot.mcp.map((server) => (0, react_jsx_runtime.jsxs)("article", {
+						children: snapshot.mcp.map((server) => /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("article", {
 							className: RuntimeStatus_module_css_default.card,
 							"data-state": server.availability,
 							children: [
-								(0, react_jsx_runtime.jsxs)("div", {
+								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 									className: RuntimeStatus_module_css_default.cardTitle,
-									children: [(0, react_jsx_runtime.jsx)("strong", { children: server.serverName }), (0, react_jsx_runtime.jsxs)("span", { children: [
+									children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: server.serverName }), /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("span", { children: [
 										STATE_LABEL[server.availability],
 										" · ",
 										server.mounted ? "已挂载" : "未挂载"
 									] })]
 								}),
-								(0, react_jsx_runtime.jsx)("code", { children: server.target }),
-								(0, react_jsx_runtime.jsx)("p", { children: server.installHint }),
-								server.lastProbe !== void 0 && (0, react_jsx_runtime.jsxs)("details", { children: [(0, react_jsx_runtime.jsxs)("summary", { children: [
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("code", { children: server.target }),
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", { children: server.installHint }),
+								server.lastProbe !== void 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("details", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("summary", { children: [
 									"最近测活：",
 									server.lastProbe.toolCount,
 									" 个工具"
-								] }), (0, react_jsx_runtime.jsx)("ul", { children: server.lastProbe.tools.map((tool) => (0, react_jsx_runtime.jsxs)("li", { children: [(0, react_jsx_runtime.jsx)("code", { children: `mcp__${server.serverName}__${tool.name}` }), tool.description !== void 0 && (0, react_jsx_runtime.jsx)("small", { children: tool.description })] }, tool.name)) })] }),
-								server.installCommand !== void 0 && (0, react_jsx_runtime.jsx)("pre", { children: server.installCommand }),
+								] }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("ul", { children: server.lastProbe.tools.map((tool) => /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("li", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("code", { children: `mcp__${server.serverName}__${tool.name}` }), tool.description !== void 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: tool.description })] }, tool.name)) })] }),
+								server.installCommand !== void 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("pre", { children: server.installCommand }),
 								(() => {
 									const componentId = MCP_COMPONENT[server.serverName];
 									if (componentId === void 0) return null;
@@ -11897,10 +11898,10 @@ window.__ModuleLoader__.load({
 										"external-action-required",
 										"restart-required"
 									].includes(operation.phase);
-									return (0, react_jsx_runtime.jsxs)("div", {
+									return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 										className: RuntimeStatus_module_css_default.installActions,
 										children: [
-											(0, react_jsx_runtime.jsx)("button", {
+											/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 												type: "button",
 												disabled: component?.supported !== true || active,
 												onClick: () => {
@@ -11908,27 +11909,27 @@ window.__ModuleLoader__.load({
 												},
 												children: operation?.phase === "failed" ? "重试" : "一键补全"
 											}),
-											active && (0, react_jsx_runtime.jsx)("button", {
+											active && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 												type: "button",
 												onClick: () => {
 													cancelInstall(operation.id);
 												},
 												children: "取消"
 											}),
-											operation !== void 0 && (0, react_jsx_runtime.jsxs)("div", {
+											operation !== void 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 												className: RuntimeStatus_module_css_default.installProgress,
 												children: [
-													(0, react_jsx_runtime.jsxs)("span", { children: [
+													/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("span", { children: [
 														operation.phase,
 														" · ",
 														Math.round(operation.progress * 100),
 														"%"
 													] }),
-													(0, react_jsx_runtime.jsx)("progress", {
+													/* @__PURE__ */ (0, react_jsx_runtime.jsx)("progress", {
 														value: operation.progress,
 														max: 1
 													}),
-													(0, react_jsx_runtime.jsx)("small", { children: operation.error ?? operation.logs.at(-1) })
+													/* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: operation.error ?? operation.logs.at(-1) })
 												]
 											})
 										]
@@ -11937,13 +11938,13 @@ window.__ModuleLoader__.load({
 							]
 						}, server.serverName))
 					}),
-					configScope !== void 0 && (0, react_jsx_runtime.jsx)(RuntimeConfigEditor, { configScope })
+					configScope !== void 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsx)(RuntimeConfigEditor, { configScope })
 				]
 			});
 		}
 		//#endregion
-		//#region \0dsh-css:C:\Users\Admin\Desktop\ant-dsh\packages\client\ui-autograph\src\client\AutoGraphView.module.css.mjs
-		const css = ".dSySha_panel{box-sizing:border-box;background:var(--dsw-alias-bg-layer-1);width:100%;height:100%;min-height:0;color:var(--dsw-alias-label-primary);flex-direction:column;display:flex;overflow:hidden}.dSySha_header{border-bottom:1px solid var(--dsw-alias-border-l2);font:var(--dsw-font-xs-13);align-items:center;gap:12px;padding:10px 16px;display:flex}.dSySha_title{font-weight:600}.dSySha_meta{color:var(--dsw-alias-label-secondary)}.dSySha_status{background:var(--dsw-alias-state-success-tertiary);color:var(--dsw-alias-state-success-primary);border-radius:10px;margin-left:auto;padding:2px 8px;font-size:11px;line-height:18px}.dSySha_status[data-paused=true]{background:var(--dsw-alias-state-warn-tertiary);color:var(--dsw-alias-state-warn-label)}.dSySha_status[data-complete=true]{background:var(--dsw-alias-state-business-tertiary);color:var(--dsw-alias-state-business-primary)}.dSySha_filters{border:0;border-bottom:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-1);align-items:center;gap:8px;min-width:0;margin:0;padding:8px 16px;display:flex}.dSySha_filters legend{clip-path:inset(50%);width:1px;height:1px;position:absolute;overflow:hidden}.dSySha_filters label{border:1px solid var(--dsw-alias-border-l2);color:var(--dsw-alias-label-secondary);cursor:pointer;user-select:none;border-radius:999px;align-items:center;gap:5px;padding:3px 8px;font-size:11px;line-height:18px;display:inline-flex}.dSySha_filters label:has(input:checked){border-color:var(--dsw-alias-state-business-primary);background:var(--dsw-alias-state-business-tertiary);color:var(--dsw-alias-label-primary)}.dSySha_filters input{width:13px;height:13px;accent-color:var(--dsw-alias-state-business-primary);margin:0}.dSySha_filterCount{color:var(--dsw-alias-label-tertiary);white-space:nowrap;margin-left:auto;font-size:11px;line-height:18px}.dSySha_columnLegend{border-bottom:1px solid var(--dsw-alias-border-l1);background:var(--dsw-alias-bg-layer-2);color:var(--dsw-alias-label-tertiary);text-align:center;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;padding:6px 16px;font-size:11px;line-height:18px;display:grid}.dSySha_columnLegend span{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.dSySha_columnLegend span[data-kind=goal]{color:var(--dsw-alias-state-warn-label)}.dSySha_columnLegend span[data-kind=intent]{color:var(--dsw-alias-state-business-primary)}.dSySha_columnLegend span[data-kind=fact]{color:var(--dsw-alias-state-success-primary)}.dSySha_canvas{background:var(--dsw-alias-bg-layer-1);flex:1;min-height:0;position:relative}.dSySha_canvas .react-flow{direction:ltr;position:relative;overflow:hidden}.dSySha_canvas .react-flow__container{width:100%;height:100%;position:absolute;inset:0}.dSySha_canvas .react-flow__pane{z-index:1;touch-action:none}.dSySha_canvas .react-flow__viewport{z-index:2;transform-origin:0 0;pointer-events:none}.dSySha_canvas .react-flow__renderer{z-index:4}.dSySha_canvas .react-flow__nodes{z-index:2;pointer-events:none;transform-origin:0 0}.dSySha_canvas .react-flow__edges{z-index:1}.dSySha_canvas .react-flow__node{box-sizing:border-box;transform-origin:0 0;pointer-events:all;user-select:none;position:absolute}.dSySha_canvas .react-flow__edges,.dSySha_canvas .react-flow__edges svg{pointer-events:none;position:absolute;overflow:visible}.dSySha_canvas .react-flow__edge{pointer-events:visibleStroke}.dSySha_canvas .react-flow__edge-path{fill:none}.dSySha_canvas .react-flow__edge.animated path{stroke-dasharray:5;animation:.5s linear infinite dSySha_autographDash}.dSySha_canvas .react-flow__handle{border-radius:50%;position:absolute}.dSySha_canvas .react-flow__handle-left{top:50%;left:0;transform:translate(-50%,-50%)}.dSySha_canvas .react-flow__handle-right{top:50%;right:0;transform:translate(50%,-50%)}.dSySha_canvas .react-flow__panel{z-index:5;margin:15px;position:absolute}.dSySha_canvas .react-flow__panel.bottom{bottom:0}.dSySha_canvas .react-flow__panel.left{left:0}.dSySha_canvas .react-flow__panel.right{right:0}.dSySha_canvas .react-flow__minimap-svg{display:block}.dSySha_canvas .react-flow__controls{flex-direction:column;display:flex}.dSySha_canvas .react-flow__controls-button{border:0;border-bottom:1px solid var(--dsw-alias-border-l2);cursor:pointer;justify-content:center;align-items:center;width:26px;height:26px;padding:4px;display:flex}.dSySha_canvas .react-flow__controls-button svg{fill:currentColor;width:100%;max-width:12px;max-height:12px}@keyframes dSySha_autographDash{0%{stroke-dashoffset:10px}}.dSySha_canvas .react-flow{--xy-background-color:var(--dsw-alias-bg-layer-1);--xy-edge-stroke-default:var(--dsw-alias-border-l4);--xy-minimap-background-color-default:var(--dsw-alias-bg-layer-2);--xy-controls-button-background-color-default:var(--dsw-alias-bg-layer-2);--xy-controls-button-background-color-hover-default:var(--dsw-alias-interactive-bg-hover-solid);--xy-controls-button-color-default:var(--dsw-alias-label-secondary);--xy-controls-button-border-color-default:var(--dsw-alias-border-l2);--xy-background-pattern-dot-color-default:var(--dsw-alias-border-l3);width:100%;height:100%}.dSySha_canvas .react-flow__node{border-radius:8px;font-size:11px;line-height:18px}.dSySha_canvas .react-flow__controls{border:1px solid var(--dsw-alias-border-l2);box-shadow:var(--dsw-shadow-lv1);border-radius:8px;overflow:hidden}.dSySha_canvas .react-flow__controls-button{border-bottom-color:var(--dsw-alias-border-l2)}.dSySha_canvas .react-flow__edge-path{stroke-width:1.75px;vector-effect:non-scaling-stroke;filter:drop-shadow(0 0 1px var(--dsw-alias-bg-layer-1))}.dSySha_canvas .react-flow__edge.selected .react-flow__edge-path,.dSySha_canvas .react-flow__edge:focus-visible .react-flow__edge-path{stroke:var(--dsw-alias-state-business-primary);stroke-width:2.5px}.dSySha_overview{z-index:6;border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-2);width:220px;height:140px;box-shadow:var(--dsw-shadow-lv1);touch-action:none;border-radius:8px;position:absolute;bottom:15px;right:15px;overflow:hidden}.dSySha_overview svg{cursor:crosshair;width:100%;height:100%;display:block}.dSySha_overviewEdge{fill:none;stroke:var(--dsw-alias-border-l4);stroke-width:5px;vector-effect:non-scaling-stroke}.dSySha_overviewNode{fill:var(--dsw-alias-bg-layer-3);stroke-width:5px;vector-effect:non-scaling-stroke}.dSySha_overviewNode[data-kind=goal]{stroke:var(--dsw-alias-state-warn-primary)}.dSySha_overviewNode[data-kind=intent]{stroke:var(--dsw-alias-state-business-primary)}.dSySha_overviewNode[data-kind=fact]{stroke:var(--dsw-alias-state-success-primary)}.dSySha_overviewNode[data-kind=hint]{stroke:var(--dsw-alias-brand-primary-new-colorprimary-new-color)}.dSySha_overviewViewport{fill:var(--dsw-alias-bg-mask-2);stroke:var(--dsw-alias-state-business-primary);stroke-width:6px;vector-effect:non-scaling-stroke;pointer-events:none}.dSySha_empty{height:100%;color:var(--dsw-alias-label-secondary);font:var(--dsw-font-xs-13);text-align:center;justify-content:center;align-items:center;padding:24px;display:flex}.dSySha_nodeCard{box-sizing:border-box;border:1.5px solid var(--dsw-alias-border-l3);background:var(--dsw-alias-bg-layer-3);width:252px;min-height:92px;color:var(--dsw-alias-label-primary);box-shadow:var(--dsw-shadow-lv1);border-radius:10px;position:relative;overflow:visible}.dSySha_nodeCard[data-kind=goal]{border-color:var(--dsw-alias-state-warn-primary)}.dSySha_nodeCard[data-kind=fact]{border-color:var(--dsw-alias-state-success-primary)}.dSySha_nodeCard[data-kind=intent]{border-color:var(--dsw-alias-state-business-primary)}.dSySha_nodeCard[data-kind=hint]{border-color:var(--dsw-alias-brand-primary-new-colorprimary-new-color)}.dSySha_nodeHeader{border-bottom:1px solid var(--dsw-alias-border-l1);color:var(--dsw-alias-label-secondary);align-items:center;gap:6px;padding:8px 10px;font-size:11px;line-height:18px;display:flex}.dSySha_nodeIcon{color:currentColor;width:16px;height:16px;display:inline-flex}.dSySha_nodeIcon svg{fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.75px;vector-effect:non-scaling-stroke;width:100%;height:100%}.dSySha_nodeStatus{color:var(--dsw-alias-label-tertiary);margin-left:auto}.dSySha_nodeLabel{overflow-wrap:anywhere;white-space:pre-wrap;padding:10px 12px 12px;font-size:13px;line-height:20px}.dSySha_handle{border:2px solid var(--dsw-alias-bg-layer-3);background:var(--dsw-alias-label-tertiary);width:9px;height:9px}.dSySha_nodeCard[data-kind=goal] .dSySha_handle{background:var(--dsw-alias-state-warn-primary)}.dSySha_nodeCard[data-kind=fact] .dSySha_handle{background:var(--dsw-alias-state-success-primary)}.dSySha_nodeCard[data-kind=intent] .dSySha_handle{background:var(--dsw-alias-state-business-primary)}.dSySha_nodeCard[data-kind=hint] .dSySha_handle{background:var(--dsw-alias-brand-primary-new-colorprimary-new-color)}.dSySha_controls{border-top:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-1);gap:8px;padding:10px 16px;display:flex}.dSySha_controls button,.dSySha_controls input{box-sizing:border-box;border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-2);min-height:32px;color:var(--dsw-alias-label-primary);border-radius:8px;font-size:12px;line-height:18px}.dSySha_controls button{cursor:pointer;padding:6px 14px}.dSySha_controls button:hover:not(:disabled){background:var(--dsw-alias-interactive-bg-hover-solid)}.dSySha_controls button:disabled{opacity:.5;cursor:default}.dSySha_controls input{flex:1;min-width:0;padding:6px 10px}.dSySha_controls input::placeholder{color:var(--dsw-alias-label-tertiary)}.dSySha_controls :is(button,input):focus-visible{outline:2px solid var(--dsw-alias-state-business-primary);outline-offset:2px}";
+		//#region \0dsh-css:C:\Users\Admin\AppData\Local\Temp\dsh-ant-sword-publish\vendor\ui-autograph\src\client\AutoGraphView.module.css.mjs
+		const css = ".tjVWsG_panel{box-sizing:border-box;background:var(--dsw-alias-bg-layer-1);width:100%;height:100%;min-height:0;color:var(--dsw-alias-label-primary);flex-direction:column;display:flex;overflow:hidden}.tjVWsG_header{border-bottom:1px solid var(--dsw-alias-border-l2);font:var(--dsw-font-xs-13);align-items:center;gap:12px;padding:10px 16px;display:flex}.tjVWsG_title{font-weight:600}.tjVWsG_meta{color:var(--dsw-alias-label-secondary)}.tjVWsG_status{background:var(--dsw-alias-state-success-tertiary);color:var(--dsw-alias-state-success-primary);border-radius:10px;margin-left:auto;padding:2px 8px;font-size:11px;line-height:18px}.tjVWsG_status[data-paused=true]{background:var(--dsw-alias-state-warn-tertiary);color:var(--dsw-alias-state-warn-label)}.tjVWsG_status[data-complete=true]{background:var(--dsw-alias-state-business-tertiary);color:var(--dsw-alias-state-business-primary)}.tjVWsG_filters{border:0;border-bottom:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-1);align-items:center;gap:8px;min-width:0;margin:0;padding:8px 16px;display:flex}.tjVWsG_filters legend{clip-path:inset(50%);width:1px;height:1px;position:absolute;overflow:hidden}.tjVWsG_filters label{border:1px solid var(--dsw-alias-border-l2);color:var(--dsw-alias-label-secondary);cursor:pointer;user-select:none;border-radius:999px;align-items:center;gap:5px;padding:3px 8px;font-size:11px;line-height:18px;display:inline-flex}.tjVWsG_filters label:has(input:checked){border-color:var(--dsw-alias-state-business-primary);background:var(--dsw-alias-state-business-tertiary);color:var(--dsw-alias-label-primary)}.tjVWsG_filters input{width:13px;height:13px;accent-color:var(--dsw-alias-state-business-primary);margin:0}.tjVWsG_filterCount{color:var(--dsw-alias-label-tertiary);white-space:nowrap;margin-left:auto;font-size:11px;line-height:18px}.tjVWsG_columnLegend{border-bottom:1px solid var(--dsw-alias-border-l1);background:var(--dsw-alias-bg-layer-2);color:var(--dsw-alias-label-tertiary);text-align:center;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;padding:6px 16px;font-size:11px;line-height:18px;display:grid}.tjVWsG_columnLegend span{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.tjVWsG_columnLegend span[data-kind=goal]{color:var(--dsw-alias-state-warn-label)}.tjVWsG_columnLegend span[data-kind=intent]{color:var(--dsw-alias-state-business-primary)}.tjVWsG_columnLegend span[data-kind=fact]{color:var(--dsw-alias-state-success-primary)}.tjVWsG_canvas{background:var(--dsw-alias-bg-layer-1);flex:1;min-height:0;position:relative}.tjVWsG_canvas .react-flow{direction:ltr;position:relative;overflow:hidden}.tjVWsG_canvas .react-flow__container{width:100%;height:100%;position:absolute;inset:0}.tjVWsG_canvas .react-flow__pane{z-index:1;touch-action:none}.tjVWsG_canvas .react-flow__viewport{z-index:2;transform-origin:0 0;pointer-events:none}.tjVWsG_canvas .react-flow__renderer{z-index:4}.tjVWsG_canvas .react-flow__nodes{z-index:2;pointer-events:none;transform-origin:0 0}.tjVWsG_canvas .react-flow__edges{z-index:1}.tjVWsG_canvas .react-flow__node{box-sizing:border-box;transform-origin:0 0;pointer-events:all;user-select:none;position:absolute}.tjVWsG_canvas .react-flow__edges,.tjVWsG_canvas .react-flow__edges svg{pointer-events:none;position:absolute;overflow:visible}.tjVWsG_canvas .react-flow__edge{pointer-events:visibleStroke}.tjVWsG_canvas .react-flow__edge-path{fill:none}.tjVWsG_canvas .react-flow__edge.animated path{stroke-dasharray:5;animation:.5s linear infinite tjVWsG_autographDash}.tjVWsG_canvas .react-flow__handle{border-radius:50%;position:absolute}.tjVWsG_canvas .react-flow__handle-left{top:50%;left:0;transform:translate(-50%,-50%)}.tjVWsG_canvas .react-flow__handle-right{top:50%;right:0;transform:translate(50%,-50%)}.tjVWsG_canvas .react-flow__panel{z-index:5;margin:15px;position:absolute}.tjVWsG_canvas .react-flow__panel.bottom{bottom:0}.tjVWsG_canvas .react-flow__panel.left{left:0}.tjVWsG_canvas .react-flow__panel.right{right:0}.tjVWsG_canvas .react-flow__minimap-svg{display:block}.tjVWsG_canvas .react-flow__controls{flex-direction:column;display:flex}.tjVWsG_canvas .react-flow__controls-button{border:0;border-bottom:1px solid var(--dsw-alias-border-l2);cursor:pointer;justify-content:center;align-items:center;width:26px;height:26px;padding:4px;display:flex}.tjVWsG_canvas .react-flow__controls-button svg{fill:currentColor;width:100%;max-width:12px;max-height:12px}@keyframes tjVWsG_autographDash{0%{stroke-dashoffset:10px}}.tjVWsG_canvas .react-flow{--xy-background-color:var(--dsw-alias-bg-layer-1);--xy-edge-stroke-default:var(--dsw-alias-border-l4);--xy-minimap-background-color-default:var(--dsw-alias-bg-layer-2);--xy-controls-button-background-color-default:var(--dsw-alias-bg-layer-2);--xy-controls-button-background-color-hover-default:var(--dsw-alias-interactive-bg-hover-solid);--xy-controls-button-color-default:var(--dsw-alias-label-secondary);--xy-controls-button-border-color-default:var(--dsw-alias-border-l2);--xy-background-pattern-dot-color-default:var(--dsw-alias-border-l3);width:100%;height:100%}.tjVWsG_canvas .react-flow__node{border-radius:8px;font-size:11px;line-height:18px}.tjVWsG_canvas .react-flow__controls{border:1px solid var(--dsw-alias-border-l2);box-shadow:var(--dsw-shadow-lv1);border-radius:8px;overflow:hidden}.tjVWsG_canvas .react-flow__controls-button{border-bottom-color:var(--dsw-alias-border-l2)}.tjVWsG_canvas .react-flow__edge-path{stroke-width:1.75px;vector-effect:non-scaling-stroke;filter:drop-shadow(0 0 1px var(--dsw-alias-bg-layer-1))}.tjVWsG_canvas .react-flow__edge.selected .react-flow__edge-path,.tjVWsG_canvas .react-flow__edge:focus-visible .react-flow__edge-path{stroke:var(--dsw-alias-state-business-primary);stroke-width:2.5px}.tjVWsG_overview{z-index:6;border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-2);width:220px;height:140px;box-shadow:var(--dsw-shadow-lv1);touch-action:none;border-radius:8px;position:absolute;bottom:15px;right:15px;overflow:hidden}.tjVWsG_overview svg{cursor:crosshair;width:100%;height:100%;display:block}.tjVWsG_overviewEdge{fill:none;stroke:var(--dsw-alias-border-l4);stroke-width:5px;vector-effect:non-scaling-stroke}.tjVWsG_overviewNode{fill:var(--dsw-alias-bg-layer-3);stroke-width:5px;vector-effect:non-scaling-stroke}.tjVWsG_overviewNode[data-kind=goal]{stroke:var(--dsw-alias-state-warn-primary)}.tjVWsG_overviewNode[data-kind=intent]{stroke:var(--dsw-alias-state-business-primary)}.tjVWsG_overviewNode[data-kind=fact]{stroke:var(--dsw-alias-state-success-primary)}.tjVWsG_overviewNode[data-kind=hint]{stroke:var(--dsw-alias-brand-primary-new-colorprimary-new-color)}.tjVWsG_overviewViewport{fill:var(--dsw-alias-bg-mask-2);stroke:var(--dsw-alias-state-business-primary);stroke-width:6px;vector-effect:non-scaling-stroke;pointer-events:none}.tjVWsG_empty{height:100%;color:var(--dsw-alias-label-secondary);font:var(--dsw-font-xs-13);text-align:center;justify-content:center;align-items:center;padding:24px;display:flex}.tjVWsG_nodeCard{box-sizing:border-box;border:1.5px solid var(--dsw-alias-border-l3);background:var(--dsw-alias-bg-layer-3);width:252px;min-height:92px;color:var(--dsw-alias-label-primary);box-shadow:var(--dsw-shadow-lv1);border-radius:10px;position:relative;overflow:visible}.tjVWsG_nodeCard[data-kind=goal]{border-color:var(--dsw-alias-state-warn-primary)}.tjVWsG_nodeCard[data-kind=fact]{border-color:var(--dsw-alias-state-success-primary)}.tjVWsG_nodeCard[data-kind=intent]{border-color:var(--dsw-alias-state-business-primary)}.tjVWsG_nodeCard[data-kind=hint]{border-color:var(--dsw-alias-brand-primary-new-colorprimary-new-color)}.tjVWsG_nodeHeader{border-bottom:1px solid var(--dsw-alias-border-l1);color:var(--dsw-alias-label-secondary);align-items:center;gap:6px;padding:8px 10px;font-size:11px;line-height:18px;display:flex}.tjVWsG_nodeIcon{color:currentColor;width:16px;height:16px;display:inline-flex}.tjVWsG_nodeIcon svg{fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.75px;vector-effect:non-scaling-stroke;width:100%;height:100%}.tjVWsG_nodeStatus{color:var(--dsw-alias-label-tertiary);margin-left:auto}.tjVWsG_nodeLabel{overflow-wrap:anywhere;white-space:pre-wrap;padding:10px 12px 12px;font-size:13px;line-height:20px}.tjVWsG_handle{border:2px solid var(--dsw-alias-bg-layer-3);background:var(--dsw-alias-label-tertiary);width:9px;height:9px}.tjVWsG_nodeCard[data-kind=goal] .tjVWsG_handle{background:var(--dsw-alias-state-warn-primary)}.tjVWsG_nodeCard[data-kind=fact] .tjVWsG_handle{background:var(--dsw-alias-state-success-primary)}.tjVWsG_nodeCard[data-kind=intent] .tjVWsG_handle{background:var(--dsw-alias-state-business-primary)}.tjVWsG_nodeCard[data-kind=hint] .tjVWsG_handle{background:var(--dsw-alias-brand-primary-new-colorprimary-new-color)}.tjVWsG_controls{border-top:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-1);gap:8px;padding:10px 16px;display:flex}.tjVWsG_controls button,.tjVWsG_controls input{box-sizing:border-box;border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-2);min-height:32px;color:var(--dsw-alias-label-primary);border-radius:8px;font-size:12px;line-height:18px}.tjVWsG_controls button{cursor:pointer;padding:6px 14px}.tjVWsG_controls button:hover:not(:disabled){background:var(--dsw-alias-interactive-bg-hover-solid)}.tjVWsG_controls button:disabled{opacity:.5;cursor:default}.tjVWsG_controls input{flex:1;min-width:0;padding:6px 10px}.tjVWsG_controls input::placeholder{color:var(--dsw-alias-label-tertiary)}.tjVWsG_controls :is(button,input):focus-visible{outline:2px solid var(--dsw-alias-state-business-primary);outline-offset:2px}";
 		const tagId = "@deepseek-ai/dsh-client-ui-autograph/AutoGraphView.module.css";
 		if (typeof document !== "undefined" && document.querySelector("style[data-plugin-css=" + JSON.stringify(tagId) + "]") === null) {
 			const tag = document.createElement("style");
@@ -11953,31 +11954,31 @@ window.__ModuleLoader__.load({
 			document.head.appendChild(tag);
 		}
 		var AutoGraphView_module_css_default = {
-			"nodeLabel": "dSySha_nodeLabel",
-			"canvas": "dSySha_canvas",
-			"nodeStatus": "dSySha_nodeStatus",
-			"nodeCard": "dSySha_nodeCard",
-			"overviewNode": "dSySha_overviewNode",
-			"autographDash": "dSySha_autographDash",
-			"panel": "dSySha_panel",
-			"columnLegend": "dSySha_columnLegend",
-			"overviewEdge": "dSySha_overviewEdge",
-			"header": "dSySha_header",
-			"empty": "dSySha_empty",
-			"status": "dSySha_status",
-			"filterCount": "dSySha_filterCount",
-			"meta": "dSySha_meta",
-			"overviewViewport": "dSySha_overviewViewport",
-			"nodeIcon": "dSySha_nodeIcon",
-			"handle": "dSySha_handle",
-			"overview": "dSySha_overview",
-			"title": "dSySha_title",
-			"nodeHeader": "dSySha_nodeHeader",
-			"controls": "dSySha_controls",
-			"filters": "dSySha_filters"
+			"nodeIcon": "tjVWsG_nodeIcon",
+			"panel": "tjVWsG_panel",
+			"overviewNode": "tjVWsG_overviewNode",
+			"overviewEdge": "tjVWsG_overviewEdge",
+			"header": "tjVWsG_header",
+			"nodeStatus": "tjVWsG_nodeStatus",
+			"controls": "tjVWsG_controls",
+			"title": "tjVWsG_title",
+			"nodeHeader": "tjVWsG_nodeHeader",
+			"empty": "tjVWsG_empty",
+			"nodeLabel": "tjVWsG_nodeLabel",
+			"handle": "tjVWsG_handle",
+			"nodeCard": "tjVWsG_nodeCard",
+			"overview": "tjVWsG_overview",
+			"meta": "tjVWsG_meta",
+			"overviewViewport": "tjVWsG_overviewViewport",
+			"filterCount": "tjVWsG_filterCount",
+			"status": "tjVWsG_status",
+			"filters": "tjVWsG_filters",
+			"columnLegend": "tjVWsG_columnLegend",
+			"autographDash": "tjVWsG_autographDash",
+			"canvas": "tjVWsG_canvas"
 		};
 		//#endregion
-		//#region lib/types/client/GraphOverview.js
+		//#region src/client/GraphOverview.tsx
 		const NODE_WIDTH = 252;
 		const NODE_HEIGHT = 92;
 		const PADDING = 40;
@@ -12002,16 +12003,16 @@ window.__ModuleLoader__.load({
 					duration: 180
 				});
 			};
-			return (0, react_jsx_runtime.jsx)("aside", {
+			return /* @__PURE__ */ (0, react_jsx_runtime.jsx)("aside", {
 				className: AutoGraphView_module_css_default.overview,
 				"aria-label": "逻辑关系鸟瞰图",
-				children: (0, react_jsx_runtime.jsx)("svg", {
+				children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)("svg", {
 					viewBox: `0 0 ${model.width} ${model.height}`,
 					preserveAspectRatio: "xMidYMid meet",
 					onPointerDown: (event) => {
 						locate(event.clientX, event.clientY, event.currentTarget);
 					},
-					children: (0, react_jsx_runtime.jsxs)("g", {
+					children: /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("g", {
 						transform: `translate(${PADDING} ${PADDING})`,
 						children: [
 							edges.map((edge) => {
@@ -12023,12 +12024,12 @@ window.__ModuleLoader__.load({
 								const endX = target.position.x;
 								const endY = target.position.y + NODE_HEIGHT / 2;
 								const middleX = (startX + endX) / 2;
-								return (0, react_jsx_runtime.jsx)("polyline", {
+								return /* @__PURE__ */ (0, react_jsx_runtime.jsx)("polyline", {
 									className: AutoGraphView_module_css_default.overviewEdge,
 									points: `${startX},${startY} ${middleX},${startY} ${middleX},${endY} ${endX},${endY}`
 								}, edge.id);
 							}),
-							nodes.map((node) => (0, react_jsx_runtime.jsx)("rect", {
+							nodes.map((node) => /* @__PURE__ */ (0, react_jsx_runtime.jsx)("rect", {
 								className: AutoGraphView_module_css_default.overviewNode,
 								"data-kind": node.data.kind,
 								x: node.position.x,
@@ -12037,7 +12038,7 @@ window.__ModuleLoader__.load({
 								height: NODE_HEIGHT,
 								rx: 10
 							}, node.id)),
-							(0, react_jsx_runtime.jsx)("rect", {
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("rect", {
 								className: AutoGraphView_module_css_default.overviewViewport,
 								x: Math.max(0, -viewport.x / viewport.zoom),
 								y: Math.max(0, -viewport.y / viewport.zoom),
@@ -12051,7 +12052,7 @@ window.__ModuleLoader__.load({
 			});
 		}
 		//#endregion
-		//#region lib/types/client/BoardGraphNode.js
+		//#region src/client/BoardGraphNode.tsx
 		const KIND_LABEL$1 = {
 			fact: "事实",
 			goal: "目标",
@@ -12059,65 +12060,65 @@ window.__ModuleLoader__.load({
 			intent: "意图"
 		};
 		function KindIcon({ kind }) {
-			if (kind === "goal") return (0, react_jsx_runtime.jsxs)("svg", {
+			if (kind === "goal") return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("svg", {
 				viewBox: "0 0 24 24",
 				"aria-hidden": "true",
-				children: [(0, react_jsx_runtime.jsx)("circle", {
+				children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("circle", {
 					cx: "12",
 					cy: "12",
 					r: "8"
-				}), (0, react_jsx_runtime.jsx)("circle", {
+				}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("circle", {
 					cx: "12",
 					cy: "12",
 					r: "3"
 				})]
 			});
-			if (kind === "fact") return (0, react_jsx_runtime.jsxs)("svg", {
+			if (kind === "fact") return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("svg", {
 				viewBox: "0 0 24 24",
 				"aria-hidden": "true",
-				children: [(0, react_jsx_runtime.jsx)("path", { d: "M5 5h14v14H5z" }), (0, react_jsx_runtime.jsx)("path", { d: "m8 12 2.5 2.5L16 9" })]
+				children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("path", { d: "M5 5h14v14H5z" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("path", { d: "m8 12 2.5 2.5L16 9" })]
 			});
-			if (kind === "intent") return (0, react_jsx_runtime.jsxs)("svg", {
+			if (kind === "intent") return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("svg", {
 				viewBox: "0 0 24 24",
 				"aria-hidden": "true",
-				children: [(0, react_jsx_runtime.jsx)("path", { d: "M5 19 19 5" }), (0, react_jsx_runtime.jsx)("path", { d: "M10 5h9v9" })]
+				children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("path", { d: "M5 19 19 5" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("path", { d: "M10 5h9v9" })]
 			});
-			return (0, react_jsx_runtime.jsxs)("svg", {
+			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("svg", {
 				viewBox: "0 0 24 24",
 				"aria-hidden": "true",
-				children: [(0, react_jsx_runtime.jsx)("path", { d: "M12 3a7 7 0 0 0-4 12.7V19h8v-3.3A7 7 0 0 0 12 3Z" }), (0, react_jsx_runtime.jsx)("path", { d: "M9 22h6M9 16h6" })]
+				children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("path", { d: "M12 3a7 7 0 0 0-4 12.7V19h8v-3.3A7 7 0 0 0 12 3Z" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("path", { d: "M9 22h6M9 16h6" })]
 			});
 		}
 		/** A measured graph block with explicit left/right connection anchors. */
 		function BoardGraphNode({ data }) {
-			return (0, react_jsx_runtime.jsxs)("article", {
+			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("article", {
 				className: AutoGraphView_module_css_default.nodeCard,
 				"data-kind": data.kind,
 				children: [
-					(0, react_jsx_runtime.jsx)(Handle, {
+					/* @__PURE__ */ (0, react_jsx_runtime.jsx)(Handle, {
 						className: AutoGraphView_module_css_default.handle,
 						type: "target",
 						position: Position.Left
 					}),
-					(0, react_jsx_runtime.jsxs)("header", {
+					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("header", {
 						className: AutoGraphView_module_css_default.nodeHeader,
 						children: [
-							(0, react_jsx_runtime.jsx)("span", {
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
 								className: AutoGraphView_module_css_default.nodeIcon,
-								children: (0, react_jsx_runtime.jsx)(KindIcon, { kind: data.kind })
+								children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(KindIcon, { kind: data.kind })
 							}),
-							(0, react_jsx_runtime.jsx)("span", { children: KIND_LABEL$1[data.kind] }),
-							(0, react_jsx_runtime.jsx)("span", {
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: KIND_LABEL$1[data.kind] }),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
 								className: AutoGraphView_module_css_default.nodeStatus,
 								children: data.status
 							})
 						]
 					}),
-					(0, react_jsx_runtime.jsx)("div", {
+					/* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
 						className: AutoGraphView_module_css_default.nodeLabel,
 						children: data.label
 					}),
-					(0, react_jsx_runtime.jsx)(Handle, {
+					/* @__PURE__ */ (0, react_jsx_runtime.jsx)(Handle, {
 						className: AutoGraphView_module_css_default.handle,
 						type: "source",
 						position: Position.Right
@@ -12126,7 +12127,7 @@ window.__ModuleLoader__.load({
 			});
 		}
 		//#endregion
-		//#region lib/types/client/AutoGraphView.js
+		//#region src/client/AutoGraphView.tsx
 		/**
 		* AutoGraphView: the live decision-graph panel for an autonomous (red-team-auto)
 		* run. It folds the `board` session projection into React Flow nodes/edges —
@@ -12244,22 +12245,22 @@ window.__ModuleLoader__.load({
 					setPending(false);
 				}
 			};
-			return (0, react_jsx_runtime.jsxs)("div", {
+			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 				className: AutoGraphView_module_css_default.panel,
 				"data-autograph": true,
 				children: [
-					(0, react_jsx_runtime.jsxs)("div", {
+					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 						className: AutoGraphView_module_css_default.header,
 						children: [
-							(0, react_jsx_runtime.jsx)("span", {
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
 								className: AutoGraphView_module_css_default.title,
 								children: t("panel.title")
 							}),
-							(0, react_jsx_runtime.jsx)("span", {
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
 								className: AutoGraphView_module_css_default.meta,
 								children: t("panel.cycle", { cycle: board.cycle })
 							}),
-							(0, react_jsx_runtime.jsx)("span", {
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
 								className: AutoGraphView_module_css_default.status,
 								"data-paused": board.paused,
 								"data-complete": board.complete,
@@ -12267,17 +12268,17 @@ window.__ModuleLoader__.load({
 							})
 						]
 					}),
-					(0, react_jsx_runtime.jsx)(RuntimeStatus, {
+					/* @__PURE__ */ (0, react_jsx_runtime.jsx)(RuntimeStatus, {
 						runtimeStatus,
 						compact: true
 					}),
-					(0, react_jsx_runtime.jsxs)("fieldset", {
+					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("fieldset", {
 						className: AutoGraphView_module_css_default.filters,
 						children: [
-							(0, react_jsx_runtime.jsx)("legend", { children: "筛选图块" }),
-							BOARD_KINDS.map((kind) => (0, react_jsx_runtime.jsxs)("label", {
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("legend", { children: "筛选图块" }),
+							BOARD_KINDS.map((kind) => /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", {
 								"data-kind": kind,
-								children: [(0, react_jsx_runtime.jsx)("input", {
+								children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
 									type: "checkbox",
 									checked: enabledKinds.has(kind),
 									onChange: (event) => {
@@ -12288,9 +12289,9 @@ window.__ModuleLoader__.load({
 											return next;
 										});
 									}
-								}), (0, react_jsx_runtime.jsx)("span", { children: KIND_LABEL[kind] })]
+								}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: KIND_LABEL[kind] })]
 							}, kind)),
-							(0, react_jsx_runtime.jsxs)("span", {
+							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("span", {
 								className: AutoGraphView_module_css_default.filterCount,
 								children: [
 									nodes.length,
@@ -12301,20 +12302,20 @@ window.__ModuleLoader__.load({
 							})
 						]
 					}),
-					(0, react_jsx_runtime.jsx)("div", {
+					/* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
 						className: AutoGraphView_module_css_default.columnLegend,
 						"aria-hidden": "true",
-						children: BOARD_KINDS.map((kind) => (0, react_jsx_runtime.jsx)("span", {
+						children: BOARD_KINDS.map((kind) => /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
 							"data-kind": kind,
 							children: KIND_LABEL[kind]
 						}, kind))
 					}),
-					(0, react_jsx_runtime.jsx)("div", {
+					/* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
 						className: AutoGraphView_module_css_default.canvas,
-						children: nodes.length === 0 ? (0, react_jsx_runtime.jsx)("div", {
+						children: nodes.length === 0 ? /* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
 							className: AutoGraphView_module_css_default.empty,
 							children: t("panel.empty")
-						}) : (0, react_jsx_runtime.jsxs)(index, {
+						}) : /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(index, {
 							nodes,
 							edges,
 							nodeTypes: NODE_TYPES,
@@ -12336,33 +12337,33 @@ window.__ModuleLoader__.load({
 							preventScrolling: true,
 							proOptions: { hideAttribution: true },
 							children: [
-								(0, react_jsx_runtime.jsx)(Background, {
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)(Background, {
 									gap: 20,
 									size: 1
 								}),
-								(0, react_jsx_runtime.jsx)(GraphOverview, {
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)(GraphOverview, {
 									nodes,
 									edges
 								}),
-								(0, react_jsx_runtime.jsx)(Controls, { showInteractive: false })
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)(Controls, { showInteractive: false })
 							]
 						})
 					}),
-					(0, react_jsx_runtime.jsxs)("div", {
+					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 						className: AutoGraphView_module_css_default.controls,
 						children: [
-							board.paused ? (0, react_jsx_runtime.jsx)("button", {
+							board.paused ? /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 								type: "button",
 								disabled: pending,
 								onClick: () => void run(onResume),
 								children: t("control.resume")
-							}) : (0, react_jsx_runtime.jsx)("button", {
+							}) : /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 								type: "button",
 								disabled: pending,
 								onClick: () => void run(onPause),
 								children: t("control.pause")
 							}),
-							(0, react_jsx_runtime.jsx)("input", {
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
 								type: "text",
 								value: hint,
 								placeholder: t("control.hintPlaceholder"),
@@ -12376,7 +12377,7 @@ window.__ModuleLoader__.load({
 									}
 								}
 							}),
-							(0, react_jsx_runtime.jsx)("button", {
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 								type: "button",
 								disabled: pending || hint.trim().length === 0,
 								onClick: () => {
@@ -12391,7 +12392,172 @@ window.__ModuleLoader__.load({
 			});
 		}
 		//#endregion
-		//#region lib/types/client/locales.js
+		//#region src/client/runtime-config-scope.ts
+		/** Official settings bridge with a loopback HTTP fallback for private namespaces. */
+		const ENDPOINT = "/ant-sword/runtime-config";
+		function isRecord(value) {
+			return typeof value === "object" && value !== null && !Array.isArray(value);
+		}
+		function isRuntimeConfig(value) {
+			return isRecord(value) && Array.isArray(value.mcpServers) && Array.isArray(value.disabledSkills) && Array.isArray(value.rules);
+		}
+		function decodeView(value) {
+			if (!isRecord(value) || !isRuntimeConfig(value.value)) return void 0;
+			if (!Number.isSafeInteger(value.revision) || value.revision < 0) return void 0;
+			if (typeof value.writable !== "boolean") return void 0;
+			return {
+				value: value.value,
+				...isRecord(value.base) ? { base: value.base } : {},
+				...isRecord(value.user) ? { user: value.user } : {},
+				revision: value.revision,
+				writable: value.writable
+			};
+		}
+		function initialSnapshot() {
+			return {
+				status: "loading",
+				value: void 0,
+				base: void 0,
+				user: void 0,
+				revision: void 0,
+				writable: false,
+				mode: "host"
+			};
+		}
+		/**
+		* Mirrors the official settings scope while available and otherwise speaks to
+		* the owning plugin's loopback endpoint. Writes remain serialized and carry
+		* the latest revision, matching the official scope's conflict behavior.
+		*/
+		var RuntimeConfigScope = class {
+			native;
+			request;
+			store;
+			unsubscribeNative;
+			tail = Promise.resolve();
+			disposed = false;
+			constructor(native, request = globalThis.fetch.bind(globalThis)) {
+				this.native = native;
+				this.request = request;
+				this.store = (0, _deepseek_ai_dsh_client_runtime_client.createSnapshotStore)(initialSnapshot());
+				this.unsubscribeNative = native.subscribe(() => {
+					this.syncNative();
+				});
+				this.syncNative();
+				this.refresh();
+			}
+			getSnapshot() {
+				return this.store.getSnapshot();
+			}
+			subscribe(listener) {
+				return this.store.subscribe(listener);
+			}
+			set(field, value) {
+				return this.write({
+					op: "set",
+					field,
+					value
+				});
+			}
+			unset(field) {
+				return this.write({
+					op: "unset",
+					field
+				});
+			}
+			refresh() {
+				return this.enqueue(async () => {
+					if (this.native.getSnapshot().status === "ready") {
+						this.syncNative();
+						return;
+					}
+					try {
+						const response = await this.request(ENDPOINT, {
+							method: "GET",
+							cache: "no-store"
+						});
+						if (!response.ok) return;
+						const view = decodeView(await response.json());
+						if (view !== void 0) this.accept(view);
+					} catch {}
+				});
+			}
+			async dispose() {
+				this.disposed = true;
+				this.unsubscribeNative();
+				await this.tail;
+			}
+			whenIdle() {
+				return this.tail;
+			}
+			write(operation) {
+				return this.enqueue(async () => {
+					if (this.native.getSnapshot().status === "ready") {
+						if (operation.op === "set") await this.native.set(operation.field, operation.value);
+						else await this.native.unset(operation.field);
+						this.syncNative();
+						return;
+					}
+					const revision = this.store.getSnapshot().revision;
+					try {
+						const response = await this.request(ENDPOINT, {
+							method: "POST",
+							headers: { "content-type": "application/json" },
+							body: JSON.stringify({
+								op: operation.op,
+								field: operation.field,
+								...operation.op === "set" ? { value: operation.value } : {},
+								...revision === void 0 ? {} : { expectedRevision: revision }
+							})
+						});
+						if (!response.ok) {
+							await this.reloadFallback();
+							return;
+						}
+						const view = decodeView(await response.json());
+						if (view !== void 0) this.accept(view);
+					} catch {
+						await this.reloadFallback();
+					}
+				});
+			}
+			enqueue(operation) {
+				if (this.disposed) return Promise.resolve();
+				const task = this.tail.then(async () => {
+					if (!this.disposed) await operation();
+				});
+				this.tail = task.catch(() => void 0);
+				return task;
+			}
+			syncNative() {
+				const snapshot = this.native.getSnapshot();
+				if (snapshot.status === "ready") this.store.set(snapshot);
+			}
+			async reloadFallback() {
+				try {
+					const response = await this.request(ENDPOINT, {
+						method: "GET",
+						cache: "no-store"
+					});
+					if (!response.ok) return;
+					const view = decodeView(await response.json());
+					if (view !== void 0) this.accept(view);
+				} catch {}
+			}
+			accept(view) {
+				this.store.set({
+					status: "ready",
+					value: view.value,
+					base: view.base,
+					user: view.user,
+					revision: view.revision,
+					writable: view.writable,
+					mode: "host"
+				});
+			}
+		};
+		//#endregion
+		//#region src/client/locales.ts
 		/**
 		* Dictionaries for the autonomous-loop graph surface (zh default, en mirror).
 		* @module @deepseek-ai/dsh-client-ui-autograph/locales
@@ -12429,7 +12595,7 @@ window.__ModuleLoader__.load({
 			"node.hint": "提示"
 		};
 		//#endregion
-		//#region lib/types/client/index.js
+		//#region src/client/index.ts
 		/** Dictionary namespace owned by this plugin. */
 		const NS = "autograph";
 		/** Required services: view slot, sessions binding, command Remote, locale. */
@@ -12455,7 +12621,8 @@ window.__ModuleLoader__.load({
 			}), "ui-autograph: dictionaries");
 			const t = ctx.locale.bind(NS);
 			const runtimeStatus = (0, _deepseek_ai_dsh_client_runtime_client.createSnapshotStore)(INITIAL_RUNTIME_STATUS);
-			const configScope = ctx.settingsScope.bind({ namespace: "ant-sword-runtime" });
+			const configScope = new RuntimeConfigScope(ctx.settingsScope.bind({ namespace: "ant-sword-runtime" }));
+			ctx.effect(() => () => configScope.dispose(), "ui-autograph: runtime config scope");
 			const refreshRuntimeStatus = async () => {
 				const response = await fetch("/ant-sword/runtime-status", { cache: "no-store" });
 				if (!response.ok) throw new Error(`runtime status request failed: ${response.status}`);
