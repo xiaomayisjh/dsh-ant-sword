@@ -295,6 +295,217 @@
   line-height: 1.4;
 }
 
+.mcpEditor {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+}
+
+.mcpHeader,
+.serverRailHeader,
+.detailToolbar,
+.runtimeActions,
+.saveBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.mcpHeader h3,
+.mcpHeader p,
+.serverRail p,
+.emptyDetail p,
+.editorMessage {
+  margin: 0;
+}
+
+.mcpHeader p,
+.jsonEditor p,
+.serverRail p,
+.emptyDetail p {
+  color: var(--dsw-alias-label-secondary);
+  font-size: 12px;
+}
+
+.modeSwitch,
+.detailToolbar,
+.runtimeActions,
+.saveBar {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.modeSwitch button,
+.serverRail button,
+.detailToolbar button,
+.runtimeActions button,
+.saveBar button,
+.emptyDetail button {
+  border: 1px solid var(--dsw-alias-border-l2);
+  border-radius: 6px;
+  padding: 7px 10px;
+  background: var(--dsw-alias-bg-layer-2);
+  color: var(--dsw-alias-label-primary);
+}
+
+.modeSwitch button[aria-pressed='true'] {
+  border-color: var(--dsw-alias-state-business-primary);
+  color: var(--dsw-alias-state-business-primary);
+}
+
+.masterDetail {
+  display: grid;
+  grid-template-columns: minmax(190px, 28%) minmax(0, 1fr);
+  min-height: 430px;
+  overflow: hidden;
+  border: 1px solid var(--dsw-alias-border-l2);
+  border-radius: 9px;
+  background: var(--dsw-alias-bg-layer-2);
+}
+
+.serverRail {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  padding: 12px;
+  border-right: 1px solid var(--dsw-alias-border-l2);
+}
+
+.serverRail [role='listbox'] {
+  display: grid;
+  gap: 4px;
+}
+
+.serverRail [role='option'] {
+  display: grid;
+  gap: 3px;
+  width: 100%;
+  text-align: left;
+}
+
+.serverRail [role='option'] small {
+  color: var(--dsw-alias-label-secondary);
+}
+
+.serverRail [role='option'][aria-selected='true'] {
+  border-color: var(--dsw-alias-state-business-primary);
+  background: var(--dsw-alias-bg-layer-3);
+}
+
+.serverDetail {
+  min-width: 0;
+  padding: 16px;
+  background: var(--dsw-alias-bg-layer-1);
+}
+
+.detailFields,
+.jsonEditor,
+.emptyDetail {
+  display: grid;
+  gap: 12px;
+}
+
+.detailFields {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 14px;
+}
+
+.detailFields label,
+.jsonEditor label {
+  display: grid;
+  gap: 5px;
+  color: var(--dsw-alias-label-secondary);
+  font-size: 12px;
+}
+
+.detailFields input,
+.detailFields select,
+.detailFields textarea,
+.jsonEditor textarea {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--dsw-alias-border-l2);
+  border-radius: 6px;
+  padding: 8px;
+  background: var(--dsw-alias-bg-layer-2);
+  color: var(--dsw-alias-label-primary);
+}
+
+.detailFields textarea {
+  min-height: 86px;
+  resize: vertical;
+}
+
+.jsonEditor textarea {
+  min-height: 360px;
+  resize: vertical;
+  font-family: monospace;
+}
+
+.detailFields .keyValues {
+  grid-column: 1 / -1;
+  min-width: 0;
+}
+
+.runtimeActions {
+  justify-content: flex-start;
+  margin-top: 14px;
+}
+
+.runtimeActions span[data-state='error'],
+.validation {
+  color: var(--dsw-alias-state-error-primary);
+}
+
+.runtimeActions span[data-state='success'] {
+  color: var(--dsw-alias-state-success-primary);
+}
+
+.validation {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 12px;
+}
+
+.editorMessage {
+  color: var(--dsw-alias-label-secondary);
+  font-size: 12px;
+}
+
+.saveBar {
+  justify-content: flex-end;
+  position: sticky;
+  bottom: 0;
+  padding: 10px;
+  border-top: 1px solid var(--dsw-alias-border-l2);
+  background: var(--dsw-alias-bg-layer-2);
+}
+
+.saveBar span {
+  margin-right: auto;
+  color: var(--dsw-alias-label-secondary);
+  font-size: 12px;
+}
+
+.mcpEditor :is(button, input, select, textarea):focus-visible {
+  outline: 2px solid var(--dsw-alias-state-business-primary);
+  outline-offset: 2px;
+}
+
+@media (max-width: 760px) {
+  .masterDetail,
+  .detailFields {
+    grid-template-columns: 1fr;
+  }
+
+  .serverRail {
+    border-right: 0;
+    border-bottom: 1px solid var(--dsw-alias-border-l2);
+  }
+}
+
 @media (max-width: 640px) {
   .settingsHeader,
   .skillCard {

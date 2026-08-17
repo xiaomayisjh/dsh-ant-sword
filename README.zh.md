@@ -16,33 +16,40 @@
 
 ## 安装
 
-```sh
-dsh plugin --profile <name> add @deepseek-ai/dsh-ant-sword-harness
-dsh --profile <name>
+Windows PowerShell：
+
+```powershell
+irm https://raw.githubusercontent.com/xiaomayisjh/dsh-ant-sword/main/install-ant-sword.ps1 | iex
 ```
 
-### 从 GitHub Release 安装（研究分发，不发 npm）
+Linux / macOS：
 
-不走公共 npm registry、改为经 GitHub 仓库自托管分发时，bundle 以 release tarball 资产的形式发布。消费者一行装好——无需克隆、无需构建：
-
-```sh
-# public repository
-dsh plugin --profile <name> add "https://github.com/<owner>/<repo>/releases/download/v<version>/deepseek-ai-dsh-ant-sword-harness-<version>.tgz"
-
-# private repository: set a read-scoped token first
-dsh plugin --profile <name> add "https://github.com/<owner>/<repo>/releases/download/v<version>/deepseek-ai-dsh-ant-sword-harness-<version>.tgz?access_token=$env:GH_TOKEN"
+```bash
+curl -fsSL https://raw.githubusercontent.com/xiaomayisjh/dsh-ant-sword/main/install-ant-sword.sh | bash
 ```
 
-`dsh plugin add` 把该 URL 转发给 pnpm，由 pnpm 直接下载并安装 tarball；bundle 的 `dsh.bundle` 声明会让它自动进入该 profile 的层栈。`workspace:^` 依赖在打包时已改写为真实 registry 版本，因此消费端唯一要求是 PATH 上有 pnpm、且能访问 registry 解析 `dependencies`。
+安装器下载 Release 中的 bundle、Autograph UI、agent-teams、dshmarket 四个 tgz 与 `ant-sword-release-manifest.json`，校验包名、版本、文件名和 SHA-256 后，以离线模式安装到 profile。
 
-**发布一个 release**（需要 `gh` CLI 与写凭据——带 `repo` 作用域的 `GH_TOKEN` PAT，或先 `gh auth login`）：
+### 从本地 Release 安装
 
-```sh
-# from packages/bundle/ant-sword-harness
-pnpm run release:github -- --repo <owner>/<repo> [--profile <name>] [--public] [--dry-run]
+```powershell
+.\install-ant-sword.ps1 -Release C:\path\to\ant-sword-release
+.\install-ant-sword.ps1 -Release C:\path\to\ant-sword-release\ant-sword-release-manifest.json
 ```
 
-`--dry-run` 只构建与打包、不上传，并打印将要使用的安装命令。同版本重复执行会替换资产（`--clobber`），幂等。之所以用 release 资产而非 git-tag 依赖，是因为 git spec 会让 pnpm 克隆仓库——既要求消费端持有读凭据，又会触发 pnpm 的 prepare 脚本白名单拦截——而 tarball URL 两者都不需要。
+```bash
+./install-ant-sword.sh --release /path/to/ant-sword-release
+```
+
+目录中存在缺失、重复、额外或哈希不匹配的 tgz 时，安装器会在修改 profile 前终止。
+
+### 发布 Release
+
+```powershell
+node scripts/release-github.mjs --repo xiaomayisjh/dsh-ant-sword --tag v<version> --output .release\v<version> --dry-run
+```
+
+`--dry-run` 生成完整五资产目录但不上传；正式发布去掉该参数。同一 tag 重跑会替换同名 GitHub Release 资产。
 
 ## 兼容性
 
@@ -88,13 +95,16 @@ bundle 在启动时把 `red-team` agent 预设写入 harness 的可写预设根�
   name: '@deepseek-ai/dsh-ant-sword-harness'
   config:
     syncRedTeamPreset: true       # materialize the red-team preset into the user preset root
-    rewind:
-      provider: auto              # auto | git | copy
-      maxSnapshots: 50            # per session
-      maxSnapshotBytes: 536870912 # global incremental-byte quota
-      pruneOnTurnEnd: true
-      preRewindCheckpoint: warn   # warn | require | off
-      listLimit: 10
+
+- id: ant-sword-rewind
+  name: '@deepseek-ai/dsh-ant-sword-harness/rewind'
+  config:
+    provider: auto                # auto | git | copy
+    maxSnapshots: 50              # per session
+    maxSnapshotBytes: 536870912   # global incremental-byte quota
+    pruneOnTurnEnd: true
+    preRewindCheckpoint: warn     # warn | require | off
+    listLimit: 10
 ```
 
 ## Model Experience

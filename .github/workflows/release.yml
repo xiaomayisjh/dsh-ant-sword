@@ -1,8 +1,5 @@
 name: release
 
-# Manually triggered release: build the bundle tarball from the committed
-# source (the repo carries lib/ so no build step is needed) and publish it as
-# a GitHub release asset. Run from the Actions tab.
 on:
   workflow_dispatch:
     inputs:
@@ -24,52 +21,19 @@ jobs:
         with:
           node-version: '24'
 
-      # The repo is a bare bundle without a lockfile; Node 24's built-in
-      # corepack reads the `packageManager` field and installs pnpm itself.
       - name: Enable pnpm via corepack
         shell: pwsh
         run: |
           corepack enable
           pnpm --version
 
-      - name: Resolve tag and package metadata
-        id: meta
-        shell: pwsh
-        run: |
-          $pkg = Get-Content package.json -Raw | ConvertFrom-Json
-          $version = $pkg.version
-          $tag = "${{ inputs.tag }}"
-          if ([string]::IsNullOrWhiteSpace($tag)) { $tag = "v$version" }
-          $unscoped = $pkg.name -replace '^@', '' -replace '/', '-'
-          $tarball = "$unscoped-$version.tgz"
-          "version=$version" >> $env:GITHUB_OUTPUT
-          "tag=$tag" >> $env:GITHUB_OUTPUT
-          "tarball=$tarball" >> $env:GITHUB_OUTPUT
-          Write-Output "releasing $($pkg.name)@$version as $tag ($tarball)"
-
-      - name: Pack the bundle
-        shell: pwsh
-        run: |
-          # The repo carries lib/ (committed build output), so pack directly.
-          New-Item -ItemType Directory -Force .release | Out-Null
-          pnpm pack --pack-destination .release
-          if (-not (Test-Path ".release/${{ steps.meta.outputs.tarball }}")) {
-            throw "pack produced no tarball at .release/${{ steps.meta.outputs.tarball }}"
-          }
-
-      - name: Publish release assets
+      - name: Publish complete offline release
         shell: pwsh
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          $tag = "${{ steps.meta.outputs.tag }}"
-          $tarball = ".release/${{ steps.meta.outputs.tarball }}"
-          $exists = $null -ne (gh release view $tag --json tagName 2>$null)
-          if (-not $exists) {
-            gh release create $tag --title "${{ steps.meta.outputs.version }}" --notes "Security-research bundle ${{ steps.meta.outputs.version }}. Install: dsh plugin add <this release's tarball URL>"
-          }
-          gh release upload $tag $tarball install-ant-sword.ps1 install-ant-sword.sh --clobber
-          $pkg = Get-Content package.json -Raw | ConvertFrom-Json
-          $url = "https://github.com/${{ github.repository }}/releases/download/$tag/${{ steps.meta.outputs.tarball }}"
-          Write-Output "Published. Install with:"
-          Write-Output "  dsh plugin --profile <name> add `"$url`""
+          $tag = "${{ inputs.tag }}"
+          $args = @('scripts/release-github.mjs', '--repo', '${{ github.repository }}', '--output', '.release')
+          if (-not [string]::IsNullOrWhiteSpace($tag)) { $args += @('--tag', $tag) }
+          node @args
+          if ($LASTEXITCODE -ne 0) { throw 'Release publication failed.' }

@@ -55,7 +55,7 @@ export function apply(ctx: Context): void {
   ctx.effect(() => {
     let disposed = false
     const refresh = (): void => {
-      void refreshRuntimeStatus().catch((error) => {
+      void refreshRuntimeStatus().catch((error: unknown) => {
         if (!disposed) ctx.logger.warn(error)
       })
     }

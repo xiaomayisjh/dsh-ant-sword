@@ -34,10 +34,11 @@ describe('dsh-ant-sword-harness bundle patch', () => {
     )
     const byId = new Map(rows.map(row => [row.id, row.name]))
     expect(byId.get('ant-sword-harness')).toBe('@deepseek-ai/dsh-ant-sword-harness')
+    expect(byId.get('ant-sword-rewind')).toBe('@deepseek-ai/dsh-ant-sword-harness/rewind')
     expect(byId.get('agent-teams')).toBe('@nanmicoder/dsh-agent-teams')
     expect(byId.get('ui-autograph')).toBe('@deepseek-ai/dsh-client-ui-autograph')
     expect(byId.get('dsh-market')).toBe('dshmarket')
-    expect(rows.length).toBe(4)
+    expect(rows.length).toBe(5)
   })
 })
 

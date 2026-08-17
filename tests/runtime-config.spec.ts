@@ -29,14 +29,14 @@ function settingsScope(initial: AntSwordRuntimeConfig): {
   return {
     scope: {
       get: () => current,
-      watch: callback => {
+      watch: (callback) => {
         watcher = callback
         return () => { watcher = undefined }
       },
       update: async () => undefined,
       replace: async () => undefined,
     },
-    publish: async next => {
+    publish: async (next) => {
       const previous = current
       current = next
       await watcher?.(next, previous)
@@ -45,28 +45,41 @@ function settingsScope(initial: AntSwordRuntimeConfig): {
 }
 
 function reconciler(name: string, change: RuntimePreparedChange): RuntimeReconciler {
-  return { name, prepare: vi.fn(() => change) }
+  return {
+    name,
+    prepare: vi.fn(() => {
+      return change
+    }),
+  }
 }
 
 describe('ant-sword runtime config', () => {
   it('rejects duplicate identities and invalid transport fields', () => {
-    expect(() => validateRuntimeConfig(config({
-      mcpServers: [
-        { serverName: 'same', transport: 'stdio', command: 'one' },
-        { serverName: 'same', transport: 'stdio', command: 'two' },
-      ],
-    }))).toThrow('duplicate')
+    expect(() => {
+      validateRuntimeConfig(config({
+        mcpServers: [
+          { serverName: 'same', transport: 'stdio', command: 'one' },
+          { serverName: 'same', transport: 'stdio', command: 'two' },
+        ],
+      }))
+    }).toThrow('duplicate')
 
-    expect(() => validateRuntimeConfig(config({
-      mcpServers: [{ serverName: 'remote', transport: 'streamable-http', url: 'file:///tmp/mcp' }],
-    }))).toThrow('http or https')
+    expect(() => {
+      validateRuntimeConfig(config({
+        mcpServers: [{ serverName: 'remote', transport: 'streamable-http', url: 'file:///tmp/mcp' }],
+      }))
+    }).toThrow('http or https')
   })
 
   it('enforces skill and rule text boundaries', () => {
-    expect(() => validateRuntimeConfig(config({ disabledSkills: ['../escape'] }))).toThrow('disabled skill')
-    expect(() => validateRuntimeConfig(config({
-      rules: [{ id: 'rule', title: 'Rule', enabled: true, order: 0, placement: 'after-persona', content: `bad\0frame` }],
-    }))).toThrow('NUL')
+    expect(() => {
+      validateRuntimeConfig(config({ disabledSkills: ['../escape'] }))
+    }).toThrow('disabled skill')
+    expect(() => {
+      validateRuntimeConfig(config({
+        rules: [{ id: 'rule', title: 'Rule', enabled: true, order: 0, placement: 'after-persona', content: 'bad\0frame' }],
+      }))
+    }).toThrow('NUL')
   })
 
   it('serializes committed settings generations', async () => {

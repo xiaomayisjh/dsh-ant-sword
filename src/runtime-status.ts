@@ -102,7 +102,8 @@ export function applyRuntimeStatus(
   probeMcp: (serverName: string) => Promise<{ toolCount: number; tools: readonly { name: string; description?: string }[] }>,
   isMcpMounted: (serverName: string) => boolean,
 ): void {
-  let disposed = false
+  const lifecycle = { disposed: false }
+  const isActive = (): boolean => !lifecycle.disposed
   let running = false
   const probes = new Map<string, McpProbeSnapshot>()
   let latest: RedTeamRuntimeStatus = {
@@ -112,7 +113,7 @@ export function applyRuntimeStatus(
   }
 
   const publish = async (): Promise<void> => {
-    if (running || disposed) return
+    if (running || lifecycle.disposed) return
     running = true
     let skills: RedTeamRuntimeStatus['skills']
     try {
@@ -122,7 +123,7 @@ export function applyRuntimeStatus(
     } catch (error) {
       skills = { available: 0, provider: skillProvider.name, state: 'error', error: String(error) }
     }
-    if (!disposed) {
+    if (isActive()) {
       latest = {
         checkedAt: Date.now(),
         skills,
@@ -137,7 +138,7 @@ export function applyRuntimeStatus(
   const timer = setInterval(() => { void publish() }, 5_000)
   timer.unref()
   ctx.effect(() => () => {
-    disposed = true
+    lifecycle.disposed = true
     clearInterval(timer)
   }, 'ant-sword-runtime-status: publisher')
   ctx.inject(['webServer'], (scope) => {

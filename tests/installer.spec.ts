@@ -12,8 +12,8 @@ const catalog: InstallComponent[] = [
 function runner(overrides: Partial<InstallRunner> = {}): InstallRunner {
   const installed = new Set<string>()
   return {
-    probe: vi.fn(async component => installed.has(component.id)),
-    command: vi.fn(async executable => { if (executable === 'install-dep') installed.add('dep'); return 'ok' }),
+    probe: vi.fn(async (component: InstallComponent) => installed.has(component.id)),
+    command: vi.fn(async (executable) => { if (executable === 'install-dep') installed.add('dep'); return 'ok' }),
     download: vi.fn(async () => { installed.add('target') }),
     verifySha256: vi.fn(async () => undefined),
     resolveOfficialDigest: vi.fn(async () => '00'),
@@ -44,13 +44,15 @@ describe('controlled installer', () => {
 
   it('installs a complete dependency plan and publishes success', async () => {
     const installRunner = runner()
+    const command = vi.spyOn(installRunner, 'command')
+    const download = vi.spyOn(installRunner, 'download')
     const manager = new InstallManager(installRunner, 'win32', 'x64', catalog, () => 0)
     const started = manager.start('target', 'domestic-first')
     const completed = await manager.wait(started.id)
     expect(completed?.phase).toBe('succeeded')
     expect(completed?.progress).toBe(1)
-    expect(installRunner.command).toHaveBeenCalledOnce()
-    expect(installRunner.download).toHaveBeenCalledOnce()
+    expect(command).toHaveBeenCalledOnce()
+    expect(download).toHaveBeenCalledOnce()
   })
 
   it('retries retryable download failures then succeeds', async () => {

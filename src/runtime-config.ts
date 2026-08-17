@@ -224,7 +224,9 @@ export class RuntimeController {
           committed.push(entry)
         }
       } catch (error) {
-        await Promise.allSettled(committed.reverse().map(entry => entry.change.rollback()))
+        await Promise.allSettled(committed.reverse().map(async (entry) => {
+          await entry.change.rollback()
+        }))
         throw error
       }
       this.current = cloneConfig(next)

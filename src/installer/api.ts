@@ -15,10 +15,10 @@ function sendJson(res: ServerResponse, status: number, value: unknown): void {
 }
 
 async function readJsonObject(req: IncomingMessage): Promise<Record<string, unknown>> {
-  const chunks: Buffer[] = []
+  const chunks: Uint8Array[] = []
   let size = 0
   for await (const chunk of req) {
-    const bytes = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk)
+    const bytes: Uint8Array = Buffer.from(chunk as Uint8Array)
     size += bytes.byteLength
     if (size > MAX_BODY_BYTES) throw new InstallerError(`request body exceeds ${String(MAX_BODY_BYTES)} bytes`, false)
     chunks.push(bytes)
@@ -47,17 +47,19 @@ export function applyInstallApi(ctx: Context): InstallManager {
   ctx.webServer.register({
     kind: 'exact',
     path: '/ant-sword/install/catalog',
-    handler: (_req, res) => sendJson(res, 200, {
-      components: INSTALL_CATALOG.map(component => ({
-        id: component.id,
-        label: component.label,
-        version: component.version,
-        dependencies: component.dependencies,
-        restartRequired: component.restartRequired ?? false,
-        supported: component.variants.some(variant => variant.platform === platform && variant.architectures.includes(architecture())),
-      })),
-      operations: manager.list(),
-    }),
+    handler: (_req, res) => {
+      sendJson(res, 200, {
+        components: INSTALL_CATALOG.map(component => ({
+          id: component.id,
+          label: component.label,
+          version: component.version,
+          dependencies: component.dependencies,
+          restartRequired: component.restartRequired ?? false,
+          supported: component.variants.some(variant => variant.platform === platform && variant.architectures.includes(architecture())),
+        })),
+        operations: manager.list(),
+      })
+    },
   })
 
   ctx.webServer.register({

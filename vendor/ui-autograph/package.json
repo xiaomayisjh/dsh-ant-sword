@@ -1,19 +1,33 @@
 {
-  "name": "@deepseek-ai/dsh-ant-sword-harness/ui-autograph",
-  "description": "Autonomous-loop graph surface for the red-team-auto blackboard",
-  "version": "0.1.0-rc.12",
+  "name": "@deepseek-ai/dsh-client-ui-autograph",
+  "description": "Autonomous-loop graph and MCP settings surface for the Ant Sword profile",
+  "version": "0.1.0-rc.13",
   "private": true,
   "type": "module",
   "main": "lib/index.js",
+  "types": "lib/types/index.d.ts",
   "exports": {
-    ".": "./lib/index.js",
-    "./client": "./lib/client.js",
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./invariant": {
+      "types": "./lib/types/invariant.d.ts",
+      "default": "./lib/invariant.js"
+    },
+    "./client": {
+      "types": "./lib/types/client/index.d.ts",
+      "default": "./lib/client.js"
+    },
+    "./src/*": "./src/*",
     "./package.json": "./package.json"
   },
   "files": [
     "lib/index.js",
+    "lib/invariant.js",
     "lib/client.js",
     "lib/client.js.map",
+    "lib/types/**/*.d.ts",
     "src/client"
   ],
   "dsh": {

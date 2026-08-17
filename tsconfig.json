@@ -1,54 +1,29 @@
 {
-  "extends": "../../../tsconfig.base.json",
   "compilerOptions": {
-    "rootDir": "src",
-    "outDir": "lib/types"
+    "target": "es2024",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "lib": ["es2024", "dom", "dom.iterable"],
+    "jsx": "react-jsx",
+    "strict": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowImportingTsExtensions": true,
+    "rewriteRelativeImportExtensions": true,
+    "verbatimModuleSyntax": false,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "types": ["node"],
+    "noEmit": true
   },
   "include": [
-    "src"
-  ],
-  "references": [
-    {
-      "path": "../../../vendor/cordis"
-    },
-    {
-      "path": "../../../vendor/schemastery"
-    },
-    {
-      "path": "../../skill/skill"
-    },
-    {
-      "path": "../../runtime-diagnostics/invariants"
-    },
-    {
-      "path": "../../core/session"
-    },
-    {
-      "path": "../../core/agent"
-    },
-    {
-      "path": "../../storage/storage-domain"
-    },
-    {
-      "path": "../../fs/fs"
-    },
-    {
-      "path": "../../core/tools"
-    },
-    {
-      "path": "../../llm/llm"
-    },
-    {
-      "path": "../../mcp/mcp-client"
-    },
-    {
-      "path": "../../session/session-projection"
-    },
-    {
-      "path": "../../interaction/commands"
-    },
-    {
-      "path": "../../util/home-paths"
-    }
+    "src",
+    "tests",
+    "vendor/ui-autograph/src",
+    "vendor/ui-autograph/tests"
   ]
 }

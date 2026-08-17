@@ -16,6 +16,7 @@ export interface RuntimeConfigValue {
 interface Props {
     configScope: SettingsScope<RuntimeConfigValue>;
 }
+/** Settings editor for MCP, Skill overlays, and runtime rules. */
 export declare function RuntimeConfigEditor({ configScope }: Props): import("react").JSX.Element;
 export {};
 //# sourceMappingURL=RuntimeConfigEditor.d.ts.map

@@ -9,13 +9,14 @@
  */
 
 import { useMemo, useState } from 'react'
-import { Background, Controls, MarkerType, MiniMap, ReactFlow } from '@xyflow/react'
+import { Background, Controls, MarkerType, ReactFlow } from '@xyflow/react'
 import type { Edge } from '@xyflow/react'
 import type { PropsLocale } from '@deepseek-ai/dsh-client-ui-slots'
 import type { SnapshotStore } from '@deepseek-ai/dsh-client-runtime/client'
 import type { ConvViewProps } from '@deepseek-ai/dsh-client-ui-conversation/client'
 import type { RedTeamRuntimeStatus } from './RuntimeStatus.tsx'
 import { RuntimeStatus } from './RuntimeStatus.tsx'
+import { GraphOverview } from './GraphOverview.tsx'
 import { BoardGraphNode, type BoardFlowNode } from './BoardGraphNode.tsx'
 import type { BoardNode, BoardNodeKind, BoardSnapshot } from './board.ts'
 import css from './AutoGraphView.module.css'
@@ -40,7 +41,8 @@ export interface AutoGraphViewProps extends AutoGraphActions {
 }
 
 const NODE_TYPES = { board: BoardGraphNode }
-const BOARD_KINDS: readonly BoardNodeKind[] = ['fact', 'intent', 'hint', 'goal']
+const BOARD_KINDS: readonly BoardNodeKind[] = ['goal', 'intent', 'fact', 'hint']
+const KIND_COLUMN = new Map(BOARD_KINDS.map((kind, index) => [kind, index]))
 const KIND_LABEL: Record<BoardNodeKind, string> = {
   fact: '事实',
   intent: '意图',
@@ -60,37 +62,47 @@ function edgeOpacity(node: BoardNode): number {
   return 0.52
 }
 
-/** Lay out measured blocks in cycle columns with enough room for wrapped labels. */
+/** Lay out each block kind in a fixed column and give sibling edges separate lanes. */
 export function toFlow(board: BoardSnapshot): { nodes: BoardFlowNode[]; edges: Edge[] } {
-  const byCycle = new Map<number, number>()
-  const nodes: BoardFlowNode[] = board.nodes.map((node: BoardNode) => {
-    const row = byCycle.get(node.cycle) ?? 0
-    byCycle.set(node.cycle, row + 1)
+  const byKind = new Map<BoardNodeKind, number>()
+  const sorted = [...board.nodes].sort((left, right) => left.cycle - right.cycle || left.time - right.time)
+  const nodes: BoardFlowNode[] = sorted.map((node: BoardNode) => {
+    const row = byKind.get(node.kind) ?? 0
+    byKind.set(node.kind, row + 1)
     return {
       id: node.id,
       type: 'board',
-      position: { x: node.cycle * 320, y: row * 156 },
+      position: { x: (KIND_COLUMN.get(node.kind) ?? 0) * 360, y: row * 156 },
+      zIndex: 2,
       data: { label: node.label, kind: node.kind, status: node.status ?? 'recorded' },
     }
   })
+  const siblingLane = new Map<string, number>()
   const edges: Edge[] = board.nodes
     .filter((node: BoardNode) => node.parentId !== undefined)
-    .map((node: BoardNode) => ({
-      id: `${node.parentId}->${node.id}`,
-      source: node.parentId as string,
-      target: node.id,
-      type: 'smoothstep',
-      animated: node.kind === 'intent' && (node.status === 'open' || node.status === 'claimed'),
-      style: {
-        stroke: KIND_EDGE_COLOR[node.kind],
-        strokeOpacity: edgeOpacity(node),
-        strokeWidth: node.status === 'open' || node.status === 'claimed' ? 2.5 : 1.75,
-      },
-      markerEnd: {
-        type: MarkerType.ArrowClosed,
-        color: KIND_EDGE_COLOR[node.kind],
-      },
-    }))
+    .map((node: BoardNode) => {
+      const parentId = node.parentId as string
+      const lane = siblingLane.get(parentId) ?? 0
+      siblingLane.set(parentId, lane + 1)
+      return {
+        id: `${parentId}->${node.id}`,
+        source: parentId,
+        target: node.id,
+        type: 'smoothstep',
+        zIndex: 1,
+        pathOptions: { borderRadius: 10, offset: 28 + lane * 14 },
+        animated: node.kind === 'intent' && (node.status === 'open' || node.status === 'claimed'),
+        style: {
+          stroke: KIND_EDGE_COLOR[node.kind],
+          strokeOpacity: edgeOpacity(node),
+          strokeWidth: node.status === 'open' || node.status === 'claimed' ? 2.5 : 1.75,
+        },
+        markerEnd: {
+          type: MarkerType.ArrowClosed,
+          color: KIND_EDGE_COLOR[node.kind],
+        },
+      }
+    })
   return { nodes, edges }
 }
 
@@ -159,6 +171,9 @@ export function AutoGraphView({ isAutoMode, runtimeStatus, onPause, onResume, on
         ))}
         <span className={css.filterCount}>{nodes.length}/{flow.nodes.length} 个图块</span>
       </fieldset>
+      <div className={css.columnLegend} aria-hidden="true">
+        {BOARD_KINDS.map(kind => <span key={kind} data-kind={kind}>{KIND_LABEL[kind]}</span>)}
+      </div>
       <div className={css.canvas}>
         {nodes.length === 0
           ? <div className={css.empty}>{t('panel.empty')}</div>
@@ -183,7 +198,7 @@ export function AutoGraphView({ isAutoMode, runtimeStatus, onPause, onResume, on
               proOptions={{ hideAttribution: true }}
             >
               <Background gap={20} size={1} />
-              <MiniMap pannable zoomable ariaLabel="黑板缩略图" />
+              <GraphOverview nodes={nodes} edges={edges} />
               <Controls showInteractive={false} />
             </ReactFlow>
           )}

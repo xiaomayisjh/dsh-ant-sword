@@ -24,10 +24,10 @@ function sendJson(res: ServerResponse, status: number, value: unknown): void {
 }
 
 async function readBody(req: IncomingMessage): Promise<Record<string, unknown>> {
-  const chunks: Buffer[] = []
+  const chunks: Uint8Array[] = []
   let bytes = 0
   for await (const chunk of req) {
-    const part = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk)
+    const part: Uint8Array = Buffer.from(chunk as Uint8Array)
     bytes += part.byteLength
     if (bytes > MAX_BODY_BYTES) throw new TypeError('skill request body is too large')
     chunks.push(part)
@@ -88,7 +88,10 @@ export function applySkillApi(ctx: Context, reconciler: SkillsReconciler, root =
   ctx.webServer.register({
     kind: 'exact', path: '/ant-sword/skills/upsert',
     handler: async (req, res) => {
-      if (req.method !== 'POST') return sendJson(res, 405, { error: 'method-not-allowed' })
+      if (req.method !== 'POST') {
+        sendJson(res, 405, { error: 'method-not-allowed' })
+        return
+      }
       try {
         const body = await readBody(req)
         if (Object.keys(body).some(key => !['name', 'description', 'whenToUse', 'modelInvocable', 'userInvocable', 'content'].includes(key))) throw new TypeError('unsupported skill field')
@@ -124,7 +127,10 @@ export function applySkillApi(ctx: Context, reconciler: SkillsReconciler, root =
   ctx.webServer.register({
     kind: 'exact', path: '/ant-sword/skills/delete',
     handler: async (req, res) => {
-      if (req.method !== 'POST') return sendJson(res, 405, { error: 'method-not-allowed' })
+      if (req.method !== 'POST') {
+        sendJson(res, 405, { error: 'method-not-allowed' })
+        return
+      }
       try {
         const body = await readBody(req)
         if (Object.keys(body).some(key => key !== 'name') || typeof body.name !== 'string' || !isSkillName(body.name)) throw new TypeError('invalid skill name')

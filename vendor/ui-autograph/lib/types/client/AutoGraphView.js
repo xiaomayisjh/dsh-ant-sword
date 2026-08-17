@@ -9,12 +9,14 @@ import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
  * blackboard (capability absent / not an autonomous run).
  */
 import { useMemo, useState } from 'react';
-import { Background, Controls, MarkerType, MiniMap, ReactFlow } from '@xyflow/react';
+import { Background, Controls, MarkerType, ReactFlow } from '@xyflow/react';
 import { RuntimeStatus } from "./RuntimeStatus.js";
+import { GraphOverview } from "./GraphOverview.js";
 import { BoardGraphNode } from "./BoardGraphNode.js";
 import css from './AutoGraphView.module.css';
 const NODE_TYPES = { board: BoardGraphNode };
-const BOARD_KINDS = ['fact', 'intent', 'hint', 'goal'];
+const BOARD_KINDS = ['goal', 'intent', 'fact', 'hint'];
+const KIND_COLUMN = new Map(BOARD_KINDS.map((kind, index) => [kind, index]));
 const KIND_LABEL = {
     fact: '事实',
     intent: '意图',
@@ -34,37 +36,47 @@ function edgeOpacity(node) {
         return 0.78;
     return 0.52;
 }
-/** Lay out measured blocks in cycle columns with enough room for wrapped labels. */
+/** Lay out each block kind in a fixed column and give sibling edges separate lanes. */
 export function toFlow(board) {
-    const byCycle = new Map();
-    const nodes = board.nodes.map((node) => {
-        const row = byCycle.get(node.cycle) ?? 0;
-        byCycle.set(node.cycle, row + 1);
+    const byKind = new Map();
+    const sorted = [...board.nodes].sort((left, right) => left.cycle - right.cycle || left.time - right.time);
+    const nodes = sorted.map((node) => {
+        const row = byKind.get(node.kind) ?? 0;
+        byKind.set(node.kind, row + 1);
         return {
             id: node.id,
             type: 'board',
-            position: { x: node.cycle * 320, y: row * 156 },
+            position: { x: (KIND_COLUMN.get(node.kind) ?? 0) * 360, y: row * 156 },
+            zIndex: 2,
             data: { label: node.label, kind: node.kind, status: node.status ?? 'recorded' },
         };
     });
+    const siblingLane = new Map();
     const edges = board.nodes
         .filter((node) => node.parentId !== undefined)
-        .map((node) => ({
-        id: `${node.parentId}->${node.id}`,
-        source: node.parentId,
-        target: node.id,
-        type: 'smoothstep',
-        animated: node.kind === 'intent' && (node.status === 'open' || node.status === 'claimed'),
-        style: {
-            stroke: KIND_EDGE_COLOR[node.kind],
-            strokeOpacity: edgeOpacity(node),
-            strokeWidth: node.status === 'open' || node.status === 'claimed' ? 2.5 : 1.75,
-        },
-        markerEnd: {
-            type: MarkerType.ArrowClosed,
-            color: KIND_EDGE_COLOR[node.kind],
-        },
-    }));
+        .map((node) => {
+        const parentId = node.parentId;
+        const lane = siblingLane.get(parentId) ?? 0;
+        siblingLane.set(parentId, lane + 1);
+        return {
+            id: `${parentId}->${node.id}`,
+            source: parentId,
+            target: node.id,
+            type: 'smoothstep',
+            zIndex: 1,
+            pathOptions: { borderRadius: 10, offset: 28 + lane * 14 },
+            animated: node.kind === 'intent' && (node.status === 'open' || node.status === 'claimed'),
+            style: {
+                stroke: KIND_EDGE_COLOR[node.kind],
+                strokeOpacity: edgeOpacity(node),
+                strokeWidth: node.status === 'open' || node.status === 'claimed' ? 2.5 : 1.75,
+            },
+            markerEnd: {
+                type: MarkerType.ArrowClosed,
+                color: KIND_EDGE_COLOR[node.kind],
+            },
+        };
+    });
     return { nodes, edges };
 }
 const EMPTY_BOARD = {
@@ -111,9 +123,9 @@ export function AutoGraphView({ isAutoMode, runtimeStatus, onPause, onResume, on
                                             next.delete(kind);
                                         return next;
                                     });
-                                } }), _jsx("span", { children: KIND_LABEL[kind] })] }, kind))), _jsxs("span", { className: css.filterCount, children: [nodes.length, "/", flow.nodes.length, " \u4E2A\u56FE\u5757"] })] }), _jsx("div", { className: css.canvas, children: nodes.length === 0
+                                } }), _jsx("span", { children: KIND_LABEL[kind] })] }, kind))), _jsxs("span", { className: css.filterCount, children: [nodes.length, "/", flow.nodes.length, " \u4E2A\u56FE\u5757"] })] }), _jsx("div", { className: css.columnLegend, "aria-hidden": "true", children: BOARD_KINDS.map(kind => _jsx("span", { "data-kind": kind, children: KIND_LABEL[kind] }, kind)) }), _jsx("div", { className: css.canvas, children: nodes.length === 0
                     ? _jsx("div", { className: css.empty, children: t('panel.empty') })
-                    : (_jsxs(ReactFlow, { nodes: nodes, edges: edges, nodeTypes: NODE_TYPES, fitView: true, fitViewOptions: { padding: 0.2, maxZoom: 1.25 }, minZoom: 0.15, maxZoom: 2.5, nodesDraggable: false, nodesConnectable: false, elementsSelectable: true, panOnDrag: true, panOnScroll: true, zoomOnPinch: true, zoomOnScroll: true, zoomOnDoubleClick: true, preventScrolling: true, proOptions: { hideAttribution: true }, children: [_jsx(Background, { gap: 20, size: 1 }), _jsx(MiniMap, { pannable: true, zoomable: true, ariaLabel: "\u9ED1\u677F\u7F29\u7565\u56FE" }), _jsx(Controls, { showInteractive: false })] })) }), _jsxs("div", { className: css.controls, children: [board.paused
+                    : (_jsxs(ReactFlow, { nodes: nodes, edges: edges, nodeTypes: NODE_TYPES, fitView: true, fitViewOptions: { padding: 0.2, maxZoom: 1.25 }, minZoom: 0.15, maxZoom: 2.5, nodesDraggable: false, nodesConnectable: false, elementsSelectable: true, panOnDrag: true, panOnScroll: true, zoomOnPinch: true, zoomOnScroll: true, zoomOnDoubleClick: true, preventScrolling: true, proOptions: { hideAttribution: true }, children: [_jsx(Background, { gap: 20, size: 1 }), _jsx(GraphOverview, { nodes: nodes, edges: edges }), _jsx(Controls, { showInteractive: false })] })) }), _jsxs("div", { className: css.controls, children: [board.paused
                         ? _jsx("button", { type: "button", disabled: pending, onClick: () => void run(onResume), children: t('control.resume') })
                         : _jsx("button", { type: "button", disabled: pending, onClick: () => void run(onPause), children: t('control.pause') }), _jsx("input", { type: "text", value: hint, placeholder: t('control.hintPlaceholder'), onChange: (e) => { setHint(e.target.value); }, onKeyDown: (e) => {
                             if (e.key === 'Enter' && hint.trim().length > 0) {

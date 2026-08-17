@@ -29,14 +29,15 @@
  */
 
 import { spawnSync } from 'node:child_process'
-import { existsSync, mkdtempSync, readFileSync, rmSync } from 'node:fs'
-import { tmpdir } from 'node:os'
+import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
 import { join, resolve, isAbsolute, basename } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { parseArgs } from 'node:util'
+import { RELEASE_MANIFEST, writeReleaseManifest } from './release-artifacts.mjs'
 
 const PACKAGE_DIR = resolve(fileURLToPath(new URL('..', import.meta.url)))
-const REPO_ROOT = resolve(PACKAGE_DIR, '..', '..', '..')
+const REPO_ROOT = PACKAGE_DIR
+const UI_PACKAGE_DIR = join(REPO_ROOT, 'vendor', 'ui-autograph')
 const API = 'https://api.github.com'
 
 /** Run a command, inheriting stdio, and throw on failure. */
@@ -199,31 +200,76 @@ async function uploadAsset(token, release, tarball) {
   return data
 }
 
-/** Build the bundle's lib/ via the repo's host build (idempotent). */
+/** Verify the committed standalone build outputs before packing. */
 function build() {
-  run('pnpm', ['exec', 'tsc', '-b', 'tsconfig.host.json'], { cwd: REPO_ROOT })
-  if (!existsSync(join(PACKAGE_DIR, 'lib', 'index.js'))) {
-    throw new Error('build produced no lib/index.js; the pack would ship no plugin entry')
+  const required = [
+    join(PACKAGE_DIR, 'lib', 'index.js'),
+    join(PACKAGE_DIR, 'lib', 'rewind-plugin.js'),
+    join(UI_PACKAGE_DIR, 'lib', 'index.js'),
+    join(UI_PACKAGE_DIR, 'lib', 'client.js'),
+  ]
+  const missing = required.filter((path) => !existsSync(path))
+  if (missing.length > 0) {
+    throw new Error(`committed build output is incomplete: ${missing.join(', ')}`)
   }
 }
 
-/** Pack the bundle into `destination` and return the tarball path. */
-function pack(destination) {
-  const out = capture('pnpm', ['--dir', PACKAGE_DIR, 'pack', '--pack-destination', destination])
-  const line = out.split('\n').map((l) => l.trim()).filter((l) => l.endsWith('.tgz')).pop()
+/** Pack one workspace package into `destination` and return the tarball path. */
+function packWorkspace(packageDir, destination) {
+  const out = capture('pnpm', ['--dir', packageDir, 'pack', '--pack-destination', destination])
+  const line = out.split('\n').map((value) => value.trim()).filter((value) => value.endsWith('.tgz')).pop()
   if (line === undefined) throw new Error(`pnpm pack printed no tarball path:\n${out}`)
   const tarball = isAbsolute(line) ? line : join(destination, line)
   if (!existsSync(tarball)) throw new Error(`pnpm pack produced no tarball at ${tarball}`)
   return tarball
 }
 
-/** The one-line install command for consumers. */
-function installCommand(repo, tag, tarballName, profile, isPrivate) {
-  const base = `https://github.com/${repo}/releases/download/${tag}/${tarballName}`
-  const url = isPrivate ? `${base}?access_token=$env:GH_TOKEN` : base
-  const profileFlag = profile === undefined ? ' --profile <name>' : ` --profile ${profile}`
-  const authNote = isPrivate ? '  # private repo: set $env:GH_TOKEN to a read PAT first' : ''
-  return `dsh plugin${profileFlag} add "${url}"${authNote}`
+/** Download one pinned registry package into the release; consumers never contact the registry. */
+function packRegistry(packageName, version, destination) {
+  const out = capture('npm', ['pack', `${packageName}@${version}`, '--pack-destination', destination], {
+    env: { ...process.env, npm_config_offline: 'false', PNPM_CONFIG_OFFLINE: 'false' },
+  })
+  const filename = out.split('\n').map((value) => value.trim()).filter((value) => value.endsWith('.tgz')).pop()
+  if (filename === undefined) throw new Error(`npm pack printed no tarball name for ${packageName}@${version}:\n${out}`)
+  const tarball = join(destination, basename(filename))
+  if (!existsSync(tarball)) throw new Error(`npm pack produced no tarball at ${tarball}`)
+  return tarball
+}
+
+function pinnedVersion(spec, packageName) {
+  const match = spec.match(/^(?:\^|~)?(\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?)$/)
+  if (match === null) throw new Error(`release dependency ${packageName} must use a single pinned-compatible version, got ${spec}`)
+  return match[1]
+}
+
+function prepareDestination(directory) {
+  mkdirSync(directory, { recursive: true })
+  for (const filename of readdirSync(directory)) {
+    if (filename.endsWith('.tgz') || filename === RELEASE_MANIFEST) rmSync(join(directory, filename), { force: true })
+  }
+}
+
+function makeOfflineTarball(tarball, destination, clearDependencies = false) {
+  const staging = join(destination, `.rewrite-${basename(tarball, '.tgz')}`)
+  rmSync(staging, { recursive: true, force: true })
+  mkdirSync(staging, { recursive: true })
+  run('tar', ['-xzf', tarball, '-C', staging])
+  const manifestPath = join(staging, 'package', 'package.json')
+  const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'))
+  if (clearDependencies) manifest.dependencies = {}
+  manifest.peerDependencies = {}
+  writeFileSync(manifestPath, `${JSON.stringify(manifest, undefined, 2)}\n`)
+  rmSync(tarball, { force: true })
+  run('tar', ['-czf', tarball, '-C', staging, 'package'])
+  rmSync(staging, { recursive: true, force: true })
+  return tarball
+}
+
+/** The one-line complete-profile installer for consumers. */
+function installCommand(repo, profile) {
+  const bootstrap = `https://raw.githubusercontent.com/${repo}/main/install-ant-sword.ps1`
+  if (profile === undefined || profile === 'web') return `irm "${bootstrap}" | iex`
+  return `& ([scriptblock]::Create((irm "${bootstrap}"))) -Profile "${profile}"`
 }
 
 async function main() {
@@ -235,59 +281,66 @@ async function main() {
       create: { type: 'boolean', default: false },
       private: { type: 'boolean', default: false },
       token: { type: 'string' },
+      output: { type: 'string' },
       'dry-run': { type: 'boolean', default: false },
     },
     allowPositionals: false,
   })
-  if (values.repo === undefined) throw new Error('usage: release-github.mjs --repo <owner>/<name> [--tag v<x.y.z>] [--profile <name>] [--create] [--private] [--token <pat>] [--dry-run]')
+  if (values.repo === undefined) throw new Error('usage: release-github.mjs --repo <owner>/<name> [--tag v<x.y.z>] [--profile <name>] [--output <directory>] [--create] [--private] [--token <pat>] [--dry-run]')
 
   const manifest = JSON.parse(readFileSync(join(PACKAGE_DIR, 'package.json'), 'utf8'))
+  const uiManifest = JSON.parse(readFileSync(join(UI_PACKAGE_DIR, 'package.json'), 'utf8'))
   const version = manifest.version
   const tag = values.tag ?? `v${version}`
-  const unscoped = manifest.name.replace('@', '').replace('/', '-')
-  const tarballName = `${unscoped}-${version}.tgz`
-  // --create defaults to private unless the caller says otherwise; a release
-  // into an existing repo inherits that repo's visibility.
+  const destination = resolve(values.output ?? join(REPO_ROOT, '.release', `ant-sword-${tag}`))
+  const agentTeamsVersion = pinnedVersion(manifest.dependencies['@nanmicoder/dsh-agent-teams'], '@nanmicoder/dsh-agent-teams')
+  const dshmarketVersion = pinnedVersion(manifest.dependencies.dshmarket, 'dshmarket')
   const isPrivate = values.private || values.create
 
   console.log(`release: building ${manifest.name}@${version} for ${values.repo} @ ${tag}`)
   build()
+  prepareDestination(destination)
 
-  const destination = mkdtempSync(join(tmpdir(), 'ant-sword-release-'))
-  try {
-    const tarball = pack(destination)
-    console.log(`release: packed ${tarballName}`)
+  const artifacts = [
+    { path: makeOfflineTarball(packWorkspace(PACKAGE_DIR, destination), destination, true), packageName: manifest.name, version },
+    { path: makeOfflineTarball(packWorkspace(UI_PACKAGE_DIR, destination), destination), packageName: uiManifest.name, version: uiManifest.version },
+    { path: makeOfflineTarball(packRegistry('@nanmicoder/dsh-agent-teams', agentTeamsVersion, destination), destination), packageName: '@nanmicoder/dsh-agent-teams', version: agentTeamsVersion },
+    { path: makeOfflineTarball(packRegistry('dshmarket', dshmarketVersion, destination), destination), packageName: 'dshmarket', version: dshmarketVersion },
+  ]
+  const manifestPath = writeReleaseManifest(destination, artifacts)
+  const assets = [...artifacts.map((artifact) => artifact.path), manifestPath]
+  console.log(`release: wrote ${assets.length} assets to ${destination}`)
 
-    if (values['dry-run']) {
-      console.log(`release: dry-run — would release ${values.repo} @ ${tag} with ${tarballName}`)
-      console.log(`release: install with: ${installCommand(values.repo, tag, tarballName, values.profile, isPrivate)}`)
-      return
-    }
-
-    const token = resolveToken(values.token)
-    requireToken(token)
-
-    await ensureRepo(token, values.repo, values.create, isPrivate)
-    await ensureDefaultBranch(token, values.repo)
-    let release = await findRelease(token, values.repo, tag)
-    if (release === undefined) {
-      release = await createRelease(token, values.repo, tag, manifest.name, version)
-      console.log(`release: created release ${tag}`)
-    } else {
-      console.log(`release: reusing existing release ${tag}`)
-    }
-    release._repo = values.repo
-    const asset = await uploadAsset(token, release, tarball)
-    console.log(`release: uploaded ${asset.name} (${asset.size} bytes)`)
-
-    // Read back repo visibility so the printed command matches reality.
-    const repoInfo = await api(token, 'GET', `/repos/${values.repo}`)
-    console.log('')
-    console.log('Install with one line:')
-    console.log(`  ${installCommand(values.repo, tag, tarballName, values.profile, repoInfo.private)}`)
-  } finally {
-    rmSync(destination, { recursive: true, force: true })
+  if (values['dry-run']) {
+    console.log(`release: dry-run — built ${values.repo} @ ${tag} without network upload`)
+    console.log(`release: install on Windows with: .\\install-ant-sword.ps1 -Release "${destination}"`)
+    console.log(`release: install on Linux/macOS with: ./install-ant-sword.sh --release "${destination}"`)
+    return
   }
+
+  const token = resolveToken(values.token)
+  requireToken(token)
+
+  await ensureRepo(token, values.repo, values.create, isPrivate)
+  await ensureDefaultBranch(token, values.repo)
+  let release = await findRelease(token, values.repo, tag)
+  if (release === undefined) {
+    release = await createRelease(token, values.repo, tag, manifest.name, version)
+    console.log(`release: created release ${tag}`)
+  } else {
+    console.log(`release: reusing existing release ${tag}`)
+  }
+  release._repo = values.repo
+  for (const path of assets) {
+    const asset = await uploadAsset(token, release, path)
+    console.log(`release: uploaded ${asset.name} (${asset.size} bytes)`)
+  }
+
+  console.log('')
+  console.log('Install with one line (Windows PowerShell):')
+  console.log(`  ${installCommand(values.repo, values.profile)}`)
+  console.log('Install with one line (Linux/macOS):')
+  console.log(`  curl -fsSL "https://raw.githubusercontent.com/${values.repo}/main/install-ant-sword.sh" | bash`)
 }
 
 main().catch((error) => { console.error(`release: ${error.message}`); process.exit(1) })

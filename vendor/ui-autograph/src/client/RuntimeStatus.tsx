@@ -62,7 +62,7 @@ export const INITIAL_RUNTIME_STATUS: RedTeamRuntimeStatus = {
     availability: 'missing' as const,
     mounted: false,
     target: target as string,
-    ...(installCommand === undefined ? {} : { installCommand: installCommand as string }),
+    ...(installCommand === undefined ? {} : { installCommand }),
     installHint: installHint as string,
   })),
 }
@@ -111,7 +111,10 @@ async function requestInstall(path: string, body: object): Promise<void> {
 }
 
 export function RuntimeStatus({ runtimeStatus, configScope, compact = false }: RuntimeStatusProps) {
-  const snapshot = useSyncExternalStore(runtimeStatus.subscribe, runtimeStatus.getSnapshot)
+  const snapshot = useSyncExternalStore(
+    onStoreChange => runtimeStatus.subscribe(onStoreChange),
+    () => runtimeStatus.getSnapshot(),
+  )
   const [installView, setInstallView] = useState<InstallView>(EMPTY_INSTALL_VIEW)
   const [sourcePolicy, setSourcePolicy] = useState<SourcePolicy>('auto')
   const [installError, setInstallError] = useState<string>()
@@ -186,7 +189,7 @@ export function RuntimeStatus({ runtimeStatus, configScope, compact = false }: R
       <div className={css.installToolbar}>
         <label>
           下载源
-          <select value={sourcePolicy} onChange={event => setSourcePolicy(event.target.value as SourcePolicy)}>
+          <select value={sourcePolicy} onChange={(event) => { setSourcePolicy(event.target.value as SourcePolicy) }}>
             <option value="auto">自动</option>
             <option value="domestic-first">国内优先</option>
             <option value="official-first">官方优先</option>

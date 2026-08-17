@@ -1,8 +1,39 @@
 /** MCP runtime configuration JSON conversion for the WebUI editor. */
-function normalizeImportedMcp(serverName, value) {
+/** A user-actionable import failure that leaves the visual draft unchanged. */
+export class McpJsonError extends Error {
+    name = 'McpJsonError';
+}
+function fail(message) {
+    throw new McpJsonError(`${message} 请修正 JSON 后重试；当前可视化配置不会被覆盖。`);
+}
+function stringRecord(value, field, serverName) {
+    if (value === undefined)
+        return {};
     if (value === null || typeof value !== 'object' || Array.isArray(value))
-        throw new TypeError(`MCP "${serverName}" must be an object`);
+        fail(`MCP“${serverName}”的 ${field} 必须是键值对象。`);
+    const entries = Object.entries(value);
+    if (entries.some(([, item]) => typeof item !== 'string'))
+        fail(`MCP“${serverName}”的 ${field} 值必须全部是字符串。`);
+    return Object.fromEntries(entries);
+}
+function stringArray(value, serverName) {
+    if (value === undefined)
+        return [];
+    if (!Array.isArray(value) || value.some(item => typeof item !== 'string'))
+        fail(`MCP“${serverName}”的 args 必须是字符串数组。`);
+    return value;
+}
+function normalizeImportedMcp(fallbackName, value) {
+    if (value === null || typeof value !== 'object' || Array.isArray(value))
+        fail(`MCP“${fallbackName}”必须是对象。`);
     const input = value;
+    const serverName = typeof input.serverName === 'string'
+        ? input.serverName
+        : typeof input.name === 'string'
+            ? input.name
+            : fallbackName;
+    if (serverName.trim() === '')
+        fail('每个 MCP 都需要非空名称。');
     const requested = input.transport ?? input.type;
     const transport = requested === 'sse'
         ? 'sse'
@@ -12,38 +43,62 @@ function normalizeImportedMcp(serverName, value) {
                 ? 'stdio'
                 : typeof input.url === 'string'
                     ? 'streamable-http'
-                    : (() => { throw new TypeError(`MCP "${serverName}" requires command or url`); })();
+                    : fail(`MCP“${serverName}”需要 command（stdio）或 url（HTTP）。`);
+    if (input.enabled !== undefined && typeof input.enabled !== 'boolean')
+        fail(`MCP“${serverName}”的 enabled 必须是布尔值。`);
+    if (input.toolCallTimeoutMs !== undefined && (typeof input.toolCallTimeoutMs !== 'number' || input.toolCallTimeoutMs <= 0)) {
+        fail(`MCP“${serverName}”的 toolCallTimeoutMs 必须是正数。`);
+    }
     const common = {
         serverName,
         enabled: input.enabled ?? true,
         transport,
         toolCallTimeoutMs: input.toolCallTimeoutMs ?? 60_000,
     };
-    return transport === 'stdio'
-        ? { ...common, command: input.command ?? '', args: input.args ?? [], cwd: input.cwd ?? '', env: input.env ?? {} }
-        : { ...common, url: input.url ?? '', headers: input.headers ?? {} };
+    if (transport === 'stdio') {
+        if (input.command !== undefined && typeof input.command !== 'string')
+            fail(`MCP“${serverName}”的 command 必须是字符串。`);
+        if (input.cwd !== undefined && typeof input.cwd !== 'string')
+            fail(`MCP“${serverName}”的 cwd 必须是字符串。`);
+        return {
+            ...common,
+            command: input.command ?? '',
+            args: stringArray(input.args, serverName),
+            cwd: input.cwd ?? '',
+            env: stringRecord(input.env, 'env', serverName),
+        };
+    }
+    if (input.url !== undefined && typeof input.url !== 'string')
+        fail(`MCP“${serverName}”的 url 必须是字符串。`);
+    return { ...common, url: input.url ?? '', headers: stringRecord(input.headers, 'headers', serverName) };
+}
+function normalizeArray(values) {
+    return values.map((value, index) => normalizeImportedMcp(`server-${index + 1}`, value));
 }
 /**
- * Parse native arrays, named `mcpServers` objects, and Claude-style catalogs.
+ * Parse native arrays, named `mcpServers` objects or arrays, and Claude-style catalogs.
  * @param source - JSON text pasted into the editor.
  * @returns Normalized runtime MCP entries.
  */
 export function parseMcpJson(source) {
-    const parsed = JSON.parse(source);
-    if (Array.isArray(parsed)) {
-        return parsed.map((value, index) => {
-            const serverName = value !== null && typeof value === 'object' && typeof value.serverName === 'string'
-                ? value.serverName
-                : `server-${index + 1}`;
-            return normalizeImportedMcp(serverName, value);
-        });
+    let parsed;
+    try {
+        parsed = JSON.parse(source);
     }
+    catch (error) {
+        const detail = error instanceof SyntaxError ? error.message : String(error);
+        fail(`JSON 解析失败：${detail}`);
+    }
+    if (Array.isArray(parsed))
+        return normalizeArray(parsed);
     if (parsed === null || typeof parsed !== 'object')
-        throw new TypeError('MCP JSON must be an array or object');
+        fail('MCP JSON 顶层必须是对象或数组。');
     const root = parsed;
     const catalog = root.mcpServers ?? parsed;
-    if (typeof catalog !== 'object' || Array.isArray(catalog))
-        throw new TypeError('mcpServers must be an object');
+    if (Array.isArray(catalog))
+        return normalizeArray(catalog);
+    if (typeof catalog !== 'object')
+        fail('mcpServers 必须是命名对象或数组。');
     return Object.entries(catalog).map(([serverName, value]) => normalizeImportedMcp(serverName, value));
 }
 /**

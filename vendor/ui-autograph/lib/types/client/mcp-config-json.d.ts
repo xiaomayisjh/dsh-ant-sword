@@ -12,8 +12,12 @@ export interface McpConfig {
     headers?: Record<string, string>;
     toolCallTimeoutMs?: number;
 }
+/** A user-actionable import failure that leaves the visual draft unchanged. */
+export declare class McpJsonError extends Error {
+    readonly name = "McpJsonError";
+}
 /**
- * Parse native arrays, named `mcpServers` objects, and Claude-style catalogs.
+ * Parse native arrays, named `mcpServers` objects or arrays, and Claude-style catalogs.
  * @param source - JSON text pasted into the editor.
  * @returns Normalized runtime MCP entries.
  */

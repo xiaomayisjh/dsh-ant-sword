@@ -28,9 +28,9 @@ window.__ModuleLoader__.load({
 		}) : target, mod));
 		//#endregion
 		let _deepseek_ai_dsh_client_runtime_client = require("@deepseek-ai/dsh-client-runtime/client");
+		let react_jsx_runtime = require("react/jsx-runtime");
 		let react = require("react");
 		react = __toESM(react, 1);
-		let react_jsx_runtime = require("react/jsx-runtime");
 		require("react-dom");
 		//#region ../../../node_modules/.pnpm/classcat@5.0.5/node_modules/classcat/index.js
 		function cc(names) {
@@ -9906,6 +9906,43 @@ window.__ModuleLoader__.load({
 		*```
 		*/
 		var index = fixedForwardRef(ReactFlow);
+		const viewportSelector = (state) => ({
+			x: state.transform[0],
+			y: state.transform[1],
+			zoom: state.transform[2]
+		});
+		/**
+		* The `useViewport` hook is a convenient way to read the current state of the
+		* {@link Viewport} in a component. Components that use this hook
+		* will re-render **whenever the viewport changes**.
+		*
+		* @public
+		* @returns The current viewport.
+		*
+		* @example
+		*
+		*```jsx
+		*import { useViewport } from '@xyflow/react';
+		*
+		*export default function ViewportDisplay() {
+		*  const { x, y, zoom } = useViewport();
+		*
+		*  return (
+		*    <div>
+		*      <p>
+		*        The viewport is currently at ({x}, {y}) and zoomed to {zoom}.
+		*      </p>
+		*    </div>
+		*  );
+		*}
+		*```
+		*
+		* @remarks This hook can only be used in a component that is a child of a
+		*{@link ReactFlowProvider} or a {@link ReactFlow} component.
+		*/
+		function useViewport() {
+			return useStore(viewportSelector, shallow$1);
+		}
 		errorMessages["error014"]();
 		function LinePattern({ dimensions, lineWidth, variant, className }) {
 			return (0, react_jsx_runtime.jsx)("path", {
@@ -10441,27 +10478,7 @@ window.__ModuleLoader__.load({
 			});
 		}
 		MiniMapComponent.displayName = "MiniMap";
-		/**
-		* The `<MiniMap />` component can be used to render an overview of your flow. It
-		* renders each node as an SVG element and visualizes where the current viewport is
-		* in relation to the rest of the flow.
-		*
-		* @public
-		* @example
-		*
-		* ```jsx
-		*import { ReactFlow, MiniMap } from '@xyflow/react';
-		*
-		*export default function Flow() {
-		*  return (
-		*    <ReactFlow nodes={[...]} edges={[...]}>
-		*      <MiniMap nodeStrokeWidth={3} />
-		*    </ReactFlow>
-		*  );
-		*}
-		*```
-		*/
-		const MiniMap = (0, react.memo)(MiniMapComponent);
+		(0, react.memo)(MiniMapComponent);
 		const scaleSelector = (calculateScale) => (store) => calculateScale ? `${Math.max(1 / store.transform[2], 1)}` : void 0;
 		const defaultPositions = {
 			[ResizeControlVariant.Line]: "right",
@@ -10615,77 +10632,80 @@ window.__ModuleLoader__.load({
 		}
 		(0, react.memo)(ResizeControl);
 		//#endregion
-		//#region \0dsh-css:C:\Users\Admin\Desktop\ant-dsh\packages\client\ui-autograph\src\client\RuntimeStatus.module.css.mjs
-		const css$1 = ".pBCICa_rail{border-bottom:1px solid var(--dsw-alias-border-l2);background:color-mix(in srgb, var(--dsw-alias-bg-layer-2) 88%, transparent);align-items:center;gap:10px;padding:7px 16px;font-size:11px;display:flex}.pBCICa_metric{color:var(--dsw-alias-label-secondary)}.pBCICa_metric strong{color:var(--dsw-alias-label-primary)}.pBCICa_warning{color:var(--dsw-alias-state-warn-label);margin-left:auto}.pBCICa_settings{color:var(--dsw-alias-label-primary);--dsh-scrollbar-thumb:var(--dsw-alias-scrollbar-bg-l2);--dsh-scrollbar-thumb-hover:var(--dsw-alias-scrollbar-hover-l2);flex-direction:column;gap:14px;display:flex}.pBCICa_settingsHeader{justify-content:space-between;align-items:flex-start;gap:20px;display:flex}.pBCICa_settingsHeader h2{margin:0 0 6px;font-size:18px}.pBCICa_settingsHeader p,.pBCICa_card p{color:var(--dsw-alias-label-secondary);margin:0;font-size:12px;line-height:1.5}.pBCICa_summary{gap:8px;display:flex}.pBCICa_summary span,.pBCICa_cardTitle span{background:var(--dsw-alias-bg-layer-2);white-space:nowrap;border-radius:999px;padding:3px 8px;font-size:11px}.pBCICa_skillCard,.pBCICa_card{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-3);border-radius:8px;padding:12px}.pBCICa_skillCard{grid-template-columns:auto auto 1fr;align-items:center;gap:12px;display:grid}.pBCICa_skillCard small{color:var(--dsw-alias-label-secondary);text-align:right}.pBCICa_grid{grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;display:grid}.pBCICa_card{flex-direction:column;gap:9px;display:flex}.pBCICa_card[data-state=missing]{border-color:var(--dsw-alias-state-warn-primary)}.pBCICa_card[data-state=available],.pBCICa_card[data-state=configured]{border-color:var(--dsw-alias-state-success-primary)}.pBCICa_cardTitle{justify-content:space-between;align-items:center;display:flex}.pBCICa_card code,.pBCICa_card pre{background:var(--dsw-alias-bg-layer-1);color:var(--dsw-alias-label-primary);white-space:pre-wrap;word-break:break-all;border-radius:5px;margin:0;padding:7px;font-size:11px;overflow-x:auto}.pBCICa_installToolbar,.pBCICa_installActions{flex-wrap:wrap;align-items:center;gap:8px;display:flex}.pBCICa_installToolbar label{color:var(--dsw-alias-label-secondary);align-items:center;gap:8px;font-size:12px;display:flex}.pBCICa_installToolbar select,.pBCICa_installActions button{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-2);color:var(--dsw-alias-label-primary);border-radius:6px;padding:6px 9px}.pBCICa_installActions button:focus-visible,.pBCICa_installToolbar select:focus-visible{outline:2px solid var(--dsw-alias-state-business-primary);outline-offset:2px}.pBCICa_installActions button:disabled{opacity:.5}.pBCICa_installError{color:var(--dsw-alias-state-error-primary);font-size:12px}.pBCICa_installProgress{color:var(--dsw-alias-label-secondary);flex:100%;gap:4px;font-size:11px;display:grid}.pBCICa_installProgress progress{width:100%;accent-color:var(--dsw-alias-state-business-primary)}.pBCICa_configEditor{border-top:1px solid var(--dsw-alias-border-l2);gap:12px;padding-top:14px;display:grid}.pBCICa_tabs,.pBCICa_editorActions{flex-wrap:wrap;gap:8px;display:flex}.pBCICa_tabs button,.pBCICa_editorActions button,.pBCICa_editorList fieldset>button{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-2);color:var(--dsw-alias-label-primary);border-radius:6px;padding:6px 10px}.pBCICa_tabs button[data-active=true]{border-color:var(--dsw-alias-state-business-primary);color:var(--dsw-alias-state-business-primary)}.pBCICa_editorList{gap:10px;display:grid}.pBCICa_editorList fieldset{border:1px solid var(--dsw-alias-border-l2);border-radius:8px;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;min-width:0;display:grid}.pBCICa_editorList label{color:var(--dsw-alias-label-secondary);gap:5px;font-size:11px;display:grid}.pBCICa_editorList input,.pBCICa_editorList select,.pBCICa_editorList textarea{box-sizing:border-box;border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-1);width:100%;min-width:0;color:var(--dsw-alias-label-primary);border-radius:6px;padding:7px}.pBCICa_editorList textarea{resize:vertical;min-height:84px}.pBCICa_keyValues{gap:5px;display:grid}.pBCICa_keyValues>div{grid-template-columns:minmax(80px,1fr) minmax(100px,2fr) auto;gap:5px;display:grid}.pBCICa_keyValues button{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-2);color:var(--dsw-alias-label-primary);border-radius:5px}.pBCICa_editorList :is(input,select,textarea,button):focus-visible,.pBCICa_tabs button:focus-visible{outline:2px solid var(--dsw-alias-state-business-primary);outline-offset:2px}.pBCICa_card details,.pBCICa_editorList details{color:var(--dsw-alias-label-secondary);font-size:11px}.pBCICa_card details ul,.pBCICa_editorList details ul{gap:6px;max-height:220px;padding-left:18px;display:grid;overflow:auto}.pBCICa_card details li,.pBCICa_editorList details li{gap:3px;display:grid}.pBCICa_card details small,.pBCICa_editorList details small{line-height:1.4}@media (width<=640px){.pBCICa_settingsHeader,.pBCICa_skillCard{flex-direction:column;grid-template-columns:1fr}.pBCICa_skillCard small{text-align:left}}";
-		const tagId$1 = "@deepseek-ai/dsh-client-ui-autograph/RuntimeStatus.module.css";
-		if (typeof document !== "undefined" && document.querySelector("style[data-plugin-css=" + JSON.stringify(tagId$1) + "]") === null) {
-			const tag = document.createElement("style");
-			tag.dataset.plugin = "@deepseek-ai/dsh-client-ui-autograph";
-			tag.dataset.pluginCss = tagId$1;
-			tag.textContent = css$1;
-			document.head.appendChild(tag);
-		}
-		var RuntimeStatus_module_css_default = {
-			"installProgress": "pBCICa_installProgress",
-			"installError": "pBCICa_installError",
-			"card": "pBCICa_card",
-			"editorList": "pBCICa_editorList",
-			"settingsHeader": "pBCICa_settingsHeader",
-			"settings": "pBCICa_settings",
-			"rail": "pBCICa_rail",
-			"summary": "pBCICa_summary",
-			"skillCard": "pBCICa_skillCard",
-			"configEditor": "pBCICa_configEditor",
-			"installToolbar": "pBCICa_installToolbar",
-			"metric": "pBCICa_metric",
-			"grid": "pBCICa_grid",
-			"keyValues": "pBCICa_keyValues",
-			"editorActions": "pBCICa_editorActions",
-			"tabs": "pBCICa_tabs",
-			"installActions": "pBCICa_installActions",
-			"cardTitle": "pBCICa_cardTitle",
-			"warning": "pBCICa_warning"
+		//#region lib/types/client/mcp-config-json.js
+		/** MCP runtime configuration JSON conversion for the WebUI editor. */
+		/** A user-actionable import failure that leaves the visual draft unchanged. */
+		var McpJsonError = class extends Error {
+			name = "McpJsonError";
 		};
-		//#endregion
-		//#region src/client/mcp-config-json.ts
-		function normalizeImportedMcp(serverName, value) {
-			if (value === null || typeof value !== "object" || Array.isArray(value)) throw new TypeError(`MCP "${serverName}" must be an object`);
+		function fail(message) {
+			throw new McpJsonError(`${message} 请修正 JSON 后重试；当前可视化配置不会被覆盖。`);
+		}
+		function stringRecord(value, field, serverName) {
+			if (value === void 0) return {};
+			if (value === null || typeof value !== "object" || Array.isArray(value)) fail(`MCP“${serverName}”的 ${field} 必须是键值对象。`);
+			const entries = Object.entries(value);
+			if (entries.some(([, item]) => typeof item !== "string")) fail(`MCP“${serverName}”的 ${field} 值必须全部是字符串。`);
+			return Object.fromEntries(entries);
+		}
+		function stringArray(value, serverName) {
+			if (value === void 0) return [];
+			if (!Array.isArray(value) || value.some((item) => typeof item !== "string")) fail(`MCP“${serverName}”的 args 必须是字符串数组。`);
+			return value;
+		}
+		function normalizeImportedMcp(fallbackName, value) {
+			if (value === null || typeof value !== "object" || Array.isArray(value)) fail(`MCP“${fallbackName}”必须是对象。`);
 			const input = value;
+			const serverName = typeof input.serverName === "string" ? input.serverName : typeof input.name === "string" ? input.name : fallbackName;
+			if (serverName.trim() === "") fail("每个 MCP 都需要非空名称。");
 			const requested = input.transport ?? input.type;
-			const transport = requested === "sse" ? "sse" : requested === "streamable-http" || requested === "http" ? "streamable-http" : requested === "stdio" || typeof input.command === "string" ? "stdio" : typeof input.url === "string" ? "streamable-http" : (() => {
-				throw new TypeError(`MCP "${serverName}" requires command or url`);
-			})();
+			const transport = requested === "sse" ? "sse" : requested === "streamable-http" || requested === "http" ? "streamable-http" : requested === "stdio" || typeof input.command === "string" ? "stdio" : typeof input.url === "string" ? "streamable-http" : fail(`MCP“${serverName}”需要 command（stdio）或 url（HTTP）。`);
+			if (input.enabled !== void 0 && typeof input.enabled !== "boolean") fail(`MCP“${serverName}”的 enabled 必须是布尔值。`);
+			if (input.toolCallTimeoutMs !== void 0 && (typeof input.toolCallTimeoutMs !== "number" || input.toolCallTimeoutMs <= 0)) fail(`MCP“${serverName}”的 toolCallTimeoutMs 必须是正数。`);
 			const common = {
 				serverName,
 				enabled: input.enabled ?? true,
 				transport,
 				toolCallTimeoutMs: input.toolCallTimeoutMs ?? 6e4
 			};
-			return transport === "stdio" ? {
-				...common,
-				command: input.command ?? "",
-				args: input.args ?? [],
-				cwd: input.cwd ?? "",
-				env: input.env ?? {}
-			} : {
+			if (transport === "stdio") {
+				if (input.command !== void 0 && typeof input.command !== "string") fail(`MCP“${serverName}”的 command 必须是字符串。`);
+				if (input.cwd !== void 0 && typeof input.cwd !== "string") fail(`MCP“${serverName}”的 cwd 必须是字符串。`);
+				return {
+					...common,
+					command: input.command ?? "",
+					args: stringArray(input.args, serverName),
+					cwd: input.cwd ?? "",
+					env: stringRecord(input.env, "env", serverName)
+				};
+			}
+			if (input.url !== void 0 && typeof input.url !== "string") fail(`MCP“${serverName}”的 url 必须是字符串。`);
+			return {
 				...common,
 				url: input.url ?? "",
-				headers: input.headers ?? {}
+				headers: stringRecord(input.headers, "headers", serverName)
 			};
 		}
+		function normalizeArray(values) {
+			return values.map((value, index) => normalizeImportedMcp(`server-${index + 1}`, value));
+		}
 		/**
-		* Parse native arrays, named `mcpServers` objects, and Claude-style catalogs.
+		* Parse native arrays, named `mcpServers` objects or arrays, and Claude-style catalogs.
 		* @param source - JSON text pasted into the editor.
 		* @returns Normalized runtime MCP entries.
 		*/
 		function parseMcpJson(source) {
-			const parsed = JSON.parse(source);
-			if (Array.isArray(parsed)) return parsed.map((value, index) => {
-				return normalizeImportedMcp(value !== null && typeof value === "object" && typeof value.serverName === "string" ? value.serverName : `server-${index + 1}`, value);
-			});
-			if (parsed === null || typeof parsed !== "object") throw new TypeError("MCP JSON must be an array or object");
+			let parsed;
+			try {
+				parsed = JSON.parse(source);
+			} catch (error) {
+				fail(`JSON 解析失败：${error instanceof SyntaxError ? error.message : String(error)}`);
+			}
+			if (Array.isArray(parsed)) return normalizeArray(parsed);
+			if (parsed === null || typeof parsed !== "object") fail("MCP JSON 顶层必须是对象或数组。");
 			const catalog = parsed.mcpServers ?? parsed;
-			if (typeof catalog !== "object" || Array.isArray(catalog)) throw new TypeError("mcpServers must be an object");
+			if (Array.isArray(catalog)) return normalizeArray(catalog);
+			if (typeof catalog !== "object") fail("mcpServers 必须是命名对象或数组。");
 			return Object.entries(catalog).map(([serverName, value]) => normalizeImportedMcp(serverName, value));
 		}
 		/**
@@ -10697,22 +10717,611 @@ window.__ModuleLoader__.load({
 			return JSON.stringify({ mcpServers: Object.fromEntries(servers.map(({ serverName, ...config }) => [serverName, config])) }, void 0, 2);
 		}
 		//#endregion
-		//#region src/client/RuntimeConfigEditor.tsx
+		//#region lib/types/client/mcp-editor-state.js
+		/** Create a new editable stdio server with a collision-free name. */
+		function createMcpServer(servers) {
+			const names = new Set(servers.map((server) => server.serverName));
+			let suffix = servers.length + 1;
+			while (names.has(`server-${suffix}`)) suffix += 1;
+			return {
+				enabled: true,
+				serverName: `server-${suffix}`,
+				transport: "stdio",
+				command: "",
+				args: [],
+				env: {},
+				toolCallTimeoutMs: 6e4
+			};
+		}
+		/** Copy a server and assign a collision-free name. */
+		function copyMcpServer(server, servers) {
+			const names = new Set(servers.map((item) => item.serverName));
+			const base = `${server.serverName}-copy`;
+			let name = base;
+			let suffix = 2;
+			while (names.has(name)) name = `${base}-${suffix++}`;
+			return {
+				...structuredClone(server),
+				serverName: name
+			};
+		}
+		/** Replace transport-specific fields while preserving common fields. */
+		function switchMcpTransport(server, transport) {
+			const common = {
+				serverName: server.serverName,
+				enabled: server.enabled ?? true,
+				transport,
+				toolCallTimeoutMs: server.toolCallTimeoutMs ?? 6e4
+			};
+			return transport === "stdio" ? {
+				...common,
+				command: "",
+				args: [],
+				cwd: "",
+				env: {}
+			} : {
+				...common,
+				url: "",
+				headers: {}
+			};
+		}
+		/** Return validation problems that prevent a useful runtime save. */
+		function validateMcpServers(servers) {
+			const issues = [];
+			const names = /* @__PURE__ */ new Set();
+			for (const server of servers) {
+				const name = server.serverName.trim();
+				if (name === "") issues.push({ message: "服务器名称不能为空。" });
+				else if (names.has(name)) issues.push({
+					serverName: name,
+					message: `服务器名称“${name}”重复。`
+				});
+				else names.add(name);
+				if (server.transport === "stdio" && (server.command ?? "").trim() === "") issues.push({
+					serverName: name,
+					message: `MCP“${name || "未命名"}”需要启动命令。`
+				});
+				if (server.transport !== "stdio" && (server.url ?? "").trim() === "") issues.push({
+					serverName: name,
+					message: `MCP“${name || "未命名"}”需要 URL。`
+				});
+				if ((server.toolCallTimeoutMs ?? 0) <= 0) issues.push({
+					serverName: name,
+					message: `MCP“${name || "未命名"}”的工具超时必须大于 0。`
+				});
+			}
+			return issues;
+		}
+		/** Compare serializable server drafts without depending on object identity. */
+		function mcpServersEqual(left, right) {
+			return JSON.stringify(left) === JSON.stringify(right);
+		}
+		//#endregion
+		//#region \0dsh-css:C:\Users\Admin\Desktop\ant-dsh\packages\client\ui-autograph\src\client\RuntimeStatus.module.css.mjs
+		const css$1 = ".pBCICa_rail{border-bottom:1px solid var(--dsw-alias-border-l2);background:color-mix(in srgb, var(--dsw-alias-bg-layer-2) 88%, transparent);align-items:center;gap:10px;padding:7px 16px;font-size:11px;display:flex}.pBCICa_metric{color:var(--dsw-alias-label-secondary)}.pBCICa_metric strong{color:var(--dsw-alias-label-primary)}.pBCICa_warning{color:var(--dsw-alias-state-warn-label);margin-left:auto}.pBCICa_settings{color:var(--dsw-alias-label-primary);--dsh-scrollbar-thumb:var(--dsw-alias-scrollbar-bg-l2);--dsh-scrollbar-thumb-hover:var(--dsw-alias-scrollbar-hover-l2);flex-direction:column;gap:14px;display:flex}.pBCICa_settingsHeader{justify-content:space-between;align-items:flex-start;gap:20px;display:flex}.pBCICa_settingsHeader h2{margin:0 0 6px;font-size:18px}.pBCICa_settingsHeader p,.pBCICa_card p{color:var(--dsw-alias-label-secondary);margin:0;font-size:12px;line-height:1.5}.pBCICa_summary{gap:8px;display:flex}.pBCICa_summary span,.pBCICa_cardTitle span{background:var(--dsw-alias-bg-layer-2);white-space:nowrap;border-radius:999px;padding:3px 8px;font-size:11px}.pBCICa_skillCard,.pBCICa_card{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-3);border-radius:8px;padding:12px}.pBCICa_skillCard{grid-template-columns:auto auto 1fr;align-items:center;gap:12px;display:grid}.pBCICa_skillCard small{color:var(--dsw-alias-label-secondary);text-align:right}.pBCICa_grid{grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;display:grid}.pBCICa_card{flex-direction:column;gap:9px;display:flex}.pBCICa_card[data-state=missing]{border-color:var(--dsw-alias-state-warn-primary)}.pBCICa_card[data-state=available],.pBCICa_card[data-state=configured]{border-color:var(--dsw-alias-state-success-primary)}.pBCICa_cardTitle{justify-content:space-between;align-items:center;display:flex}.pBCICa_card code,.pBCICa_card pre{background:var(--dsw-alias-bg-layer-1);color:var(--dsw-alias-label-primary);white-space:pre-wrap;word-break:break-all;border-radius:5px;margin:0;padding:7px;font-size:11px;overflow-x:auto}.pBCICa_installToolbar,.pBCICa_installActions{flex-wrap:wrap;align-items:center;gap:8px;display:flex}.pBCICa_installToolbar label{color:var(--dsw-alias-label-secondary);align-items:center;gap:8px;font-size:12px;display:flex}.pBCICa_installToolbar select,.pBCICa_installActions button{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-2);color:var(--dsw-alias-label-primary);border-radius:6px;padding:6px 9px}.pBCICa_installActions button:focus-visible,.pBCICa_installToolbar select:focus-visible{outline:2px solid var(--dsw-alias-state-business-primary);outline-offset:2px}.pBCICa_installActions button:disabled{opacity:.5}.pBCICa_installError{color:var(--dsw-alias-state-error-primary);font-size:12px}.pBCICa_installProgress{color:var(--dsw-alias-label-secondary);flex:100%;gap:4px;font-size:11px;display:grid}.pBCICa_installProgress progress{width:100%;accent-color:var(--dsw-alias-state-business-primary)}.pBCICa_configEditor{border-top:1px solid var(--dsw-alias-border-l2);gap:12px;padding-top:14px;display:grid}.pBCICa_tabs,.pBCICa_editorActions{flex-wrap:wrap;gap:8px;display:flex}.pBCICa_tabs button,.pBCICa_editorActions button,.pBCICa_editorList fieldset>button{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-2);color:var(--dsw-alias-label-primary);border-radius:6px;padding:6px 10px}.pBCICa_tabs button[data-active=true]{border-color:var(--dsw-alias-state-business-primary);color:var(--dsw-alias-state-business-primary)}.pBCICa_editorList{gap:10px;display:grid}.pBCICa_editorList fieldset{border:1px solid var(--dsw-alias-border-l2);border-radius:8px;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;min-width:0;display:grid}.pBCICa_editorList label{color:var(--dsw-alias-label-secondary);gap:5px;font-size:11px;display:grid}.pBCICa_editorList input,.pBCICa_editorList select,.pBCICa_editorList textarea{box-sizing:border-box;border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-1);width:100%;min-width:0;color:var(--dsw-alias-label-primary);border-radius:6px;padding:7px}.pBCICa_editorList textarea{resize:vertical;min-height:84px}.pBCICa_keyValues{gap:5px;display:grid}.pBCICa_keyValues>div{grid-template-columns:minmax(80px,1fr) minmax(100px,2fr) auto;gap:5px;display:grid}.pBCICa_keyValues button{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-2);color:var(--dsw-alias-label-primary);border-radius:5px}.pBCICa_editorList :is(input,select,textarea,button):focus-visible,.pBCICa_tabs button:focus-visible{outline:2px solid var(--dsw-alias-state-business-primary);outline-offset:2px}.pBCICa_card details,.pBCICa_editorList details{color:var(--dsw-alias-label-secondary);font-size:11px}.pBCICa_card details ul,.pBCICa_editorList details ul{gap:6px;max-height:220px;padding-left:18px;display:grid;overflow:auto}.pBCICa_card details li,.pBCICa_editorList details li{gap:3px;display:grid}.pBCICa_card details small,.pBCICa_editorList details small{line-height:1.4}.pBCICa_mcpEditor{gap:12px;min-width:0;display:grid}.pBCICa_mcpHeader,.pBCICa_serverRailHeader,.pBCICa_detailToolbar,.pBCICa_runtimeActions,.pBCICa_saveBar{justify-content:space-between;align-items:center;gap:10px;display:flex}.pBCICa_mcpHeader h3,.pBCICa_mcpHeader p,.pBCICa_serverRail p,.pBCICa_emptyDetail p,.pBCICa_editorMessage{margin:0}.pBCICa_mcpHeader p,.pBCICa_jsonEditor p,.pBCICa_serverRail p,.pBCICa_emptyDetail p{color:var(--dsw-alias-label-secondary);font-size:12px}.pBCICa_modeSwitch,.pBCICa_detailToolbar,.pBCICa_runtimeActions,.pBCICa_saveBar{flex-wrap:wrap;display:flex}.pBCICa_modeSwitch button,.pBCICa_serverRail button,.pBCICa_detailToolbar button,.pBCICa_runtimeActions button,.pBCICa_saveBar button,.pBCICa_emptyDetail button{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-2);color:var(--dsw-alias-label-primary);border-radius:6px;padding:7px 10px}.pBCICa_modeSwitch button[aria-pressed=true]{border-color:var(--dsw-alias-state-business-primary);color:var(--dsw-alias-state-business-primary)}.pBCICa_masterDetail{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-2);border-radius:9px;grid-template-columns:minmax(190px,28%) minmax(0,1fr);min-height:430px;display:grid;overflow:hidden}.pBCICa_serverRail{border-right:1px solid var(--dsw-alias-border-l2);align-content:start;gap:10px;padding:12px;display:grid}.pBCICa_serverRail [role=listbox]{gap:4px;display:grid}.pBCICa_serverRail [role=option]{text-align:left;gap:3px;width:100%;display:grid}.pBCICa_serverRail [role=option] small{color:var(--dsw-alias-label-secondary)}.pBCICa_serverRail [role=option][aria-selected=true]{border-color:var(--dsw-alias-state-business-primary);background:var(--dsw-alias-bg-layer-3)}.pBCICa_serverDetail{background:var(--dsw-alias-bg-layer-1);min-width:0;padding:16px}.pBCICa_detailFields,.pBCICa_jsonEditor,.pBCICa_emptyDetail{gap:12px;display:grid}.pBCICa_detailFields{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:14px}.pBCICa_detailFields label,.pBCICa_jsonEditor label{color:var(--dsw-alias-label-secondary);gap:5px;font-size:12px;display:grid}.pBCICa_detailFields input,.pBCICa_detailFields select,.pBCICa_detailFields textarea,.pBCICa_jsonEditor textarea{box-sizing:border-box;border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-2);width:100%;min-width:0;color:var(--dsw-alias-label-primary);border-radius:6px;padding:8px}.pBCICa_detailFields textarea{resize:vertical;min-height:86px}.pBCICa_jsonEditor textarea{resize:vertical;min-height:360px;font-family:monospace}.pBCICa_detailFields .pBCICa_keyValues{grid-column:1/-1;min-width:0}.pBCICa_runtimeActions{justify-content:flex-start;margin-top:14px}.pBCICa_runtimeActions span[data-state=error],.pBCICa_validation{color:var(--dsw-alias-state-error-primary)}.pBCICa_runtimeActions span[data-state=success]{color:var(--dsw-alias-state-success-primary)}.pBCICa_validation{margin:0;padding-left:20px;font-size:12px}.pBCICa_editorMessage{color:var(--dsw-alias-label-secondary);font-size:12px}.pBCICa_saveBar{border-top:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-2);justify-content:flex-end;padding:10px;position:sticky;bottom:0}.pBCICa_saveBar span{color:var(--dsw-alias-label-secondary);margin-right:auto;font-size:12px}.pBCICa_mcpEditor :is(button,input,select,textarea):focus-visible{outline:2px solid var(--dsw-alias-state-business-primary);outline-offset:2px}@media (width<=760px){.pBCICa_masterDetail,.pBCICa_detailFields{grid-template-columns:1fr}.pBCICa_serverRail{border-right:0;border-bottom:1px solid var(--dsw-alias-border-l2)}}@media (width<=640px){.pBCICa_settingsHeader,.pBCICa_skillCard{flex-direction:column;grid-template-columns:1fr}.pBCICa_skillCard small{text-align:left}}";
+		const tagId$1 = "@deepseek-ai/dsh-client-ui-autograph/RuntimeStatus.module.css";
+		if (typeof document !== "undefined" && document.querySelector("style[data-plugin-css=" + JSON.stringify(tagId$1) + "]") === null) {
+			const tag = document.createElement("style");
+			tag.dataset.plugin = "@deepseek-ai/dsh-client-ui-autograph";
+			tag.dataset.pluginCss = tagId$1;
+			tag.textContent = css$1;
+			document.head.appendChild(tag);
+		}
+		var RuntimeStatus_module_css_default = {
+			"skillCard": "pBCICa_skillCard",
+			"metric": "pBCICa_metric",
+			"configEditor": "pBCICa_configEditor",
+			"serverRail": "pBCICa_serverRail",
+			"installProgress": "pBCICa_installProgress",
+			"installError": "pBCICa_installError",
+			"keyValues": "pBCICa_keyValues",
+			"detailToolbar": "pBCICa_detailToolbar",
+			"masterDetail": "pBCICa_masterDetail",
+			"detailFields": "pBCICa_detailFields",
+			"editorList": "pBCICa_editorList",
+			"settingsHeader": "pBCICa_settingsHeader",
+			"editorMessage": "pBCICa_editorMessage",
+			"installToolbar": "pBCICa_installToolbar",
+			"mcpHeader": "pBCICa_mcpHeader",
+			"warning": "pBCICa_warning",
+			"mcpEditor": "pBCICa_mcpEditor",
+			"serverRailHeader": "pBCICa_serverRailHeader",
+			"emptyDetail": "pBCICa_emptyDetail",
+			"grid": "pBCICa_grid",
+			"cardTitle": "pBCICa_cardTitle",
+			"serverDetail": "pBCICa_serverDetail",
+			"editorActions": "pBCICa_editorActions",
+			"jsonEditor": "pBCICa_jsonEditor",
+			"saveBar": "pBCICa_saveBar",
+			"settings": "pBCICa_settings",
+			"tabs": "pBCICa_tabs",
+			"summary": "pBCICa_summary",
+			"rail": "pBCICa_rail",
+			"validation": "pBCICa_validation",
+			"runtimeActions": "pBCICa_runtimeActions",
+			"installActions": "pBCICa_installActions",
+			"card": "pBCICa_card",
+			"modeSwitch": "pBCICa_modeSwitch"
+		};
+		//#endregion
+		//#region lib/types/client/McpKeyValueEditor.js
+		/** Edit string key/value maps used by MCP environment variables and headers. */
+		function McpKeyValueEditor({ label, value, onChange }) {
+			const entries = Object.entries(value);
+			const update = (index, key, itemValue) => {
+				onChange(Object.fromEntries(entries.map((entry, at) => at === index ? [key, itemValue] : entry)));
+			};
+			return (0, react_jsx_runtime.jsxs)("fieldset", {
+				className: RuntimeStatus_module_css_default.keyValues,
+				children: [
+					(0, react_jsx_runtime.jsx)("legend", { children: label }),
+					entries.map(([key, itemValue], index) => (0, react_jsx_runtime.jsxs)("div", { children: [
+						(0, react_jsx_runtime.jsx)("input", {
+							"aria-label": `${label}名称 ${index + 1}`,
+							placeholder: "名称",
+							value: key,
+							onChange: (event) => {
+								update(index, event.target.value, itemValue);
+							}
+						}),
+						(0, react_jsx_runtime.jsx)("input", {
+							"aria-label": `${label}值 ${index + 1}`,
+							placeholder: "值",
+							value: itemValue,
+							onChange: (event) => {
+								update(index, key, event.target.value);
+							}
+						}),
+						(0, react_jsx_runtime.jsx)("button", {
+							type: "button",
+							"aria-label": `删除${label} ${key || index + 1}`,
+							onClick: () => {
+								onChange(Object.fromEntries(entries.filter((_, at) => at !== index)));
+							},
+							children: "删除"
+						})
+					] }, `${index}-${key}`)),
+					(0, react_jsx_runtime.jsxs)("button", {
+						type: "button",
+						onClick: () => {
+							onChange({
+								...value,
+								[`KEY_${entries.length + 1}`]: ""
+							});
+						},
+						children: ["添加", label]
+					})
+				]
+			});
+		}
+		/** Update one optional map field without widening MCP configuration types. */
+		function withMcpMap(server, field, value) {
+			return {
+				...server,
+				[field]: value
+			};
+		}
+		//#endregion
+		//#region lib/types/client/McpConfigEditor.js
+		function replaceServer(servers, index, value) {
+			return servers.map((server, at) => at === index ? value : server);
+		}
+		/** Rich master-detail MCP editor with safe JSON import and runtime actions. */
+		function McpConfigEditor({ servers, savedServers, saving, onChange, onSave }) {
+			const [mode, setMode] = (0, react.useState)("visual");
+			const [selectedIndex, setSelectedIndex] = (0, react.useState)(servers.length === 0 ? -1 : 0);
+			const [jsonDraft, setJsonDraft] = (0, react.useState)(() => formatMcpJson(servers));
+			const [message, setMessage] = (0, react.useState)();
+			const [probes, setProbes] = (0, react.useState)({});
+			const [operations, setOperations] = (0, react.useState)({});
+			const dirty = !mcpServersEqual(servers, savedServers);
+			const issues = (0, react.useMemo)(() => validateMcpServers(servers), [servers]);
+			const selected = selectedIndex >= 0 ? servers[selectedIndex] : void 0;
+			(0, react.useEffect)(() => {
+				if (servers.length > 0 && selectedIndex < 0) setSelectedIndex(0);
+				else if (selectedIndex >= servers.length) setSelectedIndex(servers.length - 1);
+			}, [selectedIndex, servers.length]);
+			const update = (index, value) => {
+				const next = replaceServer(servers, index, value);
+				onChange(next);
+				setJsonDraft(formatMcpJson(next));
+			};
+			const add = () => {
+				const next = [...servers, createMcpServer(servers)];
+				onChange(next);
+				setJsonDraft(formatMcpJson(next));
+				setSelectedIndex(next.length - 1);
+			};
+			const copy = () => {
+				if (selected === void 0) return;
+				const next = [...servers, copyMcpServer(selected, servers)];
+				onChange(next);
+				setJsonDraft(formatMcpJson(next));
+				setSelectedIndex(next.length - 1);
+			};
+			const remove = () => {
+				if (selected === void 0) return;
+				const next = servers.filter((_, index) => index !== selectedIndex);
+				onChange(next);
+				setJsonDraft(formatMcpJson(next));
+				setSelectedIndex(Math.min(selectedIndex, next.length - 1));
+			};
+			const importJson = () => {
+				try {
+					const next = parseMcpJson(jsonDraft);
+					onChange(next);
+					setSelectedIndex(next.length === 0 ? -1 : 0);
+					setJsonDraft(formatMcpJson(next));
+					setMessage(`已应用 ${next.length} 个 MCP 到可视化草稿；保存后写入运行时。`);
+					setMode("visual");
+				} catch (error) {
+					setMessage(error instanceof Error ? error.message : String(error));
+				}
+			};
+			const reset = () => {
+				const next = structuredClone(savedServers);
+				onChange(next);
+				setJsonDraft(formatMcpJson(next));
+				setSelectedIndex(next.length === 0 ? -1 : 0);
+				setMessage("已重置为上次保存的 MCP 配置。");
+			};
+			const save = async () => {
+				if (issues.length > 0) {
+					setMessage(`保存前请修正：${issues[0]?.message ?? "配置无效"}`);
+					return;
+				}
+				await onSave();
+				setMessage("MCP 配置已保存并热应用。");
+			};
+			const runtimeAction = async (action) => {
+				if (selected === void 0) return;
+				const name = selected.serverName;
+				setOperations((current) => ({
+					...current,
+					[name]: {
+						action,
+						status: "pending",
+						message: action === "probe" ? "正在测活…" : "正在重载…"
+					}
+				}));
+				try {
+					const response = await fetch(`/ant-sword/mcp/${action}`, {
+						method: "POST",
+						headers: { "content-type": "application/json" },
+						body: JSON.stringify({ serverName: name })
+					});
+					const result = await response.json();
+					if (!response.ok || !result.ok) throw new Error(result.error ?? `${action} 请求失败（${response.status}）`);
+					if (action === "probe") setProbes((current) => ({
+						...current,
+						[name]: {
+							toolCount: result.toolCount ?? 0,
+							tools: result.tools ?? []
+						}
+					}));
+					setOperations((current) => ({
+						...current,
+						[name]: {
+							action,
+							status: "success",
+							message: action === "probe" ? `测活成功，发现 ${result.toolCount ?? 0} 个工具。` : "热重载成功。"
+						}
+					}));
+				} catch (error) {
+					setOperations((current) => ({
+						...current,
+						[name]: {
+							action,
+							status: "error",
+							message: error instanceof Error ? error.message : String(error)
+						}
+					}));
+				}
+			};
+			return (0, react_jsx_runtime.jsxs)("section", {
+				className: RuntimeStatus_module_css_default.mcpEditor,
+				"aria-labelledby": "mcp-editor-title",
+				children: [
+					(0, react_jsx_runtime.jsxs)("header", {
+						className: RuntimeStatus_module_css_default.mcpHeader,
+						children: [(0, react_jsx_runtime.jsxs)("div", { children: [(0, react_jsx_runtime.jsx)("h3", {
+							id: "mcp-editor-title",
+							children: "MCP 服务器"
+						}), (0, react_jsx_runtime.jsx)("p", { children: "配置本地 stdio 或远程 HTTP MCP 服务。" })] }), (0, react_jsx_runtime.jsxs)("div", {
+							className: RuntimeStatus_module_css_default.modeSwitch,
+							role: "group",
+							"aria-label": "MCP 编辑模式",
+							children: [(0, react_jsx_runtime.jsx)("button", {
+								type: "button",
+								"aria-pressed": mode === "visual",
+								onClick: () => {
+									setMode("visual");
+								},
+								children: "可视化"
+							}), (0, react_jsx_runtime.jsx)("button", {
+								type: "button",
+								"aria-pressed": mode === "json",
+								onClick: () => {
+									setJsonDraft(formatMcpJson(servers));
+									setMode("json");
+								},
+								children: "JSON"
+							})]
+						})]
+					}),
+					mode === "json" ? (0, react_jsx_runtime.jsxs)("div", {
+						className: RuntimeStatus_module_css_default.jsonEditor,
+						children: [
+							(0, react_jsx_runtime.jsx)("label", {
+								htmlFor: "mcp-json-source",
+								children: "MCP JSON"
+							}),
+							(0, react_jsx_runtime.jsx)("textarea", {
+								id: "mcp-json-source",
+								spellCheck: false,
+								value: jsonDraft,
+								onChange: (event) => {
+									setJsonDraft(event.target.value);
+								},
+								"aria-describedby": "mcp-json-help"
+							}),
+							(0, react_jsx_runtime.jsx)("p", {
+								id: "mcp-json-help",
+								children: "支持直接粘贴 mcpServers 命名对象、mcpServers 数组或服务器数组。解析失败不会覆盖当前可视化草稿。"
+							}),
+							(0, react_jsx_runtime.jsx)("div", {
+								className: RuntimeStatus_module_css_default.editorActions,
+								children: (0, react_jsx_runtime.jsx)("button", {
+									type: "button",
+									onClick: importJson,
+									children: "应用到可视化"
+								})
+							})
+						]
+					}) : (0, react_jsx_runtime.jsxs)("div", {
+						className: RuntimeStatus_module_css_default.masterDetail,
+						children: [(0, react_jsx_runtime.jsxs)("aside", {
+							className: RuntimeStatus_module_css_default.serverRail,
+							"aria-label": "MCP 服务器列表",
+							children: [
+								(0, react_jsx_runtime.jsxs)("div", {
+									className: RuntimeStatus_module_css_default.serverRailHeader,
+									children: [(0, react_jsx_runtime.jsx)("strong", { children: "服务器" }), (0, react_jsx_runtime.jsx)("button", {
+										type: "button",
+										onClick: add,
+										children: "添加"
+									})]
+								}),
+								(0, react_jsx_runtime.jsx)("div", {
+									role: "listbox",
+									"aria-label": "MCP 服务器",
+									"aria-activedescendant": selected === void 0 ? void 0 : `mcp-server-${selectedIndex}`,
+									children: servers.map((server, index) => (0, react_jsx_runtime.jsxs)("button", {
+										id: `mcp-server-${index}`,
+										type: "button",
+										role: "option",
+										"aria-selected": index === selectedIndex,
+										onClick: () => {
+											setSelectedIndex(index);
+										},
+										onKeyDown: (event) => {
+											if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return;
+											event.preventDefault();
+											setSelectedIndex((index + (event.key === "ArrowDown" ? 1 : -1) + servers.length) % servers.length);
+										},
+										children: [(0, react_jsx_runtime.jsx)("span", { children: server.serverName || "未命名服务器" }), (0, react_jsx_runtime.jsx)("small", { children: server.enabled === false ? "已停用" : server.transport })]
+									}, `${index}-${server.serverName}`))
+								}),
+								servers.length === 0 && (0, react_jsx_runtime.jsx)("p", { children: "尚未配置服务器。" })
+							]
+						}), (0, react_jsx_runtime.jsx)("div", {
+							className: RuntimeStatus_module_css_default.serverDetail,
+							children: selected === void 0 ? (0, react_jsx_runtime.jsxs)("div", {
+								className: RuntimeStatus_module_css_default.emptyDetail,
+								children: [(0, react_jsx_runtime.jsx)("p", { children: "添加服务器后在此编辑详情。" }), (0, react_jsx_runtime.jsx)("button", {
+									type: "button",
+									onClick: add,
+									children: "添加 MCP 服务器"
+								})]
+							}) : (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [
+								(0, react_jsx_runtime.jsxs)("div", {
+									className: RuntimeStatus_module_css_default.detailToolbar,
+									children: [
+										(0, react_jsx_runtime.jsxs)("label", {
+											className: RuntimeStatus_module_css_default.enableToggle,
+											children: [(0, react_jsx_runtime.jsx)("input", {
+												type: "checkbox",
+												checked: selected.enabled !== false,
+												onChange: (event) => {
+													update(selectedIndex, {
+														...selected,
+														enabled: event.target.checked
+													});
+												}
+											}), "启用"]
+										}),
+										(0, react_jsx_runtime.jsx)("button", {
+											type: "button",
+											onClick: copy,
+											children: "复制"
+										}),
+										(0, react_jsx_runtime.jsx)("button", {
+											type: "button",
+											onClick: remove,
+											children: "删除"
+										})
+									]
+								}),
+								(0, react_jsx_runtime.jsxs)("div", {
+									className: RuntimeStatus_module_css_default.detailFields,
+									children: [
+										(0, react_jsx_runtime.jsxs)("label", { children: ["名称", (0, react_jsx_runtime.jsx)("input", {
+											value: selected.serverName,
+											onChange: (event) => {
+												update(selectedIndex, {
+													...selected,
+													serverName: event.target.value
+												});
+											}
+										})] }),
+										(0, react_jsx_runtime.jsxs)("label", { children: ["传输", (0, react_jsx_runtime.jsxs)("select", {
+											value: selected.transport,
+											onChange: (event) => {
+												update(selectedIndex, switchMcpTransport(selected, event.target.value));
+											},
+											children: [
+												(0, react_jsx_runtime.jsx)("option", {
+													value: "stdio",
+													children: "stdio"
+												}),
+												(0, react_jsx_runtime.jsx)("option", {
+													value: "sse",
+													children: "HTTP + SSE（旧版）"
+												}),
+												(0, react_jsx_runtime.jsx)("option", {
+													value: "streamable-http",
+													children: "Streamable HTTP"
+												})
+											]
+										})] }),
+										selected.transport === "stdio" ? (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [
+											(0, react_jsx_runtime.jsxs)("label", { children: ["命令", (0, react_jsx_runtime.jsx)("input", {
+												value: selected.command ?? "",
+												onChange: (event) => {
+													update(selectedIndex, {
+														...selected,
+														command: event.target.value
+													});
+												}
+											})] }),
+											(0, react_jsx_runtime.jsxs)("label", { children: ["参数（每行一项）", (0, react_jsx_runtime.jsx)("textarea", {
+												value: (selected.args ?? []).join("\n"),
+												onChange: (event) => {
+													update(selectedIndex, {
+														...selected,
+														args: event.target.value.split("\n").map((value) => value.trim()).filter(Boolean)
+													});
+												}
+											})] }),
+											(0, react_jsx_runtime.jsxs)("label", { children: ["工作目录", (0, react_jsx_runtime.jsx)("input", {
+												value: selected.cwd ?? "",
+												onChange: (event) => {
+													update(selectedIndex, {
+														...selected,
+														cwd: event.target.value
+													});
+												}
+											})] }),
+											(0, react_jsx_runtime.jsx)(McpKeyValueEditor, {
+												label: "环境变量",
+												value: selected.env ?? {},
+												onChange: (value) => {
+													update(selectedIndex, withMcpMap(selected, "env", value));
+												}
+											})
+										] }) : (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [(0, react_jsx_runtime.jsxs)("label", { children: ["URL", (0, react_jsx_runtime.jsx)("input", {
+											type: "url",
+											value: selected.url ?? "",
+											onChange: (event) => {
+												update(selectedIndex, {
+													...selected,
+													url: event.target.value
+												});
+											}
+										})] }), (0, react_jsx_runtime.jsx)(McpKeyValueEditor, {
+											label: "请求头",
+											value: selected.headers ?? {},
+											onChange: (value) => {
+												update(selectedIndex, withMcpMap(selected, "headers", value));
+											}
+										})] }),
+										(0, react_jsx_runtime.jsxs)("label", { children: ["工具超时（毫秒）", (0, react_jsx_runtime.jsx)("input", {
+											type: "number",
+											min: 1,
+											value: selected.toolCallTimeoutMs ?? 6e4,
+											onChange: (event) => {
+												update(selectedIndex, {
+													...selected,
+													toolCallTimeoutMs: Number(event.target.value)
+												});
+											}
+										})] })
+									]
+								}),
+								(0, react_jsx_runtime.jsxs)("div", {
+									className: RuntimeStatus_module_css_default.runtimeActions,
+									children: [
+										(0, react_jsx_runtime.jsx)("button", {
+											type: "button",
+											disabled: !selected.serverName || operations[selected.serverName]?.status === "pending",
+											onClick: () => {
+												runtimeAction("probe");
+											},
+											children: "测活"
+										}),
+										(0, react_jsx_runtime.jsx)("button", {
+											type: "button",
+											disabled: !selected.serverName || operations[selected.serverName]?.status === "pending",
+											onClick: () => {
+												runtimeAction("reload");
+											},
+											children: "热重载"
+										}),
+										operations[selected.serverName] !== void 0 && (0, react_jsx_runtime.jsx)("span", {
+											role: "status",
+											"data-state": operations[selected.serverName]?.status,
+											children: operations[selected.serverName]?.message
+										})
+									]
+								}),
+								probes[selected.serverName] !== void 0 && (0, react_jsx_runtime.jsxs)("details", { children: [(0, react_jsx_runtime.jsxs)("summary", { children: [
+									"已发现 ",
+									probes[selected.serverName]?.toolCount,
+									" 个工具"
+								] }), (0, react_jsx_runtime.jsx)("ul", { children: probes[selected.serverName]?.tools.map((tool) => (0, react_jsx_runtime.jsxs)("li", { children: [(0, react_jsx_runtime.jsx)("code", { children: tool.name }), tool.description === void 0 ? null : (0, react_jsx_runtime.jsx)("small", { children: tool.description })] }, tool.name)) })] })
+							] })
+						})]
+					}),
+					issues.length > 0 && (0, react_jsx_runtime.jsx)("ul", {
+						className: RuntimeStatus_module_css_default.validation,
+						"aria-label": "MCP 配置问题",
+						children: issues.map((issue, index) => (0, react_jsx_runtime.jsx)("li", { children: issue.message }, index))
+					}),
+					message !== void 0 && (0, react_jsx_runtime.jsx)("p", {
+						className: RuntimeStatus_module_css_default.editorMessage,
+						role: "status",
+						children: message
+					}),
+					(0, react_jsx_runtime.jsxs)("footer", {
+						className: RuntimeStatus_module_css_default.saveBar,
+						children: [
+							(0, react_jsx_runtime.jsx)("span", { children: dirty ? "有未保存更改" : "所有更改已保存" }),
+							(0, react_jsx_runtime.jsx)("button", {
+								type: "button",
+								disabled: !dirty || saving,
+								onClick: reset,
+								children: "重置"
+							}),
+							(0, react_jsx_runtime.jsx)("button", {
+								type: "button",
+								disabled: !dirty || saving || issues.length > 0,
+								onClick: () => {
+									save();
+								},
+								children: saving ? "保存中…" : "保存 MCP"
+							})
+						]
+					})
+				]
+			});
+		}
+		//#endregion
+		//#region lib/types/client/RuntimeConfigEditor.js
 		const EMPTY = {
 			mcpServers: [],
 			disabledSkills: [],
 			rules: []
 		};
-		function newMcp() {
-			return {
-				enabled: true,
-				serverName: `server-${Date.now()}`,
-				transport: "stdio",
-				command: "",
-				args: [],
-				toolCallTimeoutMs: 6e4
-			};
-		}
 		function newRule() {
 			return {
 				id: `rule-${Date.now()}`,
@@ -10723,64 +11332,12 @@ window.__ModuleLoader__.load({
 				content: ""
 			};
 		}
-		function KeyValueEditor({ value, onChange, label }) {
-			const entries = Object.entries(value);
-			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
-				className: RuntimeStatus_module_css_default.keyValues,
-				children: [
-					/* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: label }),
-					entries.map(([key, itemValue], index) => /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [
-						/* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
-							"aria-label": `${label} key`,
-							value: key,
-							onChange: (event) => {
-								onChange(Object.fromEntries(entries.map((entry, at) => at === index ? [event.target.value, entry[1]] : entry)));
-							}
-						}),
-						/* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
-							"aria-label": `${label} value`,
-							value: itemValue,
-							onChange: (event) => {
-								onChange(Object.fromEntries(entries.map((entry, at) => at === index ? [entry[0], event.target.value] : entry)));
-							}
-						}),
-						/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
-							type: "button",
-							onClick: () => {
-								onChange(Object.fromEntries(entries.filter((_, at) => at !== index)));
-							},
-							children: "删除"
-						})
-					] }, `${key}-${index}`)),
-					/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
-						type: "button",
-						onClick: () => {
-							onChange({
-								...value,
-								[`KEY_${entries.length + 1}`]: ""
-							});
-						},
-						children: "添加"
-					})
-				]
-			});
-		}
-		function McpProbeDetails({ probe }) {
-			if (probe === void 0) return null;
-			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("details", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("summary", { children: [
-				"已发现 ",
-				probe.toolCount,
-				" 个工具"
-			] }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("ul", { children: probe.tools.map((tool) => /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("li", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("code", { children: tool.name }), tool.description === void 0 ? null : /* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: tool.description })] }, tool.name)) })] });
-		}
+		/** Settings editor for MCP, Skill overlays, and runtime rules. */
 		function RuntimeConfigEditor({ configScope }) {
 			const snapshot = (0, react.useSyncExternalStore)((listener) => configScope.subscribe(listener), () => configScope.getSnapshot());
 			const [draft, setDraft] = (0, react.useState)(EMPTY);
 			const [tab, setTab] = (0, react.useState)("mcp");
 			const [saving, setSaving] = (0, react.useState)(false);
-			const [mcpJson, setMcpJson] = (0, react.useState)("");
-			const [mcpMessage, setMcpMessage] = (0, react.useState)();
-			const [mcpProbes, setMcpProbes] = (0, react.useState)({});
 			const [skillDraft, setSkillDraft] = (0, react.useState)({
 				name: "",
 				description: "",
@@ -10799,51 +11356,11 @@ window.__ModuleLoader__.load({
 			]);
 			const save = async (field) => {
 				setSaving(true);
-				setMcpMessage(void 0);
 				try {
 					await configScope.set(field, draft[field]);
-					if (field === "mcpServers") setMcpMessage("MCP 配置已保存并热应用。");
-				} catch (error) {
-					if (field === "mcpServers") setMcpMessage(error instanceof Error ? error.message : String(error));
 				} finally {
 					setSaving(false);
 				}
-			};
-			const importMcpJson = () => {
-				try {
-					const entries = parseMcpJson(mcpJson);
-					setDraft((current) => ({
-						...current,
-						mcpServers: entries
-					}));
-					setMcpMessage(`已导入 ${entries.length} 个 MCP；点击保存后热应用。`);
-				} catch (error) {
-					setMcpMessage(error instanceof Error ? error.message : String(error));
-				}
-			};
-			const exportMcpJson = () => {
-				setMcpJson(formatMcpJson(draft.mcpServers));
-				setMcpMessage("可视化配置已同步到 JSON。");
-			};
-			const runMcpAction = async (serverName, action) => {
-				setMcpMessage(action === "probe" ? `正在测活 ${serverName}…` : `正在重载 ${serverName}…`);
-				const result = await (await fetch(`/ant-sword/mcp/${action}`, {
-					method: "POST",
-					headers: { "content-type": "application/json" },
-					body: JSON.stringify({ serverName })
-				})).json();
-				if (!result.ok) {
-					setMcpMessage(result.error ?? `${serverName} 操作失败。`);
-					return;
-				}
-				if (action === "probe") setMcpProbes((current) => ({
-					...current,
-					[serverName]: {
-						toolCount: result.toolCount ?? 0,
-						tools: result.tools ?? []
-					}
-				}));
-				setMcpMessage(action === "probe" ? `${serverName} 测活成功，发现 ${result.toolCount ?? 0} 个工具。` : `${serverName} 已热重载。`);
 			};
 			const saveSkill = async () => {
 				setSkillError(void 0);
@@ -10863,256 +11380,46 @@ window.__ModuleLoader__.load({
 				});
 				if (!response.ok) setSkillError((await response.json()).error ?? "Skill 删除失败");
 			};
-			if (snapshot.status !== "ready") return /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", {
+			if (snapshot.status !== "ready" || snapshot.value === void 0) return (0, react_jsx_runtime.jsx)("p", {
 				className: RuntimeStatus_module_css_default.installError,
 				children: "动态配置尚未连接到本机 Host。"
 			});
-			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("section", {
+			return (0, react_jsx_runtime.jsxs)("section", {
 				className: RuntimeStatus_module_css_default.configEditor,
 				children: [
-					/* @__PURE__ */ (0, react_jsx_runtime.jsx)("nav", {
+					(0, react_jsx_runtime.jsx)("nav", {
 						className: RuntimeStatus_module_css_default.tabs,
 						"aria-label": "Red Team 配置",
 						children: [
 							"mcp",
 							"skills",
 							"rules"
-						].map((value) => /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+						].map((value) => (0, react_jsx_runtime.jsx)("button", {
 							type: "button",
+							"aria-current": tab === value ? "page" : void 0,
 							"data-active": tab === value,
 							onClick: () => {
 								setTab(value);
 							},
-							children: value.toUpperCase()
+							children: value === "mcp" ? "MCP" : value === "skills" ? "Skills" : "Rules"
 						}, value))
 					}),
-					tab === "mcp" && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
-						className: RuntimeStatus_module_css_default.editorList,
-						children: [
-							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("fieldset", { children: [
-								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("legend", { children: "JSON 配置同步" }),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["支持直接粘贴 MCP JSON 或 `mcpServers` 对象", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("textarea", {
-									value: mcpJson,
-									onChange: (event) => {
-										setMcpJson(event.target.value);
-									}
-								})] }),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
-									className: RuntimeStatus_module_css_default.editorActions,
-									children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
-										type: "button",
-										onClick: importMcpJson,
-										children: "JSON → 可视化"
-									}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
-										type: "button",
-										onClick: exportMcpJson,
-										children: "可视化 → JSON"
-									})]
-								}),
-								mcpMessage !== void 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
-									className: RuntimeStatus_module_css_default.installError,
-									children: mcpMessage
-								})
-							] }),
-							draft.mcpServers.map((server, index) => /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("fieldset", { children: [
-								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("legend", { children: server.serverName || `MCP ${index + 1}` }),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["名称", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
-									value: server.serverName,
-									onChange: (event) => {
-										setDraft((current) => ({
-											...current,
-											mcpServers: current.mcpServers.map((item, at) => at === index ? {
-												...item,
-												serverName: event.target.value
-											} : item)
-										}));
-									}
-								})] }),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["启用", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
-									type: "checkbox",
-									checked: server.enabled !== false,
-									onChange: (event) => {
-										setDraft((current) => ({
-											...current,
-											mcpServers: current.mcpServers.map((item, at) => at === index ? {
-												...item,
-												enabled: event.target.checked
-											} : item)
-										}));
-									}
-								})] }),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["传输", /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("select", {
-									value: server.transport,
-									onChange: (event) => {
-										setDraft((current) => ({
-											...current,
-											mcpServers: current.mcpServers.map((item, at) => at === index ? {
-												serverName: item.serverName,
-												enabled: item.enabled ?? true,
-												transport: event.target.value,
-												toolCallTimeoutMs: item.toolCallTimeoutMs ?? 6e4,
-												...event.target.value === "stdio" ? {
-													command: "",
-													args: []
-												} : { url: "" }
-											} : item)
-										}));
-									},
-									children: [
-										/* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
-											value: "stdio",
-											children: "stdio"
-										}),
-										/* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
-											value: "sse",
-											children: "HTTP + SSE（旧版）"
-										}),
-										/* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
-											value: "streamable-http",
-											children: "Streamable HTTP"
-										})
-									]
-								})] }),
-								server.transport === "stdio" ? /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [
-									/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["命令", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
-										value: server.command ?? "",
-										onChange: (event) => {
-											setDraft((current) => ({
-												...current,
-												mcpServers: current.mcpServers.map((item, at) => at === index ? {
-													...item,
-													command: event.target.value
-												} : item)
-											}));
-										}
-									})] }),
-									/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["参数（每行一项）", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("textarea", {
-										value: (server.args ?? []).join("\n"),
-										onChange: (event) => {
-											setDraft((current) => ({
-												...current,
-												mcpServers: current.mcpServers.map((item, at) => at === index ? {
-													...item,
-													args: event.target.value.split("\n").filter(Boolean)
-												} : item)
-											}));
-										}
-									})] }),
-									/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["工作目录", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
-										value: server.cwd ?? "",
-										onChange: (event) => {
-											setDraft((current) => ({
-												...current,
-												mcpServers: current.mcpServers.map((item, at) => at === index ? {
-													...item,
-													cwd: event.target.value
-												} : item)
-											}));
-										}
-									})] }),
-									/* @__PURE__ */ (0, react_jsx_runtime.jsx)(KeyValueEditor, {
-										label: "环境变量",
-										value: server.env ?? {},
-										onChange: (env) => {
-											setDraft((current) => ({
-												...current,
-												mcpServers: current.mcpServers.map((item, at) => at === index ? {
-													...item,
-													env
-												} : item)
-											}));
-										}
-									})
-								] }) : /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["URL", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
-									value: server.url ?? "",
-									onChange: (event) => {
-										setDraft((current) => ({
-											...current,
-											mcpServers: current.mcpServers.map((item, at) => at === index ? {
-												...item,
-												url: event.target.value
-											} : item)
-										}));
-									}
-								})] }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)(KeyValueEditor, {
-									label: "请求头",
-									value: server.headers ?? {},
-									onChange: (headers) => {
-										setDraft((current) => ({
-											...current,
-											mcpServers: current.mcpServers.map((item, at) => at === index ? {
-												...item,
-												headers
-											} : item)
-										}));
-									}
-								})] }),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["工具超时（毫秒）", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
-									type: "number",
-									min: 1,
-									value: server.toolCallTimeoutMs ?? 6e4,
-									onChange: (event) => {
-										setDraft((current) => ({
-											...current,
-											mcpServers: current.mcpServers.map((item, at) => at === index ? {
-												...item,
-												toolCallTimeoutMs: Number(event.target.value)
-											} : item)
-										}));
-									}
-								})] }),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsx)(McpProbeDetails, { probe: mcpProbes[server.serverName] }),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
-									type: "button",
-									onClick: () => {
-										runMcpAction(server.serverName, "probe");
-									},
-									children: "测活"
-								}),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
-									type: "button",
-									onClick: () => {
-										runMcpAction(server.serverName, "reload");
-									},
-									children: "热重载"
-								}),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
-									type: "button",
-									onClick: () => {
-										setDraft((current) => ({
-											...current,
-											mcpServers: current.mcpServers.filter((_, at) => at !== index)
-										}));
-									},
-									children: "删除"
-								})
-							] }, `${server.serverName}-${index}`)),
-							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
-								className: RuntimeStatus_module_css_default.editorActions,
-								children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
-									type: "button",
-									onClick: () => {
-										setDraft((current) => ({
-											...current,
-											mcpServers: [...current.mcpServers, newMcp()]
-										}));
-									},
-									children: "添加 MCP"
-								}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
-									type: "button",
-									disabled: saving,
-									onClick: () => {
-										save("mcpServers");
-									},
-									children: "保存 MCP"
-								})]
-							})
-						]
+					tab === "mcp" && (0, react_jsx_runtime.jsx)(McpConfigEditor, {
+						servers: draft.mcpServers,
+						savedServers: snapshot.value.mcpServers,
+						saving,
+						onChange: (mcpServers) => {
+							setDraft((current) => ({
+								...current,
+								mcpServers
+							}));
+						},
+						onSave: () => save("mcpServers")
 					}),
-					tab === "skills" && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+					tab === "skills" && (0, react_jsx_runtime.jsxs)("div", {
 						className: RuntimeStatus_module_css_default.editorList,
 						children: [
-							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["停用 Skill（每行一个名称）", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("textarea", {
+							(0, react_jsx_runtime.jsxs)("label", { children: ["停用 Skill（每行一个名称）", (0, react_jsx_runtime.jsx)("textarea", {
 								value: draft.disabledSkills.join("\n"),
 								onChange: (event) => {
 									setDraft((current) => ({
@@ -11121,9 +11428,9 @@ window.__ModuleLoader__.load({
 									}));
 								}
 							})] }),
-							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
+							(0, react_jsx_runtime.jsx)("div", {
 								className: RuntimeStatus_module_css_default.editorActions,
-								children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+								children: (0, react_jsx_runtime.jsx)("button", {
 									type: "button",
 									disabled: saving,
 									onClick: () => {
@@ -11132,9 +11439,9 @@ window.__ModuleLoader__.load({
 									children: "保存 Skill 状态"
 								})
 							}),
-							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("fieldset", { children: [
-								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("legend", { children: "用户 Skill overlay" }),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["名称", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
+							(0, react_jsx_runtime.jsxs)("fieldset", { children: [
+								(0, react_jsx_runtime.jsx)("legend", { children: "用户 Skill overlay" }),
+								(0, react_jsx_runtime.jsxs)("label", { children: ["名称", (0, react_jsx_runtime.jsx)("input", {
 									value: skillDraft.name,
 									onChange: (event) => {
 										setSkillDraft((current) => ({
@@ -11143,7 +11450,7 @@ window.__ModuleLoader__.load({
 										}));
 									}
 								})] }),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["描述", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
+								(0, react_jsx_runtime.jsxs)("label", { children: ["描述", (0, react_jsx_runtime.jsx)("input", {
 									value: skillDraft.description,
 									onChange: (event) => {
 										setSkillDraft((current) => ({
@@ -11152,7 +11459,7 @@ window.__ModuleLoader__.load({
 										}));
 									}
 								})] }),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["使用时机", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
+								(0, react_jsx_runtime.jsxs)("label", { children: ["使用时机", (0, react_jsx_runtime.jsx)("input", {
 									value: skillDraft.whenToUse,
 									onChange: (event) => {
 										setSkillDraft((current) => ({
@@ -11161,7 +11468,7 @@ window.__ModuleLoader__.load({
 										}));
 									}
 								})] }),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["模型可调用", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
+								(0, react_jsx_runtime.jsxs)("label", { children: ["模型可调用", (0, react_jsx_runtime.jsx)("input", {
 									type: "checkbox",
 									checked: skillDraft.modelInvocable,
 									onChange: (event) => {
@@ -11171,7 +11478,7 @@ window.__ModuleLoader__.load({
 										}));
 									}
 								})] }),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["用户可调用", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
+								(0, react_jsx_runtime.jsxs)("label", { children: ["用户可调用", (0, react_jsx_runtime.jsx)("input", {
 									type: "checkbox",
 									checked: skillDraft.userInvocable,
 									onChange: (event) => {
@@ -11181,7 +11488,7 @@ window.__ModuleLoader__.load({
 										}));
 									}
 								})] }),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["正文", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("textarea", {
+								(0, react_jsx_runtime.jsxs)("label", { children: ["正文", (0, react_jsx_runtime.jsx)("textarea", {
 									value: skillDraft.content,
 									onChange: (event) => {
 										setSkillDraft((current) => ({
@@ -11190,15 +11497,15 @@ window.__ModuleLoader__.load({
 										}));
 									}
 								})] }),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+								(0, react_jsx_runtime.jsxs)("div", {
 									className: RuntimeStatus_module_css_default.editorActions,
-									children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+									children: [(0, react_jsx_runtime.jsx)("button", {
 										type: "button",
 										onClick: () => {
 											saveSkill();
 										},
 										children: "保存 overlay"
-									}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+									}), (0, react_jsx_runtime.jsx)("button", {
 										type: "button",
 										onClick: () => {
 											deleteSkill();
@@ -11206,18 +11513,18 @@ window.__ModuleLoader__.load({
 										children: "删除 overlay"
 									})]
 								}),
-								skillError !== void 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
+								skillError !== void 0 && (0, react_jsx_runtime.jsx)("span", {
 									className: RuntimeStatus_module_css_default.installError,
 									children: skillError
 								})
 							] })
 						]
 					}),
-					tab === "rules" && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+					tab === "rules" && (0, react_jsx_runtime.jsxs)("div", {
 						className: RuntimeStatus_module_css_default.editorList,
-						children: [draft.rules.map((rule, index) => /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("fieldset", { children: [
-							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("legend", { children: rule.title }),
-							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["标题", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
+						children: [draft.rules.map((rule, index) => (0, react_jsx_runtime.jsxs)("fieldset", { children: [
+							(0, react_jsx_runtime.jsx)("legend", { children: rule.title }),
+							(0, react_jsx_runtime.jsxs)("label", { children: ["标题", (0, react_jsx_runtime.jsx)("input", {
 								value: rule.title,
 								onChange: (event) => {
 									setDraft((current) => ({
@@ -11229,7 +11536,7 @@ window.__ModuleLoader__.load({
 									}));
 								}
 							})] }),
-							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["启用", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
+							(0, react_jsx_runtime.jsxs)("label", { children: ["启用", (0, react_jsx_runtime.jsx)("input", {
 								type: "checkbox",
 								checked: rule.enabled,
 								onChange: (event) => {
@@ -11242,7 +11549,7 @@ window.__ModuleLoader__.load({
 									}));
 								}
 							})] }),
-							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["位置", /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("select", {
+							(0, react_jsx_runtime.jsxs)("label", { children: ["位置", (0, react_jsx_runtime.jsxs)("select", {
 								value: rule.placement,
 								onChange: (event) => {
 									setDraft((current) => ({
@@ -11254,25 +11561,25 @@ window.__ModuleLoader__.load({
 									}));
 								},
 								children: [
-									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
+									(0, react_jsx_runtime.jsx)("option", {
 										value: "before-persona",
 										children: "Persona 前"
 									}),
-									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
+									(0, react_jsx_runtime.jsx)("option", {
 										value: "after-persona",
 										children: "Persona 后"
 									}),
-									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
+									(0, react_jsx_runtime.jsx)("option", {
 										value: "before-tools",
 										children: "工具前"
 									}),
-									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
+									(0, react_jsx_runtime.jsx)("option", {
 										value: "after-tools",
 										children: "工具后"
 									})
 								]
 							})] }),
-							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["顺序", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
+							(0, react_jsx_runtime.jsxs)("label", { children: ["顺序", (0, react_jsx_runtime.jsx)("input", {
 								type: "number",
 								value: rule.order,
 								onChange: (event) => {
@@ -11285,7 +11592,7 @@ window.__ModuleLoader__.load({
 									}));
 								}
 							})] }),
-							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["正文", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("textarea", {
+							(0, react_jsx_runtime.jsxs)("label", { children: ["正文", (0, react_jsx_runtime.jsx)("textarea", {
 								value: rule.content,
 								onChange: (event) => {
 									setDraft((current) => ({
@@ -11297,7 +11604,7 @@ window.__ModuleLoader__.load({
 									}));
 								}
 							})] }),
-							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+							(0, react_jsx_runtime.jsx)("button", {
 								type: "button",
 								onClick: () => {
 									setDraft((current) => ({
@@ -11307,9 +11614,9 @@ window.__ModuleLoader__.load({
 								},
 								children: "删除"
 							})
-						] }, rule.id)), /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+						] }, rule.id)), (0, react_jsx_runtime.jsxs)("div", {
 							className: RuntimeStatus_module_css_default.editorActions,
-							children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+							children: [(0, react_jsx_runtime.jsx)("button", {
 								type: "button",
 								onClick: () => {
 									setDraft((current) => ({
@@ -11318,7 +11625,7 @@ window.__ModuleLoader__.load({
 									}));
 								},
 								children: "添加 Rule"
-							}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+							}), (0, react_jsx_runtime.jsx)("button", {
 								type: "button",
 								disabled: saving,
 								onClick: () => {
@@ -11332,7 +11639,7 @@ window.__ModuleLoader__.load({
 			});
 		}
 		//#endregion
-		//#region src/client/RuntimeStatus.tsx
+		//#region lib/types/client/RuntimeStatus.js
 		const STATE_LABEL = {
 			available: "可用",
 			configured: "已配置",
@@ -11407,6 +11714,7 @@ window.__ModuleLoader__.load({
 				serverName,
 				transport,
 				availability: "missing",
+				mounted: false,
 				target,
 				...installCommand === void 0 ? {} : { installCommand },
 				installHint
@@ -11484,37 +11792,37 @@ window.__ModuleLoader__.load({
 					setInstallError(error instanceof Error ? error.message : String(error));
 				}
 			};
-			if (compact) return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+			if (compact) return (0, react_jsx_runtime.jsxs)("div", {
 				className: RuntimeStatus_module_css_default.rail,
 				"data-runtime-status": true,
 				children: [
-					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("span", {
+					(0, react_jsx_runtime.jsxs)("span", {
 						className: RuntimeStatus_module_css_default.metric,
-						children: ["Skills ", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: snapshot.skills.available })]
+						children: ["Skills ", (0, react_jsx_runtime.jsx)("strong", { children: snapshot.skills.available })]
 					}),
-					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("span", {
+					(0, react_jsx_runtime.jsxs)("span", {
 						className: RuntimeStatus_module_css_default.metric,
-						children: ["MCP ", /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("strong", { children: [
+						children: ["MCP ", (0, react_jsx_runtime.jsxs)("strong", { children: [
 							available,
 							"/",
 							snapshot.mcp.length
 						] })]
 					}),
-					missing > 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("span", {
+					missing > 0 && (0, react_jsx_runtime.jsxs)("span", {
 						className: RuntimeStatus_module_css_default.warning,
 						children: [missing, " 项待安装"]
 					})
 				]
 			});
-			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("section", {
+			return (0, react_jsx_runtime.jsxs)("section", {
 				className: RuntimeStatus_module_css_default.settings,
 				"data-runtime-settings": true,
 				children: [
-					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("header", {
+					(0, react_jsx_runtime.jsxs)("header", {
 						className: RuntimeStatus_module_css_default.settingsHeader,
-						children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("h2", { children: "Red Team 运行环境" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", { children: "Skill 与 MCP 使用同一实时状态源；缺失组件不会从配置中消失。" })] }), /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+						children: [(0, react_jsx_runtime.jsxs)("div", { children: [(0, react_jsx_runtime.jsx)("h2", { children: "Red Team 运行环境" }), (0, react_jsx_runtime.jsx)("p", { children: "Skill 与 MCP 使用同一实时状态源；缺失组件不会从配置中消失。" })] }), (0, react_jsx_runtime.jsxs)("div", {
 							className: RuntimeStatus_module_css_default.summary,
-							children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("span", { children: ["Skills ", snapshot.skills.available] }), /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("span", { children: [
+							children: [(0, react_jsx_runtime.jsxs)("span", { children: ["Skills ", snapshot.skills.available] }), (0, react_jsx_runtime.jsxs)("span", { children: [
 								"MCP ",
 								available,
 								"/",
@@ -11522,57 +11830,61 @@ window.__ModuleLoader__.load({
 							] })]
 						})]
 					}),
-					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+					(0, react_jsx_runtime.jsxs)("div", {
 						className: RuntimeStatus_module_css_default.installToolbar,
-						children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["下载源", /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("select", {
+						children: [(0, react_jsx_runtime.jsxs)("label", { children: ["下载源", (0, react_jsx_runtime.jsxs)("select", {
 							value: sourcePolicy,
 							onChange: (event) => setSourcePolicy(event.target.value),
 							children: [
-								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
+								(0, react_jsx_runtime.jsx)("option", {
 									value: "auto",
 									children: "自动"
 								}),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
+								(0, react_jsx_runtime.jsx)("option", {
 									value: "domestic-first",
 									children: "国内优先"
 								}),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
+								(0, react_jsx_runtime.jsx)("option", {
 									value: "official-first",
 									children: "官方优先"
 								})
 							]
-						})] }), installError !== void 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
+						})] }), installError !== void 0 && (0, react_jsx_runtime.jsx)("span", {
 							className: RuntimeStatus_module_css_default.installError,
 							children: installError
 						})]
 					}),
-					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+					(0, react_jsx_runtime.jsxs)("div", {
 						className: RuntimeStatus_module_css_default.skillCard,
 						"data-state": snapshot.skills.state,
 						children: [
-							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: "Skills" }),
-							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: snapshot.skills.state === "ready" ? `${snapshot.skills.available} 个已发现` : "加载异常" }),
-							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: snapshot.skills.error ?? `Provider: ${snapshot.skills.provider}` })
+							(0, react_jsx_runtime.jsx)("strong", { children: "Skills" }),
+							(0, react_jsx_runtime.jsx)("span", { children: snapshot.skills.state === "ready" ? `${snapshot.skills.available} 个已发现` : "加载异常" }),
+							(0, react_jsx_runtime.jsx)("small", { children: snapshot.skills.error ?? `Provider: ${snapshot.skills.provider}` })
 						]
 					}),
-					/* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
+					(0, react_jsx_runtime.jsx)("div", {
 						className: RuntimeStatus_module_css_default.grid,
-						children: snapshot.mcp.map((server) => /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("article", {
+						children: snapshot.mcp.map((server) => (0, react_jsx_runtime.jsxs)("article", {
 							className: RuntimeStatus_module_css_default.card,
 							"data-state": server.availability,
 							children: [
-								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+								(0, react_jsx_runtime.jsxs)("div", {
 									className: RuntimeStatus_module_css_default.cardTitle,
-									children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("strong", { children: server.serverName }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: STATE_LABEL[server.availability] })]
+									children: [(0, react_jsx_runtime.jsx)("strong", { children: server.serverName }), (0, react_jsx_runtime.jsxs)("span", { children: [
+										STATE_LABEL[server.availability],
+										" · ",
+										server.mounted ? "已挂载" : "未挂载"
+									] })]
 								}),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("code", { children: server.target }),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", { children: server.installHint }),
-								server.lastProbe !== void 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("details", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("summary", { children: [
+								(0, react_jsx_runtime.jsx)("code", { children: server.target }),
+								(0, react_jsx_runtime.jsx)("p", { children: server.installHint }),
+								server.lastProbe !== void 0 && (0, react_jsx_runtime.jsxs)("details", { children: [(0, react_jsx_runtime.jsxs)("summary", { children: [
 									"最近测活：",
 									server.lastProbe.toolCount,
 									" 个工具"
-								] }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("ul", { children: server.lastProbe.tools.map((tool) => /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("li", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("code", { children: `mcp__${server.serverName}__${tool.name}` }), tool.description !== void 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: tool.description })] }, tool.name)) })] }),
-								server.installCommand !== void 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("pre", { children: server.installCommand }),
+								] }), (0, react_jsx_runtime.jsx)("ul", { children: server.lastProbe.tools.map((tool) => (0, react_jsx_runtime.jsxs)("li", { children: [(0, react_jsx_runtime.jsx)("code", { children: `mcp__${server.serverName}__${tool.name}` }), tool.description !== void 0 && (0, react_jsx_runtime.jsx)("small", { children: tool.description })] }, tool.name)) })] }),
+								server.installCommand !== void 0 && (0, react_jsx_runtime.jsx)("pre", { children: server.installCommand }),
 								(() => {
 									const componentId = MCP_COMPONENT[server.serverName];
 									if (componentId === void 0) return null;
@@ -11585,10 +11897,10 @@ window.__ModuleLoader__.load({
 										"external-action-required",
 										"restart-required"
 									].includes(operation.phase);
-									return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+									return (0, react_jsx_runtime.jsxs)("div", {
 										className: RuntimeStatus_module_css_default.installActions,
 										children: [
-											/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+											(0, react_jsx_runtime.jsx)("button", {
 												type: "button",
 												disabled: component?.supported !== true || active,
 												onClick: () => {
@@ -11596,27 +11908,27 @@ window.__ModuleLoader__.load({
 												},
 												children: operation?.phase === "failed" ? "重试" : "一键补全"
 											}),
-											active && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+											active && (0, react_jsx_runtime.jsx)("button", {
 												type: "button",
 												onClick: () => {
 													cancelInstall(operation.id);
 												},
 												children: "取消"
 											}),
-											operation !== void 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+											operation !== void 0 && (0, react_jsx_runtime.jsxs)("div", {
 												className: RuntimeStatus_module_css_default.installProgress,
 												children: [
-													/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("span", { children: [
+													(0, react_jsx_runtime.jsxs)("span", { children: [
 														operation.phase,
 														" · ",
 														Math.round(operation.progress * 100),
 														"%"
 													] }),
-													/* @__PURE__ */ (0, react_jsx_runtime.jsx)("progress", {
+													(0, react_jsx_runtime.jsx)("progress", {
 														value: operation.progress,
 														max: 1
 													}),
-													/* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: operation.error ?? operation.logs.at(-1) })
+													(0, react_jsx_runtime.jsx)("small", { children: operation.error ?? operation.logs.at(-1) })
 												]
 											})
 										]
@@ -11625,13 +11937,13 @@ window.__ModuleLoader__.load({
 							]
 						}, server.serverName))
 					}),
-					configScope !== void 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsx)(RuntimeConfigEditor, { configScope })
+					configScope !== void 0 && (0, react_jsx_runtime.jsx)(RuntimeConfigEditor, { configScope })
 				]
 			});
 		}
 		//#endregion
 		//#region \0dsh-css:C:\Users\Admin\Desktop\ant-dsh\packages\client\ui-autograph\src\client\AutoGraphView.module.css.mjs
-		const css = ".dSySha_panel{box-sizing:border-box;background:var(--dsw-alias-bg-layer-1);width:100%;height:100%;min-height:0;color:var(--dsw-alias-label-primary);flex-direction:column;display:flex;overflow:hidden}.dSySha_header{border-bottom:1px solid var(--dsw-alias-border-l2);font:var(--dsw-font-xs-13);align-items:center;gap:12px;padding:10px 16px;display:flex}.dSySha_title{font-weight:600}.dSySha_meta{color:var(--dsw-alias-label-secondary)}.dSySha_status{background:var(--dsw-alias-state-success-tertiary);color:var(--dsw-alias-state-success-primary);border-radius:10px;margin-left:auto;padding:2px 8px;font-size:11px;line-height:18px}.dSySha_status[data-paused=true]{background:var(--dsw-alias-state-warn-tertiary);color:var(--dsw-alias-state-warn-label)}.dSySha_status[data-complete=true]{background:var(--dsw-alias-state-business-tertiary);color:var(--dsw-alias-state-business-primary)}.dSySha_filters{border:0;border-bottom:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-1);align-items:center;gap:8px;min-width:0;margin:0;padding:8px 16px;display:flex}.dSySha_filters legend{clip-path:inset(50%);width:1px;height:1px;position:absolute;overflow:hidden}.dSySha_filters label{border:1px solid var(--dsw-alias-border-l2);color:var(--dsw-alias-label-secondary);cursor:pointer;user-select:none;border-radius:999px;align-items:center;gap:5px;padding:3px 8px;font-size:11px;line-height:18px;display:inline-flex}.dSySha_filters label:has(input:checked){border-color:var(--dsw-alias-state-business-primary);background:var(--dsw-alias-state-business-tertiary);color:var(--dsw-alias-label-primary)}.dSySha_filters input{width:13px;height:13px;accent-color:var(--dsw-alias-state-business-primary);margin:0}.dSySha_filterCount{color:var(--dsw-alias-label-tertiary);white-space:nowrap;margin-left:auto;font-size:11px;line-height:18px}.dSySha_canvas{background:var(--dsw-alias-bg-layer-1);flex:1;min-height:0;position:relative}.dSySha_canvas .react-flow{direction:ltr;position:relative;overflow:hidden}.dSySha_canvas .react-flow__container{width:100%;height:100%;position:absolute;inset:0}.dSySha_canvas .react-flow__pane{z-index:1;touch-action:none}.dSySha_canvas .react-flow__viewport{z-index:2;transform-origin:0 0;pointer-events:none}.dSySha_canvas .react-flow__renderer{z-index:4}.dSySha_canvas .react-flow__nodes{pointer-events:none;transform-origin:0 0}.dSySha_canvas .react-flow__node{box-sizing:border-box;transform-origin:0 0;pointer-events:all;user-select:none;position:absolute}.dSySha_canvas .react-flow__edges,.dSySha_canvas .react-flow__edges svg{pointer-events:none;position:absolute;overflow:visible}.dSySha_canvas .react-flow__edge{pointer-events:visibleStroke}.dSySha_canvas .react-flow__edge-path{fill:none}.dSySha_canvas .react-flow__edge.animated path{stroke-dasharray:5;animation:.5s linear infinite dSySha_autographDash}.dSySha_canvas .react-flow__handle{border-radius:50%;position:absolute}.dSySha_canvas .react-flow__handle-left{top:50%;left:0;transform:translate(-50%,-50%)}.dSySha_canvas .react-flow__handle-right{top:50%;right:0;transform:translate(50%,-50%)}.dSySha_canvas .react-flow__panel{z-index:5;margin:15px;position:absolute}.dSySha_canvas .react-flow__panel.bottom{bottom:0}.dSySha_canvas .react-flow__panel.left{left:0}.dSySha_canvas .react-flow__panel.right{right:0}.dSySha_canvas .react-flow__minimap-svg{display:block}.dSySha_canvas .react-flow__controls{flex-direction:column;display:flex}.dSySha_canvas .react-flow__controls-button{border:0;border-bottom:1px solid var(--dsw-alias-border-l2);cursor:pointer;justify-content:center;align-items:center;width:26px;height:26px;padding:4px;display:flex}.dSySha_canvas .react-flow__controls-button svg{fill:currentColor;width:100%;max-width:12px;max-height:12px}@keyframes dSySha_autographDash{0%{stroke-dashoffset:10px}}.dSySha_canvas .react-flow{--xy-background-color:var(--dsw-alias-bg-layer-1);--xy-edge-stroke-default:var(--dsw-alias-border-l4);--xy-minimap-background-color-default:var(--dsw-alias-bg-layer-2);--xy-controls-button-background-color-default:var(--dsw-alias-bg-layer-2);--xy-controls-button-background-color-hover-default:var(--dsw-alias-interactive-bg-hover-solid);--xy-controls-button-color-default:var(--dsw-alias-label-secondary);--xy-controls-button-border-color-default:var(--dsw-alias-border-l2);--xy-background-pattern-dot-color-default:var(--dsw-alias-border-l3);width:100%;height:100%}.dSySha_canvas .react-flow__node{border-radius:8px;font-size:11px;line-height:18px}.dSySha_canvas .react-flow__controls{border:1px solid var(--dsw-alias-border-l2);box-shadow:var(--dsw-shadow-lv1);border-radius:8px;overflow:hidden}.dSySha_canvas .react-flow__controls-button{border-bottom-color:var(--dsw-alias-border-l2)}.dSySha_canvas .react-flow__edge-path{stroke-width:1.75px;vector-effect:non-scaling-stroke}.dSySha_canvas .react-flow__edge.selected .react-flow__edge-path,.dSySha_canvas .react-flow__edge:focus-visible .react-flow__edge-path{stroke:var(--dsw-alias-state-business-primary);stroke-width:2.5px}.dSySha_canvas .react-flow__minimap{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-2);box-shadow:var(--dsw-shadow-lv1);border-radius:8px;overflow:hidden}.dSySha_canvas .react-flow__minimap-mask{fill:var(--dsw-alias-bg-mask-2)}.dSySha_canvas .react-flow__minimap-node{fill:var(--dsw-alias-state-business-tertiary);stroke:var(--dsw-alias-state-business-primary)}.dSySha_empty{height:100%;color:var(--dsw-alias-label-secondary);font:var(--dsw-font-xs-13);text-align:center;justify-content:center;align-items:center;padding:24px;display:flex}.dSySha_nodeCard{box-sizing:border-box;border:1.5px solid var(--dsw-alias-border-l3);background:var(--dsw-alias-bg-layer-3);width:252px;min-height:92px;color:var(--dsw-alias-label-primary);box-shadow:var(--dsw-shadow-lv1);border-radius:10px;position:relative;overflow:visible}.dSySha_nodeCard[data-kind=goal]{border-color:var(--dsw-alias-state-warn-primary)}.dSySha_nodeCard[data-kind=fact]{border-color:var(--dsw-alias-state-success-primary)}.dSySha_nodeCard[data-kind=intent]{border-color:var(--dsw-alias-state-business-primary)}.dSySha_nodeCard[data-kind=hint]{border-color:var(--dsw-alias-brand-primary-new-colorprimary-new-color)}.dSySha_nodeHeader{border-bottom:1px solid var(--dsw-alias-border-l1);color:var(--dsw-alias-label-secondary);align-items:center;gap:6px;padding:8px 10px;font-size:11px;line-height:18px;display:flex}.dSySha_nodeIcon{color:currentColor;width:16px;height:16px;display:inline-flex}.dSySha_nodeIcon svg{fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.75px;vector-effect:non-scaling-stroke;width:100%;height:100%}.dSySha_nodeStatus{color:var(--dsw-alias-label-tertiary);margin-left:auto}.dSySha_nodeLabel{overflow-wrap:anywhere;white-space:pre-wrap;padding:10px 12px 12px;font-size:13px;line-height:20px}.dSySha_handle{border:2px solid var(--dsw-alias-bg-layer-3);background:var(--dsw-alias-label-tertiary);width:9px;height:9px}.dSySha_nodeCard[data-kind=goal] .dSySha_handle{background:var(--dsw-alias-state-warn-primary)}.dSySha_nodeCard[data-kind=fact] .dSySha_handle{background:var(--dsw-alias-state-success-primary)}.dSySha_nodeCard[data-kind=intent] .dSySha_handle{background:var(--dsw-alias-state-business-primary)}.dSySha_nodeCard[data-kind=hint] .dSySha_handle{background:var(--dsw-alias-brand-primary-new-colorprimary-new-color)}.dSySha_controls{border-top:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-1);gap:8px;padding:10px 16px;display:flex}.dSySha_controls button,.dSySha_controls input{box-sizing:border-box;border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-2);min-height:32px;color:var(--dsw-alias-label-primary);border-radius:8px;font-size:12px;line-height:18px}.dSySha_controls button{cursor:pointer;padding:6px 14px}.dSySha_controls button:hover:not(:disabled){background:var(--dsw-alias-interactive-bg-hover-solid)}.dSySha_controls button:disabled{opacity:.5;cursor:default}.dSySha_controls input{flex:1;min-width:0;padding:6px 10px}.dSySha_controls input::placeholder{color:var(--dsw-alias-label-tertiary)}.dSySha_controls :is(button,input):focus-visible{outline:2px solid var(--dsw-alias-state-business-primary);outline-offset:2px}";
+		const css = ".dSySha_panel{box-sizing:border-box;background:var(--dsw-alias-bg-layer-1);width:100%;height:100%;min-height:0;color:var(--dsw-alias-label-primary);flex-direction:column;display:flex;overflow:hidden}.dSySha_header{border-bottom:1px solid var(--dsw-alias-border-l2);font:var(--dsw-font-xs-13);align-items:center;gap:12px;padding:10px 16px;display:flex}.dSySha_title{font-weight:600}.dSySha_meta{color:var(--dsw-alias-label-secondary)}.dSySha_status{background:var(--dsw-alias-state-success-tertiary);color:var(--dsw-alias-state-success-primary);border-radius:10px;margin-left:auto;padding:2px 8px;font-size:11px;line-height:18px}.dSySha_status[data-paused=true]{background:var(--dsw-alias-state-warn-tertiary);color:var(--dsw-alias-state-warn-label)}.dSySha_status[data-complete=true]{background:var(--dsw-alias-state-business-tertiary);color:var(--dsw-alias-state-business-primary)}.dSySha_filters{border:0;border-bottom:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-1);align-items:center;gap:8px;min-width:0;margin:0;padding:8px 16px;display:flex}.dSySha_filters legend{clip-path:inset(50%);width:1px;height:1px;position:absolute;overflow:hidden}.dSySha_filters label{border:1px solid var(--dsw-alias-border-l2);color:var(--dsw-alias-label-secondary);cursor:pointer;user-select:none;border-radius:999px;align-items:center;gap:5px;padding:3px 8px;font-size:11px;line-height:18px;display:inline-flex}.dSySha_filters label:has(input:checked){border-color:var(--dsw-alias-state-business-primary);background:var(--dsw-alias-state-business-tertiary);color:var(--dsw-alias-label-primary)}.dSySha_filters input{width:13px;height:13px;accent-color:var(--dsw-alias-state-business-primary);margin:0}.dSySha_filterCount{color:var(--dsw-alias-label-tertiary);white-space:nowrap;margin-left:auto;font-size:11px;line-height:18px}.dSySha_columnLegend{border-bottom:1px solid var(--dsw-alias-border-l1);background:var(--dsw-alias-bg-layer-2);color:var(--dsw-alias-label-tertiary);text-align:center;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;padding:6px 16px;font-size:11px;line-height:18px;display:grid}.dSySha_columnLegend span{text-overflow:ellipsis;white-space:nowrap;overflow:hidden}.dSySha_columnLegend span[data-kind=goal]{color:var(--dsw-alias-state-warn-label)}.dSySha_columnLegend span[data-kind=intent]{color:var(--dsw-alias-state-business-primary)}.dSySha_columnLegend span[data-kind=fact]{color:var(--dsw-alias-state-success-primary)}.dSySha_canvas{background:var(--dsw-alias-bg-layer-1);flex:1;min-height:0;position:relative}.dSySha_canvas .react-flow{direction:ltr;position:relative;overflow:hidden}.dSySha_canvas .react-flow__container{width:100%;height:100%;position:absolute;inset:0}.dSySha_canvas .react-flow__pane{z-index:1;touch-action:none}.dSySha_canvas .react-flow__viewport{z-index:2;transform-origin:0 0;pointer-events:none}.dSySha_canvas .react-flow__renderer{z-index:4}.dSySha_canvas .react-flow__nodes{z-index:2;pointer-events:none;transform-origin:0 0}.dSySha_canvas .react-flow__edges{z-index:1}.dSySha_canvas .react-flow__node{box-sizing:border-box;transform-origin:0 0;pointer-events:all;user-select:none;position:absolute}.dSySha_canvas .react-flow__edges,.dSySha_canvas .react-flow__edges svg{pointer-events:none;position:absolute;overflow:visible}.dSySha_canvas .react-flow__edge{pointer-events:visibleStroke}.dSySha_canvas .react-flow__edge-path{fill:none}.dSySha_canvas .react-flow__edge.animated path{stroke-dasharray:5;animation:.5s linear infinite dSySha_autographDash}.dSySha_canvas .react-flow__handle{border-radius:50%;position:absolute}.dSySha_canvas .react-flow__handle-left{top:50%;left:0;transform:translate(-50%,-50%)}.dSySha_canvas .react-flow__handle-right{top:50%;right:0;transform:translate(50%,-50%)}.dSySha_canvas .react-flow__panel{z-index:5;margin:15px;position:absolute}.dSySha_canvas .react-flow__panel.bottom{bottom:0}.dSySha_canvas .react-flow__panel.left{left:0}.dSySha_canvas .react-flow__panel.right{right:0}.dSySha_canvas .react-flow__minimap-svg{display:block}.dSySha_canvas .react-flow__controls{flex-direction:column;display:flex}.dSySha_canvas .react-flow__controls-button{border:0;border-bottom:1px solid var(--dsw-alias-border-l2);cursor:pointer;justify-content:center;align-items:center;width:26px;height:26px;padding:4px;display:flex}.dSySha_canvas .react-flow__controls-button svg{fill:currentColor;width:100%;max-width:12px;max-height:12px}@keyframes dSySha_autographDash{0%{stroke-dashoffset:10px}}.dSySha_canvas .react-flow{--xy-background-color:var(--dsw-alias-bg-layer-1);--xy-edge-stroke-default:var(--dsw-alias-border-l4);--xy-minimap-background-color-default:var(--dsw-alias-bg-layer-2);--xy-controls-button-background-color-default:var(--dsw-alias-bg-layer-2);--xy-controls-button-background-color-hover-default:var(--dsw-alias-interactive-bg-hover-solid);--xy-controls-button-color-default:var(--dsw-alias-label-secondary);--xy-controls-button-border-color-default:var(--dsw-alias-border-l2);--xy-background-pattern-dot-color-default:var(--dsw-alias-border-l3);width:100%;height:100%}.dSySha_canvas .react-flow__node{border-radius:8px;font-size:11px;line-height:18px}.dSySha_canvas .react-flow__controls{border:1px solid var(--dsw-alias-border-l2);box-shadow:var(--dsw-shadow-lv1);border-radius:8px;overflow:hidden}.dSySha_canvas .react-flow__controls-button{border-bottom-color:var(--dsw-alias-border-l2)}.dSySha_canvas .react-flow__edge-path{stroke-width:1.75px;vector-effect:non-scaling-stroke;filter:drop-shadow(0 0 1px var(--dsw-alias-bg-layer-1))}.dSySha_canvas .react-flow__edge.selected .react-flow__edge-path,.dSySha_canvas .react-flow__edge:focus-visible .react-flow__edge-path{stroke:var(--dsw-alias-state-business-primary);stroke-width:2.5px}.dSySha_overview{z-index:6;border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-2);width:220px;height:140px;box-shadow:var(--dsw-shadow-lv1);touch-action:none;border-radius:8px;position:absolute;bottom:15px;right:15px;overflow:hidden}.dSySha_overview svg{cursor:crosshair;width:100%;height:100%;display:block}.dSySha_overviewEdge{fill:none;stroke:var(--dsw-alias-border-l4);stroke-width:5px;vector-effect:non-scaling-stroke}.dSySha_overviewNode{fill:var(--dsw-alias-bg-layer-3);stroke-width:5px;vector-effect:non-scaling-stroke}.dSySha_overviewNode[data-kind=goal]{stroke:var(--dsw-alias-state-warn-primary)}.dSySha_overviewNode[data-kind=intent]{stroke:var(--dsw-alias-state-business-primary)}.dSySha_overviewNode[data-kind=fact]{stroke:var(--dsw-alias-state-success-primary)}.dSySha_overviewNode[data-kind=hint]{stroke:var(--dsw-alias-brand-primary-new-colorprimary-new-color)}.dSySha_overviewViewport{fill:var(--dsw-alias-bg-mask-2);stroke:var(--dsw-alias-state-business-primary);stroke-width:6px;vector-effect:non-scaling-stroke;pointer-events:none}.dSySha_empty{height:100%;color:var(--dsw-alias-label-secondary);font:var(--dsw-font-xs-13);text-align:center;justify-content:center;align-items:center;padding:24px;display:flex}.dSySha_nodeCard{box-sizing:border-box;border:1.5px solid var(--dsw-alias-border-l3);background:var(--dsw-alias-bg-layer-3);width:252px;min-height:92px;color:var(--dsw-alias-label-primary);box-shadow:var(--dsw-shadow-lv1);border-radius:10px;position:relative;overflow:visible}.dSySha_nodeCard[data-kind=goal]{border-color:var(--dsw-alias-state-warn-primary)}.dSySha_nodeCard[data-kind=fact]{border-color:var(--dsw-alias-state-success-primary)}.dSySha_nodeCard[data-kind=intent]{border-color:var(--dsw-alias-state-business-primary)}.dSySha_nodeCard[data-kind=hint]{border-color:var(--dsw-alias-brand-primary-new-colorprimary-new-color)}.dSySha_nodeHeader{border-bottom:1px solid var(--dsw-alias-border-l1);color:var(--dsw-alias-label-secondary);align-items:center;gap:6px;padding:8px 10px;font-size:11px;line-height:18px;display:flex}.dSySha_nodeIcon{color:currentColor;width:16px;height:16px;display:inline-flex}.dSySha_nodeIcon svg{fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.75px;vector-effect:non-scaling-stroke;width:100%;height:100%}.dSySha_nodeStatus{color:var(--dsw-alias-label-tertiary);margin-left:auto}.dSySha_nodeLabel{overflow-wrap:anywhere;white-space:pre-wrap;padding:10px 12px 12px;font-size:13px;line-height:20px}.dSySha_handle{border:2px solid var(--dsw-alias-bg-layer-3);background:var(--dsw-alias-label-tertiary);width:9px;height:9px}.dSySha_nodeCard[data-kind=goal] .dSySha_handle{background:var(--dsw-alias-state-warn-primary)}.dSySha_nodeCard[data-kind=fact] .dSySha_handle{background:var(--dsw-alias-state-success-primary)}.dSySha_nodeCard[data-kind=intent] .dSySha_handle{background:var(--dsw-alias-state-business-primary)}.dSySha_nodeCard[data-kind=hint] .dSySha_handle{background:var(--dsw-alias-brand-primary-new-colorprimary-new-color)}.dSySha_controls{border-top:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-1);gap:8px;padding:10px 16px;display:flex}.dSySha_controls button,.dSySha_controls input{box-sizing:border-box;border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-2);min-height:32px;color:var(--dsw-alias-label-primary);border-radius:8px;font-size:12px;line-height:18px}.dSySha_controls button{cursor:pointer;padding:6px 14px}.dSySha_controls button:hover:not(:disabled){background:var(--dsw-alias-interactive-bg-hover-solid)}.dSySha_controls button:disabled{opacity:.5;cursor:default}.dSySha_controls input{flex:1;min-width:0;padding:6px 10px}.dSySha_controls input::placeholder{color:var(--dsw-alias-label-tertiary)}.dSySha_controls :is(button,input):focus-visible{outline:2px solid var(--dsw-alias-state-business-primary);outline-offset:2px}";
 		const tagId = "@deepseek-ai/dsh-client-ui-autograph/AutoGraphView.module.css";
 		if (typeof document !== "undefined" && document.querySelector("style[data-plugin-css=" + JSON.stringify(tagId) + "]") === null) {
 			const tag = document.createElement("style");
@@ -11641,26 +11953,105 @@ window.__ModuleLoader__.load({
 			document.head.appendChild(tag);
 		}
 		var AutoGraphView_module_css_default = {
-			"handle": "dSySha_handle",
-			"filters": "dSySha_filters",
-			"autographDash": "dSySha_autographDash",
-			"empty": "dSySha_empty",
-			"nodeHeader": "dSySha_nodeHeader",
 			"nodeLabel": "dSySha_nodeLabel",
-			"header": "dSySha_header",
-			"controls": "dSySha_controls",
-			"panel": "dSySha_panel",
 			"canvas": "dSySha_canvas",
-			"meta": "dSySha_meta",
+			"nodeStatus": "dSySha_nodeStatus",
 			"nodeCard": "dSySha_nodeCard",
-			"nodeIcon": "dSySha_nodeIcon",
+			"overviewNode": "dSySha_overviewNode",
+			"autographDash": "dSySha_autographDash",
+			"panel": "dSySha_panel",
+			"columnLegend": "dSySha_columnLegend",
+			"overviewEdge": "dSySha_overviewEdge",
+			"header": "dSySha_header",
+			"empty": "dSySha_empty",
 			"status": "dSySha_status",
-			"title": "dSySha_title",
 			"filterCount": "dSySha_filterCount",
-			"nodeStatus": "dSySha_nodeStatus"
+			"meta": "dSySha_meta",
+			"overviewViewport": "dSySha_overviewViewport",
+			"nodeIcon": "dSySha_nodeIcon",
+			"handle": "dSySha_handle",
+			"overview": "dSySha_overview",
+			"title": "dSySha_title",
+			"nodeHeader": "dSySha_nodeHeader",
+			"controls": "dSySha_controls",
+			"filters": "dSySha_filters"
 		};
 		//#endregion
-		//#region src/client/BoardGraphNode.tsx
+		//#region lib/types/client/GraphOverview.js
+		const NODE_WIDTH = 252;
+		const NODE_HEIGHT = 92;
+		const PADDING = 40;
+		/** Live SVG overview of both blocks and their logical connections. */
+		function GraphOverview({ nodes, edges }) {
+			const viewport = useViewport();
+			const { setCenter } = useReactFlow();
+			const model = (0, react.useMemo)(() => {
+				const byId = new Map(nodes.map((node) => [node.id, node]));
+				const maxX = Math.max(...nodes.map((node) => node.position.x + NODE_WIDTH), NODE_WIDTH);
+				const maxY = Math.max(...nodes.map((node) => node.position.y + NODE_HEIGHT), NODE_HEIGHT);
+				return {
+					byId,
+					width: maxX + PADDING * 2,
+					height: maxY + PADDING * 2
+				};
+			}, [nodes]);
+			const locate = (clientX, clientY, svg) => {
+				const rect = svg.getBoundingClientRect();
+				setCenter((clientX - rect.left) / rect.width * model.width - PADDING, (clientY - rect.top) / rect.height * model.height - PADDING, {
+					zoom: viewport.zoom,
+					duration: 180
+				});
+			};
+			return (0, react_jsx_runtime.jsx)("aside", {
+				className: AutoGraphView_module_css_default.overview,
+				"aria-label": "逻辑关系鸟瞰图",
+				children: (0, react_jsx_runtime.jsx)("svg", {
+					viewBox: `0 0 ${model.width} ${model.height}`,
+					preserveAspectRatio: "xMidYMid meet",
+					onPointerDown: (event) => {
+						locate(event.clientX, event.clientY, event.currentTarget);
+					},
+					children: (0, react_jsx_runtime.jsxs)("g", {
+						transform: `translate(${PADDING} ${PADDING})`,
+						children: [
+							edges.map((edge) => {
+								const source = model.byId.get(edge.source);
+								const target = model.byId.get(edge.target);
+								if (source === void 0 || target === void 0) return null;
+								const startX = source.position.x + NODE_WIDTH;
+								const startY = source.position.y + NODE_HEIGHT / 2;
+								const endX = target.position.x;
+								const endY = target.position.y + NODE_HEIGHT / 2;
+								const middleX = (startX + endX) / 2;
+								return (0, react_jsx_runtime.jsx)("polyline", {
+									className: AutoGraphView_module_css_default.overviewEdge,
+									points: `${startX},${startY} ${middleX},${startY} ${middleX},${endY} ${endX},${endY}`
+								}, edge.id);
+							}),
+							nodes.map((node) => (0, react_jsx_runtime.jsx)("rect", {
+								className: AutoGraphView_module_css_default.overviewNode,
+								"data-kind": node.data.kind,
+								x: node.position.x,
+								y: node.position.y,
+								width: NODE_WIDTH,
+								height: NODE_HEIGHT,
+								rx: 10
+							}, node.id)),
+							(0, react_jsx_runtime.jsx)("rect", {
+								className: AutoGraphView_module_css_default.overviewViewport,
+								x: Math.max(0, -viewport.x / viewport.zoom),
+								y: Math.max(0, -viewport.y / viewport.zoom),
+								width: Math.min(model.width, 960 / viewport.zoom),
+								height: Math.min(model.height, 540 / viewport.zoom),
+								rx: 8
+							})
+						]
+					})
+				})
+			});
+		}
+		//#endregion
+		//#region lib/types/client/BoardGraphNode.js
 		const KIND_LABEL$1 = {
 			fact: "事实",
 			goal: "目标",
@@ -11668,65 +12059,65 @@ window.__ModuleLoader__.load({
 			intent: "意图"
 		};
 		function KindIcon({ kind }) {
-			if (kind === "goal") return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("svg", {
+			if (kind === "goal") return (0, react_jsx_runtime.jsxs)("svg", {
 				viewBox: "0 0 24 24",
 				"aria-hidden": "true",
-				children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("circle", {
+				children: [(0, react_jsx_runtime.jsx)("circle", {
 					cx: "12",
 					cy: "12",
 					r: "8"
-				}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("circle", {
+				}), (0, react_jsx_runtime.jsx)("circle", {
 					cx: "12",
 					cy: "12",
 					r: "3"
 				})]
 			});
-			if (kind === "fact") return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("svg", {
+			if (kind === "fact") return (0, react_jsx_runtime.jsxs)("svg", {
 				viewBox: "0 0 24 24",
 				"aria-hidden": "true",
-				children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("path", { d: "M5 5h14v14H5z" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("path", { d: "m8 12 2.5 2.5L16 9" })]
+				children: [(0, react_jsx_runtime.jsx)("path", { d: "M5 5h14v14H5z" }), (0, react_jsx_runtime.jsx)("path", { d: "m8 12 2.5 2.5L16 9" })]
 			});
-			if (kind === "intent") return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("svg", {
+			if (kind === "intent") return (0, react_jsx_runtime.jsxs)("svg", {
 				viewBox: "0 0 24 24",
 				"aria-hidden": "true",
-				children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("path", { d: "M5 19 19 5" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("path", { d: "M10 5h9v9" })]
+				children: [(0, react_jsx_runtime.jsx)("path", { d: "M5 19 19 5" }), (0, react_jsx_runtime.jsx)("path", { d: "M10 5h9v9" })]
 			});
-			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("svg", {
+			return (0, react_jsx_runtime.jsxs)("svg", {
 				viewBox: "0 0 24 24",
 				"aria-hidden": "true",
-				children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("path", { d: "M12 3a7 7 0 0 0-4 12.7V19h8v-3.3A7 7 0 0 0 12 3Z" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("path", { d: "M9 22h6M9 16h6" })]
+				children: [(0, react_jsx_runtime.jsx)("path", { d: "M12 3a7 7 0 0 0-4 12.7V19h8v-3.3A7 7 0 0 0 12 3Z" }), (0, react_jsx_runtime.jsx)("path", { d: "M9 22h6M9 16h6" })]
 			});
 		}
 		/** A measured graph block with explicit left/right connection anchors. */
 		function BoardGraphNode({ data }) {
-			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("article", {
+			return (0, react_jsx_runtime.jsxs)("article", {
 				className: AutoGraphView_module_css_default.nodeCard,
 				"data-kind": data.kind,
 				children: [
-					/* @__PURE__ */ (0, react_jsx_runtime.jsx)(Handle, {
+					(0, react_jsx_runtime.jsx)(Handle, {
 						className: AutoGraphView_module_css_default.handle,
 						type: "target",
 						position: Position.Left
 					}),
-					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("header", {
+					(0, react_jsx_runtime.jsxs)("header", {
 						className: AutoGraphView_module_css_default.nodeHeader,
 						children: [
-							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
+							(0, react_jsx_runtime.jsx)("span", {
 								className: AutoGraphView_module_css_default.nodeIcon,
-								children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(KindIcon, { kind: data.kind })
+								children: (0, react_jsx_runtime.jsx)(KindIcon, { kind: data.kind })
 							}),
-							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: KIND_LABEL$1[data.kind] }),
-							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
+							(0, react_jsx_runtime.jsx)("span", { children: KIND_LABEL$1[data.kind] }),
+							(0, react_jsx_runtime.jsx)("span", {
 								className: AutoGraphView_module_css_default.nodeStatus,
 								children: data.status
 							})
 						]
 					}),
-					/* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
+					(0, react_jsx_runtime.jsx)("div", {
 						className: AutoGraphView_module_css_default.nodeLabel,
 						children: data.label
 					}),
-					/* @__PURE__ */ (0, react_jsx_runtime.jsx)(Handle, {
+					(0, react_jsx_runtime.jsx)(Handle, {
 						className: AutoGraphView_module_css_default.handle,
 						type: "source",
 						position: Position.Right
@@ -11735,7 +12126,7 @@ window.__ModuleLoader__.load({
 			});
 		}
 		//#endregion
-		//#region src/client/AutoGraphView.tsx
+		//#region lib/types/client/AutoGraphView.js
 		/**
 		* AutoGraphView: the live decision-graph panel for an autonomous (red-team-auto)
 		* run. It folds the `board` session projection into React Flow nodes/edges —
@@ -11747,11 +12138,12 @@ window.__ModuleLoader__.load({
 		*/
 		const NODE_TYPES = { board: BoardGraphNode };
 		const BOARD_KINDS = [
-			"fact",
+			"goal",
 			"intent",
-			"hint",
-			"goal"
+			"fact",
+			"hint"
 		];
+		const KIND_COLUMN = new Map(BOARD_KINDS.map((kind, index) => [kind, index]));
 		const KIND_LABEL = {
 			fact: "事实",
 			intent: "意图",
@@ -11766,46 +12158,59 @@ window.__ModuleLoader__.load({
 		};
 		function edgeOpacity(node) {
 			if (node.status === "open" || node.status === "claimed") return 1;
-			if (node.status === "resolved" || node.status === "complete") return .78;
+			if (node.status === "done") return .78;
 			return .52;
 		}
-		/** Lay out measured blocks in cycle columns with enough room for wrapped labels. */
+		/** Lay out each block kind in a fixed column and give sibling edges separate lanes. */
 		function toFlow(board) {
-			const byCycle = /* @__PURE__ */ new Map();
+			const byKind = /* @__PURE__ */ new Map();
+			const nodes = [...board.nodes].sort((left, right) => left.cycle - right.cycle || left.time - right.time).map((node) => {
+				const row = byKind.get(node.kind) ?? 0;
+				byKind.set(node.kind, row + 1);
+				return {
+					id: node.id,
+					type: "board",
+					position: {
+						x: (KIND_COLUMN.get(node.kind) ?? 0) * 360,
+						y: row * 156
+					},
+					zIndex: 2,
+					data: {
+						label: node.label,
+						kind: node.kind,
+						status: node.status ?? "recorded"
+					}
+				};
+			});
+			const siblingLane = /* @__PURE__ */ new Map();
 			return {
-				nodes: board.nodes.map((node) => {
-					const row = byCycle.get(node.cycle) ?? 0;
-					byCycle.set(node.cycle, row + 1);
+				nodes,
+				edges: board.nodes.filter((node) => node.parentId !== void 0).map((node) => {
+					const parentId = node.parentId;
+					const lane = siblingLane.get(parentId) ?? 0;
+					siblingLane.set(parentId, lane + 1);
 					return {
-						id: node.id,
-						type: "board",
-						position: {
-							x: node.cycle * 320,
-							y: row * 156
+						id: `${parentId}->${node.id}`,
+						source: parentId,
+						target: node.id,
+						type: "smoothstep",
+						zIndex: 1,
+						pathOptions: {
+							borderRadius: 10,
+							offset: 28 + lane * 14
 						},
-						data: {
-							label: node.label,
-							kind: node.kind,
-							status: node.status
+						animated: node.kind === "intent" && (node.status === "open" || node.status === "claimed"),
+						style: {
+							stroke: KIND_EDGE_COLOR[node.kind],
+							strokeOpacity: edgeOpacity(node),
+							strokeWidth: node.status === "open" || node.status === "claimed" ? 2.5 : 1.75
+						},
+						markerEnd: {
+							type: MarkerType.ArrowClosed,
+							color: KIND_EDGE_COLOR[node.kind]
 						}
 					};
-				}),
-				edges: board.nodes.filter((node) => node.parentId !== void 0).map((node) => ({
-					id: `${node.parentId}->${node.id}`,
-					source: node.parentId,
-					target: node.id,
-					type: "smoothstep",
-					animated: node.kind === "intent" && (node.status === "open" || node.status === "claimed"),
-					style: {
-						stroke: KIND_EDGE_COLOR[node.kind],
-						strokeOpacity: edgeOpacity(node),
-						strokeWidth: node.status === "open" || node.status === "claimed" ? 2.5 : 1.75
-					},
-					markerEnd: {
-						type: MarkerType.ArrowClosed,
-						color: KIND_EDGE_COLOR[node.kind]
-					}
-				}))
+				})
 			};
 		}
 		const EMPTY_BOARD = {
@@ -11839,22 +12244,22 @@ window.__ModuleLoader__.load({
 					setPending(false);
 				}
 			};
-			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+			return (0, react_jsx_runtime.jsxs)("div", {
 				className: AutoGraphView_module_css_default.panel,
 				"data-autograph": true,
 				children: [
-					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+					(0, react_jsx_runtime.jsxs)("div", {
 						className: AutoGraphView_module_css_default.header,
 						children: [
-							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
+							(0, react_jsx_runtime.jsx)("span", {
 								className: AutoGraphView_module_css_default.title,
 								children: t("panel.title")
 							}),
-							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
+							(0, react_jsx_runtime.jsx)("span", {
 								className: AutoGraphView_module_css_default.meta,
 								children: t("panel.cycle", { cycle: board.cycle })
 							}),
-							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
+							(0, react_jsx_runtime.jsx)("span", {
 								className: AutoGraphView_module_css_default.status,
 								"data-paused": board.paused,
 								"data-complete": board.complete,
@@ -11862,17 +12267,17 @@ window.__ModuleLoader__.load({
 							})
 						]
 					}),
-					/* @__PURE__ */ (0, react_jsx_runtime.jsx)(RuntimeStatus, {
+					(0, react_jsx_runtime.jsx)(RuntimeStatus, {
 						runtimeStatus,
 						compact: true
 					}),
-					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("fieldset", {
+					(0, react_jsx_runtime.jsxs)("fieldset", {
 						className: AutoGraphView_module_css_default.filters,
 						children: [
-							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("legend", { children: "筛选图块" }),
-							BOARD_KINDS.map((kind) => /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", {
+							(0, react_jsx_runtime.jsx)("legend", { children: "筛选图块" }),
+							BOARD_KINDS.map((kind) => (0, react_jsx_runtime.jsxs)("label", {
 								"data-kind": kind,
-								children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
+								children: [(0, react_jsx_runtime.jsx)("input", {
 									type: "checkbox",
 									checked: enabledKinds.has(kind),
 									onChange: (event) => {
@@ -11883,9 +12288,9 @@ window.__ModuleLoader__.load({
 											return next;
 										});
 									}
-								}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: KIND_LABEL[kind] })]
+								}), (0, react_jsx_runtime.jsx)("span", { children: KIND_LABEL[kind] })]
 							}, kind)),
-							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("span", {
+							(0, react_jsx_runtime.jsxs)("span", {
 								className: AutoGraphView_module_css_default.filterCount,
 								children: [
 									nodes.length,
@@ -11896,12 +12301,20 @@ window.__ModuleLoader__.load({
 							})
 						]
 					}),
-					/* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
+					(0, react_jsx_runtime.jsx)("div", {
+						className: AutoGraphView_module_css_default.columnLegend,
+						"aria-hidden": "true",
+						children: BOARD_KINDS.map((kind) => (0, react_jsx_runtime.jsx)("span", {
+							"data-kind": kind,
+							children: KIND_LABEL[kind]
+						}, kind))
+					}),
+					(0, react_jsx_runtime.jsx)("div", {
 						className: AutoGraphView_module_css_default.canvas,
-						children: nodes.length === 0 ? /* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
+						children: nodes.length === 0 ? (0, react_jsx_runtime.jsx)("div", {
 							className: AutoGraphView_module_css_default.empty,
 							children: t("panel.empty")
-						}) : /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(index, {
+						}) : (0, react_jsx_runtime.jsxs)(index, {
 							nodes,
 							edges,
 							nodeTypes: NODE_TYPES,
@@ -11923,34 +12336,33 @@ window.__ModuleLoader__.load({
 							preventScrolling: true,
 							proOptions: { hideAttribution: true },
 							children: [
-								/* @__PURE__ */ (0, react_jsx_runtime.jsx)(Background, {
+								(0, react_jsx_runtime.jsx)(Background, {
 									gap: 20,
 									size: 1
 								}),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsx)(MiniMap, {
-									pannable: true,
-									zoomable: true,
-									ariaLabel: "黑板缩略图"
+								(0, react_jsx_runtime.jsx)(GraphOverview, {
+									nodes,
+									edges
 								}),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsx)(Controls, { showInteractive: false })
+								(0, react_jsx_runtime.jsx)(Controls, { showInteractive: false })
 							]
 						})
 					}),
-					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+					(0, react_jsx_runtime.jsxs)("div", {
 						className: AutoGraphView_module_css_default.controls,
 						children: [
-							board.paused ? /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+							board.paused ? (0, react_jsx_runtime.jsx)("button", {
 								type: "button",
 								disabled: pending,
 								onClick: () => void run(onResume),
 								children: t("control.resume")
-							}) : /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+							}) : (0, react_jsx_runtime.jsx)("button", {
 								type: "button",
 								disabled: pending,
 								onClick: () => void run(onPause),
 								children: t("control.pause")
 							}),
-							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
+							(0, react_jsx_runtime.jsx)("input", {
 								type: "text",
 								value: hint,
 								placeholder: t("control.hintPlaceholder"),
@@ -11964,7 +12376,7 @@ window.__ModuleLoader__.load({
 									}
 								}
 							}),
-							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+							(0, react_jsx_runtime.jsx)("button", {
 								type: "button",
 								disabled: pending || hint.trim().length === 0,
 								onClick: () => {
@@ -11979,7 +12391,7 @@ window.__ModuleLoader__.load({
 			});
 		}
 		//#endregion
-		//#region src/client/locales.ts
+		//#region lib/types/client/locales.js
 		/**
 		* Dictionaries for the autonomous-loop graph surface (zh default, en mirror).
 		* @module @deepseek-ai/dsh-client-ui-autograph/locales
@@ -12017,7 +12429,7 @@ window.__ModuleLoader__.load({
 			"node.hint": "提示"
 		};
 		//#endregion
-		//#region src/client/index.ts
+		//#region lib/types/client/index.js
 		/** Dictionary namespace owned by this plugin. */
 		const NS = "autograph";
 		/** Required services: view slot, sessions binding, command Remote, locale. */

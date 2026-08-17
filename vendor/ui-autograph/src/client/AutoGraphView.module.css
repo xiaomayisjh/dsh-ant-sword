@@ -102,6 +102,37 @@
   white-space: nowrap;
 }
 
+.columnLegend {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  padding: 6px 16px;
+  border-bottom: 1px solid var(--dsw-alias-border-l1);
+  background: var(--dsw-alias-bg-layer-2);
+  color: var(--dsw-alias-label-tertiary);
+  font-size: 11px;
+  line-height: 18px;
+  text-align: center;
+}
+
+.columnLegend span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.columnLegend span[data-kind='goal'] {
+  color: var(--dsw-alias-state-warn-label);
+}
+
+.columnLegend span[data-kind='intent'] {
+  color: var(--dsw-alias-state-business-primary);
+}
+
+.columnLegend span[data-kind='fact'] {
+  color: var(--dsw-alias-state-success-primary);
+}
+
 .canvas {
   position: relative;
   flex: 1;
@@ -138,8 +169,13 @@
 }
 
 .canvas :global(.react-flow__nodes) {
+  z-index: 2;
   pointer-events: none;
   transform-origin: 0 0;
+}
+
+.canvas :global(.react-flow__edges) {
+  z-index: 1;
 }
 
 .canvas :global(.react-flow__node) {
@@ -272,6 +308,7 @@
 .canvas :global(.react-flow__edge-path) {
   stroke-width: 1.75;
   vector-effect: non-scaling-stroke;
+  filter: drop-shadow(0 0 1px var(--dsw-alias-bg-layer-1));
 }
 
 .canvas :global(.react-flow__edge.selected .react-flow__edge-path),
@@ -280,21 +317,63 @@
   stroke-width: 2.5;
 }
 
-.canvas :global(.react-flow__minimap) {
+.overview {
+  position: absolute;
+  right: 15px;
+  bottom: 15px;
+  z-index: 6;
+  width: 220px;
+  height: 140px;
   overflow: hidden;
   border: 1px solid var(--dsw-alias-border-l2);
   border-radius: 8px;
   background: var(--dsw-alias-bg-layer-2);
   box-shadow: var(--dsw-shadow-lv1);
+  touch-action: none;
 }
 
-.canvas :global(.react-flow__minimap-mask) {
-  fill: var(--dsw-alias-bg-mask-2);
+.overview svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
 }
 
-.canvas :global(.react-flow__minimap-node) {
-  fill: var(--dsw-alias-state-business-tertiary);
+.overviewEdge {
+  fill: none;
+  stroke: var(--dsw-alias-border-l4);
+  stroke-width: 5;
+  vector-effect: non-scaling-stroke;
+}
+
+.overviewNode {
+  fill: var(--dsw-alias-bg-layer-3);
+  stroke-width: 5;
+  vector-effect: non-scaling-stroke;
+}
+
+.overviewNode[data-kind='goal'] {
+  stroke: var(--dsw-alias-state-warn-primary);
+}
+
+.overviewNode[data-kind='intent'] {
   stroke: var(--dsw-alias-state-business-primary);
+}
+
+.overviewNode[data-kind='fact'] {
+  stroke: var(--dsw-alias-state-success-primary);
+}
+
+.overviewNode[data-kind='hint'] {
+  stroke: var(--dsw-alias-brand-primary-new-colorprimary-new-color);
+}
+
+.overviewViewport {
+  fill: var(--dsw-alias-bg-mask-2);
+  stroke: var(--dsw-alias-state-business-primary);
+  stroke-width: 6;
+  vector-effect: non-scaling-stroke;
+  pointer-events: none;
 }
 
 .empty {

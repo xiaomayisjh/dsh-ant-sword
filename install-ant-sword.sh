@@ -2,23 +2,80 @@
 set -euo pipefail
 
 profile="${PROFILE:-web}"
-for command in gh dsh pnpm node; do
-  command -v "$command" >/dev/null 2>&1 || { echo "Required command not found: $command" >&2; exit 1; }
+repository="${REPOSITORY:-xiaomayisjh/dsh-ant-sword}"
+tag="${TAG:-}"
+release=""
+
+usage() {
+  echo 'usage: install-ant-sword.sh [--profile web] [--repository owner/name] [--tag vX.Y.Z] [--release directory-or-manifest]' >&2
+}
+
+while (($# > 0)); do
+  case "$1" in
+    --profile|-p)
+      profile="${2:?--profile requires a value}"
+      shift 2
+      ;;
+    --repository|--repo)
+      repository="${2:?--repository requires a value}"
+      shift 2
+      ;;
+    --tag)
+      tag="${2:?--tag requires a value}"
+      shift 2
+      ;;
+    --release)
+      release="${2:?--release requires a value}"
+      shift 2
+      ;;
+    --help|-h)
+      usage
+      exit 0
+      ;;
+    *)
+      usage
+      exit 2
+      ;;
+  esac
 done
 
-workspace="$(mktemp -d "${TMPDIR:-/tmp}/dsh-ant-sword.XXXXXX")"
-trap 'rm -rf "$workspace"' EXIT INT TERM
+for required in dsh pnpm node; do
+  command -v "$required" >/dev/null 2>&1 || { echo "Required command not found: $required" >&2; exit 1; }
+done
 
-gh release download --repo xiaomayisjh/dsh-ant-sword \
-  --pattern 'deepseek-ai-dsh-ant-sword-harness-*.tgz' \
-  --dir "$workspace" --clobber
-bundle="$(find "$workspace" -maxdepth 1 -name 'deepseek-ai-dsh-ant-sword-harness-*.tgz' -print -quit)"
-[[ -n "$bundle" ]] || { echo 'Release contains no Ant Sword bundle tarball' >&2; exit 1; }
+if [[ -n "$release" ]]; then
+  script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+  installer="$script_dir/scripts/install-profile.mjs"
+  [[ -f "$installer" ]] || { echo "Installer module not found: $installer" >&2; exit 1; }
+  node "$installer" --profile "$profile" --release "$release"
+else
+  for required in gh curl; do
+    command -v "$required" >/dev/null 2>&1 || { echo "Required command not found: $required" >&2; exit 1; }
+  done
 
-dsh plugin --profile "$profile" add "$bundle"
-dsh_home="${DSH_HOME:-$HOME/.dsh}"
-profile_dir="$dsh_home/profiles/$profile"
-pnpm --dir "$profile_dir" add '@nanmicoder/dsh-agent-teams@^0.1.4' 'dshmarket@^1.4.1'
-node -e "const fs=require('fs');const p=process.argv[1];const m=JSON.parse(fs.readFileSync(p,'utf8'));const b=m.dsh?.profile?.bundles;if(Array.isArray(b))m.dsh.profile.bundles=b.filter(x=>!['@nanmicoder/dsh-agent-teams','dshmarket'].includes(x));fs.writeFileSync(p,JSON.stringify(m,null,2)+'\n')" "$profile_dir/package.json"
+  workspace="$(mktemp -d "${TMPDIR:-/tmp}/dsh-ant-sword.XXXXXX")"
+  trap 'rm -rf "$workspace"' EXIT INT TERM
 
-echo 'Ant Sword installed. Start with: dsh web'
+  download=(release download)
+  [[ -n "$tag" ]] && download+=("$tag")
+  download+=(
+    --repo "$repository"
+    --pattern '*.tgz'
+    --pattern 'ant-sword-release-manifest.json'
+    --dir "$workspace"
+    --clobber
+  )
+  gh "${download[@]}"
+
+  mkdir -p "$workspace/scripts"
+  raw="https://raw.githubusercontent.com/$repository/main/scripts"
+  curl -fsSL "$raw/install-profile.mjs" -o "$workspace/scripts/install-profile.mjs"
+  curl -fsSL "$raw/release-artifacts.mjs" -o "$workspace/scripts/release-artifacts.mjs"
+  node "$workspace/scripts/install-profile.mjs" --profile "$profile" --release "$workspace"
+fi
+
+if [[ "$profile" == 'web' ]]; then
+  echo 'Ant Sword installed. Start with: dsh web'
+else
+  echo "Ant Sword installed. Start with: dsh --profile $profile"
+fi

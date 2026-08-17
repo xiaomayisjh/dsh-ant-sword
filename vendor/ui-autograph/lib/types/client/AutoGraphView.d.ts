@@ -31,7 +31,7 @@ export interface AutoGraphViewProps extends AutoGraphActions {
     /** Current board snapshot; undefined = loading, null = no board (renders nothing). */
     board: BoardSnapshot | null | undefined;
 }
-/** Lay out measured blocks in cycle columns with enough room for wrapped labels. */
+/** Lay out each block kind in a fixed column and give sibling edges separate lanes. */
 export declare function toFlow(board: BoardSnapshot): {
     nodes: BoardFlowNode[];
     edges: Edge[];

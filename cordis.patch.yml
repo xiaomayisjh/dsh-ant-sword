@@ -2,30 +2,37 @@
 # profile's existing layers as ONE insert. Later bundle patches and the user's
 # profile cordis.patch.yml address these rows by id; the last write wins per row.
 #
-# The first-party row mounts this package's single Cordis plugin, which serves
-# the bundled reverse/CTF skill pack on ctx.skills and mounts the self-contained
-# rewind capability. Two further rows mount the third-party agent-teams and
-# plugin-market bundles, whose forward compatibility with the official harness
-# is owned by their respective authors and followed through their npm version
-# ranges in package.json.
+# The first-party rows mount this package's two Cordis plugins: the main one
+# serves the bundled reverse/CTF skill pack on ctx.skills (plus the OODA loop),
+# and the dedicated rewind row mounts the self-contained workspace-snapshot /
+# /rewind capability under its narrower service set. Two further rows mount the
+# third-party agent-teams and plugin-market bundles, whose forward compatibility
+# with the official harness is owned by their respective authors and followed
+# through their npm version ranges in package.json.
 #
 # Row order carries no load semantics (activation is service-availability
 # driven); the grouping is for readers.
 
 - insert:
-    # This package's plugin: bundled reverse/CTF skills + workspace snapshot /rewind
+    # This package's main row: bundled reverse/CTF skills
     # + the autonomous OODA loop (blackboard service, board_* tools, /auto command).
     - id: ant-sword-harness
       name: '@deepseek-ai/dsh-ant-sword-harness'
       config:
-        rewind:
-          provider: auto
-          preRewindCheckpoint: warn
-          pruneOnTurnEnd: true
         autoLoop:
           enabled: true
           maxCycles: 64
           stallThreshold: 3
+
+    # Workspace snapshot + /rewind, as its own row: it needs only the base
+    # profile's sessions/storageDomain/commands/tools, so it loads even when
+    # the MCP/Web-dependent rows above are absent, disabled, or failed.
+    - id: ant-sword-rewind
+      name: '@deepseek-ai/dsh-ant-sword-harness/rewind'
+      config:
+        provider: auto
+        preRewindCheckpoint: warn
+        pruneOnTurnEnd: true
 
     # Multi-agent teams: captain-led delegation, dependency-aware tasks, mailbox.
     - id: agent-teams
@@ -36,11 +43,10 @@
         memberMaxDepth: 1
         maxMembers: 8
 
-    # The autonomous-loop decision graph. This resolves to the vendored client
-    # package installed from this repository, so Git installs do not depend on
-    # an unpublished monorepo workspace package.
+    # The autonomous-loop decision-graph Web view, installed from the Release's
+    # vendored UI tarball alongside this bundle.
     - id: ui-autograph
-      name: '@deepseek-ai/dsh-ant-sword-harness/ui-autograph'
+      name: '@deepseek-ai/dsh-client-ui-autograph'
 
     # The in-app plugin market (Web settings section + HTTP routes).
     - id: dsh-market

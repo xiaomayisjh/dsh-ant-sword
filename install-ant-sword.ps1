@@ -1,31 +1,60 @@
-param([string]$Profile = 'web')
+param(
+  [string]$Profile = 'web',
+  [string]$Repository = 'xiaomayisjh/dsh-ant-sword',
+  [string]$Tag,
+  [string]$Release
+)
 
 $ErrorActionPreference = 'Stop'
-foreach ($command in @('gh', 'dsh', 'pnpm', 'node')) {
+
+foreach ($command in @('dsh', 'pnpm', 'node')) {
   if ($null -eq (Get-Command $command -ErrorAction SilentlyContinue)) { throw "Required command not found: $command" }
 }
 
+function Install-AntSwordRelease {
+  param(
+    [string]$ReleasePath,
+    [string]$InstallerPath
+  )
+
+  node $InstallerPath --profile $Profile --release $ReleasePath
+  if ($LASTEXITCODE -ne 0) { throw 'Profile installation failed.' }
+}
+
+if ($Release) {
+  if (-not $PSScriptRoot) { throw 'Local release mode requires running install-ant-sword.ps1 from a checkout, not piping it to iex.' }
+  $installer = Join-Path $PSScriptRoot 'scripts/install-profile.mjs'
+  if (-not (Test-Path -LiteralPath $installer -PathType Leaf)) { throw "Installer module not found: $installer" }
+  Install-AntSwordRelease -ReleasePath $Release -InstallerPath $installer
+  Write-Host "Ant Sword installed. Start with: $(if ($Profile -eq 'web') { 'dsh web' } else { "dsh --profile $Profile" })"
+  return
+}
+
+if ($null -eq (Get-Command 'gh' -ErrorAction SilentlyContinue)) { throw 'Required command not found: gh' }
 $workspace = Join-Path ([System.IO.Path]::GetTempPath()) ("dsh-ant-sword-" + [guid]::NewGuid().ToString('N'))
 try {
   New-Item -ItemType Directory -Path $workspace | Out-Null
-  gh release download --repo xiaomayisjh/dsh-ant-sword --pattern 'deepseek-ai-dsh-ant-sword-harness-*.tgz' --dir $workspace --clobber
+  $downloadArgs = @('release', 'download')
+  if (-not [string]::IsNullOrWhiteSpace($Tag)) { $downloadArgs += $Tag }
+  $downloadArgs += @(
+    '--repo', $Repository,
+    '--pattern', '*.tgz',
+    '--pattern', 'ant-sword-release-manifest.json',
+    '--dir', $workspace,
+    '--clobber'
+  )
+  & gh @downloadArgs
   if ($LASTEXITCODE -ne 0) { throw 'Release download failed.' }
-  $bundle = Get-ChildItem $workspace -Filter 'deepseek-ai-dsh-ant-sword-harness-*.tgz' | Select-Object -First 1
-  if ($null -eq $bundle) { throw 'Release contains no Ant Sword bundle tarball.' }
 
-  dsh plugin --profile $Profile add $bundle.FullName
-  if ($LASTEXITCODE -ne 0) { throw 'Bundle installation failed.' }
+  $scripts = Join-Path $workspace 'scripts'
+  New-Item -ItemType Directory -Path $scripts | Out-Null
+  $raw = "https://raw.githubusercontent.com/$Repository/main/scripts"
+  Invoke-WebRequest -UseBasicParsing -Uri "$raw/install-profile.mjs" -OutFile (Join-Path $scripts 'install-profile.mjs')
+  Invoke-WebRequest -UseBasicParsing -Uri "$raw/release-artifacts.mjs" -OutFile (Join-Path $scripts 'release-artifacts.mjs')
 
-  $dshHome = if ([string]::IsNullOrWhiteSpace($env:DSH_HOME)) { Join-Path $HOME '.dsh' } else { $env:DSH_HOME }
-  $profileDir = Join-Path $dshHome "profiles/$Profile"
-  pnpm --dir $profileDir add '@nanmicoder/dsh-agent-teams@^0.1.4' 'dshmarket@^1.4.1'
-  if ($LASTEXITCODE -ne 0) { throw 'Profile dependency installation failed.' }
-
-  $manifest = Join-Path $profileDir 'package.json'
-  node -e "const fs=require('fs');const p=process.argv[1];const m=JSON.parse(fs.readFileSync(p,'utf8'));const b=m.dsh?.profile?.bundles;if(Array.isArray(b))m.dsh.profile.bundles=b.filter(x=>!['@nanmicoder/dsh-agent-teams','dshmarket'].includes(x));fs.writeFileSync(p,JSON.stringify(m,null,2)+'\n')" $manifest
-  if ($LASTEXITCODE -ne 0) { throw 'Duplicate bundle cleanup failed.' }
+  Install-AntSwordRelease -ReleasePath $workspace -InstallerPath (Join-Path $scripts 'install-profile.mjs')
 } finally {
   Remove-Item -Recurse -Force $workspace -ErrorAction SilentlyContinue
 }
 
-Write-Host "Ant Sword installed. Start with: dsh web"
+Write-Host "Ant Sword installed. Start with: $(if ($Profile -eq 'web') { 'dsh web' } else { "dsh --profile $Profile" })"
