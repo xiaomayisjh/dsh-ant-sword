@@ -1,7 +1,7 @@
 {
   "name": "@deepseek-ai/dsh-ant-sword-harness/ui-autograph",
   "description": "Autonomous-loop graph surface for the red-team-auto blackboard",
-  "version": "0.1.0-rc.10",
+  "version": "0.1.0-rc.11",
   "private": true,
   "type": "module",
   "main": "lib/index.js",
