@@ -132,6 +132,10 @@ async function ensureRepo(token, repo, create, isPrivate) {
 async function ensureDefaultBranch(token, repo) {
   const repoInfo = await api(token, 'GET', `/repos/${repo}`)
   const branch = repoInfo.default_branch ?? 'main'
+  // Some private repositories expose branch state through Git/GraphQL while
+  // the Git refs REST endpoint returns 404. Repository size is zero only for
+  // an uninitialized repository, which is the sole case this helper repairs.
+  if (repoInfo.size > 0) return
   const existing = await api(token, 'GET', `/repos/${repo}/git/ref/heads/${branch}`, undefined, [404, 409])
   if (existing !== undefined) return // branch exists with a commit
   const blob = await api(token, 'POST', `/repos/${repo}/git/blobs`, {
