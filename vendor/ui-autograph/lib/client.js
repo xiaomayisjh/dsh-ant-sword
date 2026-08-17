@@ -1,5 +1,5 @@
 window.__ModuleLoader__.load({
-	id: "@deepseek-ai/dsh-ant-sword-harness/ui-autograph",
+	id: "@deepseek-ai/dsh-client-ui-autograph",
 	factory: (require) => {
 		var module = { exports: {} };
 		var exports = module.exports;
@@ -10441,7 +10441,27 @@ window.__ModuleLoader__.load({
 			});
 		}
 		MiniMapComponent.displayName = "MiniMap";
-		(0, react.memo)(MiniMapComponent);
+		/**
+		* The `<MiniMap />` component can be used to render an overview of your flow. It
+		* renders each node as an SVG element and visualizes where the current viewport is
+		* in relation to the rest of the flow.
+		*
+		* @public
+		* @example
+		*
+		* ```jsx
+		*import { ReactFlow, MiniMap } from '@xyflow/react';
+		*
+		*export default function Flow() {
+		*  return (
+		*    <ReactFlow nodes={[...]} edges={[...]}>
+		*      <MiniMap nodeStrokeWidth={3} />
+		*    </ReactFlow>
+		*  );
+		*}
+		*```
+		*/
+		const MiniMap = (0, react.memo)(MiniMapComponent);
 		const scaleSelector = (calculateScale) => (store) => calculateScale ? `${Math.max(1 / store.transform[2], 1)}` : void 0;
 		const defaultPositions = {
 			[ResizeControlVariant.Line]: "right",
@@ -10596,36 +10616,86 @@ window.__ModuleLoader__.load({
 		(0, react.memo)(ResizeControl);
 		//#endregion
 		//#region \0dsh-css:C:\Users\Admin\Desktop\ant-dsh\packages\client\ui-autograph\src\client\RuntimeStatus.module.css.mjs
-		const css$1 = ".pBCICa_rail{border-bottom:1px solid var(--dsh-border,#21262d);background:color-mix(in srgb, var(--dsh-bg-soft,#161b22) 88%, transparent);align-items:center;gap:10px;padding:7px 16px;font-size:11px;display:flex}.pBCICa_metric{color:var(--dsh-fg-muted,#8b949e)}.pBCICa_metric strong{color:var(--dsh-fg,#e6edf3)}.pBCICa_warning{color:#d97706;margin-left:auto}.pBCICa_settings{color:var(--dsh-fg,#e6edf3);flex-direction:column;gap:14px;display:flex}.pBCICa_settingsHeader{justify-content:space-between;align-items:flex-start;gap:20px;display:flex}.pBCICa_settingsHeader h2{margin:0 0 6px;font-size:18px}.pBCICa_settingsHeader p,.pBCICa_card p{color:var(--dsh-fg-muted,#8b949e);margin:0;font-size:12px;line-height:1.5}.pBCICa_summary{gap:8px;display:flex}.pBCICa_summary span,.pBCICa_cardTitle span{background:var(--dsh-bg-soft,#161b22);white-space:nowrap;border-radius:999px;padding:3px 8px;font-size:11px}.pBCICa_skillCard,.pBCICa_card{border:1px solid var(--dsh-border,#30363d);background:var(--dsh-bg-soft,#11161d);border-radius:8px;padding:12px}.pBCICa_skillCard{grid-template-columns:auto auto 1fr;align-items:center;gap:12px;display:grid}.pBCICa_skillCard small{color:var(--dsh-fg-muted,#8b949e);text-align:right}.pBCICa_grid{grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;display:grid}.pBCICa_card{flex-direction:column;gap:9px;display:flex}.pBCICa_card[data-state=missing]{border-color:#6e5314}.pBCICa_card[data-state=available],.pBCICa_card[data-state=configured]{border-color:#1f6f3d}.pBCICa_cardTitle{justify-content:space-between;align-items:center;display:flex}.pBCICa_card code,.pBCICa_card pre{background:var(--dsh-bg,#0b0f14);color:var(--dsh-fg,#e6edf3);white-space:pre-wrap;word-break:break-all;border-radius:5px;margin:0;padding:7px;font-size:11px;overflow-x:auto}.pBCICa_installToolbar,.pBCICa_installActions{flex-wrap:wrap;align-items:center;gap:8px;display:flex}.pBCICa_installToolbar label{color:var(--dsh-fg-muted,#8b949e);align-items:center;gap:8px;font-size:12px;display:flex}.pBCICa_installToolbar select,.pBCICa_installActions button{border:1px solid var(--dsh-border,#30363d);background:var(--dsh-bg-soft,#161b22);color:var(--dsh-fg,#e6edf3);border-radius:6px;padding:6px 9px}.pBCICa_installActions button:focus-visible,.pBCICa_installToolbar select:focus-visible{outline:2px solid var(--dsh-focus,#2f81f7);outline-offset:2px}.pBCICa_installActions button:disabled{opacity:.5}.pBCICa_installError{color:var(--dsh-danger,#f85149);font-size:12px}.pBCICa_installProgress{color:var(--dsh-fg-muted,#8b949e);flex:100%;gap:4px;font-size:11px;display:grid}.pBCICa_installProgress progress{width:100%;accent-color:var(--dsh-accent,#2f81f7)}.pBCICa_configEditor{border-top:1px solid var(--dsh-border,#30363d);gap:12px;padding-top:14px;display:grid}.pBCICa_tabs,.pBCICa_editorActions{flex-wrap:wrap;gap:8px;display:flex}.pBCICa_tabs button,.pBCICa_editorActions button,.pBCICa_editorList fieldset>button{border:1px solid var(--dsh-border,#30363d);background:var(--dsh-bg-soft,#161b22);color:var(--dsh-fg,#e6edf3);border-radius:6px;padding:6px 10px}.pBCICa_tabs button[data-active=true]{border-color:var(--dsh-accent,#2f81f7);color:var(--dsh-accent,#2f81f7)}.pBCICa_editorList{gap:10px;display:grid}.pBCICa_editorList fieldset{border:1px solid var(--dsh-border,#30363d);border-radius:8px;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;min-width:0;display:grid}.pBCICa_editorList label{color:var(--dsh-fg-muted,#8b949e);gap:5px;font-size:11px;display:grid}.pBCICa_editorList input,.pBCICa_editorList select,.pBCICa_editorList textarea{box-sizing:border-box;border:1px solid var(--dsh-border,#30363d);background:var(--dsh-bg,#0b0f14);width:100%;min-width:0;color:var(--dsh-fg,#e6edf3);border-radius:6px;padding:7px}.pBCICa_editorList textarea{resize:vertical;min-height:84px}.pBCICa_keyValues{gap:5px;display:grid}.pBCICa_keyValues>div{grid-template-columns:minmax(80px,1fr) minmax(100px,2fr) auto;gap:5px;display:grid}.pBCICa_keyValues button{border:1px solid var(--dsh-border,#30363d);background:var(--dsh-bg-soft,#161b22);color:var(--dsh-fg,#e6edf3);border-radius:5px}.pBCICa_editorList :is(input,select,textarea,button):focus-visible,.pBCICa_tabs button:focus-visible{outline:2px solid var(--dsh-focus,#2f81f7);outline-offset:2px}@media (width<=640px){.pBCICa_settingsHeader,.pBCICa_skillCard{flex-direction:column;grid-template-columns:1fr}.pBCICa_skillCard small{text-align:left}}";
-		const tagId$1 = "@deepseek-ai/dsh-ant-sword-harness/ui-autograph/RuntimeStatus.module.css";
+		const css$1 = ".pBCICa_rail{border-bottom:1px solid var(--dsw-alias-border-l2);background:color-mix(in srgb, var(--dsw-alias-bg-layer-2) 88%, transparent);align-items:center;gap:10px;padding:7px 16px;font-size:11px;display:flex}.pBCICa_metric{color:var(--dsw-alias-label-secondary)}.pBCICa_metric strong{color:var(--dsw-alias-label-primary)}.pBCICa_warning{color:var(--dsw-alias-state-warn-label);margin-left:auto}.pBCICa_settings{color:var(--dsw-alias-label-primary);--dsh-scrollbar-thumb:var(--dsw-alias-scrollbar-bg-l2);--dsh-scrollbar-thumb-hover:var(--dsw-alias-scrollbar-hover-l2);flex-direction:column;gap:14px;display:flex}.pBCICa_settingsHeader{justify-content:space-between;align-items:flex-start;gap:20px;display:flex}.pBCICa_settingsHeader h2{margin:0 0 6px;font-size:18px}.pBCICa_settingsHeader p,.pBCICa_card p{color:var(--dsw-alias-label-secondary);margin:0;font-size:12px;line-height:1.5}.pBCICa_summary{gap:8px;display:flex}.pBCICa_summary span,.pBCICa_cardTitle span{background:var(--dsw-alias-bg-layer-2);white-space:nowrap;border-radius:999px;padding:3px 8px;font-size:11px}.pBCICa_skillCard,.pBCICa_card{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-3);border-radius:8px;padding:12px}.pBCICa_skillCard{grid-template-columns:auto auto 1fr;align-items:center;gap:12px;display:grid}.pBCICa_skillCard small{color:var(--dsw-alias-label-secondary);text-align:right}.pBCICa_grid{grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;display:grid}.pBCICa_card{flex-direction:column;gap:9px;display:flex}.pBCICa_card[data-state=missing]{border-color:var(--dsw-alias-state-warn-primary)}.pBCICa_card[data-state=available],.pBCICa_card[data-state=configured]{border-color:var(--dsw-alias-state-success-primary)}.pBCICa_cardTitle{justify-content:space-between;align-items:center;display:flex}.pBCICa_card code,.pBCICa_card pre{background:var(--dsw-alias-bg-layer-1);color:var(--dsw-alias-label-primary);white-space:pre-wrap;word-break:break-all;border-radius:5px;margin:0;padding:7px;font-size:11px;overflow-x:auto}.pBCICa_installToolbar,.pBCICa_installActions{flex-wrap:wrap;align-items:center;gap:8px;display:flex}.pBCICa_installToolbar label{color:var(--dsw-alias-label-secondary);align-items:center;gap:8px;font-size:12px;display:flex}.pBCICa_installToolbar select,.pBCICa_installActions button{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-2);color:var(--dsw-alias-label-primary);border-radius:6px;padding:6px 9px}.pBCICa_installActions button:focus-visible,.pBCICa_installToolbar select:focus-visible{outline:2px solid var(--dsw-alias-state-business-primary);outline-offset:2px}.pBCICa_installActions button:disabled{opacity:.5}.pBCICa_installError{color:var(--dsw-alias-state-error-primary);font-size:12px}.pBCICa_installProgress{color:var(--dsw-alias-label-secondary);flex:100%;gap:4px;font-size:11px;display:grid}.pBCICa_installProgress progress{width:100%;accent-color:var(--dsw-alias-state-business-primary)}.pBCICa_configEditor{border-top:1px solid var(--dsw-alias-border-l2);gap:12px;padding-top:14px;display:grid}.pBCICa_tabs,.pBCICa_editorActions{flex-wrap:wrap;gap:8px;display:flex}.pBCICa_tabs button,.pBCICa_editorActions button,.pBCICa_editorList fieldset>button{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-2);color:var(--dsw-alias-label-primary);border-radius:6px;padding:6px 10px}.pBCICa_tabs button[data-active=true]{border-color:var(--dsw-alias-state-business-primary);color:var(--dsw-alias-state-business-primary)}.pBCICa_editorList{gap:10px;display:grid}.pBCICa_editorList fieldset{border:1px solid var(--dsw-alias-border-l2);border-radius:8px;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;min-width:0;display:grid}.pBCICa_editorList label{color:var(--dsw-alias-label-secondary);gap:5px;font-size:11px;display:grid}.pBCICa_editorList input,.pBCICa_editorList select,.pBCICa_editorList textarea{box-sizing:border-box;border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-1);width:100%;min-width:0;color:var(--dsw-alias-label-primary);border-radius:6px;padding:7px}.pBCICa_editorList textarea{resize:vertical;min-height:84px}.pBCICa_keyValues{gap:5px;display:grid}.pBCICa_keyValues>div{grid-template-columns:minmax(80px,1fr) minmax(100px,2fr) auto;gap:5px;display:grid}.pBCICa_keyValues button{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-2);color:var(--dsw-alias-label-primary);border-radius:5px}.pBCICa_editorList :is(input,select,textarea,button):focus-visible,.pBCICa_tabs button:focus-visible{outline:2px solid var(--dsw-alias-state-business-primary);outline-offset:2px}.pBCICa_card details,.pBCICa_editorList details{color:var(--dsw-alias-label-secondary);font-size:11px}.pBCICa_card details ul,.pBCICa_editorList details ul{gap:6px;max-height:220px;padding-left:18px;display:grid;overflow:auto}.pBCICa_card details li,.pBCICa_editorList details li{gap:3px;display:grid}.pBCICa_card details small,.pBCICa_editorList details small{line-height:1.4}@media (width<=640px){.pBCICa_settingsHeader,.pBCICa_skillCard{flex-direction:column;grid-template-columns:1fr}.pBCICa_skillCard small{text-align:left}}";
+		const tagId$1 = "@deepseek-ai/dsh-client-ui-autograph/RuntimeStatus.module.css";
 		if (typeof document !== "undefined" && document.querySelector("style[data-plugin-css=" + JSON.stringify(tagId$1) + "]") === null) {
 			const tag = document.createElement("style");
-			tag.dataset.plugin = "@deepseek-ai/dsh-ant-sword-harness/ui-autograph";
+			tag.dataset.plugin = "@deepseek-ai/dsh-client-ui-autograph";
 			tag.dataset.pluginCss = tagId$1;
 			tag.textContent = css$1;
 			document.head.appendChild(tag);
 		}
 		var RuntimeStatus_module_css_default = {
-			"cardTitle": "pBCICa_cardTitle",
-			"settingsHeader": "pBCICa_settingsHeader",
-			"configEditor": "pBCICa_configEditor",
-			"warning": "pBCICa_warning",
-			"editorActions": "pBCICa_editorActions",
-			"skillCard": "pBCICa_skillCard",
-			"card": "pBCICa_card",
-			"installActions": "pBCICa_installActions",
-			"grid": "pBCICa_grid",
-			"metric": "pBCICa_metric",
+			"installProgress": "pBCICa_installProgress",
 			"installError": "pBCICa_installError",
-			"rail": "pBCICa_rail",
+			"card": "pBCICa_card",
 			"editorList": "pBCICa_editorList",
-			"summary": "pBCICa_summary",
-			"tabs": "pBCICa_tabs",
-			"installToolbar": "pBCICa_installToolbar",
+			"settingsHeader": "pBCICa_settingsHeader",
 			"settings": "pBCICa_settings",
+			"rail": "pBCICa_rail",
+			"summary": "pBCICa_summary",
+			"skillCard": "pBCICa_skillCard",
+			"configEditor": "pBCICa_configEditor",
+			"installToolbar": "pBCICa_installToolbar",
+			"metric": "pBCICa_metric",
+			"grid": "pBCICa_grid",
 			"keyValues": "pBCICa_keyValues",
-			"installProgress": "pBCICa_installProgress"
+			"editorActions": "pBCICa_editorActions",
+			"tabs": "pBCICa_tabs",
+			"installActions": "pBCICa_installActions",
+			"cardTitle": "pBCICa_cardTitle",
+			"warning": "pBCICa_warning"
 		};
+		//#endregion
+		//#region src/client/mcp-config-json.ts
+		function normalizeImportedMcp(serverName, value) {
+			if (value === null || typeof value !== "object" || Array.isArray(value)) throw new TypeError(`MCP "${serverName}" must be an object`);
+			const input = value;
+			const requested = input.transport ?? input.type;
+			const transport = requested === "sse" ? "sse" : requested === "streamable-http" || requested === "http" ? "streamable-http" : requested === "stdio" || typeof input.command === "string" ? "stdio" : typeof input.url === "string" ? "streamable-http" : (() => {
+				throw new TypeError(`MCP "${serverName}" requires command or url`);
+			})();
+			const common = {
+				serverName,
+				enabled: input.enabled ?? true,
+				transport,
+				toolCallTimeoutMs: input.toolCallTimeoutMs ?? 6e4
+			};
+			return transport === "stdio" ? {
+				...common,
+				command: input.command ?? "",
+				args: input.args ?? [],
+				cwd: input.cwd ?? "",
+				env: input.env ?? {}
+			} : {
+				...common,
+				url: input.url ?? "",
+				headers: input.headers ?? {}
+			};
+		}
+		/**
+		* Parse native arrays, named `mcpServers` objects, and Claude-style catalogs.
+		* @param source - JSON text pasted into the editor.
+		* @returns Normalized runtime MCP entries.
+		*/
+		function parseMcpJson(source) {
+			const parsed = JSON.parse(source);
+			if (Array.isArray(parsed)) return parsed.map((value, index) => {
+				return normalizeImportedMcp(value !== null && typeof value === "object" && typeof value.serverName === "string" ? value.serverName : `server-${index + 1}`, value);
+			});
+			if (parsed === null || typeof parsed !== "object") throw new TypeError("MCP JSON must be an array or object");
+			const catalog = parsed.mcpServers ?? parsed;
+			if (typeof catalog !== "object" || Array.isArray(catalog)) throw new TypeError("mcpServers must be an object");
+			return Object.entries(catalog).map(([serverName, value]) => normalizeImportedMcp(serverName, value));
+		}
+		/**
+		* Serialize the visual editor state to a named `mcpServers` catalog.
+		* @param servers - Current visual editor entries.
+		* @returns Stable, indented JSON text.
+		*/
+		function formatMcpJson(servers) {
+			return JSON.stringify({ mcpServers: Object.fromEntries(servers.map(({ serverName, ...config }) => [serverName, config])) }, void 0, 2);
+		}
 		//#endregion
 		//#region src/client/RuntimeConfigEditor.tsx
 		const EMPTY = {
@@ -10695,11 +10765,22 @@ window.__ModuleLoader__.load({
 				]
 			});
 		}
+		function McpProbeDetails({ probe }) {
+			if (probe === void 0) return null;
+			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("details", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("summary", { children: [
+				"已发现 ",
+				probe.toolCount,
+				" 个工具"
+			] }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("ul", { children: probe.tools.map((tool) => /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("li", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("code", { children: tool.name }), tool.description === void 0 ? null : /* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: tool.description })] }, tool.name)) })] });
+		}
 		function RuntimeConfigEditor({ configScope }) {
 			const snapshot = (0, react.useSyncExternalStore)((listener) => configScope.subscribe(listener), () => configScope.getSnapshot());
 			const [draft, setDraft] = (0, react.useState)(EMPTY);
 			const [tab, setTab] = (0, react.useState)("mcp");
 			const [saving, setSaving] = (0, react.useState)(false);
+			const [mcpJson, setMcpJson] = (0, react.useState)("");
+			const [mcpMessage, setMcpMessage] = (0, react.useState)();
+			const [mcpProbes, setMcpProbes] = (0, react.useState)({});
 			const [skillDraft, setSkillDraft] = (0, react.useState)({
 				name: "",
 				description: "",
@@ -10718,11 +10799,51 @@ window.__ModuleLoader__.load({
 			]);
 			const save = async (field) => {
 				setSaving(true);
+				setMcpMessage(void 0);
 				try {
 					await configScope.set(field, draft[field]);
+					if (field === "mcpServers") setMcpMessage("MCP 配置已保存并热应用。");
+				} catch (error) {
+					if (field === "mcpServers") setMcpMessage(error instanceof Error ? error.message : String(error));
 				} finally {
 					setSaving(false);
 				}
+			};
+			const importMcpJson = () => {
+				try {
+					const entries = parseMcpJson(mcpJson);
+					setDraft((current) => ({
+						...current,
+						mcpServers: entries
+					}));
+					setMcpMessage(`已导入 ${entries.length} 个 MCP；点击保存后热应用。`);
+				} catch (error) {
+					setMcpMessage(error instanceof Error ? error.message : String(error));
+				}
+			};
+			const exportMcpJson = () => {
+				setMcpJson(formatMcpJson(draft.mcpServers));
+				setMcpMessage("可视化配置已同步到 JSON。");
+			};
+			const runMcpAction = async (serverName, action) => {
+				setMcpMessage(action === "probe" ? `正在测活 ${serverName}…` : `正在重载 ${serverName}…`);
+				const result = await (await fetch(`/ant-sword/mcp/${action}`, {
+					method: "POST",
+					headers: { "content-type": "application/json" },
+					body: JSON.stringify({ serverName })
+				})).json();
+				if (!result.ok) {
+					setMcpMessage(result.error ?? `${serverName} 操作失败。`);
+					return;
+				}
+				if (action === "probe") setMcpProbes((current) => ({
+					...current,
+					[serverName]: {
+						toolCount: result.toolCount ?? 0,
+						tools: result.tools ?? []
+					}
+				}));
+				setMcpMessage(action === "probe" ? `${serverName} 测活成功，发现 ${result.toolCount ?? 0} 个工具。` : `${serverName} 已热重载。`);
 			};
 			const saveSkill = async () => {
 				setSkillError(void 0);
@@ -10767,176 +10888,226 @@ window.__ModuleLoader__.load({
 					}),
 					tab === "mcp" && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 						className: RuntimeStatus_module_css_default.editorList,
-						children: [draft.mcpServers.map((server, index) => /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("fieldset", { children: [
-							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("legend", { children: server.serverName || `MCP ${index + 1}` }),
-							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["名称", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
-								value: server.serverName,
-								onChange: (event) => {
-									setDraft((current) => ({
-										...current,
-										mcpServers: current.mcpServers.map((item, at) => at === index ? {
-											...item,
-											serverName: event.target.value
-										} : item)
-									}));
-								}
-							})] }),
-							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["启用", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
-								type: "checkbox",
-								checked: server.enabled !== false,
-								onChange: (event) => {
-									setDraft((current) => ({
-										...current,
-										mcpServers: current.mcpServers.map((item, at) => at === index ? {
-											...item,
-											enabled: event.target.checked
-										} : item)
-									}));
-								}
-							})] }),
-							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["传输", /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("select", {
-								value: server.transport,
-								onChange: (event) => {
-									setDraft((current) => ({
-										...current,
-										mcpServers: current.mcpServers.map((item, at) => at === index ? {
-											serverName: item.serverName,
-											enabled: item.enabled ?? true,
-											transport: event.target.value,
-											toolCallTimeoutMs: item.toolCallTimeoutMs ?? 6e4,
-											...event.target.value === "stdio" ? {
-												command: "",
-												args: []
-											} : { url: "" }
-										} : item)
-									}));
-								},
-								children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
-									value: "stdio",
-									children: "stdio"
-								}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
-									value: "streamable-http",
-									children: "Streamable HTTP"
-								})]
-							})] }),
-							server.transport === "stdio" ? /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [
-								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["命令", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
-									value: server.command ?? "",
+						children: [
+							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("fieldset", { children: [
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("legend", { children: "JSON 配置同步" }),
+								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["支持直接粘贴 MCP JSON 或 `mcpServers` 对象", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("textarea", {
+									value: mcpJson,
 									onChange: (event) => {
-										setDraft((current) => ({
-											...current,
-											mcpServers: current.mcpServers.map((item, at) => at === index ? {
-												...item,
-												command: event.target.value
-											} : item)
-										}));
+										setMcpJson(event.target.value);
 									}
 								})] }),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["参数（每行一项）", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("textarea", {
-									value: (server.args ?? []).join("\n"),
-									onChange: (event) => {
-										setDraft((current) => ({
-											...current,
-											mcpServers: current.mcpServers.map((item, at) => at === index ? {
-												...item,
-												args: event.target.value.split("\n").filter(Boolean)
-											} : item)
-										}));
-									}
-								})] }),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["工作目录", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
-									value: server.cwd ?? "",
-									onChange: (event) => {
-										setDraft((current) => ({
-											...current,
-											mcpServers: current.mcpServers.map((item, at) => at === index ? {
-												...item,
-												cwd: event.target.value
-											} : item)
-										}));
-									}
-								})] }),
-								/* @__PURE__ */ (0, react_jsx_runtime.jsx)(KeyValueEditor, {
-									label: "环境变量",
-									value: server.env ?? {},
-									onChange: (env) => {
-										setDraft((current) => ({
-											...current,
-											mcpServers: current.mcpServers.map((item, at) => at === index ? {
-												...item,
-												env
-											} : item)
-										}));
-									}
+								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+									className: RuntimeStatus_module_css_default.editorActions,
+									children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+										type: "button",
+										onClick: importMcpJson,
+										children: "JSON → 可视化"
+									}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+										type: "button",
+										onClick: exportMcpJson,
+										children: "可视化 → JSON"
+									})]
+								}),
+								mcpMessage !== void 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
+									className: RuntimeStatus_module_css_default.installError,
+									children: mcpMessage
 								})
-							] }) : /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["URL", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
-								value: server.url ?? "",
-								onChange: (event) => {
-									setDraft((current) => ({
-										...current,
-										mcpServers: current.mcpServers.map((item, at) => at === index ? {
-											...item,
-											url: event.target.value
-										} : item)
-									}));
-								}
-							})] }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)(KeyValueEditor, {
-								label: "请求头",
-								value: server.headers ?? {},
-								onChange: (headers) => {
-									setDraft((current) => ({
-										...current,
-										mcpServers: current.mcpServers.map((item, at) => at === index ? {
-											...item,
-											headers
-										} : item)
-									}));
-								}
-							})] }),
-							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["工具超时（毫秒）", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
-								type: "number",
-								min: 1,
-								value: server.toolCallTimeoutMs ?? 6e4,
-								onChange: (event) => {
-									setDraft((current) => ({
-										...current,
-										mcpServers: current.mcpServers.map((item, at) => at === index ? {
-											...item,
-											toolCallTimeoutMs: Number(event.target.value)
-										} : item)
-									}));
-								}
-							})] }),
-							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
-								type: "button",
-								onClick: () => {
-									setDraft((current) => ({
-										...current,
-										mcpServers: current.mcpServers.filter((_, at) => at !== index)
-									}));
-								},
-								children: "删除"
+							] }),
+							draft.mcpServers.map((server, index) => /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("fieldset", { children: [
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("legend", { children: server.serverName || `MCP ${index + 1}` }),
+								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["名称", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
+									value: server.serverName,
+									onChange: (event) => {
+										setDraft((current) => ({
+											...current,
+											mcpServers: current.mcpServers.map((item, at) => at === index ? {
+												...item,
+												serverName: event.target.value
+											} : item)
+										}));
+									}
+								})] }),
+								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["启用", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
+									type: "checkbox",
+									checked: server.enabled !== false,
+									onChange: (event) => {
+										setDraft((current) => ({
+											...current,
+											mcpServers: current.mcpServers.map((item, at) => at === index ? {
+												...item,
+												enabled: event.target.checked
+											} : item)
+										}));
+									}
+								})] }),
+								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["传输", /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("select", {
+									value: server.transport,
+									onChange: (event) => {
+										setDraft((current) => ({
+											...current,
+											mcpServers: current.mcpServers.map((item, at) => at === index ? {
+												serverName: item.serverName,
+												enabled: item.enabled ?? true,
+												transport: event.target.value,
+												toolCallTimeoutMs: item.toolCallTimeoutMs ?? 6e4,
+												...event.target.value === "stdio" ? {
+													command: "",
+													args: []
+												} : { url: "" }
+											} : item)
+										}));
+									},
+									children: [
+										/* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
+											value: "stdio",
+											children: "stdio"
+										}),
+										/* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
+											value: "sse",
+											children: "HTTP + SSE（旧版）"
+										}),
+										/* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
+											value: "streamable-http",
+											children: "Streamable HTTP"
+										})
+									]
+								})] }),
+								server.transport === "stdio" ? /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [
+									/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["命令", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
+										value: server.command ?? "",
+										onChange: (event) => {
+											setDraft((current) => ({
+												...current,
+												mcpServers: current.mcpServers.map((item, at) => at === index ? {
+													...item,
+													command: event.target.value
+												} : item)
+											}));
+										}
+									})] }),
+									/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["参数（每行一项）", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("textarea", {
+										value: (server.args ?? []).join("\n"),
+										onChange: (event) => {
+											setDraft((current) => ({
+												...current,
+												mcpServers: current.mcpServers.map((item, at) => at === index ? {
+													...item,
+													args: event.target.value.split("\n").filter(Boolean)
+												} : item)
+											}));
+										}
+									})] }),
+									/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["工作目录", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
+										value: server.cwd ?? "",
+										onChange: (event) => {
+											setDraft((current) => ({
+												...current,
+												mcpServers: current.mcpServers.map((item, at) => at === index ? {
+													...item,
+													cwd: event.target.value
+												} : item)
+											}));
+										}
+									})] }),
+									/* @__PURE__ */ (0, react_jsx_runtime.jsx)(KeyValueEditor, {
+										label: "环境变量",
+										value: server.env ?? {},
+										onChange: (env) => {
+											setDraft((current) => ({
+												...current,
+												mcpServers: current.mcpServers.map((item, at) => at === index ? {
+													...item,
+													env
+												} : item)
+											}));
+										}
+									})
+								] }) : /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["URL", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
+									value: server.url ?? "",
+									onChange: (event) => {
+										setDraft((current) => ({
+											...current,
+											mcpServers: current.mcpServers.map((item, at) => at === index ? {
+												...item,
+												url: event.target.value
+											} : item)
+										}));
+									}
+								})] }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)(KeyValueEditor, {
+									label: "请求头",
+									value: server.headers ?? {},
+									onChange: (headers) => {
+										setDraft((current) => ({
+											...current,
+											mcpServers: current.mcpServers.map((item, at) => at === index ? {
+												...item,
+												headers
+											} : item)
+										}));
+									}
+								})] }),
+								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["工具超时（毫秒）", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
+									type: "number",
+									min: 1,
+									value: server.toolCallTimeoutMs ?? 6e4,
+									onChange: (event) => {
+										setDraft((current) => ({
+											...current,
+											mcpServers: current.mcpServers.map((item, at) => at === index ? {
+												...item,
+												toolCallTimeoutMs: Number(event.target.value)
+											} : item)
+										}));
+									}
+								})] }),
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)(McpProbeDetails, { probe: mcpProbes[server.serverName] }),
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+									type: "button",
+									onClick: () => {
+										runMcpAction(server.serverName, "probe");
+									},
+									children: "测活"
+								}),
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+									type: "button",
+									onClick: () => {
+										runMcpAction(server.serverName, "reload");
+									},
+									children: "热重载"
+								}),
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+									type: "button",
+									onClick: () => {
+										setDraft((current) => ({
+											...current,
+											mcpServers: current.mcpServers.filter((_, at) => at !== index)
+										}));
+									},
+									children: "删除"
+								})
+							] }, `${server.serverName}-${index}`)),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
+								className: RuntimeStatus_module_css_default.editorActions,
+								children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+									type: "button",
+									onClick: () => {
+										setDraft((current) => ({
+											...current,
+											mcpServers: [...current.mcpServers, newMcp()]
+										}));
+									},
+									children: "添加 MCP"
+								}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
+									type: "button",
+									disabled: saving,
+									onClick: () => {
+										save("mcpServers");
+									},
+									children: "保存 MCP"
+								})]
 							})
-						] }, `${server.serverName}-${index}`)), /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
-							className: RuntimeStatus_module_css_default.editorActions,
-							children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
-								type: "button",
-								onClick: () => {
-									setDraft((current) => ({
-										...current,
-										mcpServers: [...current.mcpServers, newMcp()]
-									}));
-								},
-								children: "添加 MCP"
-							}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
-								type: "button",
-								disabled: saving,
-								onClick: () => {
-									save("mcpServers");
-								},
-								children: "保存 MCP"
-							})]
-						})]
+						]
 					}),
 					tab === "skills" && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 						className: RuntimeStatus_module_css_default.editorList,
@@ -11396,6 +11567,11 @@ window.__ModuleLoader__.load({
 								}),
 								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("code", { children: server.target }),
 								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("p", { children: server.installHint }),
+								server.lastProbe !== void 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("details", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("summary", { children: [
+									"最近测活：",
+									server.lastProbe.toolCount,
+									" 个工具"
+								] }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("ul", { children: server.lastProbe.tools.map((tool) => /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("li", { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("code", { children: `mcp__${server.serverName}__${tool.name}` }), tool.description !== void 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("small", { children: tool.description })] }, tool.name)) })] }),
 								server.installCommand !== void 0 && /* @__PURE__ */ (0, react_jsx_runtime.jsx)("pre", { children: server.installCommand }),
 								(() => {
 									const componentId = MCP_COMPONENT[server.serverName];
@@ -11455,26 +11631,109 @@ window.__ModuleLoader__.load({
 		}
 		//#endregion
 		//#region \0dsh-css:C:\Users\Admin\Desktop\ant-dsh\packages\client\ui-autograph\src\client\AutoGraphView.module.css.mjs
-		const css = ".dSySha_panel{background:var(--dsh-bg,#0b0f14);color:var(--dsh-fg,#e6edf3);pointer-events:auto;z-index:30;flex-direction:column;display:flex;position:absolute;inset:0}.dSySha_header{border-bottom:1px solid var(--dsh-border,#21262d);align-items:center;gap:12px;padding:10px 16px;font-size:13px;display:flex}.dSySha_title{font-weight:600}.dSySha_meta{color:var(--dsh-fg-muted,#8b949e)}.dSySha_status{color:#3fb950;background:#12331f;border-radius:10px;margin-left:auto;padding:2px 8px;font-size:11px}.dSySha_status[data-paused=true]{color:#d97706;background:#3a2f0b}.dSySha_status[data-complete=true]{color:#58a6ff;background:#0d2a4a}.dSySha_canvas{flex:1;min-height:0}.dSySha_canvas .react-flow{width:100%;height:100%}.dSySha_canvas .react-flow__node{border-radius:6px;font-size:11px}.dSySha_canvas .react-flow__controls{box-shadow:none}.dSySha_canvas .react-flow__controls-button{background:var(--dsh-bg-soft,#161b22);border-bottom:1px solid var(--dsh-border,#30363d);fill:var(--dsh-fg,#e6edf3)}.dSySha_empty{height:100%;color:var(--dsh-fg-muted,#8b949e);text-align:center;justify-content:center;align-items:center;padding:24px;font-size:13px;display:flex}.dSySha_node{background:var(--dsh-bg-soft,#11161d);border:1.5px solid;border-radius:6px;max-width:220px;font-size:11px}.dSySha_controls{border-top:1px solid var(--dsh-border,#21262d);gap:8px;padding:10px 16px;display:flex}.dSySha_controls button{border:1px solid var(--dsh-border,#30363d);background:var(--dsh-bg-soft,#161b22);color:inherit;cursor:pointer;border-radius:6px;padding:6px 14px;font-size:12px}.dSySha_controls button:disabled{opacity:.5;cursor:default}.dSySha_controls input{border:1px solid var(--dsh-border,#30363d);background:var(--dsh-bg,#0b0f14);color:inherit;border-radius:6px;flex:1;padding:6px 10px;font-size:12px}";
-		const tagId = "@deepseek-ai/dsh-ant-sword-harness/ui-autograph/AutoGraphView.module.css";
+		const css = ".dSySha_panel{box-sizing:border-box;background:var(--dsw-alias-bg-layer-1);width:100%;height:100%;min-height:0;color:var(--dsw-alias-label-primary);flex-direction:column;display:flex;overflow:hidden}.dSySha_header{border-bottom:1px solid var(--dsw-alias-border-l2);font:var(--dsw-font-xs-13);align-items:center;gap:12px;padding:10px 16px;display:flex}.dSySha_title{font-weight:600}.dSySha_meta{color:var(--dsw-alias-label-secondary)}.dSySha_status{background:var(--dsw-alias-state-success-tertiary);color:var(--dsw-alias-state-success-primary);border-radius:10px;margin-left:auto;padding:2px 8px;font-size:11px;line-height:18px}.dSySha_status[data-paused=true]{background:var(--dsw-alias-state-warn-tertiary);color:var(--dsw-alias-state-warn-label)}.dSySha_status[data-complete=true]{background:var(--dsw-alias-state-business-tertiary);color:var(--dsw-alias-state-business-primary)}.dSySha_filters{border:0;border-bottom:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-1);align-items:center;gap:8px;min-width:0;margin:0;padding:8px 16px;display:flex}.dSySha_filters legend{clip-path:inset(50%);width:1px;height:1px;position:absolute;overflow:hidden}.dSySha_filters label{border:1px solid var(--dsw-alias-border-l2);color:var(--dsw-alias-label-secondary);cursor:pointer;user-select:none;border-radius:999px;align-items:center;gap:5px;padding:3px 8px;font-size:11px;line-height:18px;display:inline-flex}.dSySha_filters label:has(input:checked){border-color:var(--dsw-alias-state-business-primary);background:var(--dsw-alias-state-business-tertiary);color:var(--dsw-alias-label-primary)}.dSySha_filters input{width:13px;height:13px;accent-color:var(--dsw-alias-state-business-primary);margin:0}.dSySha_filterCount{color:var(--dsw-alias-label-tertiary);white-space:nowrap;margin-left:auto;font-size:11px;line-height:18px}.dSySha_canvas{background:var(--dsw-alias-bg-layer-1);flex:1;min-height:0;position:relative}.dSySha_canvas .react-flow{direction:ltr;position:relative;overflow:hidden}.dSySha_canvas .react-flow__container{width:100%;height:100%;position:absolute;inset:0}.dSySha_canvas .react-flow__pane{z-index:1;touch-action:none}.dSySha_canvas .react-flow__viewport{z-index:2;transform-origin:0 0;pointer-events:none}.dSySha_canvas .react-flow__renderer{z-index:4}.dSySha_canvas .react-flow__nodes{pointer-events:none;transform-origin:0 0}.dSySha_canvas .react-flow__node{box-sizing:border-box;transform-origin:0 0;pointer-events:all;user-select:none;position:absolute}.dSySha_canvas .react-flow__edges,.dSySha_canvas .react-flow__edges svg{pointer-events:none;position:absolute;overflow:visible}.dSySha_canvas .react-flow__edge{pointer-events:visibleStroke}.dSySha_canvas .react-flow__edge-path{fill:none}.dSySha_canvas .react-flow__edge.animated path{stroke-dasharray:5;animation:.5s linear infinite dSySha_autographDash}.dSySha_canvas .react-flow__handle{border-radius:50%;position:absolute}.dSySha_canvas .react-flow__handle-left{top:50%;left:0;transform:translate(-50%,-50%)}.dSySha_canvas .react-flow__handle-right{top:50%;right:0;transform:translate(50%,-50%)}.dSySha_canvas .react-flow__panel{z-index:5;margin:15px;position:absolute}.dSySha_canvas .react-flow__panel.bottom{bottom:0}.dSySha_canvas .react-flow__panel.left{left:0}.dSySha_canvas .react-flow__panel.right{right:0}.dSySha_canvas .react-flow__minimap-svg{display:block}.dSySha_canvas .react-flow__controls{flex-direction:column;display:flex}.dSySha_canvas .react-flow__controls-button{border:0;border-bottom:1px solid var(--dsw-alias-border-l2);cursor:pointer;justify-content:center;align-items:center;width:26px;height:26px;padding:4px;display:flex}.dSySha_canvas .react-flow__controls-button svg{fill:currentColor;width:100%;max-width:12px;max-height:12px}@keyframes dSySha_autographDash{0%{stroke-dashoffset:10px}}.dSySha_canvas .react-flow{--xy-background-color:var(--dsw-alias-bg-layer-1);--xy-edge-stroke-default:var(--dsw-alias-border-l4);--xy-minimap-background-color-default:var(--dsw-alias-bg-layer-2);--xy-controls-button-background-color-default:var(--dsw-alias-bg-layer-2);--xy-controls-button-background-color-hover-default:var(--dsw-alias-interactive-bg-hover-solid);--xy-controls-button-color-default:var(--dsw-alias-label-secondary);--xy-controls-button-border-color-default:var(--dsw-alias-border-l2);--xy-background-pattern-dot-color-default:var(--dsw-alias-border-l3);width:100%;height:100%}.dSySha_canvas .react-flow__node{border-radius:8px;font-size:11px;line-height:18px}.dSySha_canvas .react-flow__controls{border:1px solid var(--dsw-alias-border-l2);box-shadow:var(--dsw-shadow-lv1);border-radius:8px;overflow:hidden}.dSySha_canvas .react-flow__controls-button{border-bottom-color:var(--dsw-alias-border-l2)}.dSySha_canvas .react-flow__edge-path{stroke-width:1.75px;vector-effect:non-scaling-stroke}.dSySha_canvas .react-flow__edge.selected .react-flow__edge-path,.dSySha_canvas .react-flow__edge:focus-visible .react-flow__edge-path{stroke:var(--dsw-alias-state-business-primary);stroke-width:2.5px}.dSySha_canvas .react-flow__minimap{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-2);box-shadow:var(--dsw-shadow-lv1);border-radius:8px;overflow:hidden}.dSySha_canvas .react-flow__minimap-mask{fill:var(--dsw-alias-bg-mask-2)}.dSySha_canvas .react-flow__minimap-node{fill:var(--dsw-alias-state-business-tertiary);stroke:var(--dsw-alias-state-business-primary)}.dSySha_empty{height:100%;color:var(--dsw-alias-label-secondary);font:var(--dsw-font-xs-13);text-align:center;justify-content:center;align-items:center;padding:24px;display:flex}.dSySha_nodeCard{box-sizing:border-box;border:1.5px solid var(--dsw-alias-border-l3);background:var(--dsw-alias-bg-layer-3);width:252px;min-height:92px;color:var(--dsw-alias-label-primary);box-shadow:var(--dsw-shadow-lv1);border-radius:10px;position:relative;overflow:visible}.dSySha_nodeCard[data-kind=goal]{border-color:var(--dsw-alias-state-warn-primary)}.dSySha_nodeCard[data-kind=fact]{border-color:var(--dsw-alias-state-success-primary)}.dSySha_nodeCard[data-kind=intent]{border-color:var(--dsw-alias-state-business-primary)}.dSySha_nodeCard[data-kind=hint]{border-color:var(--dsw-alias-brand-primary-new-colorprimary-new-color)}.dSySha_nodeHeader{border-bottom:1px solid var(--dsw-alias-border-l1);color:var(--dsw-alias-label-secondary);align-items:center;gap:6px;padding:8px 10px;font-size:11px;line-height:18px;display:flex}.dSySha_nodeIcon{color:currentColor;width:16px;height:16px;display:inline-flex}.dSySha_nodeIcon svg{fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.75px;vector-effect:non-scaling-stroke;width:100%;height:100%}.dSySha_nodeStatus{color:var(--dsw-alias-label-tertiary);margin-left:auto}.dSySha_nodeLabel{overflow-wrap:anywhere;white-space:pre-wrap;padding:10px 12px 12px;font-size:13px;line-height:20px}.dSySha_handle{border:2px solid var(--dsw-alias-bg-layer-3);background:var(--dsw-alias-label-tertiary);width:9px;height:9px}.dSySha_nodeCard[data-kind=goal] .dSySha_handle{background:var(--dsw-alias-state-warn-primary)}.dSySha_nodeCard[data-kind=fact] .dSySha_handle{background:var(--dsw-alias-state-success-primary)}.dSySha_nodeCard[data-kind=intent] .dSySha_handle{background:var(--dsw-alias-state-business-primary)}.dSySha_nodeCard[data-kind=hint] .dSySha_handle{background:var(--dsw-alias-brand-primary-new-colorprimary-new-color)}.dSySha_controls{border-top:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-1);gap:8px;padding:10px 16px;display:flex}.dSySha_controls button,.dSySha_controls input{box-sizing:border-box;border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-2);min-height:32px;color:var(--dsw-alias-label-primary);border-radius:8px;font-size:12px;line-height:18px}.dSySha_controls button{cursor:pointer;padding:6px 14px}.dSySha_controls button:hover:not(:disabled){background:var(--dsw-alias-interactive-bg-hover-solid)}.dSySha_controls button:disabled{opacity:.5;cursor:default}.dSySha_controls input{flex:1;min-width:0;padding:6px 10px}.dSySha_controls input::placeholder{color:var(--dsw-alias-label-tertiary)}.dSySha_controls :is(button,input):focus-visible{outline:2px solid var(--dsw-alias-state-business-primary);outline-offset:2px}";
+		const tagId = "@deepseek-ai/dsh-client-ui-autograph/AutoGraphView.module.css";
 		if (typeof document !== "undefined" && document.querySelector("style[data-plugin-css=" + JSON.stringify(tagId) + "]") === null) {
 			const tag = document.createElement("style");
-			tag.dataset.plugin = "@deepseek-ai/dsh-ant-sword-harness/ui-autograph";
+			tag.dataset.plugin = "@deepseek-ai/dsh-client-ui-autograph";
 			tag.dataset.pluginCss = tagId;
 			tag.textContent = css;
 			document.head.appendChild(tag);
 		}
 		var AutoGraphView_module_css_default = {
+			"handle": "dSySha_handle",
+			"filters": "dSySha_filters",
+			"autographDash": "dSySha_autographDash",
 			"empty": "dSySha_empty",
-			"meta": "dSySha_meta",
-			"node": "dSySha_node",
+			"nodeHeader": "dSySha_nodeHeader",
+			"nodeLabel": "dSySha_nodeLabel",
 			"header": "dSySha_header",
-			"title": "dSySha_title",
-			"status": "dSySha_status",
-			"canvas": "dSySha_canvas",
 			"controls": "dSySha_controls",
-			"panel": "dSySha_panel"
+			"panel": "dSySha_panel",
+			"canvas": "dSySha_canvas",
+			"meta": "dSySha_meta",
+			"nodeCard": "dSySha_nodeCard",
+			"nodeIcon": "dSySha_nodeIcon",
+			"status": "dSySha_status",
+			"title": "dSySha_title",
+			"filterCount": "dSySha_filterCount",
+			"nodeStatus": "dSySha_nodeStatus"
 		};
+		//#endregion
+		//#region src/client/BoardGraphNode.tsx
+		const KIND_LABEL$1 = {
+			fact: "事实",
+			goal: "目标",
+			hint: "提示",
+			intent: "意图"
+		};
+		function KindIcon({ kind }) {
+			if (kind === "goal") return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("svg", {
+				viewBox: "0 0 24 24",
+				"aria-hidden": "true",
+				children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("circle", {
+					cx: "12",
+					cy: "12",
+					r: "8"
+				}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("circle", {
+					cx: "12",
+					cy: "12",
+					r: "3"
+				})]
+			});
+			if (kind === "fact") return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("svg", {
+				viewBox: "0 0 24 24",
+				"aria-hidden": "true",
+				children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("path", { d: "M5 5h14v14H5z" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("path", { d: "m8 12 2.5 2.5L16 9" })]
+			});
+			if (kind === "intent") return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("svg", {
+				viewBox: "0 0 24 24",
+				"aria-hidden": "true",
+				children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("path", { d: "M5 19 19 5" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("path", { d: "M10 5h9v9" })]
+			});
+			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("svg", {
+				viewBox: "0 0 24 24",
+				"aria-hidden": "true",
+				children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("path", { d: "M12 3a7 7 0 0 0-4 12.7V19h8v-3.3A7 7 0 0 0 12 3Z" }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("path", { d: "M9 22h6M9 16h6" })]
+			});
+		}
+		/** A measured graph block with explicit left/right connection anchors. */
+		function BoardGraphNode({ data }) {
+			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("article", {
+				className: AutoGraphView_module_css_default.nodeCard,
+				"data-kind": data.kind,
+				children: [
+					/* @__PURE__ */ (0, react_jsx_runtime.jsx)(Handle, {
+						className: AutoGraphView_module_css_default.handle,
+						type: "target",
+						position: Position.Left
+					}),
+					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("header", {
+						className: AutoGraphView_module_css_default.nodeHeader,
+						children: [
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
+								className: AutoGraphView_module_css_default.nodeIcon,
+								children: /* @__PURE__ */ (0, react_jsx_runtime.jsx)(KindIcon, { kind: data.kind })
+							}),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: KIND_LABEL$1[data.kind] }),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", {
+								className: AutoGraphView_module_css_default.nodeStatus,
+								children: data.status
+							})
+						]
+					}),
+					/* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
+						className: AutoGraphView_module_css_default.nodeLabel,
+						children: data.label
+					}),
+					/* @__PURE__ */ (0, react_jsx_runtime.jsx)(Handle, {
+						className: AutoGraphView_module_css_default.handle,
+						type: "source",
+						position: Position.Right
+					})
+				]
+			});
+		}
 		//#endregion
 		//#region src/client/AutoGraphView.tsx
 		/**
@@ -11486,40 +11745,66 @@ window.__ModuleLoader__.load({
 		* projected whole snapshot; the panel renders nothing when the session has no
 		* blackboard (capability absent / not an autonomous run).
 		*/
-		const KIND_COLOR = {
-			goal: "#d97706",
-			fact: "#059669",
-			intent: "#2563eb",
-			hint: "#7c3aed"
+		const NODE_TYPES = { board: BoardGraphNode };
+		const BOARD_KINDS = [
+			"fact",
+			"intent",
+			"hint",
+			"goal"
+		];
+		const KIND_LABEL = {
+			fact: "事实",
+			intent: "意图",
+			hint: "提示",
+			goal: "目标"
 		};
-		/** Lay out nodes in columns by OODA cycle (left → right as cycles advance). */
+		const KIND_EDGE_COLOR = {
+			fact: "var(--dsw-alias-state-success-primary)",
+			intent: "var(--dsw-alias-state-business-primary)",
+			hint: "var(--dsw-alias-brand-primary-new-colorprimary-new-color)",
+			goal: "var(--dsw-alias-state-warn-primary)"
+		};
+		function edgeOpacity(node) {
+			if (node.status === "open" || node.status === "claimed") return 1;
+			if (node.status === "resolved" || node.status === "complete") return .78;
+			return .52;
+		}
+		/** Lay out measured blocks in cycle columns with enough room for wrapped labels. */
 		function toFlow(board) {
 			const byCycle = /* @__PURE__ */ new Map();
 			return {
-				nodes: board.nodes.map((n) => {
-					const row = byCycle.get(n.cycle) ?? 0;
-					byCycle.set(n.cycle, row + 1);
-					const kindClass = `kind${n.kind[0]?.toUpperCase() ?? ""}${n.kind.slice(1)}`;
+				nodes: board.nodes.map((node) => {
+					const row = byCycle.get(node.cycle) ?? 0;
+					byCycle.set(node.cycle, row + 1);
 					return {
-						id: n.id,
+						id: node.id,
+						type: "board",
 						position: {
-							x: n.cycle * 260,
-							y: row * 110
+							x: node.cycle * 320,
+							y: row * 156
 						},
 						data: {
-							label: n.label,
-							kind: n.kind,
-							status: n.status
-						},
-						className: `${AutoGraphView_module_css_default.node} ${AutoGraphView_module_css_default[kindClass] ?? ""}`,
-						style: { borderColor: KIND_COLOR[n.kind] }
+							label: node.label,
+							kind: node.kind,
+							status: node.status
+						}
 					};
 				}),
-				edges: board.nodes.filter((n) => n.parentId !== void 0).map((n) => ({
-					id: `${n.parentId}->${n.id}`,
-					source: n.parentId,
-					target: n.id,
-					animated: n.kind === "intent" && (n.status === "open" || n.status === "claimed")
+				edges: board.nodes.filter((node) => node.parentId !== void 0).map((node) => ({
+					id: `${node.parentId}->${node.id}`,
+					source: node.parentId,
+					target: node.id,
+					type: "smoothstep",
+					animated: node.kind === "intent" && (node.status === "open" || node.status === "claimed"),
+					style: {
+						stroke: KIND_EDGE_COLOR[node.kind],
+						strokeOpacity: edgeOpacity(node),
+						strokeWidth: node.status === "open" || node.status === "claimed" ? 2.5 : 1.75
+					},
+					markerEnd: {
+						type: MarkerType.ArrowClosed,
+						color: KIND_EDGE_COLOR[node.kind]
+					}
 				}))
 			};
 		}
@@ -11532,8 +11817,17 @@ window.__ModuleLoader__.load({
 		function AutoGraphView({ isAutoMode, runtimeStatus, onPause, onResume, onHint, useProjection, t }) {
 			const [hint, setHint] = (0, react.useState)("");
 			const [pending, setPending] = (0, react.useState)(false);
+			const [enabledKinds, setEnabledKinds] = (0, react.useState)(() => new Set(BOARD_KINDS));
 			const board = useProjection("board") ?? EMPTY_BOARD;
-			const { nodes, edges } = (0, react.useMemo)(() => toFlow(board), [board]);
+			const flow = (0, react.useMemo)(() => toFlow(board), [board]);
+			const { nodes, edges } = (0, react.useMemo)(() => {
+				const visibleNodes = flow.nodes.filter((node) => enabledKinds.has(node.data.kind));
+				const visibleIds = new Set(visibleNodes.map((node) => node.id));
+				return {
+					nodes: visibleNodes,
+					edges: flow.edges.filter((edge) => visibleIds.has(edge.source) && visibleIds.has(edge.target))
+				};
+			}, [enabledKinds, flow]);
 			if (!isAutoMode) return null;
 			const status = board.complete ? t("panel.complete") : board.paused ? t("panel.paused") : t("panel.running");
 			const run = async (action) => {
@@ -11572,6 +11866,36 @@ window.__ModuleLoader__.load({
 						runtimeStatus,
 						compact: true
 					}),
+					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("fieldset", {
+						className: AutoGraphView_module_css_default.filters,
+						children: [
+							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("legend", { children: "筛选图块" }),
+							BOARD_KINDS.map((kind) => /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", {
+								"data-kind": kind,
+								children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
+									type: "checkbox",
+									checked: enabledKinds.has(kind),
+									onChange: (event) => {
+										setEnabledKinds((current) => {
+											const next = new Set(current);
+											if (event.target.checked) next.add(kind);
+											else next.delete(kind);
+											return next;
+										});
+									}
+								}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("span", { children: KIND_LABEL[kind] })]
+							}, kind)),
+							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("span", {
+								className: AutoGraphView_module_css_default.filterCount,
+								children: [
+									nodes.length,
+									"/",
+									flow.nodes.length,
+									" 个图块"
+								]
+							})
+						]
+					}),
 					/* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
 						className: AutoGraphView_module_css_default.canvas,
 						children: nodes.length === 0 ? /* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
@@ -11580,11 +11904,36 @@ window.__ModuleLoader__.load({
 						}) : /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(index, {
 							nodes,
 							edges,
+							nodeTypes: NODE_TYPES,
 							fitView: true,
-							proOptions: { hideAttribution: true },
-							nodesDraggable: true,
+							fitViewOptions: {
+								padding: .2,
+								maxZoom: 1.25
+							},
+							minZoom: .15,
+							maxZoom: 2.5,
+							nodesDraggable: false,
 							nodesConnectable: false,
-							children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)(Background, {}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)(Controls, { showInteractive: false })]
+							elementsSelectable: true,
+							panOnDrag: true,
+							panOnScroll: true,
+							zoomOnPinch: true,
+							zoomOnScroll: true,
+							zoomOnDoubleClick: true,
+							preventScrolling: true,
+							proOptions: { hideAttribution: true },
+							children: [
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)(Background, {
+									gap: 20,
+									size: 1
+								}),
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)(MiniMap, {
+									pannable: true,
+									zoomable: true,
+									ariaLabel: "黑板缩略图"
+								}),
+								/* @__PURE__ */ (0, react_jsx_runtime.jsx)(Controls, { showInteractive: false })
+							]
 						})
 					}),
 					/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
@@ -11633,7 +11982,7 @@ window.__ModuleLoader__.load({
 		//#region src/client/locales.ts
 		/**
 		* Dictionaries for the autonomous-loop graph surface (zh default, en mirror).
-		* @module @deepseek-ai/dsh-ant-sword-harness/ui-autograph/locales
+		* @module @deepseek-ai/dsh-client-ui-autograph/locales
 		*/
 		const en = {
 			"panel.title": "Autonomous run",

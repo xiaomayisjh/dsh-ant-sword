@@ -1,0 +1,1 @@
+{"version":3,"file":"api.d.ts","sourceRoot":"","sources":["../../../src/installer/api.ts"],"names":[],"mappings":"AAAA,mEAAmE;AAGnE,OAAO,KAAK,EAAE,OAAO,EAAE,MAAM,qBAAqB,CAAA;AAGlD,OAAO,EAAiC,cAAc,EAAkB,MAAM,kBAAkB,CAAA;AAmChG,wBAAgB,eAAe,CAAC,GAAG,EAAE,OAAO,GAAG,cAAc,CAoE5D"}

@@ -9,13 +9,14 @@
  */
 
 import { useMemo, useState } from 'react'
-import { ReactFlow, Background, Controls } from '@xyflow/react'
-import type { Edge, Node } from '@xyflow/react'
+import { Background, Controls, MarkerType, MiniMap, ReactFlow } from '@xyflow/react'
+import type { Edge } from '@xyflow/react'
 import type { PropsLocale } from '@deepseek-ai/dsh-client-ui-slots'
 import type { SnapshotStore } from '@deepseek-ai/dsh-client-runtime/client'
 import type { ConvViewProps } from '@deepseek-ai/dsh-client-ui-conversation/client'
 import type { RedTeamRuntimeStatus } from './RuntimeStatus.tsx'
 import { RuntimeStatus } from './RuntimeStatus.tsx'
+import { BoardGraphNode, type BoardFlowNode } from './BoardGraphNode.tsx'
 import type { BoardNode, BoardNodeKind, BoardSnapshot } from './board.ts'
 import css from './AutoGraphView.module.css'
 
@@ -38,35 +39,57 @@ export interface AutoGraphViewProps extends AutoGraphActions {
   board: BoardSnapshot | null | undefined
 }
 
-const KIND_COLOR: Record<BoardNodeKind, string> = {
-  goal: '#d97706',
-  fact: '#059669',
-  intent: '#2563eb',
-  hint: '#7c3aed',
+const NODE_TYPES = { board: BoardGraphNode }
+const BOARD_KINDS: readonly BoardNodeKind[] = ['fact', 'intent', 'hint', 'goal']
+const KIND_LABEL: Record<BoardNodeKind, string> = {
+  fact: '事实',
+  intent: '意图',
+  hint: '提示',
+  goal: '目标',
+}
+const KIND_EDGE_COLOR: Record<BoardNodeKind, string> = {
+  fact: 'var(--dsw-alias-state-success-primary)',
+  intent: 'var(--dsw-alias-state-business-primary)',
+  hint: 'var(--dsw-alias-brand-primary-new-colorprimary-new-color)',
+  goal: 'var(--dsw-alias-state-warn-primary)',
 }
 
-/** Lay out nodes in columns by OODA cycle (left → right as cycles advance). */
-function toFlow(board: BoardSnapshot): { nodes: Node[]; edges: Edge[] } {
+function edgeOpacity(node: BoardNode): number {
+  if (node.status === 'open' || node.status === 'claimed') return 1
+  if (node.status === 'done') return 0.78
+  return 0.52
+}
+
+/** Lay out measured blocks in cycle columns with enough room for wrapped labels. */
+export function toFlow(board: BoardSnapshot): { nodes: BoardFlowNode[]; edges: Edge[] } {
   const byCycle = new Map<number, number>()
-  const nodes: Node[] = board.nodes.map((n: BoardNode) => {
-    const row = byCycle.get(n.cycle) ?? 0
-    byCycle.set(n.cycle, row + 1)
-    const kindClass = `kind${n.kind[0]?.toUpperCase() ?? ''}${n.kind.slice(1)}`
+  const nodes: BoardFlowNode[] = board.nodes.map((node: BoardNode) => {
+    const row = byCycle.get(node.cycle) ?? 0
+    byCycle.set(node.cycle, row + 1)
     return {
-      id: n.id,
-      position: { x: n.cycle * 260, y: row * 110 },
-      data: { label: n.label, kind: n.kind, status: n.status },
-      className: `${css.node} ${css[kindClass] ?? ''}`,
-      style: { borderColor: KIND_COLOR[n.kind] },
+      id: node.id,
+      type: 'board',
+      position: { x: node.cycle * 320, y: row * 156 },
+      data: { label: node.label, kind: node.kind, status: node.status ?? 'recorded' },
     }
   })
   const edges: Edge[] = board.nodes
-    .filter((n: BoardNode) => n.parentId !== undefined)
-    .map((n: BoardNode) => ({
-      id: `${n.parentId}->${n.id}`,
-      source: n.parentId as string,
-      target: n.id,
-      animated: n.kind === 'intent' && (n.status === 'open' || n.status === 'claimed'),
+    .filter((node: BoardNode) => node.parentId !== undefined)
+    .map((node: BoardNode) => ({
+      id: `${node.parentId}->${node.id}`,
+      source: node.parentId as string,
+      target: node.id,
+      type: 'smoothstep',
+      animated: node.kind === 'intent' && (node.status === 'open' || node.status === 'claimed'),
+      style: {
+        stroke: KIND_EDGE_COLOR[node.kind],
+        strokeOpacity: edgeOpacity(node),
+        strokeWidth: node.status === 'open' || node.status === 'claimed' ? 2.5 : 1.75,
+      },
+      markerEnd: {
+        type: MarkerType.ArrowClosed,
+        color: KIND_EDGE_COLOR[node.kind],
+      },
     }))
   return { nodes, edges }
 }
@@ -81,10 +104,21 @@ const EMPTY_BOARD: BoardSnapshot = {
 export function AutoGraphView({ isAutoMode, runtimeStatus, onPause, onResume, onHint, useProjection, t }: ConvViewProps & AutoGraphActions & PropsLocale<'autograph'>) {
   const [hint, setHint] = useState('')
   const [pending, setPending] = useState(false)
-  const projectedBoard = useProjection('board') as BoardSnapshot | null | undefined
+  const [enabledKinds, setEnabledKinds] = useState<ReadonlySet<BoardNodeKind>>(
+    () => new Set(BOARD_KINDS),
+  )
+  const projectedBoard = useProjection('board')
   const board = projectedBoard ?? EMPTY_BOARD
 
-  const { nodes, edges } = useMemo(() => toFlow(board), [board])
+  const flow = useMemo(() => toFlow(board), [board])
+  const { nodes, edges } = useMemo(() => {
+    const visibleNodes = flow.nodes.filter(node => enabledKinds.has(node.data.kind))
+    const visibleIds = new Set(visibleNodes.map(node => node.id))
+    return {
+      nodes: visibleNodes,
+      edges: flow.edges.filter(edge => visibleIds.has(edge.source) && visibleIds.has(edge.target)),
+    }
+  }, [enabledKinds, flow])
 
   if (!isAutoMode) return null
 
@@ -104,12 +138,52 @@ export function AutoGraphView({ isAutoMode, runtimeStatus, onPause, onResume, on
         <span className={css.status} data-paused={board.paused} data-complete={board.complete}>{status}</span>
       </div>
       <RuntimeStatus runtimeStatus={runtimeStatus} compact />
+      <fieldset className={css.filters}>
+        <legend>筛选图块</legend>
+        {BOARD_KINDS.map(kind => (
+          <label key={kind} data-kind={kind}>
+            <input
+              type="checkbox"
+              checked={enabledKinds.has(kind)}
+              onChange={(event) => {
+                setEnabledKinds((current) => {
+                  const next = new Set(current)
+                  if (event.target.checked) next.add(kind)
+                  else next.delete(kind)
+                  return next
+                })
+              }}
+            />
+            <span>{KIND_LABEL[kind]}</span>
+          </label>
+        ))}
+        <span className={css.filterCount}>{nodes.length}/{flow.nodes.length} 个图块</span>
+      </fieldset>
       <div className={css.canvas}>
         {nodes.length === 0
           ? <div className={css.empty}>{t('panel.empty')}</div>
           : (
-            <ReactFlow nodes={nodes} edges={edges} fitView proOptions={{ hideAttribution: true }} nodesDraggable nodesConnectable={false}>
-              <Background />
+            <ReactFlow
+              nodes={nodes}
+              edges={edges}
+              nodeTypes={NODE_TYPES}
+              fitView
+              fitViewOptions={{ padding: 0.2, maxZoom: 1.25 }}
+              minZoom={0.15}
+              maxZoom={2.5}
+              nodesDraggable={false}
+              nodesConnectable={false}
+              elementsSelectable
+              panOnDrag
+              panOnScroll
+              zoomOnPinch
+              zoomOnScroll
+              zoomOnDoubleClick
+              preventScrolling
+              proOptions={{ hideAttribution: true }}
+            >
+              <Background gap={20} size={1} />
+              <MiniMap pannable zoomable ariaLabel="黑板缩略图" />
               <Controls showInteractive={false} />
             </ReactFlow>
           )}

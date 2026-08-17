@@ -22,8 +22,8 @@ export interface McpServerConfig {
   enabled?: boolean
   /** Namespace for the model-facing tool names (`mcp__<serverName>__<tool>`). */
   serverName: string
-  /** Transport: spawned stdio child or a running Streamable HTTP server. */
-  transport: 'stdio' | 'streamable-http'
+  /** Transport: spawned stdio child, legacy SSE, or Streamable HTTP. */
+  transport: 'stdio' | 'sse' | 'streamable-http'
   /** stdio: executable to spawn. */
   command?: string
   /** stdio: arguments. */
@@ -44,7 +44,7 @@ export interface McpServerConfig {
 export const McpServerSchema: z<McpServerConfig> = z.object({
   enabled: z.boolean().default(true).description('启用此 MCP 服务器；关闭则不挂载，其 mcp__* 工具不出现。'),
   serverName: z.string().required().description('工具命名空间，模型看到的是 mcp__<serverName>__<tool>。'),
-  transport: z.union(['stdio', 'streamable-http'] as const).required().description('stdio=拉起子进程；streamable-http=连接已在运行的服务。'),
+  transport: z.union(['stdio', 'sse', 'streamable-http'] as const).required().description('stdio=拉起子进程；sse=旧版 HTTP+SSE；streamable-http=当前 HTTP MCP。'),
   command: z.string().description('stdio：要启动的可执行文件。'),
   args: z.array(z.string()).description('stdio：命令参数。'),
   cwd: z.string().description('stdio：工作目录；留空使用 Harness 工作目录。'),
@@ -70,6 +70,12 @@ export const DEFAULT_MCP_SERVERS: readonly McpServerConfig[] = [
   { enabled: true, serverName: 'anything', transport: 'streamable-http', url: 'http://localhost:23816/mcp' },
   { enabled: true, serverName: 'idapro', transport: 'streamable-http', url: 'http://127.0.0.1:13337/mcp' },
   { enabled: true, serverName: 'ghidra', transport: 'streamable-http', url: 'http://localhost:8765/mcp' },
+  { enabled: true, serverName: 'everything', transport: 'stdio', command: 'npx', args: ['-y', '@modelcontextprotocol/server-everything'] },
+  { enabled: false, serverName: 'memory', transport: 'stdio', command: 'npx', args: ['-y', '@modelcontextprotocol/server-memory'] },
+  { enabled: false, serverName: 'filesystem', transport: 'stdio', command: 'npx', args: ['-y', '@modelcontextprotocol/server-filesystem', '.'] },
+  { enabled: false, serverName: 'github', transport: 'stdio', command: 'npx', args: ['-y', '@modelcontextprotocol/server-github'] },
+  { enabled: false, serverName: 'playwright', transport: 'stdio', command: 'npx', args: ['-y', '@playwright/mcp@latest'] },
+  { enabled: false, serverName: 'remote-http', transport: 'streamable-http', url: 'http://127.0.0.1:3000/mcp' },
 ]
 
 /** Return whether a stdio command can be resolved without invoking a shell. */
@@ -115,7 +121,7 @@ export function applyMcpServers(
         failOnStartupError: false,
       }
       : {
-        transport: 'streamable-http',
+        transport: server.transport,
         serverName: server.serverName,
         url: server.url ?? '',
         headers: server.headers ?? {},

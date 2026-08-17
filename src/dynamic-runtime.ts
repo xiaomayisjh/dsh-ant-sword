@@ -14,12 +14,17 @@ import type { AntSwordRuntimeConfig } from './runtime-config.ts'
 import type { McpServerConfig } from './mcp-servers.ts'
 import { SkillsReconciler } from './skill-runtime.ts'
 
+export interface DynamicRuntime {
+  controller: RuntimeController
+  mcp: McpReconciler
+}
+
 export function applyDynamicRuntime(
   ctx: Context,
   mcpServers: readonly McpServerConfig[],
   pentestswarmApiKey?: string,
   skillsReconciler: SkillsReconciler = new SkillsReconciler(),
-): RuntimeController {
+): DynamicRuntime {
   const base: Partial<AntSwordRuntimeConfig> = {
     mcpServers: mcpServers.map(server => ({ ...server })),
     disabledSkills: [],
@@ -30,8 +35,9 @@ export function applyDynamicRuntime(
     AntSwordRuntimeConfigSchema,
     { base, applies: 'live', validate: validateRuntimeConfig },
   )
-  const controller = new RuntimeController(scope, [new McpReconciler(ctx, pentestswarmApiKey), skillsReconciler, new RulesReconciler(ctx)])
+  const mcp = new McpReconciler(ctx, pentestswarmApiKey)
+  const controller = new RuntimeController(scope, [mcp, skillsReconciler, new RulesReconciler(ctx)])
   const stop = controller.start()
   ctx.effect(() => stop, 'ant-sword-runtime.controller')
-  return controller
+  return { controller, mcp }
 }

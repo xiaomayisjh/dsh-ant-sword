@@ -1,12 +1,13 @@
 .panel {
-  position: absolute;
-  inset: 0;
   display: flex;
   flex-direction: column;
-  background: var(--dsh-bg, #0b0f14);
-  color: var(--dsh-fg, #e6edf3);
-  pointer-events: auto;
-  z-index: 30;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--dsw-alias-bg-layer-1);
+  color: var(--dsw-alias-label-primary);
 }
 
 .header {
@@ -14,8 +15,8 @@
   align-items: center;
   gap: 12px;
   padding: 10px 16px;
-  border-bottom: 1px solid var(--dsh-border, #21262d);
-  font-size: 13px;
+  border-bottom: 1px solid var(--dsw-alias-border-l2);
+  font: var(--dsw-font-xs-13);
 }
 
 .title {
@@ -23,51 +24,277 @@
 }
 
 .meta {
-  color: var(--dsh-fg-muted, #8b949e);
+  color: var(--dsw-alias-label-secondary);
 }
 
 .status {
   margin-left: auto;
   padding: 2px 8px;
   border-radius: 10px;
+  background: var(--dsw-alias-state-success-tertiary);
+  color: var(--dsw-alias-state-success-primary);
   font-size: 11px;
-  background: #12331f;
-  color: #3fb950;
+  line-height: 18px;
 }
 
 .status[data-paused='true'] {
-  background: #3a2f0b;
-  color: #d97706;
+  background: var(--dsw-alias-state-warn-tertiary);
+  color: var(--dsw-alias-state-warn-label);
 }
 
 .status[data-complete='true'] {
-  background: #0d2a4a;
-  color: #58a6ff;
+  background: var(--dsw-alias-state-business-tertiary);
+  color: var(--dsw-alias-state-business-primary);
+}
+
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  margin: 0;
+  padding: 8px 16px;
+  border: 0;
+  border-bottom: 1px solid var(--dsw-alias-border-l2);
+  background: var(--dsw-alias-bg-layer-1);
+}
+
+.filters legend {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+.filters label {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  border: 1px solid var(--dsw-alias-border-l2);
+  border-radius: 999px;
+  color: var(--dsw-alias-label-secondary);
+  font-size: 11px;
+  line-height: 18px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.filters label:has(input:checked) {
+  border-color: var(--dsw-alias-state-business-primary);
+  background: var(--dsw-alias-state-business-tertiary);
+  color: var(--dsw-alias-label-primary);
+}
+
+.filters input {
+  width: 13px;
+  height: 13px;
+  margin: 0;
+  accent-color: var(--dsw-alias-state-business-primary);
+}
+
+.filterCount {
+  margin-left: auto;
+  color: var(--dsw-alias-label-tertiary);
+  font-size: 11px;
+  line-height: 18px;
+  white-space: nowrap;
 }
 
 .canvas {
+  position: relative;
   flex: 1;
   min-height: 0;
+  background: var(--dsw-alias-bg-layer-1);
+}
+
+.canvas :global(.react-flow) {
+  position: relative;
+  direction: ltr;
+  overflow: hidden;
+}
+
+.canvas :global(.react-flow__container) {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.canvas :global(.react-flow__pane) {
+  z-index: 1;
+  touch-action: none;
+}
+
+.canvas :global(.react-flow__viewport) {
+  z-index: 2;
+  transform-origin: 0 0;
+  pointer-events: none;
+}
+
+.canvas :global(.react-flow__renderer) {
+  z-index: 4;
+}
+
+.canvas :global(.react-flow__nodes) {
+  pointer-events: none;
+  transform-origin: 0 0;
+}
+
+.canvas :global(.react-flow__node) {
+  position: absolute;
+  box-sizing: border-box;
+  transform-origin: 0 0;
+  pointer-events: all;
+  user-select: none;
+}
+
+.canvas :global(.react-flow__edges),
+.canvas :global(.react-flow__edges svg) {
+  position: absolute;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.canvas :global(.react-flow__edge) {
+  pointer-events: visibleStroke;
+}
+
+.canvas :global(.react-flow__edge-path) {
+  fill: none;
+}
+
+.canvas :global(.react-flow__edge.animated path) {
+  stroke-dasharray: 5;
+  animation: autographDash 0.5s linear infinite;
+}
+
+.canvas :global(.react-flow__handle) {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.canvas :global(.react-flow__handle-left) {
+  top: 50%;
+  left: 0;
+  transform: translate(-50%, -50%);
+}
+
+.canvas :global(.react-flow__handle-right) {
+  top: 50%;
+  right: 0;
+  transform: translate(50%, -50%);
+}
+
+.canvas :global(.react-flow__panel) {
+  position: absolute;
+  z-index: 5;
+  margin: 15px;
+}
+
+.canvas :global(.react-flow__panel.bottom) {
+  bottom: 0;
+}
+
+.canvas :global(.react-flow__panel.left) {
+  left: 0;
+}
+
+.canvas :global(.react-flow__panel.right) {
+  right: 0;
+}
+
+.canvas :global(.react-flow__minimap-svg) {
+  display: block;
+}
+
+.canvas :global(.react-flow__controls) {
+  display: flex;
+  flex-direction: column;
+}
+
+.canvas :global(.react-flow__controls-button) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  padding: 4px;
+  border: 0;
+  border-bottom: 1px solid var(--dsw-alias-border-l2);
+  cursor: pointer;
+}
+
+.canvas :global(.react-flow__controls-button svg) {
+  width: 100%;
+  max-width: 12px;
+  max-height: 12px;
+  fill: currentColor;
+}
+
+@keyframes autographDash {
+  from {
+    stroke-dashoffset: 10;
+  }
 }
 
 .canvas :global(.react-flow) {
   width: 100%;
   height: 100%;
+  --xy-background-color: var(--dsw-alias-bg-layer-1);
+  --xy-edge-stroke-default: var(--dsw-alias-border-l4);
+  --xy-minimap-background-color-default: var(--dsw-alias-bg-layer-2);
+  --xy-controls-button-background-color-default: var(--dsw-alias-bg-layer-2);
+  --xy-controls-button-background-color-hover-default: var(--dsw-alias-interactive-bg-hover-solid);
+  --xy-controls-button-color-default: var(--dsw-alias-label-secondary);
+  --xy-controls-button-border-color-default: var(--dsw-alias-border-l2);
+  --xy-background-pattern-dot-color-default: var(--dsw-alias-border-l3);
 }
 
 .canvas :global(.react-flow__node) {
+  border-radius: 8px;
   font-size: 11px;
-  border-radius: 6px;
+  line-height: 18px;
 }
 
 .canvas :global(.react-flow__controls) {
-  box-shadow: none;
+  overflow: hidden;
+  border: 1px solid var(--dsw-alias-border-l2);
+  border-radius: 8px;
+  box-shadow: var(--dsw-shadow-lv1);
 }
 
 .canvas :global(.react-flow__controls-button) {
-  background: var(--dsh-bg-soft, #161b22);
-  border-bottom: 1px solid var(--dsh-border, #30363d);
-  fill: var(--dsh-fg, #e6edf3);
+  border-bottom-color: var(--dsw-alias-border-l2);
+}
+
+.canvas :global(.react-flow__edge-path) {
+  stroke-width: 1.75;
+  vector-effect: non-scaling-stroke;
+}
+
+.canvas :global(.react-flow__edge.selected .react-flow__edge-path),
+.canvas :global(.react-flow__edge:focus-visible .react-flow__edge-path) {
+  stroke: var(--dsw-alias-state-business-primary);
+  stroke-width: 2.5;
+}
+
+.canvas :global(.react-flow__minimap) {
+  overflow: hidden;
+  border: 1px solid var(--dsw-alias-border-l2);
+  border-radius: 8px;
+  background: var(--dsw-alias-bg-layer-2);
+  box-shadow: var(--dsw-shadow-lv1);
+}
+
+.canvas :global(.react-flow__minimap-mask) {
+  fill: var(--dsw-alias-bg-mask-2);
+}
+
+.canvas :global(.react-flow__minimap-node) {
+  fill: var(--dsw-alias-state-business-tertiary);
+  stroke: var(--dsw-alias-state-business-primary);
 }
 
 .empty {
@@ -75,35 +302,133 @@
   align-items: center;
   justify-content: center;
   height: 100%;
-  color: var(--dsh-fg-muted, #8b949e);
-  font-size: 13px;
   padding: 24px;
+  color: var(--dsw-alias-label-secondary);
+  font: var(--dsw-font-xs-13);
   text-align: center;
 }
 
-.node {
+.nodeCard {
+  position: relative;
+  box-sizing: border-box;
+  width: 252px;
+  min-height: 92px;
+  overflow: visible;
+  border: 1.5px solid var(--dsw-alias-border-l3);
+  border-radius: 10px;
+  background: var(--dsw-alias-bg-layer-3);
+  color: var(--dsw-alias-label-primary);
+  box-shadow: var(--dsw-shadow-lv1);
+}
+
+.nodeCard[data-kind='goal'] {
+  border-color: var(--dsw-alias-state-warn-primary);
+}
+
+.nodeCard[data-kind='fact'] {
+  border-color: var(--dsw-alias-state-success-primary);
+}
+
+.nodeCard[data-kind='intent'] {
+  border-color: var(--dsw-alias-state-business-primary);
+}
+
+.nodeCard[data-kind='hint'] {
+  border-color: var(--dsw-alias-brand-primary-new-colorprimary-new-color);
+}
+
+.nodeHeader {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--dsw-alias-border-l1);
+  color: var(--dsw-alias-label-secondary);
   font-size: 11px;
-  border: 1.5px solid;
-  border-radius: 6px;
-  background: var(--dsh-bg-soft, #11161d);
-  max-width: 220px;
+  line-height: 18px;
+}
+
+.nodeIcon {
+  display: inline-flex;
+  width: 16px;
+  height: 16px;
+  color: currentColor;
+}
+
+.nodeIcon svg {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.75;
+  vector-effect: non-scaling-stroke;
+}
+
+.nodeStatus {
+  margin-left: auto;
+  color: var(--dsw-alias-label-tertiary);
+}
+
+.nodeLabel {
+  padding: 10px 12px 12px;
+  font-size: 13px;
+  line-height: 20px;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.handle {
+  width: 9px;
+  height: 9px;
+  border: 2px solid var(--dsw-alias-bg-layer-3);
+  background: var(--dsw-alias-label-tertiary);
+}
+
+.nodeCard[data-kind='goal'] .handle {
+  background: var(--dsw-alias-state-warn-primary);
+}
+
+.nodeCard[data-kind='fact'] .handle {
+  background: var(--dsw-alias-state-success-primary);
+}
+
+.nodeCard[data-kind='intent'] .handle {
+  background: var(--dsw-alias-state-business-primary);
+}
+
+.nodeCard[data-kind='hint'] .handle {
+  background: var(--dsw-alias-brand-primary-new-colorprimary-new-color);
 }
 
 .controls {
   display: flex;
   gap: 8px;
   padding: 10px 16px;
-  border-top: 1px solid var(--dsh-border, #21262d);
+  border-top: 1px solid var(--dsw-alias-border-l2);
+  background: var(--dsw-alias-bg-layer-1);
+}
+
+.controls button,
+.controls input {
+  box-sizing: border-box;
+  min-height: 32px;
+  border: 1px solid var(--dsw-alias-border-l2);
+  border-radius: 8px;
+  background: var(--dsw-alias-bg-layer-2);
+  color: var(--dsw-alias-label-primary);
+  font-size: 12px;
+  line-height: 18px;
 }
 
 .controls button {
   padding: 6px 14px;
-  border: 1px solid var(--dsh-border, #30363d);
-  border-radius: 6px;
-  background: var(--dsh-bg-soft, #161b22);
-  color: inherit;
-  font-size: 12px;
   cursor: pointer;
+}
+
+.controls button:hover:not(:disabled) {
+  background: var(--dsw-alias-interactive-bg-hover-solid);
 }
 
 .controls button:disabled {
@@ -113,10 +438,15 @@
 
 .controls input {
   flex: 1;
+  min-width: 0;
   padding: 6px 10px;
-  border: 1px solid var(--dsh-border, #30363d);
-  border-radius: 6px;
-  background: var(--dsh-bg, #0b0f14);
-  color: inherit;
-  font-size: 12px;
+}
+
+.controls input::placeholder {
+  color: var(--dsw-alias-label-tertiary);
+}
+
+.controls :is(button, input):focus-visible {
+  outline: 2px solid var(--dsw-alias-state-business-primary);
+  outline-offset: 2px;
 }

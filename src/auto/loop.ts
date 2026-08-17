@@ -86,6 +86,18 @@ export class AutoLoopService extends Service {
   }
 }
 
+function blackboardOf(ctx: Context): BlackboardService {
+  const service = ctx.get('blackboard')
+  if (service === undefined) throw new Error('auto-loop: blackboard service is unavailable')
+  return service
+}
+
+function autoLoopOf(ctx: Context): AutoLoopService {
+  const service = ctx.get('autoLoop')
+  if (service === undefined) throw new Error('auto-loop: controller service is unavailable')
+  return service
+}
+
 /** Register the `/auto` operator command: the UI control bar's channel. */
 function registerAutoCommand(ctx: Context): void {
   ctx.commands.register({
@@ -94,8 +106,8 @@ function registerAutoCommand(ctx: Context): void {
     input: { hint: '[pause | resume | hint <text> | status]' },
     handler: async (invocation) => {
       const agent = invocation.agent
-      const board = ctx.blackboard
-      const loop = ctx.autoLoop
+      const board = blackboardOf(ctx)
+      const loop = autoLoopOf(ctx)
       const arg = invocation.rawInput.trim()
       if (arg === 'pause') {
         loop.pause(agent.session)
@@ -182,7 +194,7 @@ export function applyAutoLoop(ctx: Context, config: AutoLoopConfig): void {
     return s
   }
 
-  const board = () => ctx.blackboard
+  const board = (): BlackboardService => blackboardOf(ctx)
 
   // ── model-facing board tools ─────────────────────────────────────────────
 

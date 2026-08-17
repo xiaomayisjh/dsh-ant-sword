@@ -4,32 +4,31 @@
 
 > ⚠ 授权安全研究专用。仅对已获授权的目标（自有系统 / 实验沙箱 / CTF / 受委托测试）使用，并对全部行为及后果负责。
 
-## 安装（三选一）
+## 一句命令完整安装
 
-### 1. Release tarball（推荐，一行）
+目标仓库为私有仓库，先执行 `gh auth login`。安装器会下载最新 Release、安装 bundle 及根依赖，并清理重复 Loader 层。
 
-```powershell
-# 私有仓库：先设只读 token
-$env:GH_TOKEN = "<read-pat>"
-dsh plugin --profile <name> add "https://github.com/xiaomayisjh/dsh-ant-sword/releases/download/v0.1.0-rc.5/deepseek-ai-dsh-ant-sword-harness-0.1.0-rc.5.tgz?access_token=$env:GH_TOKEN"
-```
-
-### 2. 源码直装（仓库已含 lib/ 产物）
+Windows PowerShell：
 
 ```powershell
-# 私有仓库的 git 源需要消费端持有读凭据（gh auth login 或凭据管理器）
-dsh plugin --profile <name> add "github:xiaomayisjh/dsh-ant-sword#main"
+& ([scriptblock]::Create([Text.Encoding]::UTF8.GetString([Convert]::FromBase64String((& gh api repos/xiaomayisjh/dsh-ant-sword/contents/install-ant-sword.ps1 --jq .content)))))
 ```
 
-仓库携带 `lib/` 编译产物，`dsh plugin add` 转发给 pnpm 后直接可用，无构建步骤。
+Linux / macOS：
 
-### 3. 本地目录（开发）
-
-```powershell
-dsh plugin --profile <name> add link:C:\path\to\dsh-ant-sword
+```bash
+gh api repos/xiaomayisjh/dsh-ant-sword/contents/install-ant-sword.sh --jq .content | base64 -d | bash
 ```
 
-装完 **重启 `dsh web`** 生效（`dsh --profile <name>`）。
+安装完成后运行：
+
+```text
+dsh web
+```
+
+## 其他安装方式
+
+Release tarball 可手动安装，但仍需把 `@nanmicoder/dsh-agent-teams` 和 `dshmarket` 放入 profile 根依赖；推荐使用上方安装器完成整个流程。
 
 ## 能力
 

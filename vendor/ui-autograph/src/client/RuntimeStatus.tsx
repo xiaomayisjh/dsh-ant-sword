@@ -7,11 +7,17 @@ export type RuntimeAvailability = 'available' | 'missing' | 'configured' | 'disa
 
 export interface McpRuntimeStatus {
   readonly serverName: string
-  readonly transport: 'stdio' | 'streamable-http'
+  readonly transport: 'stdio' | 'sse' | 'streamable-http'
   readonly availability: RuntimeAvailability
   readonly target: string
   readonly installCommand?: string
   readonly installHint: string
+  readonly mounted: boolean
+  readonly lastProbe?: {
+    readonly checkedAt: number
+    readonly toolCount: number
+    readonly tools: readonly { readonly name: string; readonly description?: string }[]
+  }
 }
 
 export interface RedTeamRuntimeStatus {
@@ -54,6 +60,7 @@ export const INITIAL_RUNTIME_STATUS: RedTeamRuntimeStatus = {
     serverName: serverName as string,
     transport: transport as 'stdio' | 'streamable-http',
     availability: 'missing' as const,
+    mounted: false,
     target: target as string,
     ...(installCommand === undefined ? {} : { installCommand: installCommand as string }),
     installHint: installHint as string,
@@ -197,10 +204,19 @@ export function RuntimeStatus({ runtimeStatus, configScope, compact = false }: R
           <article key={server.serverName} className={css.card} data-state={server.availability}>
             <div className={css.cardTitle}>
               <strong>{server.serverName}</strong>
-              <span>{STATE_LABEL[server.availability]}</span>
+              <span>{STATE_LABEL[server.availability]} · {server.mounted ? '已挂载' : '未挂载'}</span>
             </div>
             <code>{server.target}</code>
             <p>{server.installHint}</p>
+            {server.lastProbe !== undefined && <details>
+              <summary>最近测活：{server.lastProbe.toolCount} 个工具</summary>
+              <ul>
+                {server.lastProbe.tools.map(tool => <li key={tool.name}>
+                  <code>{`mcp__${server.serverName}__${tool.name}`}</code>
+                  {tool.description !== undefined && <small>{tool.description}</small>}
+                </li>)}
+              </ul>
+            </details>}
             {server.installCommand !== undefined && <pre>{server.installCommand}</pre>}
             {(() => {
               const componentId = MCP_COMPONENT[server.serverName]

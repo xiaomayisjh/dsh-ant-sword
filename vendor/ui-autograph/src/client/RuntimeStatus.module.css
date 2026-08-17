@@ -3,29 +3,31 @@
   align-items: center;
   gap: 10px;
   padding: 7px 16px;
-  border-bottom: 1px solid var(--dsh-border, #21262d);
-  background: color-mix(in srgb, var(--dsh-bg-soft, #161b22) 88%, transparent);
+  border-bottom: 1px solid var(--dsw-alias-border-l2);
+  background: color-mix(in srgb, var(--dsw-alias-bg-layer-2) 88%, transparent);
   font-size: 11px;
 }
 
 .metric {
-  color: var(--dsh-fg-muted, #8b949e);
+  color: var(--dsw-alias-label-secondary);
 }
 
 .metric strong {
-  color: var(--dsh-fg, #e6edf3);
+  color: var(--dsw-alias-label-primary);
 }
 
 .warning {
   margin-left: auto;
-  color: #d97706;
+  color: var(--dsw-alias-state-warn-label);
 }
 
 .settings {
   display: flex;
   flex-direction: column;
   gap: 14px;
-  color: var(--dsh-fg, #e6edf3);
+  color: var(--dsw-alias-label-primary);
+  --dsh-scrollbar-thumb: var(--dsw-alias-scrollbar-bg-l2);
+  --dsh-scrollbar-thumb-hover: var(--dsw-alias-scrollbar-hover-l2);
 }
 
 .settingsHeader {
@@ -43,7 +45,7 @@
 .settingsHeader p,
 .card p {
   margin: 0;
-  color: var(--dsh-fg-muted, #8b949e);
+  color: var(--dsw-alias-label-secondary);
   font-size: 12px;
   line-height: 1.5;
 }
@@ -57,7 +59,7 @@
 .cardTitle span {
   padding: 3px 8px;
   border-radius: 999px;
-  background: var(--dsh-bg-soft, #161b22);
+  background: var(--dsw-alias-bg-layer-2);
   font-size: 11px;
   white-space: nowrap;
 }
@@ -65,9 +67,9 @@
 .skillCard,
 .card {
   padding: 12px;
-  border: 1px solid var(--dsh-border, #30363d);
+  border: 1px solid var(--dsw-alias-border-l2);
   border-radius: 8px;
-  background: var(--dsh-bg-soft, #11161d);
+  background: var(--dsw-alias-bg-layer-3);
 }
 
 .skillCard {
@@ -78,7 +80,7 @@
 }
 
 .skillCard small {
-  color: var(--dsh-fg-muted, #8b949e);
+  color: var(--dsw-alias-label-secondary);
   text-align: right;
 }
 
@@ -95,12 +97,12 @@
 }
 
 .card[data-state='missing'] {
-  border-color: #6e5314;
+  border-color: var(--dsw-alias-state-warn-primary);
 }
 
 .card[data-state='available'],
 .card[data-state='configured'] {
-  border-color: #1f6f3d;
+  border-color: var(--dsw-alias-state-success-primary);
 }
 
 .cardTitle {
@@ -115,8 +117,8 @@
   margin: 0;
   padding: 7px;
   border-radius: 5px;
-  background: var(--dsh-bg, #0b0f14);
-  color: var(--dsh-fg, #e6edf3);
+  background: var(--dsw-alias-bg-layer-1);
+  color: var(--dsw-alias-label-primary);
   font-size: 11px;
   white-space: pre-wrap;
   word-break: break-all;
@@ -134,22 +136,22 @@
   display: flex;
   gap: 8px;
   align-items: center;
-  color: var(--dsh-fg-muted, #8b949e);
+  color: var(--dsw-alias-label-secondary);
   font-size: 12px;
 }
 
 .installToolbar select,
 .installActions button {
-  border: 1px solid var(--dsh-border, #30363d);
+  border: 1px solid var(--dsw-alias-border-l2);
   border-radius: 6px;
-  background: var(--dsh-bg-soft, #161b22);
-  color: var(--dsh-fg, #e6edf3);
+  background: var(--dsw-alias-bg-layer-2);
+  color: var(--dsw-alias-label-primary);
   padding: 6px 9px;
 }
 
 .installActions button:focus-visible,
 .installToolbar select:focus-visible {
-  outline: 2px solid var(--dsh-focus, #2f81f7);
+  outline: 2px solid var(--dsw-alias-state-business-primary);
   outline-offset: 2px;
 }
 
@@ -158,7 +160,7 @@
 }
 
 .installError {
-  color: var(--dsh-danger, #f85149);
+  color: var(--dsw-alias-state-error-primary);
   font-size: 12px;
 }
 
@@ -166,20 +168,20 @@
   display: grid;
   flex: 1 1 100%;
   gap: 4px;
-  color: var(--dsh-fg-muted, #8b949e);
+  color: var(--dsw-alias-label-secondary);
   font-size: 11px;
 }
 
 .installProgress progress {
   width: 100%;
-  accent-color: var(--dsh-accent, #2f81f7);
+  accent-color: var(--dsw-alias-state-business-primary);
 }
 
 .configEditor {
   display: grid;
   gap: 12px;
   padding-top: 14px;
-  border-top: 1px solid var(--dsh-border, #30363d);
+  border-top: 1px solid var(--dsw-alias-border-l2);
 }
 
 .tabs,
@@ -192,16 +194,16 @@
 .tabs button,
 .editorActions button,
 .editorList fieldset > button {
-  border: 1px solid var(--dsh-border, #30363d);
+  border: 1px solid var(--dsw-alias-border-l2);
   border-radius: 6px;
   padding: 6px 10px;
-  background: var(--dsh-bg-soft, #161b22);
-  color: var(--dsh-fg, #e6edf3);
+  background: var(--dsw-alias-bg-layer-2);
+  color: var(--dsw-alias-label-primary);
 }
 
 .tabs button[data-active='true'] {
-  border-color: var(--dsh-accent, #2f81f7);
-  color: var(--dsh-accent, #2f81f7);
+  border-color: var(--dsw-alias-state-business-primary);
+  color: var(--dsw-alias-state-business-primary);
 }
 
 .editorList {
@@ -214,14 +216,14 @@
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 10px;
   min-width: 0;
-  border: 1px solid var(--dsh-border, #30363d);
+  border: 1px solid var(--dsw-alias-border-l2);
   border-radius: 8px;
 }
 
 .editorList label {
   display: grid;
   gap: 5px;
-  color: var(--dsh-fg-muted, #8b949e);
+  color: var(--dsw-alias-label-secondary);
   font-size: 11px;
 }
 
@@ -231,11 +233,11 @@
   box-sizing: border-box;
   width: 100%;
   min-width: 0;
-  border: 1px solid var(--dsh-border, #30363d);
+  border: 1px solid var(--dsw-alias-border-l2);
   border-radius: 6px;
   padding: 7px;
-  background: var(--dsh-bg, #0b0f14);
-  color: var(--dsh-fg, #e6edf3);
+  background: var(--dsw-alias-bg-layer-1);
+  color: var(--dsw-alias-label-primary);
 }
 
 .editorList textarea {
@@ -255,16 +257,42 @@
 }
 
 .keyValues button {
-  border: 1px solid var(--dsh-border, #30363d);
+  border: 1px solid var(--dsw-alias-border-l2);
   border-radius: 5px;
-  background: var(--dsh-bg-soft, #161b22);
-  color: var(--dsh-fg, #e6edf3);
+  background: var(--dsw-alias-bg-layer-2);
+  color: var(--dsw-alias-label-primary);
 }
 
 .editorList :is(input, select, textarea, button):focus-visible,
 .tabs button:focus-visible {
-  outline: 2px solid var(--dsh-focus, #2f81f7);
+  outline: 2px solid var(--dsw-alias-state-business-primary);
   outline-offset: 2px;
+}
+
+.card details,
+.editorList details {
+  color: var(--dsw-alias-label-secondary);
+  font-size: 11px;
+}
+
+.card details ul,
+.editorList details ul {
+  display: grid;
+  gap: 6px;
+  max-height: 220px;
+  overflow: auto;
+  padding-left: 18px;
+}
+
+.card details li,
+.editorList details li {
+  display: grid;
+  gap: 3px;
+}
+
+.card details small,
+.editorList details small {
+  line-height: 1.4;
 }
 
 @media (max-width: 640px) {

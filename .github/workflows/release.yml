@@ -51,13 +51,13 @@ jobs:
         shell: pwsh
         run: |
           # The repo carries lib/ (committed build output), so pack directly.
-          # pnpm pack resolves any remaining workspace: specs to real versions.
+          New-Item -ItemType Directory -Force .release | Out-Null
           pnpm pack --pack-destination .release
           if (-not (Test-Path ".release/${{ steps.meta.outputs.tarball }}")) {
             throw "pack produced no tarball at .release/${{ steps.meta.outputs.tarball }}"
           }
 
-      - name: Publish release asset
+      - name: Publish release assets
         shell: pwsh
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -68,7 +68,7 @@ jobs:
           if (-not $exists) {
             gh release create $tag --title "${{ steps.meta.outputs.version }}" --notes "Security-research bundle ${{ steps.meta.outputs.version }}. Install: dsh plugin add <this release's tarball URL>"
           }
-          gh release upload $tag $tarball --clobber
+          gh release upload $tag $tarball install-ant-sword.ps1 install-ant-sword.sh --clobber
           $pkg = Get-Content package.json -Raw | ConvertFrom-Json
           $url = "https://github.com/${{ github.repository }}/releases/download/$tag/${{ steps.meta.outputs.tarball }}"
           Write-Output "Published. Install with:"

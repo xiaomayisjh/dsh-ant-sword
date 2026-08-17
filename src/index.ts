@@ -71,8 +71,14 @@ export function apply(ctx: Context, config: Config): void {
   const mcpServers = config.mcpServers === undefined || config.mcpServers.length === 0
     ? DEFAULT_MCP_SERVERS
     : config.mcpServers
-  const controller = applyDynamicRuntime(ctx, mcpServers, config.pentestswarmApiKey, skillsReconciler)
-  applyRuntimeStatus(ctx, () => controller.snapshot().config.mcpServers)
+  const runtime = applyDynamicRuntime(ctx, mcpServers, config.pentestswarmApiKey, skillsReconciler)
+  applyRuntimeStatus(
+    ctx,
+    () => runtime.controller.snapshot().config.mcpServers,
+    serverName => runtime.mcp.reload(serverName),
+    serverName => runtime.mcp.probe(serverName),
+    serverName => runtime.mcp.isMounted(serverName),
+  )
   applyInstallApi(ctx)
   applySkillApi(ctx, skillsReconciler)
   if (config.syncRedTeamPreset ?? true) {

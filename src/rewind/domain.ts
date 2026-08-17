@@ -29,7 +29,7 @@ const checkpointSchema: z.ZodType<CheckpointRecord> = z.object({
 
 /** The rewind checkpoint registry domain. */
 export const rewindDomain = defineDomain({
-  name: 'ant-sword-rewind',
+  name: 'ant_sword_rewind',
   version: 1,
   tables: {
     checkpoints: domainTable<string, CheckpointRecord>(checkpointSchema),

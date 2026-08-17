@@ -50,7 +50,7 @@ export class SkillsReconciler implements RuntimeReconciler {
     this.invalidate = control.invalidate
     return {
       name: skillProvider.name,
-      list: async options => {
+      list: async (options) => {
         const listed = await skillProvider.list(options)
         if ('candidates' in listed) {
           return { ...listed, candidates: listed.candidates.filter((candidate: SkillCandidate) => !this.disabled.has(candidate.name)) }
