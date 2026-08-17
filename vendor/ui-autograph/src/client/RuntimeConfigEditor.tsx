@@ -1,3 +1,4 @@
+/* eslint-disable @stylistic/max-len -- compact controlled form markup stays readable as field-level JSX. */
 import { useEffect, useState, useSyncExternalStore } from 'react'
 import type { SettingsScope } from '@deepseek-ai/dsh-client-runtime/client'
 import css from './RuntimeStatus.module.css'
@@ -47,14 +48,17 @@ function newRule(): RuleConfig {
 function KeyValueEditor({ value, onChange, label }: { value: Record<string, string>; onChange: (value: Record<string, string>) => void; label: string }) {
   const entries = Object.entries(value)
   return <div className={css.keyValues}><strong>{label}</strong>{entries.map(([key, itemValue], index) => <div key={`${key}-${index}`}>
-    <input aria-label={`${label} key`} value={key} onChange={event => onChange(Object.fromEntries(entries.map((entry, at) => at === index ? [event.target.value, entry[1]] : entry)))} />
-    <input aria-label={`${label} value`} value={itemValue} onChange={event => onChange(Object.fromEntries(entries.map((entry, at) => at === index ? [entry[0], event.target.value] : entry)))} />
-    <button type="button" onClick={() => onChange(Object.fromEntries(entries.filter((_, at) => at !== index)))}>删除</button>
-  </div>)}<button type="button" onClick={() => onChange({ ...value, [`KEY_${entries.length + 1}`]: '' })}>添加</button></div>
+    <input aria-label={`${label} key`} value={key} onChange={(event) =>{  onChange(Object.fromEntries(entries.map((entry, at) => at === index ? [event.target.value, entry[1]] : entry))) }} />
+    <input aria-label={`${label} value`} value={itemValue} onChange={(event) =>{  onChange(Object.fromEntries(entries.map((entry, at) => at === index ? [entry[0], event.target.value] : entry))) }} />
+    <button type="button" onClick={() =>{  onChange(Object.fromEntries(entries.filter((_, at) => at !== index))) }}>删除</button>
+  </div>)}<button type="button" onClick={() =>{  onChange({ ...value, [`KEY_${entries.length + 1}`]: '' }) }}>添加</button></div>
 }
 
 export function RuntimeConfigEditor({ configScope }: Props) {
-  const snapshot = useSyncExternalStore(configScope.subscribe, configScope.getSnapshot)
+  const snapshot = useSyncExternalStore(
+    listener => configScope.subscribe(listener),
+    () => configScope.getSnapshot(),
+  )
   const [draft, setDraft] = useState<RuntimeConfigValue>(EMPTY)
   const [tab, setTab] = useState<'mcp' | 'skills' | 'rules'>('mcp')
   const [saving, setSaving] = useState(false)
@@ -97,41 +101,41 @@ export function RuntimeConfigEditor({ configScope }: Props) {
   return (
     <section className={css.configEditor}>
       <nav className={css.tabs} aria-label="Red Team 配置">
-        {(['mcp', 'skills', 'rules'] as const).map(value => <button type="button" key={value} data-active={tab === value} onClick={() => setTab(value)}>{value.toUpperCase()}</button>)}
+        {(['mcp', 'skills', 'rules'] as const).map(value => <button type="button" key={value} data-active={tab === value} onClick={() =>{  setTab(value) }}>{value.toUpperCase()}</button>)}
       </nav>
 
       {tab === 'mcp' && <div className={css.editorList}>
         {draft.mcpServers.map((server, index) => <fieldset key={`${server.serverName}-${index}`}>
           <legend>{server.serverName || `MCP ${index + 1}`}</legend>
-          <label>名称<input value={server.serverName} onChange={event => setDraft(current => ({ ...current, mcpServers: current.mcpServers.map((item, at) => at === index ? { ...item, serverName: event.target.value } : item) }))} /></label>
-          <label>启用<input type="checkbox" checked={server.enabled !== false} onChange={event => setDraft(current => ({ ...current, mcpServers: current.mcpServers.map((item, at) => at === index ? { ...item, enabled: event.target.checked } : item) }))} /></label>
-          <label>传输<select value={server.transport} onChange={event => setDraft(current => ({ ...current, mcpServers: current.mcpServers.map((item, at) => at === index ? { serverName: item.serverName, enabled: item.enabled ?? true, transport: event.target.value as McpConfig['transport'], toolCallTimeoutMs: item.toolCallTimeoutMs ?? 60_000, ...(event.target.value === 'stdio' ? { command: '', args: [] } : { url: '' }) } : item) }))}><option value="stdio">stdio</option><option value="streamable-http">Streamable HTTP</option></select></label>
+          <label>名称<input value={server.serverName} onChange={(event) =>{  setDraft(current => ({ ...current, mcpServers: current.mcpServers.map((item, at) => at === index ? { ...item, serverName: event.target.value } : item) })) }} /></label>
+          <label>启用<input type="checkbox" checked={server.enabled !== false} onChange={(event) =>{  setDraft(current => ({ ...current, mcpServers: current.mcpServers.map((item, at) => at === index ? { ...item, enabled: event.target.checked } : item) })) }} /></label>
+          <label>传输<select value={server.transport} onChange={(event) =>{  setDraft(current => ({ ...current, mcpServers: current.mcpServers.map((item, at) => at === index ? { serverName: item.serverName, enabled: item.enabled ?? true, transport: event.target.value as McpConfig['transport'], toolCallTimeoutMs: item.toolCallTimeoutMs ?? 60_000, ...(event.target.value === 'stdio' ? { command: '', args: [] } : { url: '' }) } : item) })) }}><option value="stdio">stdio</option><option value="streamable-http">Streamable HTTP</option></select></label>
           {server.transport === 'stdio' ? <>
-            <label>命令<input value={server.command ?? ''} onChange={event => setDraft(current => ({ ...current, mcpServers: current.mcpServers.map((item, at) => at === index ? { ...item, command: event.target.value } : item) }))} /></label>
-            <label>参数（每行一项）<textarea value={(server.args ?? []).join('\n')} onChange={event => setDraft(current => ({ ...current, mcpServers: current.mcpServers.map((item, at) => at === index ? { ...item, args: event.target.value.split('\n').filter(Boolean) } : item) }))} /></label>
-            <label>工作目录<input value={server.cwd ?? ''} onChange={event => setDraft(current => ({ ...current, mcpServers: current.mcpServers.map((item, at) => at === index ? { ...item, cwd: event.target.value } : item) }))} /></label>
-            <KeyValueEditor label="环境变量" value={server.env ?? {}} onChange={env => setDraft(current => ({ ...current, mcpServers: current.mcpServers.map((item, at) => at === index ? { ...item, env } : item) }))} />
+            <label>命令<input value={server.command ?? ''} onChange={(event) =>{  setDraft(current => ({ ...current, mcpServers: current.mcpServers.map((item, at) => at === index ? { ...item, command: event.target.value } : item) })) }} /></label>
+            <label>参数（每行一项）<textarea value={(server.args ?? []).join('\n')} onChange={(event) =>{  setDraft(current => ({ ...current, mcpServers: current.mcpServers.map((item, at) => at === index ? { ...item, args: event.target.value.split('\n').filter(Boolean) } : item) })) }} /></label>
+            <label>工作目录<input value={server.cwd ?? ''} onChange={(event) =>{  setDraft(current => ({ ...current, mcpServers: current.mcpServers.map((item, at) => at === index ? { ...item, cwd: event.target.value } : item) })) }} /></label>
+            <KeyValueEditor label="环境变量" value={server.env ?? {}} onChange={(env) =>{  setDraft(current => ({ ...current, mcpServers: current.mcpServers.map((item, at) => at === index ? { ...item, env } : item) })) }} />
           </> : <>
-            <label>URL<input value={server.url ?? ''} onChange={event => setDraft(current => ({ ...current, mcpServers: current.mcpServers.map((item, at) => at === index ? { ...item, url: event.target.value } : item) }))} /></label>
-            <KeyValueEditor label="请求头" value={server.headers ?? {}} onChange={headers => setDraft(current => ({ ...current, mcpServers: current.mcpServers.map((item, at) => at === index ? { ...item, headers } : item) }))} />
+            <label>URL<input value={server.url ?? ''} onChange={(event) =>{  setDraft(current => ({ ...current, mcpServers: current.mcpServers.map((item, at) => at === index ? { ...item, url: event.target.value } : item) })) }} /></label>
+            <KeyValueEditor label="请求头" value={server.headers ?? {}} onChange={(headers) =>{  setDraft(current => ({ ...current, mcpServers: current.mcpServers.map((item, at) => at === index ? { ...item, headers } : item) })) }} />
           </>}
-          <label>工具超时（毫秒）<input type="number" min={1} value={server.toolCallTimeoutMs ?? 60_000} onChange={event => setDraft(current => ({ ...current, mcpServers: current.mcpServers.map((item, at) => at === index ? { ...item, toolCallTimeoutMs: Number(event.target.value) } : item) }))} /></label>
-          <button type="button" onClick={() => setDraft(current => ({ ...current, mcpServers: current.mcpServers.filter((_, at) => at !== index) }))}>删除</button>
+          <label>工具超时（毫秒）<input type="number" min={1} value={server.toolCallTimeoutMs ?? 60_000} onChange={(event) =>{  setDraft(current => ({ ...current, mcpServers: current.mcpServers.map((item, at) => at === index ? { ...item, toolCallTimeoutMs: Number(event.target.value) } : item) })) }} /></label>
+          <button type="button" onClick={() =>{  setDraft(current => ({ ...current, mcpServers: current.mcpServers.filter((_, at) => at !== index) })) }}>删除</button>
         </fieldset>)}
-        <div className={css.editorActions}><button type="button" onClick={() => setDraft(current => ({ ...current, mcpServers: [...current.mcpServers, newMcp()] }))}>添加 MCP</button><button type="button" disabled={saving} onClick={() => { void save('mcpServers') }}>保存 MCP</button></div>
+        <div className={css.editorActions}><button type="button" onClick={() =>{  setDraft(current => ({ ...current, mcpServers: [...current.mcpServers, newMcp()] })) }}>添加 MCP</button><button type="button" disabled={saving} onClick={() => { void save('mcpServers') }}>保存 MCP</button></div>
       </div>}
 
       {tab === 'skills' && <div className={css.editorList}>
-        <label>停用 Skill（每行一个名称）<textarea value={draft.disabledSkills.join('\n')} onChange={event => setDraft(current => ({ ...current, disabledSkills: event.target.value.split('\n').map(value => value.trim()).filter(Boolean) }))} /></label>
+        <label>停用 Skill（每行一个名称）<textarea value={draft.disabledSkills.join('\n')} onChange={(event) =>{  setDraft(current => ({ ...current, disabledSkills: event.target.value.split('\n').map(value => value.trim()).filter(Boolean) })) }} /></label>
         <div className={css.editorActions}><button type="button" disabled={saving} onClick={() => { void save('disabledSkills') }}>保存 Skill 状态</button></div>
         <fieldset>
           <legend>用户 Skill overlay</legend>
-          <label>名称<input value={skillDraft.name} onChange={event => setSkillDraft(current => ({ ...current, name: event.target.value }))} /></label>
-          <label>描述<input value={skillDraft.description} onChange={event => setSkillDraft(current => ({ ...current, description: event.target.value }))} /></label>
-          <label>使用时机<input value={skillDraft.whenToUse} onChange={event => setSkillDraft(current => ({ ...current, whenToUse: event.target.value }))} /></label>
-          <label>模型可调用<input type="checkbox" checked={skillDraft.modelInvocable} onChange={event => setSkillDraft(current => ({ ...current, modelInvocable: event.target.checked }))} /></label>
-          <label>用户可调用<input type="checkbox" checked={skillDraft.userInvocable} onChange={event => setSkillDraft(current => ({ ...current, userInvocable: event.target.checked }))} /></label>
-          <label>正文<textarea value={skillDraft.content} onChange={event => setSkillDraft(current => ({ ...current, content: event.target.value }))} /></label>
+          <label>名称<input value={skillDraft.name} onChange={(event) =>{  setSkillDraft(current => ({ ...current, name: event.target.value })) }} /></label>
+          <label>描述<input value={skillDraft.description} onChange={(event) =>{  setSkillDraft(current => ({ ...current, description: event.target.value })) }} /></label>
+          <label>使用时机<input value={skillDraft.whenToUse} onChange={(event) =>{  setSkillDraft(current => ({ ...current, whenToUse: event.target.value })) }} /></label>
+          <label>模型可调用<input type="checkbox" checked={skillDraft.modelInvocable} onChange={(event) =>{  setSkillDraft(current => ({ ...current, modelInvocable: event.target.checked })) }} /></label>
+          <label>用户可调用<input type="checkbox" checked={skillDraft.userInvocable} onChange={(event) =>{  setSkillDraft(current => ({ ...current, userInvocable: event.target.checked })) }} /></label>
+          <label>正文<textarea value={skillDraft.content} onChange={(event) =>{  setSkillDraft(current => ({ ...current, content: event.target.value })) }} /></label>
           <div className={css.editorActions}><button type="button" onClick={() => { void saveSkill() }}>保存 overlay</button><button type="button" onClick={() => { void deleteSkill() }}>删除 overlay</button></div>
           {skillError !== undefined && <span className={css.installError}>{skillError}</span>}
         </fieldset>
@@ -140,14 +144,14 @@ export function RuntimeConfigEditor({ configScope }: Props) {
       {tab === 'rules' && <div className={css.editorList}>
         {draft.rules.map((rule, index) => <fieldset key={rule.id}>
           <legend>{rule.title}</legend>
-          <label>标题<input value={rule.title} onChange={event => setDraft(current => ({ ...current, rules: current.rules.map((item, at) => at === index ? { ...item, title: event.target.value } : item) }))} /></label>
-          <label>启用<input type="checkbox" checked={rule.enabled} onChange={event => setDraft(current => ({ ...current, rules: current.rules.map((item, at) => at === index ? { ...item, enabled: event.target.checked } : item) }))} /></label>
-          <label>位置<select value={rule.placement} onChange={event => setDraft(current => ({ ...current, rules: current.rules.map((item, at) => at === index ? { ...item, placement: event.target.value as RuleConfig['placement'] } : item) }))}><option value="before-persona">Persona 前</option><option value="after-persona">Persona 后</option><option value="before-tools">工具前</option><option value="after-tools">工具后</option></select></label>
-          <label>顺序<input type="number" value={rule.order} onChange={event => setDraft(current => ({ ...current, rules: current.rules.map((item, at) => at === index ? { ...item, order: Number(event.target.value) } : item) }))} /></label>
-          <label>正文<textarea value={rule.content} onChange={event => setDraft(current => ({ ...current, rules: current.rules.map((item, at) => at === index ? { ...item, content: event.target.value } : item) }))} /></label>
-          <button type="button" onClick={() => setDraft(current => ({ ...current, rules: current.rules.filter((_, at) => at !== index) }))}>删除</button>
+          <label>标题<input value={rule.title} onChange={(event) =>{  setDraft(current => ({ ...current, rules: current.rules.map((item, at) => at === index ? { ...item, title: event.target.value } : item) })) }} /></label>
+          <label>启用<input type="checkbox" checked={rule.enabled} onChange={(event) =>{  setDraft(current => ({ ...current, rules: current.rules.map((item, at) => at === index ? { ...item, enabled: event.target.checked } : item) })) }} /></label>
+          <label>位置<select value={rule.placement} onChange={(event) =>{  setDraft(current => ({ ...current, rules: current.rules.map((item, at) => at === index ? { ...item, placement: event.target.value as RuleConfig['placement'] } : item) })) }}><option value="before-persona">Persona 前</option><option value="after-persona">Persona 后</option><option value="before-tools">工具前</option><option value="after-tools">工具后</option></select></label>
+          <label>顺序<input type="number" value={rule.order} onChange={(event) =>{  setDraft(current => ({ ...current, rules: current.rules.map((item, at) => at === index ? { ...item, order: Number(event.target.value) } : item) })) }} /></label>
+          <label>正文<textarea value={rule.content} onChange={(event) =>{  setDraft(current => ({ ...current, rules: current.rules.map((item, at) => at === index ? { ...item, content: event.target.value } : item) })) }} /></label>
+          <button type="button" onClick={() =>{  setDraft(current => ({ ...current, rules: current.rules.filter((_, at) => at !== index) })) }}>删除</button>
         </fieldset>)}
-        <div className={css.editorActions}><button type="button" onClick={() => setDraft(current => ({ ...current, rules: [...current.rules, newRule()] }))}>添加 Rule</button><button type="button" disabled={saving} onClick={() => { void save('rules') }}>保存 Rules</button></div>
+        <div className={css.editorActions}><button type="button" onClick={() =>{  setDraft(current => ({ ...current, rules: [...current.rules, newRule()] })) }}>添加 Rule</button><button type="button" disabled={saving} onClick={() => { void save('rules') }}>保存 Rules</button></div>
       </div>}
     </section>
   )

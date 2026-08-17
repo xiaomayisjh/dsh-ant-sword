@@ -10606,25 +10606,25 @@ window.__ModuleLoader__.load({
 			document.head.appendChild(tag);
 		}
 		var RuntimeStatus_module_css_default = {
-			"settingsHeader": "pBCICa_settingsHeader",
-			"rail": "pBCICa_rail",
-			"settings": "pBCICa_settings",
-			"summary": "pBCICa_summary",
-			"configEditor": "pBCICa_configEditor",
-			"metric": "pBCICa_metric",
-			"installProgress": "pBCICa_installProgress",
-			"installToolbar": "pBCICa_installToolbar",
-			"installActions": "pBCICa_installActions",
-			"card": "pBCICa_card",
-			"editorActions": "pBCICa_editorActions",
-			"installError": "pBCICa_installError",
-			"keyValues": "pBCICa_keyValues",
-			"editorList": "pBCICa_editorList",
-			"skillCard": "pBCICa_skillCard",
 			"cardTitle": "pBCICa_cardTitle",
+			"settingsHeader": "pBCICa_settingsHeader",
+			"configEditor": "pBCICa_configEditor",
 			"warning": "pBCICa_warning",
+			"editorActions": "pBCICa_editorActions",
+			"skillCard": "pBCICa_skillCard",
+			"card": "pBCICa_card",
+			"installActions": "pBCICa_installActions",
+			"grid": "pBCICa_grid",
+			"metric": "pBCICa_metric",
+			"installError": "pBCICa_installError",
+			"rail": "pBCICa_rail",
+			"editorList": "pBCICa_editorList",
+			"summary": "pBCICa_summary",
 			"tabs": "pBCICa_tabs",
-			"grid": "pBCICa_grid"
+			"installToolbar": "pBCICa_installToolbar",
+			"settings": "pBCICa_settings",
+			"keyValues": "pBCICa_keyValues",
+			"installProgress": "pBCICa_installProgress"
 		};
 		//#endregion
 		//#region src/client/RuntimeConfigEditor.tsx
@@ -10663,32 +10663,40 @@ window.__ModuleLoader__.load({
 						/* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
 							"aria-label": `${label} key`,
 							value: key,
-							onChange: (event) => onChange(Object.fromEntries(entries.map((entry, at) => at === index ? [event.target.value, entry[1]] : entry)))
+							onChange: (event) => {
+								onChange(Object.fromEntries(entries.map((entry, at) => at === index ? [event.target.value, entry[1]] : entry)));
+							}
 						}),
 						/* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
 							"aria-label": `${label} value`,
 							value: itemValue,
-							onChange: (event) => onChange(Object.fromEntries(entries.map((entry, at) => at === index ? [entry[0], event.target.value] : entry)))
+							onChange: (event) => {
+								onChange(Object.fromEntries(entries.map((entry, at) => at === index ? [entry[0], event.target.value] : entry)));
+							}
 						}),
 						/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 							type: "button",
-							onClick: () => onChange(Object.fromEntries(entries.filter((_, at) => at !== index))),
+							onClick: () => {
+								onChange(Object.fromEntries(entries.filter((_, at) => at !== index)));
+							},
 							children: "删除"
 						})
 					] }, `${key}-${index}`)),
 					/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 						type: "button",
-						onClick: () => onChange({
-							...value,
-							[`KEY_${entries.length + 1}`]: ""
-						}),
+						onClick: () => {
+							onChange({
+								...value,
+								[`KEY_${entries.length + 1}`]: ""
+							});
+						},
 						children: "添加"
 					})
 				]
 			});
 		}
 		function RuntimeConfigEditor({ configScope }) {
-			const snapshot = (0, react.useSyncExternalStore)(configScope.subscribe, configScope.getSnapshot);
+			const snapshot = (0, react.useSyncExternalStore)((listener) => configScope.subscribe(listener), () => configScope.getSnapshot());
 			const [draft, setDraft] = (0, react.useState)(EMPTY);
 			const [tab, setTab] = (0, react.useState)("mcp");
 			const [saving, setSaving] = (0, react.useState)(false);
@@ -10751,7 +10759,9 @@ window.__ModuleLoader__.load({
 						].map((value) => /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 							type: "button",
 							"data-active": tab === value,
-							onClick: () => setTab(value),
+							onClick: () => {
+								setTab(value);
+							},
 							children: value.toUpperCase()
 						}, value))
 					}),
@@ -10761,40 +10771,46 @@ window.__ModuleLoader__.load({
 							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("legend", { children: server.serverName || `MCP ${index + 1}` }),
 							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["名称", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
 								value: server.serverName,
-								onChange: (event) => setDraft((current) => ({
-									...current,
-									mcpServers: current.mcpServers.map((item, at) => at === index ? {
-										...item,
-										serverName: event.target.value
-									} : item)
-								}))
+								onChange: (event) => {
+									setDraft((current) => ({
+										...current,
+										mcpServers: current.mcpServers.map((item, at) => at === index ? {
+											...item,
+											serverName: event.target.value
+										} : item)
+									}));
+								}
 							})] }),
 							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["启用", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
 								type: "checkbox",
 								checked: server.enabled !== false,
-								onChange: (event) => setDraft((current) => ({
-									...current,
-									mcpServers: current.mcpServers.map((item, at) => at === index ? {
-										...item,
-										enabled: event.target.checked
-									} : item)
-								}))
+								onChange: (event) => {
+									setDraft((current) => ({
+										...current,
+										mcpServers: current.mcpServers.map((item, at) => at === index ? {
+											...item,
+											enabled: event.target.checked
+										} : item)
+									}));
+								}
 							})] }),
 							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["传输", /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("select", {
 								value: server.transport,
-								onChange: (event) => setDraft((current) => ({
-									...current,
-									mcpServers: current.mcpServers.map((item, at) => at === index ? {
-										serverName: item.serverName,
-										enabled: item.enabled ?? true,
-										transport: event.target.value,
-										toolCallTimeoutMs: item.toolCallTimeoutMs ?? 6e4,
-										...event.target.value === "stdio" ? {
-											command: "",
-											args: []
-										} : { url: "" }
-									} : item)
-								})),
+								onChange: (event) => {
+									setDraft((current) => ({
+										...current,
+										mcpServers: current.mcpServers.map((item, at) => at === index ? {
+											serverName: item.serverName,
+											enabled: item.enabled ?? true,
+											transport: event.target.value,
+											toolCallTimeoutMs: item.toolCallTimeoutMs ?? 6e4,
+											...event.target.value === "stdio" ? {
+												command: "",
+												args: []
+											} : { url: "" }
+										} : item)
+									}));
+								},
 								children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
 									value: "stdio",
 									children: "stdio"
@@ -10806,93 +10822,111 @@ window.__ModuleLoader__.load({
 							server.transport === "stdio" ? /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [
 								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["命令", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
 									value: server.command ?? "",
-									onChange: (event) => setDraft((current) => ({
-										...current,
-										mcpServers: current.mcpServers.map((item, at) => at === index ? {
-											...item,
-											command: event.target.value
-										} : item)
-									}))
+									onChange: (event) => {
+										setDraft((current) => ({
+											...current,
+											mcpServers: current.mcpServers.map((item, at) => at === index ? {
+												...item,
+												command: event.target.value
+											} : item)
+										}));
+									}
 								})] }),
 								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["参数（每行一项）", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("textarea", {
 									value: (server.args ?? []).join("\n"),
-									onChange: (event) => setDraft((current) => ({
-										...current,
-										mcpServers: current.mcpServers.map((item, at) => at === index ? {
-											...item,
-											args: event.target.value.split("\n").filter(Boolean)
-										} : item)
-									}))
+									onChange: (event) => {
+										setDraft((current) => ({
+											...current,
+											mcpServers: current.mcpServers.map((item, at) => at === index ? {
+												...item,
+												args: event.target.value.split("\n").filter(Boolean)
+											} : item)
+										}));
+									}
 								})] }),
 								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["工作目录", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
 									value: server.cwd ?? "",
-									onChange: (event) => setDraft((current) => ({
-										...current,
-										mcpServers: current.mcpServers.map((item, at) => at === index ? {
-											...item,
-											cwd: event.target.value
-										} : item)
-									}))
+									onChange: (event) => {
+										setDraft((current) => ({
+											...current,
+											mcpServers: current.mcpServers.map((item, at) => at === index ? {
+												...item,
+												cwd: event.target.value
+											} : item)
+										}));
+									}
 								})] }),
 								/* @__PURE__ */ (0, react_jsx_runtime.jsx)(KeyValueEditor, {
 									label: "环境变量",
 									value: server.env ?? {},
-									onChange: (env) => setDraft((current) => ({
-										...current,
-										mcpServers: current.mcpServers.map((item, at) => at === index ? {
-											...item,
-											env
-										} : item)
-									}))
+									onChange: (env) => {
+										setDraft((current) => ({
+											...current,
+											mcpServers: current.mcpServers.map((item, at) => at === index ? {
+												...item,
+												env
+											} : item)
+										}));
+									}
 								})
 							] }) : /* @__PURE__ */ (0, react_jsx_runtime.jsxs)(react_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["URL", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
 								value: server.url ?? "",
-								onChange: (event) => setDraft((current) => ({
-									...current,
-									mcpServers: current.mcpServers.map((item, at) => at === index ? {
-										...item,
-										url: event.target.value
-									} : item)
-								}))
+								onChange: (event) => {
+									setDraft((current) => ({
+										...current,
+										mcpServers: current.mcpServers.map((item, at) => at === index ? {
+											...item,
+											url: event.target.value
+										} : item)
+									}));
+								}
 							})] }), /* @__PURE__ */ (0, react_jsx_runtime.jsx)(KeyValueEditor, {
 								label: "请求头",
 								value: server.headers ?? {},
-								onChange: (headers) => setDraft((current) => ({
-									...current,
-									mcpServers: current.mcpServers.map((item, at) => at === index ? {
-										...item,
-										headers
-									} : item)
-								}))
+								onChange: (headers) => {
+									setDraft((current) => ({
+										...current,
+										mcpServers: current.mcpServers.map((item, at) => at === index ? {
+											...item,
+											headers
+										} : item)
+									}));
+								}
 							})] }),
 							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["工具超时（毫秒）", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
 								type: "number",
 								min: 1,
 								value: server.toolCallTimeoutMs ?? 6e4,
-								onChange: (event) => setDraft((current) => ({
-									...current,
-									mcpServers: current.mcpServers.map((item, at) => at === index ? {
-										...item,
-										toolCallTimeoutMs: Number(event.target.value)
-									} : item)
-								}))
+								onChange: (event) => {
+									setDraft((current) => ({
+										...current,
+										mcpServers: current.mcpServers.map((item, at) => at === index ? {
+											...item,
+											toolCallTimeoutMs: Number(event.target.value)
+										} : item)
+									}));
+								}
 							})] }),
 							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 								type: "button",
-								onClick: () => setDraft((current) => ({
-									...current,
-									mcpServers: current.mcpServers.filter((_, at) => at !== index)
-								})),
+								onClick: () => {
+									setDraft((current) => ({
+										...current,
+										mcpServers: current.mcpServers.filter((_, at) => at !== index)
+									}));
+								},
 								children: "删除"
 							})
 						] }, `${server.serverName}-${index}`)), /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 							className: RuntimeStatus_module_css_default.editorActions,
 							children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 								type: "button",
-								onClick: () => setDraft((current) => ({
-									...current,
-									mcpServers: [...current.mcpServers, newMcp()]
-								})),
+								onClick: () => {
+									setDraft((current) => ({
+										...current,
+										mcpServers: [...current.mcpServers, newMcp()]
+									}));
+								},
 								children: "添加 MCP"
 							}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 								type: "button",
@@ -10909,10 +10943,12 @@ window.__ModuleLoader__.load({
 						children: [
 							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["停用 Skill（每行一个名称）", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("textarea", {
 								value: draft.disabledSkills.join("\n"),
-								onChange: (event) => setDraft((current) => ({
-									...current,
-									disabledSkills: event.target.value.split("\n").map((value) => value.trim()).filter(Boolean)
-								}))
+								onChange: (event) => {
+									setDraft((current) => ({
+										...current,
+										disabledSkills: event.target.value.split("\n").map((value) => value.trim()).filter(Boolean)
+									}));
+								}
 							})] }),
 							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("div", {
 								className: RuntimeStatus_module_css_default.editorActions,
@@ -10929,47 +10965,59 @@ window.__ModuleLoader__.load({
 								/* @__PURE__ */ (0, react_jsx_runtime.jsx)("legend", { children: "用户 Skill overlay" }),
 								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["名称", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
 									value: skillDraft.name,
-									onChange: (event) => setSkillDraft((current) => ({
-										...current,
-										name: event.target.value
-									}))
+									onChange: (event) => {
+										setSkillDraft((current) => ({
+											...current,
+											name: event.target.value
+										}));
+									}
 								})] }),
 								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["描述", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
 									value: skillDraft.description,
-									onChange: (event) => setSkillDraft((current) => ({
-										...current,
-										description: event.target.value
-									}))
+									onChange: (event) => {
+										setSkillDraft((current) => ({
+											...current,
+											description: event.target.value
+										}));
+									}
 								})] }),
 								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["使用时机", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
 									value: skillDraft.whenToUse,
-									onChange: (event) => setSkillDraft((current) => ({
-										...current,
-										whenToUse: event.target.value
-									}))
+									onChange: (event) => {
+										setSkillDraft((current) => ({
+											...current,
+											whenToUse: event.target.value
+										}));
+									}
 								})] }),
 								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["模型可调用", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
 									type: "checkbox",
 									checked: skillDraft.modelInvocable,
-									onChange: (event) => setSkillDraft((current) => ({
-										...current,
-										modelInvocable: event.target.checked
-									}))
+									onChange: (event) => {
+										setSkillDraft((current) => ({
+											...current,
+											modelInvocable: event.target.checked
+										}));
+									}
 								})] }),
 								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["用户可调用", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
 									type: "checkbox",
 									checked: skillDraft.userInvocable,
-									onChange: (event) => setSkillDraft((current) => ({
-										...current,
-										userInvocable: event.target.checked
-									}))
+									onChange: (event) => {
+										setSkillDraft((current) => ({
+											...current,
+											userInvocable: event.target.checked
+										}));
+									}
 								})] }),
 								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["正文", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("textarea", {
 									value: skillDraft.content,
-									onChange: (event) => setSkillDraft((current) => ({
-										...current,
-										content: event.target.value
-									}))
+									onChange: (event) => {
+										setSkillDraft((current) => ({
+											...current,
+											content: event.target.value
+										}));
+									}
 								})] }),
 								/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 									className: RuntimeStatus_module_css_default.editorActions,
@@ -11000,34 +11048,40 @@ window.__ModuleLoader__.load({
 							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("legend", { children: rule.title }),
 							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["标题", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
 								value: rule.title,
-								onChange: (event) => setDraft((current) => ({
-									...current,
-									rules: current.rules.map((item, at) => at === index ? {
-										...item,
-										title: event.target.value
-									} : item)
-								}))
+								onChange: (event) => {
+									setDraft((current) => ({
+										...current,
+										rules: current.rules.map((item, at) => at === index ? {
+											...item,
+											title: event.target.value
+										} : item)
+									}));
+								}
 							})] }),
 							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["启用", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
 								type: "checkbox",
 								checked: rule.enabled,
-								onChange: (event) => setDraft((current) => ({
-									...current,
-									rules: current.rules.map((item, at) => at === index ? {
-										...item,
-										enabled: event.target.checked
-									} : item)
-								}))
+								onChange: (event) => {
+									setDraft((current) => ({
+										...current,
+										rules: current.rules.map((item, at) => at === index ? {
+											...item,
+											enabled: event.target.checked
+										} : item)
+									}));
+								}
 							})] }),
 							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["位置", /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("select", {
 								value: rule.placement,
-								onChange: (event) => setDraft((current) => ({
-									...current,
-									rules: current.rules.map((item, at) => at === index ? {
-										...item,
-										placement: event.target.value
-									} : item)
-								})),
+								onChange: (event) => {
+									setDraft((current) => ({
+										...current,
+										rules: current.rules.map((item, at) => at === index ? {
+											...item,
+											placement: event.target.value
+										} : item)
+									}));
+								},
 								children: [
 									/* @__PURE__ */ (0, react_jsx_runtime.jsx)("option", {
 										value: "before-persona",
@@ -11050,40 +11104,48 @@ window.__ModuleLoader__.load({
 							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["顺序", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("input", {
 								type: "number",
 								value: rule.order,
-								onChange: (event) => setDraft((current) => ({
-									...current,
-									rules: current.rules.map((item, at) => at === index ? {
-										...item,
-										order: Number(event.target.value)
-									} : item)
-								}))
+								onChange: (event) => {
+									setDraft((current) => ({
+										...current,
+										rules: current.rules.map((item, at) => at === index ? {
+											...item,
+											order: Number(event.target.value)
+										} : item)
+									}));
+								}
 							})] }),
 							/* @__PURE__ */ (0, react_jsx_runtime.jsxs)("label", { children: ["正文", /* @__PURE__ */ (0, react_jsx_runtime.jsx)("textarea", {
 								value: rule.content,
-								onChange: (event) => setDraft((current) => ({
-									...current,
-									rules: current.rules.map((item, at) => at === index ? {
-										...item,
-										content: event.target.value
-									} : item)
-								}))
+								onChange: (event) => {
+									setDraft((current) => ({
+										...current,
+										rules: current.rules.map((item, at) => at === index ? {
+											...item,
+											content: event.target.value
+										} : item)
+									}));
+								}
 							})] }),
 							/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 								type: "button",
-								onClick: () => setDraft((current) => ({
-									...current,
-									rules: current.rules.filter((_, at) => at !== index)
-								})),
+								onClick: () => {
+									setDraft((current) => ({
+										...current,
+										rules: current.rules.filter((_, at) => at !== index)
+									}));
+								},
 								children: "删除"
 							})
 						] }, rule.id)), /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("div", {
 							className: RuntimeStatus_module_css_default.editorActions,
 							children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 								type: "button",
-								onClick: () => setDraft((current) => ({
-									...current,
-									rules: [...current.rules, newRule()]
-								})),
+								onClick: () => {
+									setDraft((current) => ({
+										...current,
+										rules: [...current.rules, newRule()]
+									}));
+								},
 								children: "添加 Rule"
 							}), /* @__PURE__ */ (0, react_jsx_runtime.jsx)("button", {
 								type: "button",
@@ -11403,15 +11465,15 @@ window.__ModuleLoader__.load({
 			document.head.appendChild(tag);
 		}
 		var AutoGraphView_module_css_default = {
+			"empty": "dSySha_empty",
+			"meta": "dSySha_meta",
 			"node": "dSySha_node",
+			"header": "dSySha_header",
+			"title": "dSySha_title",
+			"status": "dSySha_status",
 			"canvas": "dSySha_canvas",
 			"controls": "dSySha_controls",
-			"panel": "dSySha_panel",
-			"status": "dSySha_status",
-			"title": "dSySha_title",
-			"header": "dSySha_header",
-			"meta": "dSySha_meta",
-			"empty": "dSySha_empty"
+			"panel": "dSySha_panel"
 		};
 		//#endregion
 		//#region src/client/AutoGraphView.tsx

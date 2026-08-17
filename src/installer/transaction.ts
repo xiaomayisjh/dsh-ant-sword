@@ -1,4 +1,5 @@
 /** Bounded, cancellable transaction engine for controlled installations. */
+/* eslint-disable @stylistic/max-len -- subprocess argv and bounded transport contracts remain auditable inline. */
 
 import { createHash, randomUUID } from 'node:crypto'
 import { mkdir, readFile, readdir, rename, rm } from 'node:fs/promises'
@@ -49,16 +50,20 @@ function boundedLogs(logs: readonly string[], next: string): string[] {
   return entries
 }
 
+function abortError(signal: AbortSignal): Error {
+  return signal.reason instanceof Error ? signal.reason : new InstallerError('installation cancelled', false)
+}
+
 function abortableDelay(milliseconds: number, signal: AbortSignal): Promise<void> {
   return new Promise((resolve, reject) => {
     if (signal.aborted) {
-      reject(signal.reason)
+      reject(abortError(signal))
       return
     }
     const timer = setTimeout(resolve, milliseconds)
     signal.addEventListener('abort', () => {
       clearTimeout(timer)
-      reject(signal.reason)
+      reject(abortError(signal))
     }, { once: true })
   })
 }
@@ -84,7 +89,7 @@ export class InstallManager {
     this.locks.add(componentId)
     const done = this.execute(snapshot, plan, controller.signal).finally(() => this.locks.delete(componentId))
     this.operations.set(id, { snapshot, controller, done })
-    return this.get(id)!
+    return structuredClone(snapshot)
   }
 
   get(id: string): InstallOperationSnapshot | undefined {
@@ -118,8 +123,7 @@ export class InstallManager {
   private async execute(snapshot: InstallOperationSnapshot, plan: ReturnType<typeof planInstallation>, signal: AbortSignal): Promise<void> {
     const committed: InstallComponent[] = []
     try {
-      for (let index = 0; index < plan.length; index += 1) {
-        const { component, variant } = plan[index]!
+      for (const [index, { component, variant }] of plan.entries()) {
         this.publish(snapshot, { phase: 'probing', progress: index / plan.length }, `Probing ${component.label}`)
         if (await this.runner.probe(component, signal)) continue
         for (const step of variant.steps) await this.executeStep(snapshot, component, step, snapshot.sourcePolicy, signal)
@@ -129,7 +133,9 @@ export class InstallManager {
         }
         committed.push(component)
       }
-      const target = plan.at(-1)!.component
+      const targetEntry = plan.at(-1)
+      if (targetEntry === undefined) throw new InstallerError('installation plan is empty', false)
+      const target = targetEntry.component
       const requiresExternalAction = plan.some(entry => entry.variant.steps.some(step => step.kind === 'external-action'))
       this.publish(snapshot, {
         phase: requiresExternalAction ? 'external-action-required' : target.restartRequired ? 'restart-required' : 'succeeded',
@@ -184,7 +190,8 @@ export class InstallManager {
           }
         }
       }
-      throw lastError ?? new InstallerError('all download sources failed', true)
+      if (lastError instanceof Error) throw lastError
+      throw new InstallerError('all download sources failed', true)
     } finally {
       await rm(staging, { recursive: true, force: true })
     }
@@ -265,7 +272,10 @@ export function createSubprocessInstallRunner(subprocess: SubprocessRuntime): In
         await command('unzip', ['-q', path, '-d', extracted], 10 * 60_000, signal)
       }
       const entries = await readdir(extracted, { withFileTypes: true })
-      const source = entries.length === 1 && entries[0]!.isDirectory() ? join(extracted, entries[0]!.name) : extracted
+      const firstEntry = entries[0]
+      const source = entries.length === 1 && firstEntry?.isDirectory() === true
+        ? join(extracted, firstEntry.name)
+        : extracted
       try {
         await rename(target, backup)
         backups.set(component.id, backup)
@@ -283,7 +293,7 @@ export function createSubprocessInstallRunner(subprocess: SubprocessRuntime): In
         if (source !== extracted) await rm(extracted, { recursive: true, force: true })
       }
     },
-    rollback: async component => {
+    rollback: async (component) => {
       if (component.installDirectory === undefined) return
       const target = join(toolsRoot, component.installDirectory)
       await rm(target, { recursive: true, force: true })
@@ -293,6 +303,6 @@ export function createSubprocessInstallRunner(subprocess: SubprocessRuntime): In
         backups.delete(component.id)
       }
     },
-    refreshEnvironment: async () => undefined,
+    refreshEnvironment: () => Promise.resolve(),
   }
 }

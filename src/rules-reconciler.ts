@@ -32,12 +32,14 @@ export class RulesReconciler implements RuntimeReconciler {
   prepare(next: AntSwordRuntimeConfig, _previousConfig: AntSwordRuntimeConfig): RuntimePreparedChange {
     const desired = next.rules
       .filter(rule => rule.enabled)
-      .toSorted((left, right) => left.placement.localeCompare(right.placement) || left.order - right.order || left.id.localeCompare(right.id))
+      .toSorted((left, right) => left.placement.localeCompare(right.placement)
+        || left.order - right.order
+        || left.id.localeCompare(right.id))
     const previous = this.rules
     return {
       commit: () => {
         const oldDisposers = this.disposers
-        oldDisposers.forEach(dispose => dispose())
+        oldDisposers.forEach((dispose) =>{  dispose() })
         const nextDisposers: Array<() => void> = []
         try {
           for (const rule of desired) {
@@ -50,7 +52,7 @@ export class RulesReconciler implements RuntimeReconciler {
           this.disposers = nextDisposers
           this.rules = desired
         } catch (error) {
-          nextDisposers.forEach(dispose => dispose())
+          nextDisposers.forEach((dispose) =>{  dispose() })
           this.disposers = previous.map(rule => this.ctx.systemPrompt.section({
             name: sectionName(rule), order: sectionOrder(rule), text: escapeRuleContent(rule.content),
           }))
@@ -59,7 +61,7 @@ export class RulesReconciler implements RuntimeReconciler {
         }
       },
       rollback: () => {
-        this.disposers.forEach(dispose => dispose())
+        this.disposers.forEach((dispose) =>{  dispose() })
         this.disposers = previous.map(rule => this.ctx.systemPrompt.section({
           name: sectionName(rule), order: sectionOrder(rule), text: escapeRuleContent(rule.content),
         }))

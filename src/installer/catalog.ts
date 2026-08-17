@@ -87,7 +87,7 @@ function pipxComponent(id: string, label: string, packageSpec: string, command: 
   return {
     id,
     label,
-    version: packageSpec.includes('==') ? packageSpec.split('==')[1]! : 'pinned-commit',
+    version: packageSpec.includes('==') ? (packageSpec.split('==').at(1) ?? 'pinned-commit') : 'pinned-commit',
     dependencies: ['python', 'pipx'],
     probe: { kind: 'command', command, args: ['--help'] },
     variants: [
