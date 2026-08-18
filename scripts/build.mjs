@@ -1,5 +1,5 @@
 import { spawnSync } from 'node:child_process'
-import { existsSync, mkdirSync, readFileSync, rmSync, statSync } from 'node:fs'
+import { existsSync, mkdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs'
 import { join, relative, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -96,10 +96,12 @@ function buildBundles() {
     'vendor/ui-autograph/src/client/index.ts',
     '--bundle',
     '--platform=browser',
-    '--format=esm',
+    '--format=cjs',
     '--packages=external',
     '--target=es2022',
     '--sourcemap',
+    '--banner:js=window.__ModuleLoader__.load({ id: "@deepseek-ai/dsh-client-ui-autograph", factory: (require) => { var module = { exports: {} }; var exports = module.exports;',
+    '--footer:js=return module.exports; } });',
     '--outfile=vendor/ui-autograph/lib/client.js',
   ])
 }
@@ -123,6 +125,9 @@ function verify() {
   ensureOutputs([...outputs.root, ...outputs.ui])
   const client = readFileSync(join(UI_ROOT, 'lib', 'client.js'), 'utf8')
   if (!client.includes('sourceMappingURL=client.js.map')) throw new Error('UI client bundle is missing its source map reference')
+  if (!client.includes('__ModuleLoader__.load')) throw new Error('UI client bundle is missing the DSH module loader registration')
+  if (!client.includes('__export(index_exports')) throw new Error('UI client bundle is missing esbuild CJS export table')
+  if (!client.includes('apply: () => apply')) throw new Error('UI client bundle does not export apply')
   const css = readFileSync(join(UI_ROOT, 'lib', 'client.css'), 'utf8')
   if (css.trim() === '') throw new Error('UI client stylesheet is empty')
 }
