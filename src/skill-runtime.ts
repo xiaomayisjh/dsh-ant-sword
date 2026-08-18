@@ -86,6 +86,34 @@ export class SkillsReconciler implements RuntimeReconciler {
 
 export function applySkillApi(ctx: Context, reconciler: SkillsReconciler, root = join(homedir(), '.dsh', 'skills')): void {
   ctx.webServer.register({
+    kind: 'exact', path: '/ant-sword/rules/list',
+    handler: async (req, res) => {
+      if (req.method !== 'GET') {
+        sendJson(res, 405, { error: 'method-not-allowed' })
+        return
+      }
+      sendJson(res, 200, { rules: ctx.settings.get().rules })
+    },
+  })
+
+  ctx.webServer.register({
+    kind: 'exact', path: '/ant-sword/skills/list',
+    handler: async (req, res) => {
+      if (req.method !== 'GET') {
+        sendJson(res, 405, { error: 'method-not-allowed' })
+        return
+      }
+      try {
+        const listed = await skillProvider.list({})
+        const candidates = 'candidates' in listed ? listed.candidates : listed
+        sendJson(res, 200, { skills: candidates.map(candidate => ({ name: candidate.name, description: candidate.description })) })
+      } catch (error) {
+        sendJson(res, 500, { error: error instanceof Error ? error.message : String(error) })
+      }
+    },
+  })
+
+  ctx.webServer.register({
     kind: 'exact', path: '/ant-sword/skills/upsert',
     handler: async (req, res) => {
       if (req.method !== 'POST') {

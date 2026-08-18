@@ -30,6 +30,9 @@ describe('embedded MCP server catalog', () => {
     }
   })
 
+  it('includes optional disabled catalog entries for the visual editor', () => {
+    expect(DEFAULT_MCP_SERVERS.map(server => server.serverName)).toContain('playwright')
+  })
   it('mounts one mcp-client per enabled server, skipping disabled ones', () => {
     const { ctx, mounted } = recordingCtx()
     const servers: McpServerConfig[] = [

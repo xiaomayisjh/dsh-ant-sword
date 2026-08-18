@@ -2,6 +2,11 @@
 
 import type { McpConfig } from './mcp-config-json.ts'
 
+export interface SkillListItem {
+  name: string
+  description?: string
+}
+
 export interface RuntimeRuleConfig {
   id: string
   title: string

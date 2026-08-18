@@ -26,12 +26,27 @@ export function RuntimeConfigEditor({ configScope }: Props) {
   const [draft, setDraft] = useState<RuntimeConfigValue>(EMPTY)
   const [tab, setTab] = useState<'mcp' | 'skills' | 'rules'>('mcp')
   const [saving, setSaving] = useState(false)
+  const [skillItems, setSkillItems] = useState<readonly { name: string; description?: string }[]>([])
+  const [skillSelected, setSkillSelected] = useState('')
   const [skillDraft, setSkillDraft] = useState({ name: '', description: '', whenToUse: '', modelInvocable: true, userInvocable: true, content: '' })
   const [skillError, setSkillError] = useState<string>()
 
   useEffect(() => {
     if (snapshot.status === 'ready' && snapshot.value !== undefined) setDraft(structuredClone(snapshot.value))
   }, [snapshot.revision, snapshot.status, snapshot.value])
+
+  useEffect(() => {
+    if (tab !== 'skills') return
+    void fetch('/ant-sword/skills/list').then(async response => response.ok ? response.json() as Promise<{ skills: { name: string; description?: string }[] }> : { skills: [] }).then(result => {
+      setSkillItems(result.skills)
+      if (skillSelected === '' && result.skills[0] !== undefined) setSkillSelected(result.skills[0].name)
+    }).catch(() => undefined)
+  }, [skillSelected, tab])
+
+  useEffect(() => {
+    const selected = skillItems.find(item => item.name === skillSelected)
+    if (selected !== undefined) setSkillDraft(current => ({ ...current, name: selected.name, description: selected.description ?? '' }))
+  }, [skillItems, skillSelected])
 
   const save = async (field: keyof RuntimeConfigValue): Promise<void> => {
     setSaving(true)
@@ -76,6 +91,7 @@ export function RuntimeConfigEditor({ configScope }: Props) {
     />}
 
     {tab === 'skills' && <div className={css.editorList}>
+      <label>当前 Skill<select value={skillSelected} onChange={(event) =>{ setSkillSelected(event.target.value) }}><option value="">选择 Skill</option>{skillItems.map(item => <option key={item.name} value={item.name}>{item.name}</option>)}</select></label>
       <label>停用 Skill（每行一个名称）<textarea value={draft.disabledSkills.join('\n')} onChange={(event) =>{  setDraft(current => ({ ...current, disabledSkills: event.target.value.split('\n').map(value => value.trim()).filter(Boolean) })) }} /></label>
       <div className={css.editorActions}><button type="button" disabled={saving} onClick={() => { void save('disabledSkills') }}>保存 Skill 状态</button></div>
       <fieldset>
@@ -92,7 +108,8 @@ export function RuntimeConfigEditor({ configScope }: Props) {
     </div>}
 
     {tab === 'rules' && <div className={css.editorList}>
-      {draft.rules.map((rule, index) => <fieldset key={rule.id}>
+      <h3>Rules 列表</h3>
+      {draft.rules.map((rule, index) => <fieldset key={rule.id} aria-label={`Rule ${rule.title}`}>
         <legend>{rule.title}</legend>
         <label>标题<input value={rule.title} onChange={(event) =>{  setDraft(current => ({ ...current, rules: current.rules.map((item, at) => at === index ? { ...item, title: event.target.value } : item) })) }} /></label>
         <label>启用<input type="checkbox" checked={rule.enabled} onChange={(event) =>{  setDraft(current => ({ ...current, rules: current.rules.map((item, at) => at === index ? { ...item, enabled: event.target.checked } : item) })) }} /></label>

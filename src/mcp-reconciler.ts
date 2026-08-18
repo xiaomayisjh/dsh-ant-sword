@@ -87,6 +87,7 @@ export class McpReconciler implements RuntimeReconciler {
     const previous = new Map(this.configs)
     return {
       commit: async () => {
+        this.configs = desired
         const changed = new Set<string>([...previous.keys(), ...desired.keys()].filter((name) => {
           const before = previous.get(name)
           const after = desired.get(name)
