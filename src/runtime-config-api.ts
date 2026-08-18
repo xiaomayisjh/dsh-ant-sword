@@ -1,5 +1,6 @@
 /** Loopback configuration bridge for Ant Sword's private settings namespace. */
 
+import { isDeepStrictEqual } from 'node:util'
 import type { IncomingMessage, ServerResponse } from 'node:http'
 import type { Context } from '@deepseek-ai/cordis'
 import {
@@ -16,17 +17,21 @@ import type {
 } from './runtime-config.ts'
 
 const MAX_BODY_BYTES = 512 * 1024
-const MUTABLE_FIELDS = new Set<keyof AntSwordRuntimeConfig>(['mcpServers', 'disabledSkills', 'rules'])
+const MUTABLE_FIELDS = new Set<keyof AntSwordRuntimeConfig>(['mcpServers', 'disabledSkills', 'rules', 'thinkingPolicies'])
 const NAMESPACE = settingsNamespace(ANT_SWORD_SETTINGS_NAMESPACE)
 
 export interface RuntimeConfigApiView {
   value: AntSwordRuntimeConfig
+  desired: AntSwordRuntimeConfig
+  applied: AntSwordRuntimeConfig
   base?: Partial<AntSwordRuntimeConfig>
   user?: Partial<AntSwordRuntimeConfig>
   revision: number
   writable: boolean
   generation: number
+  desiredGeneration: number
   applying: boolean
+  inSync: boolean
   lastFailure?: RuntimeApplyFailure
 }
 
@@ -37,7 +42,18 @@ export type RuntimeConfigApiMutation =
 type RuntimeSettings = Pick<SettingsProvider, 'describe' | 'mutate' | 'writable'>
 type RuntimeControllerView = Pick<RuntimeController, 'snapshot' | 'whenIdle'>
 
-function sendJson(res: ServerResponse, status: number, value: unknown): void {
+interface RuntimeApiError {
+  error: string
+  code: string
+  message: string
+}
+
+export function errorBody(code: string, error: unknown): RuntimeApiError {
+  const message = error instanceof Error ? error.message : String(error)
+  return { error: message, code, message }
+}
+
+export function sendJson(res: ServerResponse, status: number, value: unknown): void {
   res.writeHead(status, { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' })
   res.end(JSON.stringify(value))
 }
@@ -58,7 +74,7 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
 }
 
-function isLoopbackRequest(req: IncomingMessage): boolean {
+export function isLoopbackRequest(req: IncomingMessage): boolean {
   const address = req.socket.remoteAddress
   return address === '127.0.0.1' || address === '::1' || address?.startsWith('::ffff:127.') === true
 }
@@ -75,7 +91,7 @@ export function parseRuntimeConfigMutation(value: unknown): RuntimeConfigApiMuta
   if (!isRecord(value)) throw new TypeError('runtime config request must be a JSON object')
   if (value.op !== 'set' && value.op !== 'unset') throw new TypeError('op must be "set" or "unset"')
   if (typeof value.field !== 'string' || !MUTABLE_FIELDS.has(value.field as keyof AntSwordRuntimeConfig)) {
-    throw new TypeError('field must be one of mcpServers, disabledSkills, or rules')
+    throw new TypeError('field must be one of mcpServers, disabledSkills, rules, or thinkingPolicies')
   }
   const allowed = value.op === 'set'
     ? new Set(['op', 'field', 'value', 'expectedRevision'])
@@ -102,12 +118,16 @@ export function runtimeConfigApiView(
   const runtime = controller.snapshot()
   return {
     value: settingsView.value as AntSwordRuntimeConfig,
+    desired: runtime.desired,
+    applied: runtime.applied,
     ...(settingsView.base === undefined ? {} : { base: settingsView.base as Partial<AntSwordRuntimeConfig> }),
     ...(settingsView.user === undefined ? {} : { user: settingsView.user as Partial<AntSwordRuntimeConfig> }),
     revision: settingsView.revision,
     writable: settings.writable,
     generation: runtime.generation,
+    desiredGeneration: runtime.desiredGeneration,
     applying: runtime.applying,
+    inSync: isDeepStrictEqual(runtime.desired, runtime.applied),
     ...(runtime.lastFailure === undefined ? {} : { lastFailure: runtime.lastFailure }),
   }
 }
@@ -135,27 +155,29 @@ export function applyRuntimeConfigApi(ctx: Context, controller: RuntimeControlle
     path: '/ant-sword/runtime-config',
     handler: async (req, res) => {
       if (!isLoopbackRequest(req)) {
-        sendJson(res, 403, { error: 'loopback-only' })
+        sendJson(res, 403, errorBody('loopback-only', 'loopback-only'))
         return
       }
       if (req.method === 'GET') {
         try {
           sendJson(res, 200, runtimeConfigApiView(ctx.settings, controller))
         } catch (error) {
-          sendJson(res, 503, { error: error instanceof Error ? error.message : String(error) })
+          sendJson(res, 503, errorBody('settings-unavailable', error))
         }
         return
       }
       if (req.method !== 'POST') {
-        sendJson(res, 405, { error: 'method-not-allowed' })
+        sendJson(res, 405, errorBody('method-not-allowed', 'method-not-allowed'))
         return
       }
       try {
         const mutation = parseRuntimeConfigMutation(await readJson(req))
         sendJson(res, 200, await mutateRuntimeConfig(ctx.settings, controller, mutation))
       } catch (error) {
-        const status = error instanceof SettingsConflictError ? 409 : error instanceof TypeError ? 400 : 500
-        sendJson(res, status, { error: error instanceof Error ? error.message : String(error) })
+        const conflict = error instanceof SettingsConflictError
+        const status = conflict ? 409 : error instanceof TypeError ? 400 : 500
+        const code = conflict ? 'revision-conflict' : error instanceof TypeError ? 'invalid-request' : 'internal-error'
+        sendJson(res, status, errorBody(code, error))
       }
     },
   })

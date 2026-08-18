@@ -12,11 +12,13 @@ import {
 } from './runtime-config.ts'
 import type { AntSwordRuntimeConfig } from './runtime-config.ts'
 import type { McpServerConfig } from './mcp-servers.ts'
+import { ThinkingPolicyRuntime } from './thinking-policy.ts'
 import { SkillsReconciler } from './skill-runtime.ts'
 
 export interface DynamicRuntime {
   controller: RuntimeController
   mcp: McpReconciler
+  thinking: ThinkingPolicyRuntime
 }
 
 export function applyDynamicRuntime(
@@ -29,6 +31,7 @@ export function applyDynamicRuntime(
     mcpServers: mcpServers.map(server => ({ ...server })),
     disabledSkills: [],
     rules: [],
+    thinkingPolicies: [],
   }
   const scope = ctx.settings.register(
     settingsNamespace(ANT_SWORD_SETTINGS_NAMESPACE),
@@ -37,7 +40,19 @@ export function applyDynamicRuntime(
   )
   const mcp = new McpReconciler(ctx, pentestswarmApiKey)
   const controller = new RuntimeController(scope, [mcp, skillsReconciler, new RulesReconciler(ctx)])
+  const thinking = new ThinkingPolicyRuntime(ctx, controller)
+  const stopThinking = thinking.start()
+  let capabilityGeneration = controller.snapshot().generation
+  const stopCapabilityRefresh = controller.subscribe(snapshot => {
+    if (snapshot.generation === capabilityGeneration) return
+    capabilityGeneration = snapshot.generation
+    thinking.clearCapabilities()
+  })
   const stop = controller.start()
-  ctx.effect(() => stop, 'ant-sword-runtime.controller')
-  return { controller, mcp }
+  ctx.effect(() => async () => {
+    stopCapabilityRefresh()
+    stopThinking()
+    await stop()
+  }, 'ant-sword-runtime.controller')
+  return { controller, mcp, thinking }
 }

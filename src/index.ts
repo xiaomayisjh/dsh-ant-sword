@@ -15,6 +15,7 @@ import { applyAutoLoop, AutoLoopConfigSchema } from './auto/index.ts'
 import type { AutoLoopConfig } from './auto/index.ts'
 import { applyRuntimeStatus } from './runtime-status.ts'
 import { applyRuntimeConfigApi } from './runtime-config-api.ts'
+import { applyThinkingPolicyApi } from './thinking-policy-api.ts'
 import { applyInstallApi } from './installer/api.ts'
 import { DEFAULT_MCP_SERVERS, McpServerSchema } from './mcp-servers.ts'
 import { applyDynamicRuntime } from './dynamic-runtime.ts'
@@ -25,7 +26,7 @@ import type { McpServerConfig } from './mcp-servers.ts'
 export const name = 'ant-sword-harness'
 
 /** Services required by the bundled skill provider, the auto loop, and MCP tools. */
-export const inject = ['skills', 'sessions', 'storageDomain', 'commands', 'tools', 'agents', 'webServer', 'subprocess', 'settings', 'systemPrompt']
+export const inject = ['skills', 'sessions', 'storageDomain', 'commands', 'tools', 'agents', 'llm', 'webServer', 'subprocess', 'settings', 'systemPrompt']
 
 /**
  * Plugin config. Every tunable lives here — the dsh plugin-config UI renders
@@ -70,12 +71,13 @@ export function apply(ctx: Context, config: Config): void {
   const runtime = applyDynamicRuntime(ctx, mcpServers, config.pentestswarmApiKey, skillsReconciler)
   applyRuntimeStatus(
     ctx,
-    () => runtime.controller.snapshot().config.mcpServers,
+    () => runtime.controller.snapshot().applied.mcpServers,
     serverName => runtime.mcp.reload(serverName),
     serverName => runtime.mcp.probe(serverName),
     serverName => runtime.mcp.isMounted(serverName),
   )
   applyRuntimeConfigApi(ctx, runtime.controller)
+  applyThinkingPolicyApi(ctx, runtime.thinking)
   applyInstallApi(ctx)
   applySkillApi(ctx, skillsReconciler)
   if (config.syncRedTeamPreset ?? true) {

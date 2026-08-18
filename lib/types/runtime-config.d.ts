@@ -15,6 +15,14 @@ export declare const SKILL_NAME_PATTERN: RegExp;
 export declare const RULE_ID_PATTERN: RegExp;
 export declare const MAX_RULE_TITLE_BYTES = 256;
 export declare const MAX_RULE_CONTENT_BYTES: number;
+export declare const MAX_PROVIDER_ID_BYTES = 128;
+export declare const MAX_MODEL_ID_BYTES = 256;
+export type ThinkingLevel = 'minimum' | 'low' | 'medium' | 'high' | 'maximum';
+export interface ChannelThinkingPolicy {
+    providerId: string;
+    modelId: string;
+    level: ThinkingLevel;
+}
 export type RulePlacement = 'before-persona' | 'after-persona' | 'before-tools' | 'after-tools';
 export interface RuntimeRuleConfig {
     id: string;
@@ -28,7 +36,9 @@ export interface AntSwordRuntimeConfig {
     mcpServers: McpServerConfig[];
     disabledSkills: string[];
     rules: RuntimeRuleConfig[];
+    thinkingPolicies: ChannelThinkingPolicy[];
 }
+export declare const ChannelThinkingPolicySchema: z<ChannelThinkingPolicy>;
 export declare const RuntimeRuleSchema: z<RuntimeRuleConfig>;
 export declare const AntSwordRuntimeConfigSchema: z<AntSwordRuntimeConfig>;
 export declare const DEFAULT_RUNTIME_CONFIG: AntSwordRuntimeConfig;
@@ -44,20 +54,25 @@ export interface RuntimePreparedChange {
 export interface RuntimeApplyFailure {
     reconciler: string;
     message: string;
+    generation: number;
 }
 export interface RuntimeControllerSnapshot {
     generation: number;
+    desiredGeneration: number;
     applying: boolean;
-    config: AntSwordRuntimeConfig;
+    desired: AntSwordRuntimeConfig;
+    applied: AntSwordRuntimeConfig;
     lastFailure?: RuntimeApplyFailure;
 }
 type SnapshotListener = (snapshot: RuntimeControllerSnapshot) => void;
-/** Serializes settings commits and publishes only fully reconciled generations. */
+/** Serializes settings commits and publishes desired and applied generations independently. */
 export declare class RuntimeController {
     private readonly scope;
     private readonly reconcilers;
-    private current;
+    private desired;
+    private applied;
     private generation;
+    private desiredGeneration;
     private applying;
     private lastFailure;
     private tail;

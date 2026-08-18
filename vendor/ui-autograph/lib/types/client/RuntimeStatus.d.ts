@@ -1,5 +1,5 @@
-import type { SnapshotStore, SettingsScope } from '@deepseek-ai/dsh-client-runtime/client';
-import type { RuntimeConfigValue } from './runtime-config-types.ts';
+import type { SnapshotStore } from '@deepseek-ai/dsh-client-runtime/client';
+import type { RuntimeConfigEditorScope } from './RuntimeConfigEditor.tsx';
 export type RuntimeAvailability = 'available' | 'missing' | 'configured' | 'disabled';
 export interface McpRuntimeStatus {
     readonly serverName: string;
@@ -30,9 +30,9 @@ export interface RedTeamRuntimeStatus {
 }
 export interface RuntimeStatusProps {
     readonly runtimeStatus: SnapshotStore<RedTeamRuntimeStatus>;
-    readonly configScope?: SettingsScope<RuntimeConfigValue>;
+    readonly configScope?: RuntimeConfigEditorScope;
     readonly compact?: boolean;
 }
 export declare const INITIAL_RUNTIME_STATUS: RedTeamRuntimeStatus;
-export declare function RuntimeStatus({ runtimeStatus, configScope, compact }: RuntimeStatusProps): import("react").JSX.Element;
+export declare function RuntimeStatus({ runtimeStatus, configScope, compact }: RuntimeStatusProps): any;
 //# sourceMappingURL=RuntimeStatus.d.ts.map

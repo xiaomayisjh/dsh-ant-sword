@@ -10,12 +10,35 @@ import type { RuntimeConfigValue } from './runtime-config-types.ts'
 
 const ENDPOINT = '/ant-sword/runtime-config'
 
+interface RuntimeApplyFailure {
+  reconciler: string
+  message: string
+  generation: number
+}
+
+export interface RuntimeApplySnapshot {
+  desired?: RuntimeConfigValue
+  applied?: RuntimeConfigValue
+  generation: number
+  desiredGeneration: number
+  applying: boolean
+  inSync: boolean
+  lastFailure?: RuntimeApplyFailure
+}
+
 interface RuntimeConfigApiView {
   value: RuntimeConfigValue
+  desired: RuntimeConfigValue
+  applied: RuntimeConfigValue
   base?: Partial<RuntimeConfigValue>
   user?: Partial<RuntimeConfigValue>
   revision: number
   writable: boolean
+  generation: number
+  desiredGeneration: number
+  applying: boolean
+  inSync: boolean
+  lastFailure?: RuntimeApplyFailure
 }
 
 interface FetchResponse {
@@ -35,18 +58,36 @@ function isRuntimeConfig(value: unknown): value is RuntimeConfigValue {
     && Array.isArray(value.mcpServers)
     && Array.isArray(value.disabledSkills)
     && Array.isArray(value.rules)
+    && Array.isArray(value.thinkingPolicies)
+}
+
+function decodeFailure(value: unknown): RuntimeApplyFailure | undefined {
+  if (!isRecord(value) || typeof value.reconciler !== 'string' || typeof value.message !== 'string') return undefined
+  if (!Number.isSafeInteger(value.generation) || (value.generation as number) < 0) return undefined
+  return { reconciler: value.reconciler, message: value.message, generation: value.generation as number }
 }
 
 function decodeView(value: unknown): RuntimeConfigApiView | undefined {
   if (!isRecord(value) || !isRuntimeConfig(value.value)) return undefined
+  if (!isRuntimeConfig(value.desired) || !isRuntimeConfig(value.applied)) return undefined
   if (!Number.isSafeInteger(value.revision) || (value.revision as number) < 0) return undefined
-  if (typeof value.writable !== 'boolean') return undefined
+  if (!Number.isSafeInteger(value.generation) || (value.generation as number) < 0) return undefined
+  if (!Number.isSafeInteger(value.desiredGeneration) || (value.desiredGeneration as number) < 0) return undefined
+  if (typeof value.writable !== 'boolean' || typeof value.applying !== 'boolean' || typeof value.inSync !== 'boolean') return undefined
+  const lastFailure = decodeFailure(value.lastFailure)
   return {
     value: value.value,
+    desired: value.desired,
+    applied: value.applied,
     ...(isRecord(value.base) ? { base: value.base } : {}),
     ...(isRecord(value.user) ? { user: value.user } : {}),
     revision: value.revision as number,
     writable: value.writable,
+    generation: value.generation as number,
+    desiredGeneration: value.desiredGeneration as number,
+    applying: value.applying,
+    inSync: value.inSync,
+    ...(lastFailure === undefined ? {} : { lastFailure }),
   }
 }
 
@@ -69,6 +110,12 @@ function initialSnapshot(): SettingsScopeSnapshot<RuntimeConfigValue> {
  */
 export class RuntimeConfigScope implements SettingsScope<RuntimeConfigValue> {
   private readonly store: SnapshotStore<SettingsScopeSnapshot<RuntimeConfigValue>>
+  private readonly runtimeStore = createSnapshotStore<RuntimeApplySnapshot>({
+    generation: 0,
+    desiredGeneration: 0,
+    applying: false,
+    inSync: true,
+  })
   private readonly unsubscribeNative: () => void
   private tail: Promise<void> = Promise.resolve()
   private disposed = false
@@ -91,6 +138,14 @@ export class RuntimeConfigScope implements SettingsScope<RuntimeConfigValue> {
     return this.store.subscribe(listener)
   }
 
+  getRuntimeSnapshot(): RuntimeApplySnapshot {
+    return this.runtimeStore.getSnapshot()
+  }
+
+  subscribeRuntime(listener: () => void): () => void {
+    return this.runtimeStore.subscribe(listener)
+  }
+
   set(field: string, value: unknown): Promise<void> {
     return this.write({ op: 'set', field, value })
   }
@@ -101,10 +156,7 @@ export class RuntimeConfigScope implements SettingsScope<RuntimeConfigValue> {
 
   refresh(): Promise<void> {
     return this.enqueue(async () => {
-      if (this.native.getSnapshot().status === 'ready') {
-        this.syncNative()
-        return
-      }
+      if (this.native.getSnapshot().status === 'ready') this.syncNative()
       try {
         const response = await this.request(ENDPOINT, { method: 'GET', cache: 'no-store' })
         if (!response.ok) return
@@ -133,6 +185,7 @@ export class RuntimeConfigScope implements SettingsScope<RuntimeConfigValue> {
         if (operation.op === 'set') await this.native.set(operation.field, operation.value)
         else await this.native.unset(operation.field)
         this.syncNative()
+        await this.reloadFallback()
         return
       }
       const revision = this.store.getSnapshot().revision
@@ -185,6 +238,16 @@ export class RuntimeConfigScope implements SettingsScope<RuntimeConfigValue> {
   }
 
   private accept(view: RuntimeConfigApiView): void {
+    this.runtimeStore.set({
+      desired: view.desired,
+      applied: view.applied,
+      generation: view.generation,
+      desiredGeneration: view.desiredGeneration,
+      applying: view.applying,
+      inSync: view.inSync,
+      ...(view.lastFailure === undefined ? {} : { lastFailure: view.lastFailure }),
+    })
+    if (this.native.getSnapshot().status === 'ready') return
     this.store.set({
       status: 'ready',
       value: view.value,

@@ -1,7 +1,7 @@
 import { useEffect, useState, useSyncExternalStore } from 'react'
-import type { SnapshotStore, SettingsScope } from '@deepseek-ai/dsh-client-runtime/client'
+import type { SnapshotStore } from '@deepseek-ai/dsh-client-runtime/client'
 import { RuntimeConfigEditor } from './RuntimeConfigEditor.tsx'
-import type { RuntimeConfigValue } from './runtime-config-types.ts'
+import type { RuntimeConfigEditorScope } from './RuntimeConfigEditor.tsx'
 import css from './RuntimeStatus.module.css'
 
 export type RuntimeAvailability = 'available' | 'missing' | 'configured' | 'disabled'
@@ -34,7 +34,7 @@ export interface RedTeamRuntimeStatus {
 
 export interface RuntimeStatusProps {
   readonly runtimeStatus: SnapshotStore<RedTeamRuntimeStatus>
-  readonly configScope?: SettingsScope<RuntimeConfigValue>
+  readonly configScope?: RuntimeConfigEditorScope
   readonly compact?: boolean
 }
 

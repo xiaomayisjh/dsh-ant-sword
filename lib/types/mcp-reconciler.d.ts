@@ -8,13 +8,18 @@ export declare class McpReconciler implements RuntimeReconciler {
     private readonly canResolveCommand;
     readonly name = "mcp";
     private readonly fibers;
+    /** Only successfully committed configurations are kept here. */
     private configs;
+    /** Serializes every lifecycle operation, including API probe/reload calls. */
+    private tail;
     constructor(ctx: Context, pentestswarmApiKey?: string | undefined, canResolveCommand?: (command: string) => boolean);
-    /** Whether one server currently owns an active plugin fiber. */
     isMounted(serverName: string): boolean;
-    /** Probe one server without replacing its live tool registrations. */
+    private enqueue;
+    private assertUsable;
+    private mount;
+    /** Probe the applied server configuration, serialized with lifecycle changes. */
     probe(serverName: string): Promise<mcpClient.McpProbeResult>;
-    /** Force one configured server through a dispose/connect cycle. */
+    /** Reload an applied server without losing its previous live fiber on failure. */
     reload(serverName: string): Promise<void>;
     prepare(next: AntSwordRuntimeConfig, _previousConfig: AntSwordRuntimeConfig): RuntimePreparedChange;
 }

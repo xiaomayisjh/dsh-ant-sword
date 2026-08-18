@@ -22,8 +22,8 @@ function recordingCtx(): { ctx: Context; mounted: { config: unknown }[] } {
 }
 
 describe('embedded MCP server catalog', () => {
-  it('ships the eight-server default catalog', () => {
-    expect(DEFAULT_MCP_SERVERS).toHaveLength(8)
+  it('ships eight enabled servers plus optional disabled catalog entries', () => {
+    expect(DEFAULT_MCP_SERVERS.filter(server => server.enabled !== false)).toHaveLength(9)
     const names = DEFAULT_MCP_SERVERS.map(s => s.serverName)
     for (const expected of ['kali', 'metasploit', 'hexstrike', 'pentestswarm', 'jshook', 'anything', 'idapro', 'ghidra']) {
       expect(names).toContain(expected)

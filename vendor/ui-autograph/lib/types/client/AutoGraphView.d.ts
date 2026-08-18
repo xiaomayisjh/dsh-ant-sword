@@ -36,5 +36,5 @@ export declare function toFlow(board: BoardSnapshot): {
     nodes: BoardFlowNode[];
     edges: Edge[];
 };
-export declare function AutoGraphView({ isAutoMode, runtimeStatus, onPause, onResume, onHint, useProjection, t }: ConvViewProps & AutoGraphActions & PropsLocale<'autograph'>): import("react").JSX.Element | null;
+export declare function AutoGraphView({ isAutoMode, runtimeStatus, onPause, onResume, onHint, useProjection, t }: ConvViewProps & AutoGraphActions & PropsLocale<'autograph'>): any;
 //# sourceMappingURL=AutoGraphView.d.ts.map

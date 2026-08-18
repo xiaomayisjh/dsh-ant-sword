@@ -13,7 +13,7 @@ import {
 import type { AntSwordRuntimeConfig } from '../src/runtime-config.ts'
 
 function config(patch: Partial<AntSwordRuntimeConfig> = {}): AntSwordRuntimeConfig {
-  return AntSwordRuntimeConfigSchema({ mcpServers: [], disabledSkills: [], rules: [], ...patch })
+  return AntSwordRuntimeConfigSchema({ mcpServers: [], disabledSkills: [], rules: [], thinkingPolicies: [], ...patch })
 }
 
 describe('runtime config loopback API', () => {
@@ -22,6 +22,9 @@ describe('runtime config loopback API', () => {
       op: 'set', field: 'mcpServers', value: [], expectedRevision: 2,
     })).toEqual({ op: 'set', field: 'mcpServers', value: [], expectedRevision: 2 })
     expect(parseRuntimeConfigMutation({ op: 'unset', field: 'rules' })).toEqual({ op: 'unset', field: 'rules' })
+    expect(parseRuntimeConfigMutation({ op: 'set', field: 'thinkingPolicies', value: [] })).toEqual({
+      op: 'set', field: 'thinkingPolicies', value: [],
+    })
     expect(() => parseRuntimeConfigMutation({ op: 'set', field: 'unknown', value: [] })).toThrow('field must be')
     expect(() => parseRuntimeConfigMutation({ op: 'unset', field: 'rules', value: [] })).toThrow('unsupported fields')
   })
@@ -49,7 +52,13 @@ describe('runtime config loopback API', () => {
       }),
     }
     const controller = {
-      snapshot: () => ({ generation: 8, applying: false, config: value }),
+      snapshot: () => ({
+        generation: 8,
+        desiredGeneration: 8,
+        applying: false,
+        desired: value,
+        applied: value,
+      }),
       whenIdle: vi.fn(async () => undefined),
     }
 
@@ -60,6 +69,43 @@ describe('runtime config loopback API', () => {
     expect(controller.whenIdle).toHaveBeenCalledOnce()
     expect(view.revision).toBe(5)
     expect(view.value.disabledSkills).toEqual(['reverse-engineering'])
+    expect(view.desired.disabledSkills).toEqual(['reverse-engineering'])
+    expect(view.applied.disabledSkills).toEqual(['reverse-engineering'])
+    expect(view.inSync).toBe(true)
     expect(runtimeConfigApiView(settings, controller).generation).toBe(8)
+  })
+
+  it('reports saved configuration separately from the last applied generation', () => {
+    const desired = config({ disabledSkills: ['reverse-engineering'] })
+    const applied = config()
+    const settings = {
+      writable: true,
+      describe: () => [{
+        ns: settingsNamespace(ANT_SWORD_SETTINGS_NAMESPACE),
+        schema: {},
+        value: desired,
+        applies: 'live' as const,
+        revision: 9,
+      }],
+      mutate: vi.fn(),
+    }
+    const controller = {
+      snapshot: () => ({
+        generation: 8,
+        desiredGeneration: 9,
+        applying: false,
+        desired,
+        applied,
+        lastFailure: { reconciler: 'skills', message: 'refresh failed', generation: 9 },
+      }),
+      whenIdle: vi.fn(async () => undefined),
+    }
+
+    const view = runtimeConfigApiView(settings, controller)
+    expect(view.value).toEqual(desired)
+    expect(view.desired).toEqual(desired)
+    expect(view.applied).toEqual(applied)
+    expect(view.inSync).toBe(false)
+    expect(view.lastFailure).toEqual({ reconciler: 'skills', message: 'refresh failed', generation: 9 })
   })
 })

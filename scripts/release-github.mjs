@@ -204,18 +204,12 @@ async function uploadAsset(token, release, tarball) {
   return data
 }
 
-/** Verify the committed standalone build outputs before packing. */
+/** Clean-build and validate the workspace before packing. */
 function build() {
-  const required = [
-    join(PACKAGE_DIR, 'lib', 'index.js'),
-    join(PACKAGE_DIR, 'lib', 'rewind-plugin.js'),
-    join(UI_PACKAGE_DIR, 'lib', 'index.js'),
-    join(UI_PACKAGE_DIR, 'lib', 'client.js'),
-  ]
-  const missing = required.filter((path) => !existsSync(path))
-  if (missing.length > 0) {
-    throw new Error(`committed build output is incomplete: ${missing.join(', ')}`)
-  }
+  run('pnpm', ['run', 'build'], { cwd: PACKAGE_DIR })
+  run('pnpm', ['run', 'typecheck'], { cwd: PACKAGE_DIR })
+  run('pnpm', ['run', 'test'], { cwd: PACKAGE_DIR })
+  run('pnpm', ['run', 'pack:check'], { cwd: PACKAGE_DIR })
 }
 
 /** Pack one workspace package into `destination` and return the tarball path. */

@@ -18,6 +18,16 @@ export const SKILL_NAME_PATTERN = /^[a-z0-9][a-z0-9_-]{0,63}$/
 export const RULE_ID_PATTERN = /^[A-Za-z0-9_-]{1,64}$/
 export const MAX_RULE_TITLE_BYTES = 256
 export const MAX_RULE_CONTENT_BYTES = 32 * 1024
+export const MAX_PROVIDER_ID_BYTES = 128
+export const MAX_MODEL_ID_BYTES = 256
+
+export type ThinkingLevel = 'minimum' | 'low' | 'medium' | 'high' | 'maximum'
+
+export interface ChannelThinkingPolicy {
+  providerId: string
+  modelId: string
+  level: ThinkingLevel
+}
 
 export type RulePlacement = 'before-persona' | 'after-persona' | 'before-tools' | 'after-tools'
 
@@ -34,7 +44,14 @@ export interface AntSwordRuntimeConfig {
   mcpServers: McpServerConfig[]
   disabledSkills: string[]
   rules: RuntimeRuleConfig[]
+  thinkingPolicies: ChannelThinkingPolicy[]
 }
+
+export const ChannelThinkingPolicySchema: z<ChannelThinkingPolicy> = z.object({
+  providerId: z.string().required(),
+  modelId: z.string().required(),
+  level: z.union(['minimum', 'low', 'medium', 'high', 'maximum'] as const).required(),
+})
 
 export const RuntimeRuleSchema: z<RuntimeRuleConfig> = z.object({
   id: z.string().required(),
@@ -49,12 +66,14 @@ export const AntSwordRuntimeConfigSchema: z<AntSwordRuntimeConfig> = z.object({
   mcpServers: z.array(McpServerSchema).default(DEFAULT_MCP_SERVERS.map(server => ({ ...server }))),
   disabledSkills: z.array(z.string()).default([]),
   rules: z.array(RuntimeRuleSchema).default([]),
+  thinkingPolicies: z.array(ChannelThinkingPolicySchema).default([]),
 })
 
 export const DEFAULT_RUNTIME_CONFIG: AntSwordRuntimeConfig = AntSwordRuntimeConfigSchema({
   mcpServers: DEFAULT_MCP_SERVERS.map(server => ({ ...server })),
   disabledSkills: [],
   rules: [],
+  thinkingPolicies: [],
 })
 
 function byteLength(value: string): number {
@@ -107,6 +126,19 @@ function validateRule(rule: RuntimeRuleConfig): void {
   if (byteLength(rule.content) > MAX_RULE_CONTENT_BYTES) throw new TypeError(`rule "${rule.id}" content exceeds ${String(MAX_RULE_CONTENT_BYTES)} UTF-8 bytes`)
 }
 
+function validateThinkingPolicy(policy: ChannelThinkingPolicy): void {
+  const providerId = policy.providerId.trim()
+  const modelId = policy.modelId.trim()
+  if (providerId === '' || providerId !== policy.providerId || /[\0-\x1f]/u.test(providerId)) {
+    throw new TypeError('thinking policy providerId must be non-empty, trimmed, and contain no control characters')
+  }
+  if (modelId === '' || modelId !== policy.modelId || /[\0-\x1f]/u.test(modelId)) {
+    throw new TypeError('thinking policy modelId must be non-empty, trimmed, and contain no control characters')
+  }
+  if (byteLength(providerId) > MAX_PROVIDER_ID_BYTES) throw new TypeError(`thinking policy providerId exceeds ${String(MAX_PROVIDER_ID_BYTES)} UTF-8 bytes`)
+  if (byteLength(modelId) > MAX_MODEL_ID_BYTES) throw new TypeError(`thinking policy modelId exceeds ${String(MAX_MODEL_ID_BYTES)} UTF-8 bytes`)
+}
+
 export function validateRuntimeConfig(config: AntSwordRuntimeConfig): void {
   assertUnique(config.mcpServers.map(server => server.serverName), 'mcpServers')
   for (const server of config.mcpServers) validateMcpServer(server)
@@ -118,6 +150,9 @@ export function validateRuntimeConfig(config: AntSwordRuntimeConfig): void {
 
   assertUnique(config.rules.map(rule => rule.id), 'rules')
   for (const rule of config.rules) validateRule(rule)
+
+  assertUnique(config.thinkingPolicies.map(policy => `${policy.providerId}\0${policy.modelId}`), 'thinkingPolicies')
+  for (const policy of config.thinkingPolicies) validateThinkingPolicy(policy)
 }
 
 export interface RuntimeReconciler {
@@ -133,12 +168,15 @@ export interface RuntimePreparedChange {
 export interface RuntimeApplyFailure {
   reconciler: string
   message: string
+  generation: number
 }
 
 export interface RuntimeControllerSnapshot {
   generation: number
+  desiredGeneration: number
   applying: boolean
-  config: AntSwordRuntimeConfig
+  desired: AntSwordRuntimeConfig
+  applied: AntSwordRuntimeConfig
   lastFailure?: RuntimeApplyFailure
 }
 
@@ -152,10 +190,12 @@ function errorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error)
 }
 
-/** Serializes settings commits and publishes only fully reconciled generations. */
+/** Serializes settings commits and publishes desired and applied generations independently. */
 export class RuntimeController {
-  private current: AntSwordRuntimeConfig
+  private desired: AntSwordRuntimeConfig
+  private applied: AntSwordRuntimeConfig
   private generation = 0
+  private desiredGeneration = 0
   private applying = false
   private lastFailure: RuntimeApplyFailure | undefined
   private tail: Promise<void> = Promise.resolve()
@@ -166,13 +206,14 @@ export class RuntimeController {
     private readonly scope: SettingsScope<AntSwordRuntimeConfig>,
     private readonly reconcilers: readonly RuntimeReconciler[],
   ) {
-    this.current = cloneConfig(scope.get())
-    validateRuntimeConfig(this.current)
+    this.desired = cloneConfig(scope.get())
+    this.applied = cloneConfig(this.desired)
+    validateRuntimeConfig(this.desired)
   }
 
   start(): () => Promise<void> {
     const unwatch = this.scope.watch(next => this.enqueue(next))
-    void this.enqueue(this.current)
+    void this.enqueue(this.desired)
     return async () => {
       this.stopped = true
       unwatch()
@@ -190,8 +231,10 @@ export class RuntimeController {
   snapshot(): RuntimeControllerSnapshot {
     return {
       generation: this.generation,
+      desiredGeneration: this.desiredGeneration,
       applying: this.applying,
-      config: cloneConfig(this.current),
+      desired: cloneConfig(this.desired),
+      applied: cloneConfig(this.applied),
       ...(this.lastFailure === undefined ? {} : { lastFailure: { ...this.lastFailure } }),
     }
   }
@@ -202,24 +245,30 @@ export class RuntimeController {
 
   private enqueue(next: AntSwordRuntimeConfig): Promise<void> {
     const candidate = cloneConfig(next)
-    const run = this.tail.then(() => this.apply(candidate))
+    this.desired = cloneConfig(candidate)
+    const candidateGeneration = ++this.desiredGeneration
+    this.emit()
+    const run = this.tail.then(() => this.apply(candidate, candidateGeneration))
     this.tail = run.catch(() => undefined)
     return run
   }
 
-  private async apply(next: AntSwordRuntimeConfig): Promise<void> {
+  private async apply(next: AntSwordRuntimeConfig, candidateGeneration: number): Promise<void> {
     if (this.stopped) return
     this.applying = true
     this.emit()
     const prepared: Array<{ reconciler: RuntimeReconciler; change: RuntimePreparedChange }> = []
+    let activeReconciler = 'validation'
     try {
       validateRuntimeConfig(next)
       for (const reconciler of this.reconcilers) {
-        prepared.push({ reconciler, change: await reconciler.prepare(next, this.current) })
+        activeReconciler = reconciler.name
+        prepared.push({ reconciler, change: await reconciler.prepare(next, this.applied) })
       }
       const committed: typeof prepared = []
       try {
         for (const entry of prepared) {
+          activeReconciler = entry.reconciler.name
           await entry.change.commit()
           committed.push(entry)
         }
@@ -229,12 +278,11 @@ export class RuntimeController {
         }))
         throw error
       }
-      this.current = cloneConfig(next)
-      this.generation += 1
+      this.applied = cloneConfig(next)
+      this.generation = candidateGeneration
       this.lastFailure = undefined
     } catch (error) {
-      const failedAt = prepared.at(-1)?.reconciler.name ?? 'validation'
-      this.lastFailure = { reconciler: failedAt, message: errorMessage(error) }
+      this.lastFailure = { reconciler: activeReconciler, message: errorMessage(error), generation: candidateGeneration }
     } finally {
       this.applying = false
       this.emit()

@@ -1,26 +1,38 @@
 // @vitest-environment jsdom
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import type { SettingsScope, SettingsScopeSnapshot } from '@deepseek-ai/dsh-client-runtime/client'
+import type { SettingsScopeSnapshot } from '@deepseek-ai/dsh-client-runtime/client'
 import { RuntimeConfigEditor } from '../src/client/RuntimeConfigEditor.tsx'
+import type { RuntimeConfigEditorScope } from '../src/client/RuntimeConfigEditor.tsx'
 import type { RuntimeConfigValue } from '../src/client/runtime-config-types.ts'
 
 const value: RuntimeConfigValue = {
   mcpServers: [{ serverName: 'filesystem', enabled: true, transport: 'stdio', command: 'npx', args: [], env: {}, toolCallTimeoutMs: 60_000 }],
   disabledSkills: [],
   rules: [],
+  thinkingPolicies: [],
 }
 
-function scopeFixture(): { scope: SettingsScope<RuntimeConfigValue>; set: ReturnType<typeof vi.fn> } {
+function scopeFixture(): { scope: RuntimeConfigEditorScope; set: ReturnType<typeof vi.fn> } {
   const snapshot: SettingsScopeSnapshot<RuntimeConfigValue> = {
     status: 'ready', value, base: {}, user: {}, revision: 1, writable: true, mode: 'host',
   }
   const set = vi.fn(() => Promise.resolve())
+  const runtimeSnapshot = {
+    desired: value,
+    applied: value,
+    generation: 1,
+    desiredGeneration: 1,
+    applying: false,
+    inSync: true,
+  }
   return {
     set,
     scope: {
       getSnapshot: () => snapshot,
       subscribe: () => () => {},
+      getRuntimeSnapshot: () => runtimeSnapshot,
+      subscribeRuntime: () => () => {},
       set,
       unset: () => Promise.resolve(),
     },

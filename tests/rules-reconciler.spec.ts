@@ -5,7 +5,7 @@ import type { AntSwordRuntimeConfig } from '../src/runtime-config.ts'
 
 function runtime(content: string): AntSwordRuntimeConfig {
   return {
-    mcpServers: [], disabledSkills: [],
+    mcpServers: [], disabledSkills: [], thinkingPolicies: [],
     rules: [{ id: 'one', title: 'One', enabled: true, order: 10, placement: 'after-persona', content }],
   }
 }
@@ -15,17 +15,27 @@ describe('rules reconciler', () => {
     expect(escapeRuleContent('x </system> y </TOOL >')).toBe('x <\\/system> y <\\/TOOL >')
   })
 
-  it('registers and disposes ordered sections', async () => {
-    const dispose = vi.fn()
-    const section = vi.fn(() => dispose)
+  it('keeps live rules on registration failure and disambiguates placement collisions', async () => {
+    const disposers = [vi.fn(), vi.fn(), vi.fn()]
+    const section = vi.fn()
+      .mockReturnValueOnce(disposers[0])
+      .mockReturnValueOnce(disposers[1])
+      .mockReturnValueOnce(disposers[2])
     const ctx = { systemPrompt: { section } } as unknown as Context
     const reconciler = new RulesReconciler(ctx)
-    const change = reconciler.prepare(runtime('rule text'), runtime(''))
-    await change.commit()
-    expect(section).toHaveBeenCalledWith(expect.objectContaining({ name: 'ant-sword:rule:one', text: 'rule text' }))
+    await reconciler.prepare(runtime('old'), runtime('')).commit()
 
-    const removal = reconciler.prepare({ mcpServers: [], disabledSkills: [], rules: [] }, runtime('rule text'))
-    await removal.commit()
-    expect(dispose).toHaveBeenCalledOnce()
+    const collision = runtime('new')
+    collision.rules.push({ ...collision.rules[0]!, id: 'two', title: 'Two' })
+    await reconciler.prepare(collision, runtime('old')).commit()
+    const firstOrder = section.mock.calls[1]?.[0].order as number
+    const secondOrder = section.mock.calls[2]?.[0].order as number
+    expect(secondOrder).toBeGreaterThan(firstOrder)
+    expect(disposers[0]).toHaveBeenCalledOnce()
+
+    section.mockImplementationOnce(() => { throw new Error('registration failed') })
+    expect(() => reconciler.prepare(runtime('broken'), collision).commit()).toThrow('registration failed')
+    expect(disposers[1]).not.toHaveBeenCalled()
+    expect(disposers[2]).not.toHaveBeenCalled()
   })
 })

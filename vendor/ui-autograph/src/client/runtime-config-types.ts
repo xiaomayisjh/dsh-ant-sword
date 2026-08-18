@@ -16,8 +16,17 @@ export interface RuntimeRuleConfig {
   content: string
 }
 
+export type ThinkingLevel = 'minimum' | 'low' | 'medium' | 'high' | 'maximum'
+
+export interface ChannelThinkingPolicy {
+  providerId: string
+  modelId: string
+  level: ThinkingLevel
+}
+
 export interface RuntimeConfigValue {
   mcpServers: McpConfig[]
   disabledSkills: string[]
   rules: RuntimeRuleConfig[]
+  thinkingPolicies: ChannelThinkingPolicy[]
 }

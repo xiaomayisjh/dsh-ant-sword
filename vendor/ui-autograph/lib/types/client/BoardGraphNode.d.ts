@@ -7,6 +7,6 @@ interface BoardFlowNodeData extends Record<string, unknown> {
 }
 export type BoardFlowNode = Node<BoardFlowNodeData, 'board'>;
 /** A measured graph block with explicit left/right connection anchors. */
-export declare function BoardGraphNode({ data }: NodeProps<BoardFlowNode>): import("react").JSX.Element;
+export declare function BoardGraphNode({ data }: NodeProps<BoardFlowNode>): any;
 export {};
 //# sourceMappingURL=BoardGraphNode.d.ts.map

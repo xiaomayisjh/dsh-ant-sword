@@ -2,51 +2,53 @@
 import { useEffect, useState, useSyncExternalStore } from 'react'
 import type { SettingsScope } from '@deepseek-ai/dsh-client-runtime/client'
 import { McpConfigEditor } from './McpConfigEditor.tsx'
-import type { RuntimeConfigValue, RuntimeRuleConfig } from './runtime-config-types.ts'
+import { RuleEditor } from './RuleEditor.tsx'
+import { SkillEditor } from './SkillEditor.tsx'
+import { ThinkingPolicyEditor } from './ThinkingPolicyEditor.tsx'
+import type { RuntimeApplySnapshot } from './runtime-config-scope.ts'
+import type { RuntimeConfigValue } from './runtime-config-types.ts'
 import css from './RuntimeStatus.module.css'
 
-type RuleConfig = RuntimeRuleConfig
+interface SkillEntry {
+  id: string
+  name: string
+  description?: string
+  whenToUse?: string
+  modelInvocable: boolean
+  userInvocable: boolean
+  content: string
+  userOwned: boolean
+}
+
+export interface RuntimeConfigEditorScope extends SettingsScope<RuntimeConfigValue> {
+  getRuntimeSnapshot(): RuntimeApplySnapshot
+  subscribeRuntime(listener: () => void): () => void
+}
 
 interface Props {
-  configScope: SettingsScope<RuntimeConfigValue>
+  configScope: RuntimeConfigEditorScope
 }
 
-const EMPTY: RuntimeConfigValue = { mcpServers: [], disabledSkills: [], rules: [] }
+const EMPTY: RuntimeConfigValue = { mcpServers: [], disabledSkills: [], rules: [], thinkingPolicies: [] }
 
-function newRule(): RuleConfig {
-  return { id: `rule-${Date.now()}`, title: '新规则', enabled: true, order: 0, placement: 'after-persona', content: '' }
-}
-
-/** Settings editor for MCP, Skill overlays, and runtime rules. */
+/** Settings editor for MCP, Skill overlays, runtime rules, and thinking policies. */
 export function RuntimeConfigEditor({ configScope }: Props) {
   const snapshot = useSyncExternalStore(
     listener => configScope.subscribe(listener),
     () => configScope.getSnapshot(),
   )
+  const runtime = useSyncExternalStore(
+    listener => configScope.subscribeRuntime(listener),
+    () => configScope.getRuntimeSnapshot(),
+  )
   const [draft, setDraft] = useState<RuntimeConfigValue>(EMPTY)
-  const [tab, setTab] = useState<'mcp' | 'skills' | 'rules'>('mcp')
+  const [tab, setTab] = useState<'mcp' | 'thinking' | 'skills' | 'rules'>('mcp')
   const [saving, setSaving] = useState(false)
-  const [skillItems, setSkillItems] = useState<readonly { name: string; description?: string }[]>([])
-  const [skillSelected, setSkillSelected] = useState('')
-  const [skillDraft, setSkillDraft] = useState({ name: '', description: '', whenToUse: '', modelInvocable: true, userInvocable: true, content: '' })
-  const [skillError, setSkillError] = useState<string>()
+  const [skillList, setSkillList] = useState<readonly SkillEntry[]>([])
 
   useEffect(() => {
     if (snapshot.status === 'ready' && snapshot.value !== undefined) setDraft(structuredClone(snapshot.value))
   }, [snapshot.revision, snapshot.status, snapshot.value])
-
-  useEffect(() => {
-    if (tab !== 'skills') return
-    void fetch('/ant-sword/skills/list').then(async response => response.ok ? response.json() as Promise<{ skills: { name: string; description?: string }[] }> : { skills: [] }).then(result => {
-      setSkillItems(result.skills)
-      if (skillSelected === '' && result.skills[0] !== undefined) setSkillSelected(result.skills[0].name)
-    }).catch(() => undefined)
-  }, [skillSelected, tab])
-
-  useEffect(() => {
-    const selected = skillItems.find(item => item.name === skillSelected)
-    if (selected !== undefined) setSkillDraft(current => ({ ...current, name: selected.name, description: selected.description ?? '' }))
-  }, [skillItems, skillSelected])
 
   const save = async (field: keyof RuntimeConfigValue): Promise<void> => {
     setSaving(true)
@@ -57,68 +59,79 @@ export function RuntimeConfigEditor({ configScope }: Props) {
     }
   }
 
-  const saveSkill = async (): Promise<void> => {
-    setSkillError(undefined)
-    const response = await fetch('/ant-sword/skills/upsert', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(skillDraft) })
-    if (!response.ok) {
-      const result = await response.json() as { error?: string }
-      setSkillError(result.error ?? 'Skill 保存失败')
-    }
+  const reloadSkills = async (): Promise<void> => {
+    try {
+      const response = await fetch('/ant-sword/skills/list', { cache: 'no-store' })
+      if (!response.ok) return
+      const result = await response.json() as { skills: SkillEntry[] }
+      setSkillList(result.skills.map(s => ({ ...s, id: s.name, content: s.content ?? '' })))
+    } catch { /* transient network error; keep previous list */ }
   }
 
-  const deleteSkill = async (): Promise<void> => {
-    setSkillError(undefined)
-    const response = await fetch('/ant-sword/skills/delete', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ name: skillDraft.name }) })
-    if (!response.ok) {
-      const result = await response.json() as { error?: string }
-      setSkillError(result.error ?? 'Skill 删除失败')
-    }
-  }
+  useEffect(() => { void reloadSkills() }, [tab])
 
   if (snapshot.status !== 'ready' || snapshot.value === undefined) return <p className={css.installError}>动态配置尚未连接到本机 Host。</p>
 
-  return <section className={css.configEditor}>
-    <nav className={css.tabs} aria-label="Red Team 配置">
-      {(['mcp', 'skills', 'rules'] as const).map(value => <button type="button" key={value} aria-current={tab === value ? 'page' : undefined} data-active={tab === value} onClick={() =>{  setTab(value) }}>{value === 'mcp' ? 'MCP' : value === 'skills' ? 'Skills' : 'Rules'}</button>)}
-    </nav>
+  return (
+    <section className={css.configEditor}>
+      <div className={runtime.lastFailure !== undefined ? css.installError : css.summary} role="status">
+        {runtime.applying
+          ? `正在热应用配置（目标代 ${runtime.desiredGeneration}）`
+          : runtime.inSync
+            ? `已热应用（代 ${runtime.generation}）`
+            : runtime.lastFailure === undefined
+              ? '配置已保存，等待热应用'
+              : `热应用失败：${runtime.lastFailure.reconciler} · ${runtime.lastFailure.message}`}
+      </div>
+      <nav className={css.tabs} aria-label="Red Team 配置">
+        {(['mcp', 'thinking', 'skills', 'rules'] as const).map(value => (
+          <button
+            type="button"
+            key={value}
+            aria-current={tab === value ? 'page' : undefined}
+            data-active={tab === value}
+            onClick={() => { setTab(value) }}
+          >
+            {value === 'mcp' ? 'MCP' : value === 'thinking' ? '思考强度' : value === 'skills' ? 'Skills' : 'Rules'}
+          </button>
+        ))}
+      </nav>
 
-    {tab === 'mcp' && <McpConfigEditor
-      servers={draft.mcpServers}
-      savedServers={snapshot.value.mcpServers}
-      saving={saving}
-      onChange={(mcpServers) =>{  setDraft(current => ({ ...current, mcpServers })) }}
-      onSave={() => save('mcpServers')}
-    />}
+      {tab === 'mcp' && (
+        <McpConfigEditor
+          servers={draft.mcpServers}
+          savedServers={snapshot.value.mcpServers}
+          saving={saving}
+          onChange={(mcpServers) => { setDraft(current => ({ ...current, mcpServers })) }}
+          onSave={() => save('mcpServers')}
+        />
+      )}
 
-    {tab === 'skills' && <div className={css.editorList}>
-      <label>当前 Skill<select value={skillSelected} onChange={(event) =>{ setSkillSelected(event.target.value) }}><option value="">选择 Skill</option>{skillItems.map(item => <option key={item.name} value={item.name}>{item.name}</option>)}</select></label>
-      <label>停用 Skill（每行一个名称）<textarea value={draft.disabledSkills.join('\n')} onChange={(event) =>{  setDraft(current => ({ ...current, disabledSkills: event.target.value.split('\n').map(value => value.trim()).filter(Boolean) })) }} /></label>
-      <div className={css.editorActions}><button type="button" disabled={saving} onClick={() => { void save('disabledSkills') }}>保存 Skill 状态</button></div>
-      <fieldset>
-        <legend>用户 Skill overlay</legend>
-        <label>名称<input value={skillDraft.name} onChange={(event) =>{  setSkillDraft(current => ({ ...current, name: event.target.value })) }} /></label>
-        <label>描述<input value={skillDraft.description} onChange={(event) =>{  setSkillDraft(current => ({ ...current, description: event.target.value })) }} /></label>
-        <label>使用时机<input value={skillDraft.whenToUse} onChange={(event) =>{  setSkillDraft(current => ({ ...current, whenToUse: event.target.value })) }} /></label>
-        <label>模型可调用<input type="checkbox" checked={skillDraft.modelInvocable} onChange={(event) =>{  setSkillDraft(current => ({ ...current, modelInvocable: event.target.checked })) }} /></label>
-        <label>用户可调用<input type="checkbox" checked={skillDraft.userInvocable} onChange={(event) =>{  setSkillDraft(current => ({ ...current, userInvocable: event.target.checked })) }} /></label>
-        <label>正文<textarea value={skillDraft.content} onChange={(event) =>{  setSkillDraft(current => ({ ...current, content: event.target.value })) }} /></label>
-        <div className={css.editorActions}><button type="button" onClick={() => { void saveSkill() }}>保存 overlay</button><button type="button" onClick={() => { void deleteSkill() }}>删除 overlay</button></div>
-        {skillError !== undefined && <span className={css.installError}>{skillError}</span>}
-      </fieldset>
-    </div>}
+      {tab === 'thinking' && (
+        <ThinkingPolicyEditor
+          policies={draft.thinkingPolicies}
+          saving={saving}
+          onChange={thinkingPolicies => setDraft(current => ({ ...current, thinkingPolicies }))}
+          onSave={() => save('thinkingPolicies')}
+        />
+      )}
 
-    {tab === 'rules' && <div className={css.editorList}>
-      <h3>Rules 列表</h3>
-      {draft.rules.map((rule, index) => <fieldset key={rule.id} aria-label={`Rule ${rule.title}`}>
-        <legend>{rule.title}</legend>
-        <label>标题<input value={rule.title} onChange={(event) =>{  setDraft(current => ({ ...current, rules: current.rules.map((item, at) => at === index ? { ...item, title: event.target.value } : item) })) }} /></label>
-        <label>启用<input type="checkbox" checked={rule.enabled} onChange={(event) =>{  setDraft(current => ({ ...current, rules: current.rules.map((item, at) => at === index ? { ...item, enabled: event.target.checked } : item) })) }} /></label>
-        <label>位置<select value={rule.placement} onChange={(event) =>{  setDraft(current => ({ ...current, rules: current.rules.map((item, at) => at === index ? { ...item, placement: event.target.value as RuleConfig['placement'] } : item) })) }}><option value="before-persona">Persona 前</option><option value="after-persona">Persona 后</option><option value="before-tools">工具前</option><option value="after-tools">工具后</option></select></label>
-        <label>顺序<input type="number" value={rule.order} onChange={(event) =>{  setDraft(current => ({ ...current, rules: current.rules.map((item, at) => at === index ? { ...item, order: Number(event.target.value) } : item) })) }} /></label>
-        <label>正文<textarea value={rule.content} onChange={(event) =>{  setDraft(current => ({ ...current, rules: current.rules.map((item, at) => at === index ? { ...item, content: event.target.value } : item) })) }} /></label>
-        <button type="button" onClick={() =>{  setDraft(current => ({ ...current, rules: current.rules.filter((_, at) => at !== index) })) }}>删除</button>
-      </fieldset>)}
-      <div className={css.editorActions}><button type="button" onClick={() =>{  setDraft(current => ({ ...current, rules: [...current.rules, newRule()] })) }}>添加 Rule</button><button type="button" disabled={saving} onClick={() => { void save('rules') }}>保存 Rules</button></div>
-    </div>}
-  </section>
+      {tab === 'skills' && (
+        <SkillEditor
+          scopeList={skillList}
+          onChange={() => { void reloadSkills() }}
+          onSave={reloadSkills}
+        />
+      )}
+
+      {tab === 'rules' && (
+        <RuleEditor
+          rules={draft.rules}
+          saving={saving}
+          onChange={rules => setDraft(current => ({ ...current, rules: [...rules] }))}
+          onSave={() => save('rules')}
+        />
+      )}
+    </section>
+  )
 }

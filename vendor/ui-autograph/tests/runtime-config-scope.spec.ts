@@ -29,7 +29,21 @@ vi.mock('@deepseek-ai/dsh-client-runtime/client', () => ({
   },
 }))
 
-const EMPTY: RuntimeConfigValue = { mcpServers: [], disabledSkills: [], rules: [] }
+const EMPTY: RuntimeConfigValue = { mcpServers: [], disabledSkills: [], rules: [], thinkingPolicies: [] }
+
+function view(value: RuntimeConfigValue, revision: number) {
+  return {
+    value,
+    desired: value,
+    applied: value,
+    revision,
+    writable: true,
+    generation: revision,
+    desiredGeneration: revision,
+    applying: false,
+    inSync: true,
+  }
+}
 
 function response(value: unknown, status = 200): Awaited<ReturnType<RuntimeConfigFetch>> {
   return {
@@ -77,8 +91,8 @@ describe('runtime config scope', () => {
     })
     const next = { ...EMPTY, disabledSkills: ['reverse-engineering'] }
     const request = vi.fn<RuntimeConfigFetch>()
-      .mockResolvedValueOnce(response({ value: EMPTY, revision: 3, writable: true }))
-      .mockResolvedValueOnce(response({ value: next, revision: 4, writable: true }))
+      .mockResolvedValueOnce(response(view(EMPTY, 3)))
+      .mockResolvedValueOnce(response(view(next, 4)))
     const scope = new RuntimeConfigScope(native.scope, request)
     await scope.whenIdle()
 
@@ -92,6 +106,14 @@ describe('runtime config scope', () => {
       }),
     }))
     expect(scope.getSnapshot()).toMatchObject({ value: next, revision: 4 })
+    expect(scope.getRuntimeSnapshot()).toMatchObject({
+      desired: next,
+      applied: next,
+      generation: 4,
+      desiredGeneration: 4,
+      applying: false,
+      inSync: true,
+    })
     expect(native.set).not.toHaveBeenCalled()
     await scope.dispose()
   })
@@ -101,12 +123,12 @@ describe('runtime config scope', () => {
       status: 'ready', value: EMPTY, base: EMPTY, user: {},
       revision: 7, writable: true, mode: 'host',
     })
-    const request = vi.fn<RuntimeConfigFetch>()
+    const request = vi.fn<RuntimeConfigFetch>().mockResolvedValue(response(view(EMPTY, 7)))
     const scope = new RuntimeConfigScope(native.scope, request)
     await scope.whenIdle()
     await scope.set('rules', [])
 
-    expect(request).not.toHaveBeenCalled()
+    expect(request).toHaveBeenCalledWith('/ant-sword/runtime-config', { method: 'GET', cache: 'no-store' })
     expect(native.set).toHaveBeenCalledWith('rules', [])
     expect(scope.getSnapshot()).toMatchObject({ status: 'ready', revision: 7 })
     await scope.dispose()

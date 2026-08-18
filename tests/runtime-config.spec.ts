@@ -16,6 +16,7 @@ function config(patch: Partial<AntSwordRuntimeConfig> = {}): AntSwordRuntimeConf
     mcpServers: [],
     disabledSkills: [],
     rules: [],
+    thinkingPolicies: [],
     ...patch,
   })
 }
@@ -82,6 +83,18 @@ describe('ant-sword runtime config', () => {
     }).toThrow('NUL')
   })
 
+  it('enforces channel thinking policy identities and selectors', () => {
+    expect(() => validateRuntimeConfig(config({
+      thinkingPolicies: [
+        { providerId: 'custom', modelId: 'model-a', level: 'low' },
+        { providerId: 'custom', modelId: 'model-a', level: 'high' },
+      ],
+    }))).toThrow('duplicate')
+    expect(() => validateRuntimeConfig(config({
+      thinkingPolicies: [{ providerId: ' custom ', modelId: 'model-a', level: 'medium' }],
+    }))).toThrow('providerId')
+  })
+
   it('serializes committed settings generations', async () => {
     const state = settingsScope(config())
     const commits: string[] = []
@@ -95,7 +108,9 @@ describe('ant-sword runtime config', () => {
     await controller.whenIdle()
 
     expect(controller.snapshot().generation).toBe(2)
-    expect(controller.snapshot().config.disabledSkills).toEqual(['reverse-engineering'])
+    expect(controller.snapshot().desiredGeneration).toBe(2)
+    expect(controller.snapshot().desired.disabledSkills).toEqual(['reverse-engineering'])
+    expect(controller.snapshot().applied.disabledSkills).toEqual(['reverse-engineering'])
     expect(commits).toEqual(['commit', 'commit'])
     await stop()
   })
@@ -112,8 +127,9 @@ describe('ant-sword runtime config', () => {
     await controller.whenIdle()
 
     expect(controller.snapshot().generation).toBe(0)
-    expect(controller.snapshot().config).toEqual(initial)
-    expect(controller.snapshot().lastFailure).toEqual({ reconciler: 'rules', message: 'rules unavailable' })
+    expect(controller.snapshot().desired).toEqual(initial)
+    expect(controller.snapshot().applied).toEqual(initial)
+    expect(controller.snapshot().lastFailure).toEqual({ reconciler: 'rules', message: 'rules unavailable', generation: 1 })
     expect(firstRollback).toHaveBeenCalledOnce()
     await stop()
   })

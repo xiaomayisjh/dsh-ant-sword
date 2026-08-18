@@ -1,0 +1,897 @@
+/* vendor/ui-autograph/src/client/RuntimeStatus.module.css */
+.RuntimeStatus_rail {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 16px;
+  border-bottom: 1px solid var(--dsw-alias-border-l2);
+  background: color-mix(in srgb, var(--dsw-alias-bg-layer-2) 88%, transparent);
+  font-size: 11px;
+}
+.RuntimeStatus_metric {
+  color: var(--dsw-alias-label-secondary);
+}
+.RuntimeStatus_metric strong {
+  color: var(--dsw-alias-label-primary);
+}
+.RuntimeStatus_warning {
+  margin-left: auto;
+  color: var(--dsw-alias-state-warn-label);
+}
+.RuntimeStatus_settings {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  color: var(--dsw-alias-label-primary);
+  --dsh-scrollbar-thumb: var(--dsw-alias-scrollbar-bg-l2);
+  --dsh-scrollbar-thumb-hover: var(--dsw-alias-scrollbar-hover-l2);
+}
+.RuntimeStatus_settingsHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: flex-start;
+}
+.RuntimeStatus_settingsHeader h2 {
+  margin: 0 0 6px;
+  font-size: 18px;
+}
+.RuntimeStatus_settingsHeader p,
+.RuntimeStatus_card p {
+  margin: 0;
+  color: var(--dsw-alias-label-secondary);
+  font-size: 12px;
+  line-height: 1.5;
+}
+.RuntimeStatus_summary {
+  display: flex;
+  gap: 8px;
+}
+.RuntimeStatus_summary span,
+.RuntimeStatus_cardTitle span {
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--dsw-alias-bg-layer-2);
+  font-size: 11px;
+  white-space: nowrap;
+}
+.RuntimeStatus_skillCard,
+.RuntimeStatus_card {
+  padding: 12px;
+  border: 1px solid var(--dsw-alias-border-l2);
+  border-radius: 8px;
+  background: var(--dsw-alias-bg-layer-3);
+}
+.RuntimeStatus_skillCard {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  gap: 12px;
+  align-items: center;
+}
+.RuntimeStatus_skillCard small {
+  color: var(--dsw-alias-label-secondary);
+  text-align: right;
+}
+.RuntimeStatus_grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 10px;
+}
+.RuntimeStatus_card {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.RuntimeStatus_card[data-state=missing] {
+  border-color: var(--dsw-alias-state-warn-primary);
+}
+.RuntimeStatus_card[data-state=available],
+.RuntimeStatus_card[data-state=configured] {
+  border-color: var(--dsw-alias-state-success-primary);
+}
+.RuntimeStatus_cardTitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.RuntimeStatus_card code,
+.RuntimeStatus_card pre {
+  overflow-x: auto;
+  margin: 0;
+  padding: 7px;
+  border-radius: 5px;
+  background: var(--dsw-alias-bg-layer-1);
+  color: var(--dsw-alias-label-primary);
+  font-size: 11px;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+.RuntimeStatus_installToolbar,
+.RuntimeStatus_installActions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.RuntimeStatus_installToolbar label {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  color: var(--dsw-alias-label-secondary);
+  font-size: 12px;
+}
+.RuntimeStatus_installToolbar select,
+.RuntimeStatus_installActions button {
+  border: 1px solid var(--dsw-alias-border-l2);
+  border-radius: 6px;
+  background: var(--dsw-alias-bg-layer-2);
+  color: var(--dsw-alias-label-primary);
+  padding: 6px 9px;
+}
+.RuntimeStatus_installActions button:focus-visible,
+.RuntimeStatus_installToolbar select:focus-visible {
+  outline: 2px solid var(--dsw-alias-state-business-primary);
+  outline-offset: 2px;
+}
+.RuntimeStatus_installActions button:disabled {
+  opacity: 0.5;
+}
+.RuntimeStatus_installError {
+  color: var(--dsw-alias-state-error-primary);
+  font-size: 12px;
+}
+.RuntimeStatus_installProgress {
+  display: grid;
+  flex: 1 1 100%;
+  gap: 4px;
+  color: var(--dsw-alias-label-secondary);
+  font-size: 11px;
+}
+.RuntimeStatus_installProgress progress {
+  width: 100%;
+  accent-color: var(--dsw-alias-state-business-primary);
+}
+.RuntimeStatus_configEditor {
+  display: grid;
+  gap: 12px;
+  padding-top: 14px;
+  border-top: 1px solid var(--dsw-alias-border-l2);
+}
+.RuntimeStatus_tabs,
+.RuntimeStatus_editorActions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.RuntimeStatus_tabs button,
+.RuntimeStatus_editorActions button,
+.RuntimeStatus_editorList fieldset > button {
+  border: 1px solid var(--dsw-alias-border-l2);
+  border-radius: 6px;
+  padding: 6px 10px;
+  background: var(--dsw-alias-bg-layer-2);
+  color: var(--dsw-alias-label-primary);
+}
+.RuntimeStatus_tabs button[data-active=true] {
+  border-color: var(--dsw-alias-state-business-primary);
+  color: var(--dsw-alias-state-business-primary);
+}
+.RuntimeStatus_editorList {
+  display: grid;
+  gap: 10px;
+}
+.RuntimeStatus_editorList fieldset {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+  min-width: 0;
+  border: 1px solid var(--dsw-alias-border-l2);
+  border-radius: 8px;
+}
+.RuntimeStatus_editorList label {
+  display: grid;
+  gap: 5px;
+  color: var(--dsw-alias-label-secondary);
+  font-size: 11px;
+}
+.RuntimeStatus_editorList input,
+.RuntimeStatus_editorList select,
+.RuntimeStatus_editorList textarea {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--dsw-alias-border-l2);
+  border-radius: 6px;
+  padding: 7px;
+  background: var(--dsw-alias-bg-layer-1);
+  color: var(--dsw-alias-label-primary);
+}
+.RuntimeStatus_editorList textarea {
+  min-height: 84px;
+  resize: vertical;
+}
+.RuntimeStatus_keyValues {
+  display: grid;
+  gap: 5px;
+}
+.RuntimeStatus_keyValues > div {
+  display: grid;
+  grid-template-columns: minmax(80px, 1fr) minmax(100px, 2fr) auto;
+  gap: 5px;
+}
+.RuntimeStatus_keyValues button {
+  border: 1px solid var(--dsw-alias-border-l2);
+  border-radius: 5px;
+  background: var(--dsw-alias-bg-layer-2);
+  color: var(--dsw-alias-label-primary);
+}
+.RuntimeStatus_editorList :is(input, select, textarea, button):focus-visible,
+.RuntimeStatus_tabs button:focus-visible {
+  outline: 2px solid var(--dsw-alias-state-business-primary);
+  outline-offset: 2px;
+}
+.RuntimeStatus_card details,
+.RuntimeStatus_editorList details {
+  color: var(--dsw-alias-label-secondary);
+  font-size: 11px;
+}
+.RuntimeStatus_card details ul,
+.RuntimeStatus_editorList details ul {
+  display: grid;
+  gap: 6px;
+  max-height: 220px;
+  overflow: auto;
+  padding-left: 18px;
+}
+.RuntimeStatus_card details li,
+.RuntimeStatus_editorList details li {
+  display: grid;
+  gap: 3px;
+}
+.RuntimeStatus_card details small,
+.RuntimeStatus_editorList details small {
+  line-height: 1.4;
+}
+.RuntimeStatus_mcpEditor {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+}
+.RuntimeStatus_mcpHeader,
+.RuntimeStatus_serverRailHeader,
+.RuntimeStatus_detailToolbar,
+.RuntimeStatus_runtimeActions,
+.RuntimeStatus_saveBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.RuntimeStatus_mcpHeader h3,
+.RuntimeStatus_mcpHeader p,
+.RuntimeStatus_serverRail p,
+.RuntimeStatus_emptyDetail p,
+.RuntimeStatus_editorMessage {
+  margin: 0;
+}
+.RuntimeStatus_mcpHeader p,
+.RuntimeStatus_jsonEditor p,
+.RuntimeStatus_serverRail p,
+.RuntimeStatus_emptyDetail p {
+  color: var(--dsw-alias-label-secondary);
+  font-size: 12px;
+}
+.RuntimeStatus_modeSwitch,
+.RuntimeStatus_detailToolbar,
+.RuntimeStatus_runtimeActions,
+.RuntimeStatus_saveBar {
+  display: flex;
+  flex-wrap: wrap;
+}
+.RuntimeStatus_modeSwitch button,
+.RuntimeStatus_serverRail button,
+.RuntimeStatus_detailToolbar button,
+.RuntimeStatus_runtimeActions button,
+.RuntimeStatus_saveBar button,
+.RuntimeStatus_emptyDetail button {
+  border: 1px solid var(--dsw-alias-border-l2);
+  border-radius: 6px;
+  padding: 7px 10px;
+  background: var(--dsw-alias-bg-layer-2);
+  color: var(--dsw-alias-label-primary);
+}
+.RuntimeStatus_modeSwitch button[aria-pressed=true] {
+  border-color: var(--dsw-alias-state-business-primary);
+  color: var(--dsw-alias-state-business-primary);
+}
+.RuntimeStatus_masterDetail {
+  display: grid;
+  grid-template-columns: minmax(190px, 28%) minmax(0, 1fr);
+  min-height: 430px;
+  overflow: hidden;
+  border: 1px solid var(--dsw-alias-border-l2);
+  border-radius: 9px;
+  background: var(--dsw-alias-bg-layer-2);
+}
+.RuntimeStatus_serverRail {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  padding: 12px;
+  border-right: 1px solid var(--dsw-alias-border-l2);
+}
+.RuntimeStatus_serverRail [role=listbox] {
+  display: grid;
+  gap: 4px;
+}
+.RuntimeStatus_serverRail [role=option] {
+  display: grid;
+  gap: 3px;
+  width: 100%;
+  text-align: left;
+}
+.RuntimeStatus_serverRail [role=option] small {
+  color: var(--dsw-alias-label-secondary);
+}
+.RuntimeStatus_serverRail [role=option][aria-selected=true] {
+  border-color: var(--dsw-alias-state-business-primary);
+  background: var(--dsw-alias-bg-layer-3);
+}
+.RuntimeStatus_serverDetail {
+  min-width: 0;
+  padding: 16px;
+  background: var(--dsw-alias-bg-layer-1);
+}
+.RuntimeStatus_detailFields,
+.RuntimeStatus_jsonEditor,
+.RuntimeStatus_emptyDetail {
+  display: grid;
+  gap: 12px;
+}
+.RuntimeStatus_detailFields {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 14px;
+}
+.RuntimeStatus_detailFields label,
+.RuntimeStatus_jsonEditor label {
+  display: grid;
+  gap: 5px;
+  color: var(--dsw-alias-label-secondary);
+  font-size: 12px;
+}
+.RuntimeStatus_detailFields input,
+.RuntimeStatus_detailFields select,
+.RuntimeStatus_detailFields textarea,
+.RuntimeStatus_jsonEditor textarea {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--dsw-alias-border-l2);
+  border-radius: 6px;
+  padding: 8px;
+  background: var(--dsw-alias-bg-layer-2);
+  color: var(--dsw-alias-label-primary);
+}
+.RuntimeStatus_detailFields textarea {
+  min-height: 86px;
+  resize: vertical;
+}
+.RuntimeStatus_jsonEditor textarea {
+  min-height: 360px;
+  resize: vertical;
+  font-family: monospace;
+}
+.RuntimeStatus_detailFields .RuntimeStatus_keyValues {
+  grid-column: 1 / -1;
+  min-width: 0;
+}
+.RuntimeStatus_runtimeActions {
+  justify-content: flex-start;
+  margin-top: 14px;
+}
+.RuntimeStatus_runtimeActions span[data-state=error],
+.RuntimeStatus_validation {
+  color: var(--dsw-alias-state-error-primary);
+}
+.RuntimeStatus_runtimeActions span[data-state=success] {
+  color: var(--dsw-alias-state-success-primary);
+}
+.RuntimeStatus_validation {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 12px;
+}
+.RuntimeStatus_editorMessage {
+  color: var(--dsw-alias-label-secondary);
+  font-size: 12px;
+}
+.RuntimeStatus_saveBar {
+  justify-content: flex-end;
+  position: sticky;
+  bottom: 0;
+  padding: 10px;
+  border-top: 1px solid var(--dsw-alias-border-l2);
+  background: var(--dsw-alias-bg-layer-2);
+}
+.RuntimeStatus_saveBar span {
+  margin-right: auto;
+  color: var(--dsw-alias-label-secondary);
+  font-size: 12px;
+}
+.RuntimeStatus_mcpEditor :is(button, input, select, textarea):focus-visible {
+  outline: 2px solid var(--dsw-alias-state-business-primary);
+  outline-offset: 2px;
+}
+@media (max-width: 760px) {
+  .RuntimeStatus_masterDetail,
+  .RuntimeStatus_detailFields {
+    grid-template-columns: 1fr;
+  }
+  .RuntimeStatus_serverRail {
+    border-right: 0;
+    border-bottom: 1px solid var(--dsw-alias-border-l2);
+  }
+}
+@media (max-width: 640px) {
+  .RuntimeStatus_settingsHeader,
+  .RuntimeStatus_skillCard {
+    grid-template-columns: 1fr;
+    flex-direction: column;
+  }
+  .RuntimeStatus_skillCard small {
+    text-align: left;
+  }
+}
+
+/* vendor/ui-autograph/src/client/AutoGraphView.module.css */
+.AutoGraphView_panel {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--dsw-alias-bg-layer-1);
+  color: var(--dsw-alias-label-primary);
+}
+.AutoGraphView_header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--dsw-alias-border-l2);
+  font: var(--dsw-font-xs-13);
+}
+.AutoGraphView_title {
+  font-weight: 600;
+}
+.AutoGraphView_meta {
+  color: var(--dsw-alias-label-secondary);
+}
+.AutoGraphView_status {
+  margin-left: auto;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: var(--dsw-alias-state-success-tertiary);
+  color: var(--dsw-alias-state-success-primary);
+  font-size: 11px;
+  line-height: 18px;
+}
+.AutoGraphView_status[data-paused=true] {
+  background: var(--dsw-alias-state-warn-tertiary);
+  color: var(--dsw-alias-state-warn-label);
+}
+.AutoGraphView_status[data-complete=true] {
+  background: var(--dsw-alias-state-business-tertiary);
+  color: var(--dsw-alias-state-business-primary);
+}
+.AutoGraphView_filters {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  margin: 0;
+  padding: 8px 16px;
+  border: 0;
+  border-bottom: 1px solid var(--dsw-alias-border-l2);
+  background: var(--dsw-alias-bg-layer-1);
+}
+.AutoGraphView_filters legend {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+.AutoGraphView_filters label {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  border: 1px solid var(--dsw-alias-border-l2);
+  border-radius: 999px;
+  color: var(--dsw-alias-label-secondary);
+  font-size: 11px;
+  line-height: 18px;
+  cursor: pointer;
+  user-select: none;
+}
+.AutoGraphView_filters label:has(input:checked) {
+  border-color: var(--dsw-alias-state-business-primary);
+  background: var(--dsw-alias-state-business-tertiary);
+  color: var(--dsw-alias-label-primary);
+}
+.AutoGraphView_filters input {
+  width: 13px;
+  height: 13px;
+  margin: 0;
+  accent-color: var(--dsw-alias-state-business-primary);
+}
+.AutoGraphView_filterCount {
+  margin-left: auto;
+  color: var(--dsw-alias-label-tertiary);
+  font-size: 11px;
+  line-height: 18px;
+  white-space: nowrap;
+}
+.AutoGraphView_columnLegend {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  padding: 6px 16px;
+  border-bottom: 1px solid var(--dsw-alias-border-l1);
+  background: var(--dsw-alias-bg-layer-2);
+  color: var(--dsw-alias-label-tertiary);
+  font-size: 11px;
+  line-height: 18px;
+  text-align: center;
+}
+.AutoGraphView_columnLegend span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.AutoGraphView_columnLegend span[data-kind=goal] {
+  color: var(--dsw-alias-state-warn-label);
+}
+.AutoGraphView_columnLegend span[data-kind=intent] {
+  color: var(--dsw-alias-state-business-primary);
+}
+.AutoGraphView_columnLegend span[data-kind=fact] {
+  color: var(--dsw-alias-state-success-primary);
+}
+.AutoGraphView_canvas {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  background: var(--dsw-alias-bg-layer-1);
+}
+.AutoGraphView_canvas .react-flow {
+  position: relative;
+  direction: ltr;
+  overflow: hidden;
+}
+.AutoGraphView_canvas .react-flow__container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.AutoGraphView_canvas .react-flow__pane {
+  z-index: 1;
+  touch-action: none;
+}
+.AutoGraphView_canvas .react-flow__viewport {
+  z-index: 2;
+  transform-origin: 0 0;
+  pointer-events: none;
+}
+.AutoGraphView_canvas .react-flow__renderer {
+  z-index: 4;
+}
+.AutoGraphView_canvas .react-flow__nodes {
+  z-index: 2;
+  pointer-events: none;
+  transform-origin: 0 0;
+}
+.AutoGraphView_canvas .react-flow__edges {
+  z-index: 1;
+}
+.AutoGraphView_canvas .react-flow__node {
+  position: absolute;
+  box-sizing: border-box;
+  transform-origin: 0 0;
+  pointer-events: all;
+  user-select: none;
+}
+.AutoGraphView_canvas .react-flow__edges,
+.AutoGraphView_canvas .react-flow__edges svg {
+  position: absolute;
+  overflow: visible;
+  pointer-events: none;
+}
+.AutoGraphView_canvas .react-flow__edge {
+  pointer-events: visibleStroke;
+}
+.AutoGraphView_canvas .react-flow__edge-path {
+  fill: none;
+}
+.AutoGraphView_canvas .react-flow__edge.animated path {
+  stroke-dasharray: 5;
+  animation: AutoGraphView_autographDash 0.5s linear infinite;
+}
+.AutoGraphView_canvas .react-flow__handle {
+  position: absolute;
+  border-radius: 50%;
+}
+.AutoGraphView_canvas .react-flow__handle-left {
+  top: 50%;
+  left: 0;
+  transform: translate(-50%, -50%);
+}
+.AutoGraphView_canvas .react-flow__handle-right {
+  top: 50%;
+  right: 0;
+  transform: translate(50%, -50%);
+}
+.AutoGraphView_canvas .react-flow__panel {
+  position: absolute;
+  z-index: 5;
+  margin: 15px;
+}
+.AutoGraphView_canvas .react-flow__panel.bottom {
+  bottom: 0;
+}
+.AutoGraphView_canvas .react-flow__panel.left {
+  left: 0;
+}
+.AutoGraphView_canvas .react-flow__panel.right {
+  right: 0;
+}
+.AutoGraphView_canvas .react-flow__minimap-svg {
+  display: block;
+}
+.AutoGraphView_canvas .react-flow__controls {
+  display: flex;
+  flex-direction: column;
+}
+.AutoGraphView_canvas .react-flow__controls-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  padding: 4px;
+  border: 0;
+  border-bottom: 1px solid var(--dsw-alias-border-l2);
+  cursor: pointer;
+}
+.AutoGraphView_canvas .react-flow__controls-button svg {
+  width: 100%;
+  max-width: 12px;
+  max-height: 12px;
+  fill: currentColor;
+}
+@keyframes AutoGraphView_autographDash {
+  from {
+    stroke-dashoffset: 10;
+  }
+}
+.AutoGraphView_canvas .react-flow {
+  width: 100%;
+  height: 100%;
+  --xy-background-color: var(--dsw-alias-bg-layer-1);
+  --xy-edge-stroke-default: var(--dsw-alias-border-l4);
+  --xy-minimap-background-color-default: var(--dsw-alias-bg-layer-2);
+  --xy-controls-button-background-color-default: var(--dsw-alias-bg-layer-2);
+  --xy-controls-button-background-color-hover-default: var(--dsw-alias-interactive-bg-hover-solid);
+  --xy-controls-button-color-default: var(--dsw-alias-label-secondary);
+  --xy-controls-button-border-color-default: var(--dsw-alias-border-l2);
+  --xy-background-pattern-dot-color-default: var(--dsw-alias-border-l3);
+}
+.AutoGraphView_canvas .react-flow__node {
+  border-radius: 8px;
+  font-size: 11px;
+  line-height: 18px;
+}
+.AutoGraphView_canvas .react-flow__controls {
+  overflow: hidden;
+  border: 1px solid var(--dsw-alias-border-l2);
+  border-radius: 8px;
+  box-shadow: var(--dsw-shadow-lv1);
+}
+.AutoGraphView_canvas .react-flow__controls-button {
+  border-bottom-color: var(--dsw-alias-border-l2);
+}
+.AutoGraphView_canvas .react-flow__edge-path {
+  stroke-width: 1.75;
+  vector-effect: non-scaling-stroke;
+  filter: drop-shadow(0 0 1px var(--dsw-alias-bg-layer-1));
+}
+.AutoGraphView_canvas .react-flow__edge.selected .react-flow__edge-path,
+.AutoGraphView_canvas .react-flow__edge:focus-visible .react-flow__edge-path {
+  stroke: var(--dsw-alias-state-business-primary);
+  stroke-width: 2.5;
+}
+.AutoGraphView_overview {
+  position: absolute;
+  right: 15px;
+  bottom: 15px;
+  z-index: 6;
+  width: 220px;
+  height: 140px;
+  overflow: hidden;
+  border: 1px solid var(--dsw-alias-border-l2);
+  border-radius: 8px;
+  background: var(--dsw-alias-bg-layer-2);
+  box-shadow: var(--dsw-shadow-lv1);
+  touch-action: none;
+}
+.AutoGraphView_overview svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
+}
+.AutoGraphView_overviewEdge {
+  fill: none;
+  stroke: var(--dsw-alias-border-l4);
+  stroke-width: 5;
+  vector-effect: non-scaling-stroke;
+}
+.AutoGraphView_overviewNode {
+  fill: var(--dsw-alias-bg-layer-3);
+  stroke-width: 5;
+  vector-effect: non-scaling-stroke;
+}
+.AutoGraphView_overviewNode[data-kind=goal] {
+  stroke: var(--dsw-alias-state-warn-primary);
+}
+.AutoGraphView_overviewNode[data-kind=intent] {
+  stroke: var(--dsw-alias-state-business-primary);
+}
+.AutoGraphView_overviewNode[data-kind=fact] {
+  stroke: var(--dsw-alias-state-success-primary);
+}
+.AutoGraphView_overviewNode[data-kind=hint] {
+  stroke: var(--dsw-alias-brand-primary-new-colorprimary-new-color);
+}
+.AutoGraphView_overviewViewport {
+  fill: var(--dsw-alias-bg-mask-2);
+  stroke: var(--dsw-alias-state-business-primary);
+  stroke-width: 6;
+  vector-effect: non-scaling-stroke;
+  pointer-events: none;
+}
+.AutoGraphView_empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 24px;
+  color: var(--dsw-alias-label-secondary);
+  font: var(--dsw-font-xs-13);
+  text-align: center;
+}
+.AutoGraphView_nodeCard {
+  position: relative;
+  box-sizing: border-box;
+  width: 252px;
+  min-height: 92px;
+  overflow: visible;
+  border: 1.5px solid var(--dsw-alias-border-l3);
+  border-radius: 10px;
+  background: var(--dsw-alias-bg-layer-3);
+  color: var(--dsw-alias-label-primary);
+  box-shadow: var(--dsw-shadow-lv1);
+}
+.AutoGraphView_nodeCard[data-kind=goal] {
+  border-color: var(--dsw-alias-state-warn-primary);
+}
+.AutoGraphView_nodeCard[data-kind=fact] {
+  border-color: var(--dsw-alias-state-success-primary);
+}
+.AutoGraphView_nodeCard[data-kind=intent] {
+  border-color: var(--dsw-alias-state-business-primary);
+}
+.AutoGraphView_nodeCard[data-kind=hint] {
+  border-color: var(--dsw-alias-brand-primary-new-colorprimary-new-color);
+}
+.AutoGraphView_nodeHeader {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--dsw-alias-border-l1);
+  color: var(--dsw-alias-label-secondary);
+  font-size: 11px;
+  line-height: 18px;
+}
+.AutoGraphView_nodeIcon {
+  display: inline-flex;
+  width: 16px;
+  height: 16px;
+  color: currentColor;
+}
+.AutoGraphView_nodeIcon svg {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.75;
+  vector-effect: non-scaling-stroke;
+}
+.AutoGraphView_nodeStatus {
+  margin-left: auto;
+  color: var(--dsw-alias-label-tertiary);
+}
+.AutoGraphView_nodeLabel {
+  padding: 10px 12px 12px;
+  font-size: 13px;
+  line-height: 20px;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+.AutoGraphView_handle {
+  width: 9px;
+  height: 9px;
+  border: 2px solid var(--dsw-alias-bg-layer-3);
+  background: var(--dsw-alias-label-tertiary);
+}
+.AutoGraphView_nodeCard[data-kind=goal] .AutoGraphView_handle {
+  background: var(--dsw-alias-state-warn-primary);
+}
+.AutoGraphView_nodeCard[data-kind=fact] .AutoGraphView_handle {
+  background: var(--dsw-alias-state-success-primary);
+}
+.AutoGraphView_nodeCard[data-kind=intent] .AutoGraphView_handle {
+  background: var(--dsw-alias-state-business-primary);
+}
+.AutoGraphView_nodeCard[data-kind=hint] .AutoGraphView_handle {
+  background: var(--dsw-alias-brand-primary-new-colorprimary-new-color);
+}
+.AutoGraphView_controls {
+  display: flex;
+  gap: 8px;
+  padding: 10px 16px;
+  border-top: 1px solid var(--dsw-alias-border-l2);
+  background: var(--dsw-alias-bg-layer-1);
+}
+.AutoGraphView_controls button,
+.AutoGraphView_controls input {
+  box-sizing: border-box;
+  min-height: 32px;
+  border: 1px solid var(--dsw-alias-border-l2);
+  border-radius: 8px;
+  background: var(--dsw-alias-bg-layer-2);
+  color: var(--dsw-alias-label-primary);
+  font-size: 12px;
+  line-height: 18px;
+}
+.AutoGraphView_controls button {
+  padding: 6px 14px;
+  cursor: pointer;
+}
+.AutoGraphView_controls button:hover:not(:disabled) {
+  background: var(--dsw-alias-interactive-bg-hover-solid);
+}
+.AutoGraphView_controls button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.AutoGraphView_controls input {
+  flex: 1;
+  min-width: 0;
+  padding: 6px 10px;
+}
+.AutoGraphView_controls input::placeholder {
+  color: var(--dsw-alias-label-tertiary);
+}
+.AutoGraphView_controls :is(button, input):focus-visible {
+  outline: 2px solid var(--dsw-alias-state-business-primary);
+  outline-offset: 2px;
+}
+/*# sourceMappingURL=client.css.map */

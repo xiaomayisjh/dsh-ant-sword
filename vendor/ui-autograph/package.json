@@ -1,7 +1,7 @@
 {
   "name": "@deepseek-ai/dsh-client-ui-autograph",
   "description": "Autonomous-loop graph and MCP settings surface for the Ant Sword profile",
-  "version": "0.1.0-rc.14",
+  "version": "0.1.0-rc.15",
   "private": true,
   "type": "module",
   "main": "lib/index.js",
@@ -27,6 +27,8 @@
     "lib/invariant.js",
     "lib/client.js",
     "lib/client.js.map",
+    "lib/client.css",
+    "lib/client.css.map",
     "lib/types/**/*.d.ts",
     "src/client"
   ],
@@ -44,5 +46,12 @@
       "platform": "web"
     }
   },
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "build": "node ../../scripts/build.mjs build",
+    "build:bundle": "node ../../scripts/build.mjs bundle",
+    "build:types": "node ../../scripts/build.mjs types",
+    "typecheck": "node ../../scripts/build.mjs typecheck",
+    "test": "vitest run tests"
+  }
 }

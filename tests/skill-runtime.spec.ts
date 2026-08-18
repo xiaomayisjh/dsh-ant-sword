@@ -3,7 +3,7 @@ import { SkillsReconciler } from '../src/skill-runtime.ts'
 import type { AntSwordRuntimeConfig } from '../src/runtime-config.ts'
 
 function runtime(disabledSkills: string[]): AntSwordRuntimeConfig {
-  return { mcpServers: [], rules: [], disabledSkills }
+  return { mcpServers: [], rules: [], disabledSkills, thinkingPolicies: [] }
 }
 
 describe('skill disable overlay', () => {
