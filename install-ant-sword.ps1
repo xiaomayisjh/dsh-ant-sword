@@ -1,4 +1,4 @@
-param(
+﻿param(
   [string]$Profile = 'web',
   [string]$Repository = 'xiaomayisjh/dsh-ant-sword',
   [string]$Tag,
@@ -11,6 +11,26 @@ foreach ($command in @('dsh', 'pnpm', 'node')) {
   if ($null -eq (Get-Command $command -ErrorAction SilentlyContinue)) { throw "Required command not found: $command" }
 }
 
+function Stop-StaleDshWeb {
+  param([int]$Port = 3080)
+
+  $connections = Get-NetTCPConnection -LocalPort $Port -State Listen -ErrorAction SilentlyContinue
+  foreach ($connection in $connections) {
+    $processId = $connection.OwningProcess
+    if ($null -eq $processId -or $processId -eq 0) { continue }
+    $process = Get-CimInstance Win32_Process -Filter "ProcessId = $processId" -ErrorAction SilentlyContinue
+    if ($null -eq $process) { continue }
+    $commandLine = [string]$process.CommandLine
+    if ($commandLine -match 'dsh.*web' -or $commandLine -match 'dsh.*bin\.js') {
+      Write-Host "ant-sword: stopping stale dsh instance on port $Port (PID $processId)"
+      Stop-Process -Id $processId -Force -ErrorAction SilentlyContinue
+      Start-Sleep -Milliseconds 500
+    } else {
+      Write-Warning "Port $Port is held by PID $processId ($($process.Name)), which is not dsh. Not stopping it automatically."
+    }
+  }
+}
+
 function Install-AntSwordRelease {
   param(
     [string]$ReleasePath,
@@ -19,6 +39,11 @@ function Install-AntSwordRelease {
 
   node $InstallerPath --profile $Profile --release $ReleasePath
   if ($LASTEXITCODE -ne 0) { throw 'Profile installation failed.' }
+}
+
+# Stop any stale dsh web instance so the freshly installed plugin starts cleanly.
+if ($Profile -eq 'web') {
+  Stop-StaleDshWeb -Port 3080
 }
 
 if ($Release) {

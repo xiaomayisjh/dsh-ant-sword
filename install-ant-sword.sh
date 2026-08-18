@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+﻿#!/usr/bin/env bash
 set -euo pipefail
 
 profile="${PROFILE:-web}"
@@ -7,7 +7,7 @@ tag="${TAG:-}"
 release=""
 
 usage() {
-  echo 'usage: install-ant-sword.sh [--profile web] [--repository owner/name] [--tag vX.Y.Z] [--release directory-or-manifest]' >&2
+  echo "usage: install-ant-sword.sh [--profile web] [--repository owner/name] [--tag vX.Y.Z] [--release directory-or-manifest]" >&2
 }
 
 while (($# > 0)); do
@@ -43,6 +43,34 @@ for required in dsh pnpm node; do
   command -v "$required" >/dev/null 2>&1 || { echo "Required command not found: $required" >&2; exit 1; }
 done
 
+stop_stale_dsh_web() {
+  local port="${1:-3080}"
+  local pids
+  if command -v lsof >/dev/null 2>&1; then
+    pids="$(lsof -ti tcp:"$port" -sTCP:LISTEN 2>/dev/null || true)"
+  elif command -v fuser >/dev/null 2>&1; then
+    pids="$(fuser "$port"/tcp 2>/dev/null || true)"
+  else
+    return 0
+  fi
+  for pid in $pids; do
+    case "$pid" in ''|*[!0-9]*) continue ;; esac
+    local cmdline
+    cmdline="$(ps -p "$pid" -o args= 2>/dev/null || true)"
+    if echo "$cmdline" | grep -q 'dsh'; then
+      echo "ant-sword: stopping stale dsh instance on port $port (PID $pid)"
+      kill "$pid" 2>/dev/null || true
+      sleep 0.5
+    else
+      echo "Warning: port $port is held by PID $pid ($cmdline), which is not dsh. Not stopping it automatically." >&2
+    fi
+  done
+}
+
+if [[ "$profile" == "web" ]]; then
+  stop_stale_dsh_web 3080
+fi
+
 if [[ -n "$release" ]]; then
   script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
   installer="$script_dir/scripts/install-profile.mjs"
@@ -74,8 +102,8 @@ else
   node "$workspace/scripts/install-profile.mjs" --profile "$profile" --release "$workspace"
 fi
 
-if [[ "$profile" == 'web' ]]; then
-  echo 'Ant Sword installed. Start with: dsh web'
+if [[ "$profile" == "web" ]]; then
+  echo "Ant Sword installed. Start with: dsh web"
 else
   echo "Ant Sword installed. Start with: dsh --profile $profile"
 fi

@@ -1,9 +1,10 @@
-#!/usr/bin/env node
+﻿#!/usr/bin/env node
 
 import { spawnSync } from 'node:child_process'
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { isAbsolute, join, resolve } from 'node:path'
 import { homedir } from 'node:os'
+import { createServer } from 'node:net'
 import { parseArgs } from 'node:util'
 import { resolveLocalRelease } from './release-artifacts.mjs'
 
@@ -27,6 +28,45 @@ function installSpec(spec) {
   if (isAbsolute(spec)) return spec
   if (/^(?:\.{1,2})(?:[/\\]|$)/.test(spec)) return resolve(process.cwd(), spec)
   return spec
+}
+
+/**
+ * Detect whether a TCP port is already bound (e.g. a stale dsh web instance).
+ * Returns true when something is listening; resolves false when free.
+ */
+async function isPortInUse(host, port) {
+  return await new Promise(resolvePromise => {
+    const probe = createServer()
+    probe.once('error', () => resolvePromise(true))
+    probe.once('listening', () => probe.close(() => resolvePromise(false)))
+    probe.listen(port, host)
+  })
+}
+
+/**
+ * Pre-install guard: when the target profile boots a webserver on the default
+ * port, surface a stale-listener conflict before the profile installation
+ * overwrites files that a running dsh instance may still hold open.
+ */
+async function assertWebPortFree(profileName, cleanup) {
+  if (profileName !== 'web') return
+  const host = '127.0.0.1'
+  const port = Number(process.env.DSH_WEB_PORT ?? 3080)
+  if (!(await isPortInUse(host, port))) return
+
+  const suffix = [
+    '',
+    `ant-sword: port ${host}:${port} is already in use.`,
+    '         Another dsh web instance (or a stale one) is holding the port.',
+    '         Options:',
+    `           1. Stop the running instance, then run the installer again.`,
+    `           2. Install anyway and start dsh with: dsh web --port <other-port>`,
+    cleanup
+      ? '         (cleanup=true was set, but automatic killing is disabled for safety;'
+      : '         The installer never kills processes automatically.',
+  ]
+  if (cleanup) suffix.push('         identify the owner with your OS tools and stop it manually.)')
+  console.error(suffix.join('\n'))
 }
 
 function addBundleLayer(profileDir, packageName) {
@@ -68,6 +108,8 @@ if (values.release !== undefined && hasExplicitTarballs) {
 if (values.release === undefined && (values.bundle === undefined || values.ui === undefined)) {
   throw new Error('usage: dsh-ant-sword-install (--release <release-directory-or-manifest> | --bundle <bundle-tarball-or-path> --ui <ui-tarball-or-path>) [--profile web]')
 }
+
+await assertWebPortFree(values.profile, false)
 
 const artifacts = values.release === undefined
   ? { bundle: values.bundle, ui: values.ui }
