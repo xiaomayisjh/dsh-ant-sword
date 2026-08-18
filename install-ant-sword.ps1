@@ -1,4 +1,4 @@
-﻿param(
+param(
   [string]$Profile = 'web',
   [string]$Repository = 'xiaomayisjh/dsh-ant-sword',
   [string]$Tag,
