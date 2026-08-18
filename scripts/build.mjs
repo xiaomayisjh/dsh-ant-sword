@@ -1,4 +1,4 @@
-import { spawnSync } from 'node:child_process'
+﻿import { spawnSync } from 'node:child_process'
 import { existsSync, mkdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs'
 import { join, relative, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -97,9 +97,11 @@ function buildBundles() {
     '--bundle',
     '--platform=browser',
     '--format=cjs',
-    '--packages=external',
     '--target=es2022',
     '--sourcemap',
+    // Keep host-provided modules external; bundle third-party deps (e.g. @xyflow/react)
+    '--external:react',
+    '--external:@deepseek-ai/*',
     '--banner:js=window.__ModuleLoader__.load({ id: "@deepseek-ai/dsh-client-ui-autograph", factory: (require) => { var module = { exports: {} }; var exports = module.exports;',
     '--footer:js=return module.exports; } });',
     '--outfile=vendor/ui-autograph/lib/client.js',
