@@ -17,6 +17,12 @@ export declare class McpReconciler implements RuntimeReconciler {
     private enqueue;
     private assertUsable;
     private mount;
+    /** Report one server failure without making it a bundle-level failure. */
+    private reportFailure;
+    /** Dispose one fiber and remove only that server from the live set. */
+    private disposeServer;
+    /** Reconcile one changed server; failures are intentionally isolated. */
+    private reconcileServer;
     /** Probe the applied server configuration, serialized with lifecycle changes. */
     probe(serverName: string): Promise<mcpClient.McpProbeResult>;
     /** Reload an applied server without losing its previous live fiber on failure. */

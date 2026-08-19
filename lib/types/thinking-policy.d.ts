@@ -1,7 +1,7 @@
 /** Five-level reasoning policy mapped onto adapter-owned model capabilities. */
 import type { Context } from '@deepseek-ai/cordis';
 import type { LlmCallConfig, LlmReasoningEffortInfo } from '@deepseek-ai/dsh-llm';
-import type { AntSwordRuntimeConfig, ChannelThinkingPolicy, ThinkingLevel } from './runtime-config.ts';
+import type { AntSwordRuntimeConfig, ChannelThinkingPolicy, ThinkingFallbackPolicy, ThinkingLevel } from './runtime-config.ts';
 export declare const THINKING_LEVELS: readonly ["minimum", "low", "medium", "high", "maximum"];
 export interface ThinkingCapability {
     providerId: string;
@@ -9,6 +9,7 @@ export interface ThinkingCapability {
     supported: boolean;
     efforts: readonly LlmReasoningEffortInfo[];
     defaultEffort?: LlmReasoningEffortInfo['id'];
+    fallback?: boolean;
 }
 export interface ThinkingPolicySource {
     snapshot(): {
@@ -17,6 +18,7 @@ export interface ThinkingPolicySource {
 }
 export declare function mapThinkingLevel(level: ThinkingLevel, efforts: readonly LlmReasoningEffortInfo[]): LlmReasoningEffortInfo | undefined;
 export declare function findThinkingPolicy(policies: readonly ChannelThinkingPolicy[], providerId: string, modelId: string): ChannelThinkingPolicy | undefined;
+export declare function findThinkingFallback(fallbacks: readonly ThinkingFallbackPolicy[], providerId: string, modelId: string): ThinkingFallbackPolicy | undefined;
 export declare class ThinkingPolicyRuntime {
     private readonly ctx;
     private readonly source;

@@ -111,8 +111,8 @@ export class ThinkingPolicyRuntime {
           providerId,
           modelId,
           supported: true,
-          efforts: info.reasoning.efforts,
-          ...(info.reasoning.defaultEffort === undefined ? {} : { defaultEffort: info.reasoning.defaultEffort }),
+          efforts: info.reasoning?.efforts ?? [],
+          ...(info.reasoning?.defaultEffort === undefined ? {} : { defaultEffort: info.reasoning.defaultEffort }),
         }
       }
 

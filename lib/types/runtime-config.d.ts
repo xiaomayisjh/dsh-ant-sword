@@ -23,6 +23,18 @@ export interface ChannelThinkingPolicy {
     modelId: string;
     level: ThinkingLevel;
 }
+export interface SimulatedEfforts {
+    minimum: string;
+    low: string;
+    medium: string;
+    high: string;
+    maximum: string;
+}
+export interface ThinkingFallbackPolicy {
+    providerId: string;
+    modelId: string;
+    simulatedEfforts: SimulatedEfforts;
+}
 export type RulePlacement = 'before-persona' | 'after-persona' | 'before-tools' | 'after-tools';
 export interface RuntimeRuleConfig {
     id: string;
@@ -37,8 +49,11 @@ export interface AntSwordRuntimeConfig {
     disabledSkills: string[];
     rules: RuntimeRuleConfig[];
     thinkingPolicies: ChannelThinkingPolicy[];
+    thinkingFallbacks: ThinkingFallbackPolicy[];
 }
 export declare const ChannelThinkingPolicySchema: z<ChannelThinkingPolicy>;
+export declare const SimulatedEffortsSchema: z<SimulatedEfforts>;
+export declare const ThinkingFallbackPolicySchema: z<ThinkingFallbackPolicy>;
 export declare const RuntimeRuleSchema: z<RuntimeRuleConfig>;
 export declare const AntSwordRuntimeConfigSchema: z<AntSwordRuntimeConfig>;
 export declare const DEFAULT_RUNTIME_CONFIG: AntSwordRuntimeConfig;

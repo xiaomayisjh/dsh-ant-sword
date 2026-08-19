@@ -15,9 +15,9 @@ var __export = (target, all) => {
 };
 var __copyProps = (to, from, except, desc) => {
   if (from && typeof from === "object" || typeof from === "function") {
-    for (let key2 of __getOwnPropNames(from))
-      if (!__hasOwnProp.call(to, key2) && key2 !== except)
-        __defProp(to, key2, { get: () => from[key2], enumerable: !(desc = __getOwnPropDesc(from, key2)) || desc.enumerable });
+    for (let key3 of __getOwnPropNames(from))
+      if (!__hasOwnProp.call(to, key3) && key3 !== except)
+        __defProp(to, key3, { get: () => from[key3], enumerable: !(desc = __getOwnPropDesc(from, key3)) || desc.enumerable });
   }
   return to;
 };
@@ -72,7 +72,7 @@ var require_use_sync_external_store_shim_development = __commonJS({
           return x === y && (x !== 0 || 1 / x === 1 / y) || x !== x && y !== y;
         }
         var objectIs = typeof Object.is === "function" ? Object.is : is;
-        var useState9 = React.useState, useEffect8 = React.useEffect, useLayoutEffect2 = React.useLayoutEffect, useDebugValue2 = React.useDebugValue;
+        var useState10 = React.useState, useEffect8 = React.useEffect, useLayoutEffect2 = React.useLayoutEffect, useDebugValue2 = React.useDebugValue;
         var didWarnOld18Alpha = false;
         var didWarnUncachedGetSnapshot = false;
         function useSyncExternalStore3(subscribe, getSnapshot, getServerSnapshot) {
@@ -94,7 +94,7 @@ var require_use_sync_external_store_shim_development = __commonJS({
               }
             }
           }
-          var _useState = useState9({
+          var _useState = useState10({
             inst: {
               value,
               getSnapshot
@@ -277,7 +277,7 @@ module.exports = __toCommonJS(index_exports);
 var import_client2 = require("@deepseek-ai/dsh-client-runtime/client");
 
 // vendor/ui-autograph/src/client/AutoGraphView.tsx
-var import_react12 = require("react");
+var import_react13 = require("react");
 
 // node_modules/.pnpm/@xyflow+react@12.11.3_@type_2f4206708d2ff87c461454428d0e71ff/node_modules/@xyflow/react/dist/esm/index.js
 var import_jsx_runtime = require("react/jsx-runtime");
@@ -572,11 +572,11 @@ function bindIndex(parent, group, enter, update, exit, data) {
     }
   }
 }
-function bindKey(parent, group, enter, update, exit, data, key2) {
+function bindKey(parent, group, enter, update, exit, data, key3) {
   var i, node, nodeByKeyValue = /* @__PURE__ */ new Map(), groupLength = group.length, dataLength = data.length, keyValues = new Array(groupLength), keyValue;
   for (i = 0; i < groupLength; ++i) {
     if (node = group[i]) {
-      keyValues[i] = keyValue = key2.call(node, node.__data__, i, group) + "";
+      keyValues[i] = keyValue = key3.call(node, node.__data__, i, group) + "";
       if (nodeByKeyValue.has(keyValue)) {
         exit[i] = node;
       } else {
@@ -585,7 +585,7 @@ function bindKey(parent, group, enter, update, exit, data, key2) {
     }
   }
   for (i = 0; i < dataLength; ++i) {
-    keyValue = key2.call(parent, data[i], i, data) + "";
+    keyValue = key3.call(parent, data[i], i, data) + "";
     if (node = nodeByKeyValue.get(keyValue)) {
       update[i] = node;
       node.__data__ = data[i];
@@ -603,13 +603,13 @@ function bindKey(parent, group, enter, update, exit, data, key2) {
 function datum(node) {
   return node.__data__;
 }
-function data_default(value, key2) {
+function data_default(value, key3) {
   if (!arguments.length) return Array.from(this, datum);
-  var bind = key2 ? bindKey : bindIndex, parents = this._parents, groups = this._groups;
+  var bind = key3 ? bindKey : bindIndex, parents = this._parents, groups = this._groups;
   if (typeof value !== "function") value = constant_default(value);
   for (var m = groups.length, update = new Array(m), enter = new Array(m), exit = new Array(m), j = 0; j < m; ++j) {
     var parent = parents[j], group = groups[j], groupLength = group.length, data = arraylike(value.call(parent, parent && parent.__data__, j, parents)), dataLength = data.length, enterGroup = enter[j] = new Array(dataLength), updateGroup = update[j] = new Array(dataLength), exitGroup = exit[j] = new Array(groupLength);
-    bind(parent, group, enterGroup, updateGroup, exitGroup, data, key2);
+    bind(parent, group, enterGroup, updateGroup, exitGroup, data, key3);
     for (var i0 = 0, i1 = 0, previous, next; i0 < dataLength; ++i0) {
       if (previous = enterGroup[i0]) {
         if (i0 >= i1) i1 = i0 + 1;
@@ -1410,7 +1410,7 @@ function define_default(constructor, factory, prototype) {
 }
 function extend(parent, definition) {
   var prototype = Object.create(parent.prototype);
-  for (var key2 in definition) prototype[key2] = definition[key2];
+  for (var key3 in definition) prototype[key3] = definition[key3];
   return prototype;
 }
 
@@ -2482,12 +2482,12 @@ function attrTween(name, value) {
   return tween;
 }
 function attrTween_default(name, value) {
-  var key2 = "attr." + name;
-  if (arguments.length < 2) return (key2 = this.tween(key2)) && key2._value;
-  if (value == null) return this.tween(key2, null);
+  var key3 = "attr." + name;
+  if (arguments.length < 2) return (key3 = this.tween(key3)) && key3._value;
+  if (value == null) return this.tween(key3, null);
   if (typeof value !== "function") throw new Error();
   var fullname = namespace_default(name);
-  return this.tween(key2, (fullname.local ? attrTweenNS : attrTween)(fullname, value));
+  return this.tween(key3, (fullname.local ? attrTweenNS : attrTween)(fullname, value));
 }
 
 // node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/delay.js
@@ -2680,9 +2680,9 @@ function styleFunction2(name, interpolate, value) {
   };
 }
 function styleMaybeRemove(id2, name) {
-  var on0, on1, listener0, key2 = "style." + name, event = "end." + key2, remove2;
+  var on0, on1, listener0, key3 = "style." + name, event = "end." + key3, remove2;
   return function() {
-    var schedule = set2(this, id2), on = schedule.on, listener = schedule.value[key2] == null ? remove2 || (remove2 = styleRemove2(name)) : void 0;
+    var schedule = set2(this, id2), on = schedule.on, listener = schedule.value[key3] == null ? remove2 || (remove2 = styleRemove2(name)) : void 0;
     if (on !== on0 || listener0 !== listener) (on1 = (on0 = on).copy()).on(event, listener0 = listener);
     schedule.on = on1;
   };
@@ -2709,11 +2709,11 @@ function styleTween(name, value, priority) {
   return tween;
 }
 function styleTween_default(name, value, priority) {
-  var key2 = "style." + (name += "");
-  if (arguments.length < 2) return (key2 = this.tween(key2)) && key2._value;
-  if (value == null) return this.tween(key2, null);
+  var key3 = "style." + (name += "");
+  if (arguments.length < 2) return (key3 = this.tween(key3)) && key3._value;
+  if (value == null) return this.tween(key3, null);
   if (typeof value !== "function") throw new Error();
-  return this.tween(key2, styleTween(name, value, priority == null ? "" : priority));
+  return this.tween(key3, styleTween(name, value, priority == null ? "" : priority));
 }
 
 // node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/text.js
@@ -2749,11 +2749,11 @@ function textTween(value) {
   return tween;
 }
 function textTween_default(value) {
-  var key2 = "text";
-  if (arguments.length < 1) return (key2 = this.tween(key2)) && key2._value;
-  if (value == null) return this.tween(key2, null);
+  var key3 = "text";
+  if (arguments.length < 1) return (key3 = this.tween(key3)) && key3._value;
+  if (value == null) return this.tween(key3, null);
   if (typeof value !== "function") throw new Error();
-  return this.tween(key2, textTween(value));
+  return this.tween(key3, textTween(value));
 }
 
 // node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/transition.js
@@ -3092,10 +3092,10 @@ function zoom_default2() {
       }
       return this;
     },
-    zoom: function(key2, transform2) {
-      if (this.mouse && key2 !== "mouse") this.mouse[1] = transform2.invert(this.mouse[0]);
-      if (this.touch0 && key2 !== "touch") this.touch0[1] = transform2.invert(this.touch0[0]);
-      if (this.touch1 && key2 !== "touch") this.touch1[1] = transform2.invert(this.touch1[0]);
+    zoom: function(key3, transform2) {
+      if (this.mouse && key3 !== "mouse") this.mouse[1] = transform2.invert(this.mouse[0]);
+      if (this.touch0 && key3 !== "touch") this.touch0[1] = transform2.invert(this.touch0[0]);
+      if (this.touch1 && key3 !== "touch") this.touch1[1] = transform2.invert(this.touch1[0]);
       this.that.__zoom = transform2;
       this.emit("zoom");
       return this;
@@ -4189,7 +4189,7 @@ function getMarkerId(marker, id2) {
     return marker;
   }
   const idPrefix = id2 ? `${id2}__` : "";
-  return `${idPrefix}${Object.keys(marker).sort().map((key2) => `${key2}=${marker[key2]}`).join("&")}`;
+  return `${idPrefix}${Object.keys(marker).sort().map((key3) => `${key3}=${marker[key3]}`).join("&")}`;
 }
 function createMarkerIds(edges, { id: id2, defaultColor, defaultMarkerStart, defaultMarkerEnd }) {
   const ids = /* @__PURE__ */ new Set();
@@ -4221,9 +4221,9 @@ var adoptUserNodesDefaultOptions = {
 };
 function mergeObjects(base, incoming) {
   const result = { ...base };
-  for (const key2 in incoming) {
-    if (incoming[key2] !== void 0) {
-      result[key2] = incoming[key2];
+  for (const key3 in incoming) {
+    if (incoming[key3] !== void 0) {
+      result[key3] = incoming[key3];
     }
   }
   return result;
@@ -4538,16 +4538,16 @@ async function panBy({ delta, panZoom, transform: transform2, translateExtent, w
   return transformChanged;
 }
 function addConnectionToLookup(type, connection, connectionKey, connectionLookup, nodeId, handleId) {
-  let key2 = nodeId;
-  const nodeMap = connectionLookup.get(key2) || /* @__PURE__ */ new Map();
-  connectionLookup.set(key2, nodeMap.set(connectionKey, connection));
-  key2 = `${nodeId}-${type}`;
-  const typeMap = connectionLookup.get(key2) || /* @__PURE__ */ new Map();
-  connectionLookup.set(key2, typeMap.set(connectionKey, connection));
+  let key3 = nodeId;
+  const nodeMap = connectionLookup.get(key3) || /* @__PURE__ */ new Map();
+  connectionLookup.set(key3, nodeMap.set(connectionKey, connection));
+  key3 = `${nodeId}-${type}`;
+  const typeMap = connectionLookup.get(key3) || /* @__PURE__ */ new Map();
+  connectionLookup.set(key3, typeMap.set(connectionKey, connection));
   if (handleId) {
-    key2 = `${nodeId}-${type}-${handleId}`;
-    const handleMap = connectionLookup.get(key2) || /* @__PURE__ */ new Map();
-    connectionLookup.set(key2, handleMap.set(connectionKey, connection));
+    key3 = `${nodeId}-${type}-${handleId}`;
+    const handleMap = connectionLookup.get(key3) || /* @__PURE__ */ new Map();
+    connectionLookup.set(key3, handleMap.set(connectionKey, connection));
   }
 }
 function updateConnectionLookup(connectionLookup, edgeLookup, edges) {
@@ -5977,8 +5977,8 @@ function shallow(objA, objB) {
   if (objA instanceof Map && objB instanceof Map) {
     if (objA.size !== objB.size)
       return false;
-    for (const [key2, value] of objA) {
-      if (!Object.is(value, objB.get(key2))) {
+    for (const [key3, value] of objA) {
+      if (!Object.is(value, objB.get(key3))) {
         return false;
       }
     }
@@ -8364,8 +8364,8 @@ function useNodeOrEdgeTypesWarning(nodeOrEdgeTypes = emptyTypes) {
   (0, import_react2.useEffect)(() => {
     if (true) {
       const usedKeys = /* @__PURE__ */ new Set([...Object.keys(typesRef.current), ...Object.keys(nodeOrEdgeTypes)]);
-      for (const key2 of usedKeys) {
-        if (typesRef.current[key2] !== nodeOrEdgeTypes[key2]) {
+      for (const key3 of usedKeys) {
+        if (typesRef.current[key3] !== nodeOrEdgeTypes[key3]) {
           store.getState().onError?.("002", errorMessages["error002"]());
           break;
         }
@@ -9255,10 +9255,10 @@ function ResizeControl({ nodeId, position, variant = ResizeControlVariant.Handle
 var NodeResizeControl = (0, import_react2.memo)(ResizeControl);
 
 // vendor/ui-autograph/src/client/RuntimeStatus.tsx
-var import_react8 = require("react");
+var import_react9 = require("react");
 
 // vendor/ui-autograph/src/client/RuntimeConfigEditor.tsx
-var import_react7 = require("react");
+var import_react8 = require("react");
 
 // vendor/ui-autograph/src/client/McpConfigEditor.tsx
 var import_react3 = require("react");
@@ -9428,22 +9428,22 @@ var RuntimeStatus_default = {
 var import_jsx_runtime2 = require("react/jsx-runtime");
 function McpKeyValueEditor({ label, value, onChange }) {
   const entries = Object.entries(value);
-  const update = (index2, key2, itemValue) => {
-    onChange(Object.fromEntries(entries.map((entry, at) => at === index2 ? [key2, itemValue] : entry)));
+  const update = (index2, key3, itemValue) => {
+    onChange(Object.fromEntries(entries.map((entry, at) => at === index2 ? [key3, itemValue] : entry)));
   };
   return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("fieldset", { className: RuntimeStatus_default.keyValues, children: [
     /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("legend", { children: label }),
-    entries.map(([key2, itemValue], index2) => /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("input", { "aria-label": `${label}\u540D\u79F0 ${index2 + 1}`, placeholder: "\u540D\u79F0", value: key2, onChange: (event) => {
+    entries.map(([key3, itemValue], index2) => /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("input", { "aria-label": `${label}\u540D\u79F0 ${index2 + 1}`, placeholder: "\u540D\u79F0", value: key3, onChange: (event) => {
         update(index2, event.target.value, itemValue);
       } }),
       /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("input", { "aria-label": `${label}\u503C ${index2 + 1}`, placeholder: "\u503C", value: itemValue, onChange: (event) => {
-        update(index2, key2, event.target.value);
+        update(index2, key3, event.target.value);
       } }),
-      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("button", { type: "button", "aria-label": `\u5220\u9664${label} ${key2 || index2 + 1}`, onClick: () => {
+      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("button", { type: "button", "aria-label": `\u5220\u9664${label} ${key3 || index2 + 1}`, onClick: () => {
         onChange(Object.fromEntries(entries.filter((_, at) => at !== index2)));
       }, children: "\u5220\u9664" })
-    ] }, `${index2}-${key2}`)),
+    ] }, `${index2}-${key3}`)),
     /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("button", { type: "button", onClick: () => {
       onChange({ ...value, [`KEY_${entries.length + 1}`]: "" });
     }, children: [
@@ -10131,7 +10131,22 @@ function ThinkingPolicyEditor({ policies, saving, onChange, onSave }) {
         },
         level.id
       )) }),
-      capability !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("small", { children: capability.supported ? `\u6A21\u578B\u652F\u6301 ${capability.efforts.length} \u6863\uFF1A${capability.efforts.map((effort) => effort.name).join(" / ")}` : "\u8BE5\u6A21\u578B\u4E0D\u652F\u6301 reasoning effort" }),
+      capability !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("small", { children: capability.supported ? /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_jsx_runtime6.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+          "span",
+          {
+            className: RuntimeStatus_default.capabilityStatus,
+            "data-supported": "true",
+            "data-fallback": capability.fallback === true ? "true" : "false",
+            children: capability.fallback === true ? "\u4F7F\u7528 Fallback \u914D\u7F6E" : "\u539F\u751F\u652F\u6301"
+          }
+        ),
+        " ",
+        "\u6A21\u578B\u652F\u6301 ",
+        capability.efforts.length,
+        " \u6863\uFF1A",
+        capability.efforts.map((effort) => effort.name).join(" / ")
+      ] }) : /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: RuntimeStatus_default.capabilityStatus, "data-supported": "false", children: "\u8BE5\u6A21\u578B\u4E0D\u652F\u6301 reasoning effort\uFF0C\u8BF7\u5728 Fallback \u6807\u7B7E\u9875\u6DFB\u52A0\u914D\u7F6E" }) }),
       error !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: RuntimeStatus_default.installError, children: error })
     ] }),
     policies.map((policy) => /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("article", { className: RuntimeStatus_default.card, children: [
@@ -10151,23 +10166,202 @@ function ThinkingPolicyEditor({ policies, saving, onChange, onSave }) {
   ] });
 }
 
-// vendor/ui-autograph/src/client/RuntimeConfigEditor.tsx
+// vendor/ui-autograph/src/client/ThinkingFallbackEditor.tsx
+var import_react7 = require("react");
 var import_jsx_runtime7 = require("react/jsx-runtime");
-var EMPTY = { mcpServers: [], disabledSkills: [], rules: [], thinkingPolicies: [] };
+function key2(fallback) {
+  return `${fallback.providerId}\0${fallback.modelId}`;
+}
+var COMMON_FALLBACKS = [
+  {
+    label: "OpenAI o1 \u7CFB\u5217",
+    config: {
+      providerId: "custom-openai",
+      modelId: "o1-*",
+      simulatedEfforts: { minimum: "low", low: "medium", medium: "medium", high: "high", maximum: "high" }
+    }
+  },
+  {
+    label: "Claude 3.5 Sonnet",
+    config: {
+      providerId: "custom-anthropic",
+      modelId: "claude-3-5-sonnet-*",
+      simulatedEfforts: { minimum: "low", low: "medium", medium: "medium", high: "high", maximum: "high" }
+    }
+  },
+  {
+    label: "Gemini 2.0 Flash Thinking",
+    config: {
+      providerId: "custom-google",
+      modelId: "gemini-2.0-flash-thinking-*",
+      simulatedEfforts: { minimum: "low", low: "medium", medium: "medium", high: "high", maximum: "high" }
+    }
+  }
+];
+function ThinkingFallbackEditor({ fallbacks, saving, onChange, onSave }) {
+  const [editing, setEditing] = (0, import_react7.useState)(null);
+  const [showPresets, setShowPresets] = (0, import_react7.useState)(false);
+  const startEdit = (fallback) => {
+    setEditing(fallback ?? {
+      providerId: "",
+      modelId: "",
+      simulatedEfforts: { minimum: "low", low: "medium", medium: "medium", high: "high", maximum: "high" }
+    });
+  };
+  const saveEdit = () => {
+    if (editing === null || editing.providerId === "" || editing.modelId === "") return;
+    const next = [...fallbacks.filter((fb) => key2(fb) !== key2(editing)), editing];
+    onChange(next);
+    setEditing(null);
+  };
+  const remove2 = (target) => {
+    onChange(fallbacks.filter((fb) => key2(fb) !== key2(target)));
+  };
+  const addPreset = (preset) => {
+    if (fallbacks.some((fb) => key2(fb) === key2(preset))) return;
+    onChange([...fallbacks, preset]);
+    setShowPresets(false);
+  };
+  return /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: RuntimeStatus_default.editorList, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: RuntimeStatus_default.editorHeader, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("h3", { children: "\u601D\u8003\u5F3A\u5EA6 Fallback" }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("p", { children: [
+          "\u4E3A\u4E0D\u652F\u6301\u539F\u751F reasoning \u7684\u81EA\u5B9A\u4E49\u6A21\u578B\u914D\u7F6E\u601D\u8003\u5F3A\u5EA6\u6620\u5C04\u3002\u652F\u6301\u901A\u914D\u7B26\uFF08\u5982 ",
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("code", { children: "o1-*" }),
+          "\uFF09\u3002"
+        ] })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: RuntimeStatus_default.editorActions, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("button", { type: "button", onClick: () => setShowPresets(!showPresets), children: [
+          showPresets ? "\u9690\u85CF" : "\u663E\u793A",
+          "\u9884\u8BBE\u914D\u7F6E"
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", onClick: () => startEdit(), children: "\u6DFB\u52A0 Fallback" })
+      ] })
+    ] }),
+    showPresets && /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: RuntimeStatus_default.presetPanel, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("h4", { children: "\u5E38\u7528\u6A21\u578B\u9884\u8BBE" }),
+      /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: RuntimeStatus_default.presetGrid, children: COMMON_FALLBACKS.map((preset, index2) => /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("article", { className: RuntimeStatus_default.presetCard, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("strong", { children: preset.label }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: RuntimeStatus_default.presetDetails, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("code", { children: preset.config.providerId }),
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("code", { children: preset.config.modelId })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+          "button",
+          {
+            type: "button",
+            disabled: fallbacks.some((fb) => key2(fb) === key2(preset.config)),
+            onClick: () => addPreset(preset.config),
+            children: fallbacks.some((fb) => key2(fb) === key2(preset.config)) ? "\u5DF2\u6DFB\u52A0" : "\u6DFB\u52A0"
+          }
+        )
+      ] }, index2)) })
+    ] }),
+    editing !== null && /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: RuntimeStatus_default.editPanel, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("h4", { children: "\u7F16\u8F91 Fallback \u914D\u7F6E" }),
+      /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: RuntimeStatus_default.editFields, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("label", { children: [
+          "Provider ID",
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+            "input",
+            {
+              value: editing.providerId,
+              onChange: (e) => setEditing({ ...editing, providerId: e.target.value }),
+              placeholder: "custom-openai"
+            }
+          )
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("label", { children: [
+          "Model ID\uFF08\u652F\u6301\u901A\u914D\u7B26 *\uFF09",
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+            "input",
+            {
+              value: editing.modelId,
+              onChange: (e) => setEditing({ ...editing, modelId: e.target.value }),
+              placeholder: "o1-* \u6216 o1-preview"
+            }
+          )
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("fieldset", { className: RuntimeStatus_default.effortMapping, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("legend", { children: "Effort \u6620\u5C04" }),
+          ["minimum", "low", "medium", "high", "maximum"].map((level) => /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("label", { children: [
+            level.charAt(0).toUpperCase() + level.slice(1),
+            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+              "input",
+              {
+                value: editing.simulatedEfforts[level],
+                onChange: (e) => setEditing({
+                  ...editing,
+                  simulatedEfforts: { ...editing.simulatedEfforts, [level]: e.target.value }
+                }),
+                placeholder: "low, medium, high"
+              }
+            )
+          ] }, level))
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: RuntimeStatus_default.editActions, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", onClick: () => setEditing(null), children: "\u53D6\u6D88" }),
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+            "button",
+            {
+              type: "button",
+              onClick: saveEdit,
+              disabled: editing.providerId === "" || editing.modelId === "",
+              children: "\u786E\u8BA4"
+            }
+          )
+        ] })
+      ] })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: RuntimeStatus_default.fallbackList, children: [
+      fallbacks.length === 0 && editing === null && /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: RuntimeStatus_default.emptyState, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("p", { children: "\u5C1A\u672A\u914D\u7F6E Fallback\u3002\u81EA\u5B9A\u4E49\u6E20\u9053\u7684\u6A21\u578B\u5982\u679C\u4E0D\u652F\u6301\u539F\u751F reasoning\uFF0C\u53EF\u4EE5\u6DFB\u52A0 Fallback \u914D\u7F6E\u6765\u542F\u7528\u601D\u8003\u5F3A\u5EA6\u8C03\u6574\u3002" }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", onClick: () => startEdit(), children: "\u6DFB\u52A0\u7B2C\u4E00\u4E2A Fallback" })
+      ] }),
+      fallbacks.map((fallback) => /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("article", { className: RuntimeStatus_default.fallbackCard, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: RuntimeStatus_default.cardHeader, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: RuntimeStatus_default.cardTitle, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("strong", { children: fallback.providerId }),
+            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("code", { children: fallback.modelId }),
+            fallback.modelId.includes("*") && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { className: RuntimeStatus_default.badge, children: "\u901A\u914D\u7B26" })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: RuntimeStatus_default.cardActions, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", onClick: () => startEdit(fallback), children: "\u7F16\u8F91" }),
+            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", onClick: () => remove2(fallback), children: "\u5220\u9664" })
+          ] })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: RuntimeStatus_default.effortPreview, children: Object.entries(fallback.simulatedEfforts).map(([level, effort]) => /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: RuntimeStatus_default.effortItem, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { className: RuntimeStatus_default.effortLevel, children: level }),
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { className: RuntimeStatus_default.effortArrow, children: "\u2192" }),
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("code", { className: RuntimeStatus_default.effortValue, children: effort })
+        ] }, level)) })
+      ] }, key2(fallback)))
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: RuntimeStatus_default.editorFooter, children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", disabled: saving, onClick: () => {
+      void onSave();
+    }, children: saving ? "\u4FDD\u5B58\u4E2D..." : "\u4FDD\u5B58 Fallback \u914D\u7F6E" }) })
+  ] });
+}
+
+// vendor/ui-autograph/src/client/RuntimeConfigEditor.tsx
+var import_jsx_runtime8 = require("react/jsx-runtime");
+var EMPTY = { mcpServers: [], disabledSkills: [], rules: [], thinkingPolicies: [], thinkingFallbacks: [] };
 function RuntimeConfigEditor({ configScope }) {
-  const snapshot = (0, import_react7.useSyncExternalStore)(
+  const snapshot = (0, import_react8.useSyncExternalStore)(
     (listener) => configScope.subscribe(listener),
     () => configScope.getSnapshot()
   );
-  const runtime = (0, import_react7.useSyncExternalStore)(
+  const runtime = (0, import_react8.useSyncExternalStore)(
     (listener) => configScope.subscribeRuntime(listener),
     () => configScope.getRuntimeSnapshot()
   );
-  const [draft, setDraft] = (0, import_react7.useState)(EMPTY);
-  const [tab, setTab] = (0, import_react7.useState)("mcp");
-  const [saving, setSaving] = (0, import_react7.useState)(false);
-  const [skillList, setSkillList] = (0, import_react7.useState)([]);
-  (0, import_react7.useEffect)(() => {
+  const [draft, setDraft] = (0, import_react8.useState)(EMPTY);
+  const [tab, setTab] = (0, import_react8.useState)("mcp");
+  const [saving, setSaving] = (0, import_react8.useState)(false);
+  const [skillList, setSkillList] = (0, import_react8.useState)([]);
+  (0, import_react8.useEffect)(() => {
     if (snapshot.status === "ready" && snapshot.value !== void 0) setDraft(structuredClone(snapshot.value));
   }, [snapshot.revision, snapshot.status, snapshot.value]);
   const save = async (field) => {
@@ -10187,13 +10381,13 @@ function RuntimeConfigEditor({ configScope }) {
     } catch {
     }
   };
-  (0, import_react7.useEffect)(() => {
+  (0, import_react8.useEffect)(() => {
     void reloadSkills();
   }, [tab]);
-  if (snapshot.status !== "ready" || snapshot.value === void 0) return /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("p", { className: RuntimeStatus_default.installError, children: "\u52A8\u6001\u914D\u7F6E\u5C1A\u672A\u8FDE\u63A5\u5230\u672C\u673A Host\u3002" });
-  return /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("section", { className: RuntimeStatus_default.configEditor, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: runtime.lastFailure !== void 0 ? RuntimeStatus_default.installError : RuntimeStatus_default.summary, role: "status", children: runtime.applying ? `\u6B63\u5728\u70ED\u5E94\u7528\u914D\u7F6E\uFF08\u76EE\u6807\u4EE3 ${runtime.desiredGeneration}\uFF09` : runtime.inSync ? `\u5DF2\u70ED\u5E94\u7528\uFF08\u4EE3 ${runtime.generation}\uFF09` : runtime.lastFailure === void 0 ? "\u914D\u7F6E\u5DF2\u4FDD\u5B58\uFF0C\u7B49\u5F85\u70ED\u5E94\u7528" : `\u70ED\u5E94\u7528\u5931\u8D25\uFF1A${runtime.lastFailure.reconciler} \xB7 ${runtime.lastFailure.message}` }),
-    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("nav", { className: RuntimeStatus_default.tabs, "aria-label": "Red Team \u914D\u7F6E", children: ["mcp", "thinking", "skills", "rules"].map((value) => /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+  if (snapshot.status !== "ready" || snapshot.value === void 0) return /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("p", { className: RuntimeStatus_default.installError, children: "\u52A8\u6001\u914D\u7F6E\u5C1A\u672A\u8FDE\u63A5\u5230\u672C\u673A Host\u3002" });
+  return /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("section", { className: RuntimeStatus_default.configEditor, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { className: runtime.lastFailure !== void 0 ? RuntimeStatus_default.installError : RuntimeStatus_default.summary, role: "status", children: runtime.applying ? `\u6B63\u5728\u70ED\u5E94\u7528\u914D\u7F6E\uFF08\u76EE\u6807\u4EE3 ${runtime.desiredGeneration}\uFF09` : runtime.inSync ? `\u5DF2\u70ED\u5E94\u7528\uFF08\u4EE3 ${runtime.generation}\uFF09` : runtime.lastFailure === void 0 ? "\u914D\u7F6E\u5DF2\u4FDD\u5B58\uFF0C\u7B49\u5F85\u70ED\u5E94\u7528" : `\u70ED\u5E94\u7528\u5931\u8D25\uFF1A${runtime.lastFailure.reconciler} \xB7 ${runtime.lastFailure.message}` }),
+    /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("nav", { className: RuntimeStatus_default.tabs, "aria-label": "Red Team \u914D\u7F6E", children: ["mcp", "thinking", "fallback", "skills", "rules"].map((value) => /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
       "button",
       {
         type: "button",
@@ -10202,11 +10396,11 @@ function RuntimeConfigEditor({ configScope }) {
         onClick: () => {
           setTab(value);
         },
-        children: value === "mcp" ? "MCP" : value === "thinking" ? "\u601D\u8003\u5F3A\u5EA6" : value === "skills" ? "Skills" : "Rules"
+        children: value === "mcp" ? "MCP" : value === "thinking" ? "\u601D\u8003\u5F3A\u5EA6" : value === "fallback" ? "Fallback" : value === "skills" ? "Skills" : "Rules"
       },
       value
     )) }),
-    tab === "mcp" && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+    tab === "mcp" && /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
       McpConfigEditor,
       {
         servers: draft.mcpServers,
@@ -10218,7 +10412,7 @@ function RuntimeConfigEditor({ configScope }) {
         onSave: () => save("mcpServers")
       }
     ),
-    tab === "thinking" && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+    tab === "thinking" && /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
       ThinkingPolicyEditor,
       {
         policies: draft.thinkingPolicies,
@@ -10227,7 +10421,16 @@ function RuntimeConfigEditor({ configScope }) {
         onSave: () => save("thinkingPolicies")
       }
     ),
-    tab === "skills" && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+    tab === "fallback" && /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
+      ThinkingFallbackEditor,
+      {
+        fallbacks: draft.thinkingFallbacks,
+        saving,
+        onChange: (thinkingFallbacks) => setDraft((current) => ({ ...current, thinkingFallbacks })),
+        onSave: () => save("thinkingFallbacks")
+      }
+    ),
+    tab === "skills" && /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
       SkillEditor,
       {
         scopeList: skillList,
@@ -10237,7 +10440,7 @@ function RuntimeConfigEditor({ configScope }) {
         onSave: reloadSkills
       }
     ),
-    tab === "rules" && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+    tab === "rules" && /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
       RuleEditor,
       {
         rules: draft.rules,
@@ -10250,7 +10453,7 @@ function RuntimeConfigEditor({ configScope }) {
 }
 
 // vendor/ui-autograph/src/client/RuntimeStatus.tsx
-var import_jsx_runtime8 = require("react/jsx-runtime");
+var import_jsx_runtime9 = require("react/jsx-runtime");
 var STATE_LABEL = {
   available: "\u53EF\u7528",
   configured: "\u5DF2\u914D\u7F6E",
@@ -10297,16 +10500,16 @@ async function requestInstall(path, body) {
   }
 }
 function RuntimeStatus({ runtimeStatus, configScope, compact = false }) {
-  const snapshot = (0, import_react8.useSyncExternalStore)(
+  const snapshot = (0, import_react9.useSyncExternalStore)(
     (onStoreChange) => runtimeStatus.subscribe(onStoreChange),
     () => runtimeStatus.getSnapshot()
   );
-  const [installView, setInstallView] = (0, import_react8.useState)(EMPTY_INSTALL_VIEW);
-  const [sourcePolicy, setSourcePolicy] = (0, import_react8.useState)("auto");
-  const [installError, setInstallError] = (0, import_react8.useState)();
+  const [installView, setInstallView] = (0, import_react9.useState)(EMPTY_INSTALL_VIEW);
+  const [sourcePolicy, setSourcePolicy] = (0, import_react9.useState)("auto");
+  const [installError, setInstallError] = (0, import_react9.useState)();
   const available = snapshot.mcp.filter((item) => item.availability === "available" || item.availability === "configured").length;
   const missing = snapshot.mcp.filter((item) => item.availability === "missing").length;
-  (0, import_react8.useEffect)(() => {
+  (0, import_react9.useEffect)(() => {
     if (compact) return;
     let disposed = false;
     const refresh = async () => {
@@ -10349,37 +10552,37 @@ function RuntimeStatus({ runtimeStatus, configScope, compact = false }) {
     }
   };
   if (compact) {
-    return /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: RuntimeStatus_default.rail, "data-runtime-status": true, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("span", { className: RuntimeStatus_default.metric, children: [
+    return /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { className: RuntimeStatus_default.rail, "data-runtime-status": true, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("span", { className: RuntimeStatus_default.metric, children: [
         "Skills ",
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("strong", { children: snapshot.skills.available })
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("strong", { children: snapshot.skills.available })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("span", { className: RuntimeStatus_default.metric, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("span", { className: RuntimeStatus_default.metric, children: [
         "MCP ",
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("strong", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("strong", { children: [
           available,
           "/",
           snapshot.mcp.length
         ] })
       ] }),
-      missing > 0 && /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("span", { className: RuntimeStatus_default.warning, children: [
+      missing > 0 && /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("span", { className: RuntimeStatus_default.warning, children: [
         missing,
         " \u9879\u5F85\u5B89\u88C5"
       ] })
     ] });
   }
-  return /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("section", { className: RuntimeStatus_default.settings, "data-runtime-settings": true, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("header", { className: RuntimeStatus_default.settingsHeader, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h2", { children: "Red Team \u8FD0\u884C\u73AF\u5883" }),
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("p", { children: "Skill \u4E0E MCP \u4F7F\u7528\u540C\u4E00\u5B9E\u65F6\u72B6\u6001\u6E90\uFF1B\u7F3A\u5931\u7EC4\u4EF6\u4E0D\u4F1A\u4ECE\u914D\u7F6E\u4E2D\u6D88\u5931\u3002" })
+  return /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("section", { className: RuntimeStatus_default.settings, "data-runtime-settings": true, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("header", { className: RuntimeStatus_default.settingsHeader, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("h2", { children: "Red Team \u8FD0\u884C\u73AF\u5883" }),
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("p", { children: "Skill \u4E0E MCP \u4F7F\u7528\u540C\u4E00\u5B9E\u65F6\u72B6\u6001\u6E90\uFF1B\u7F3A\u5931\u7EC4\u4EF6\u4E0D\u4F1A\u4ECE\u914D\u7F6E\u4E2D\u6D88\u5931\u3002" })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: RuntimeStatus_default.summary, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("span", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { className: RuntimeStatus_default.summary, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("span", { children: [
           "Skills ",
           snapshot.skills.available
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("span", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("span", { children: [
           "MCP ",
           available,
           "/",
@@ -10387,79 +10590,79 @@ function RuntimeStatus({ runtimeStatus, configScope, compact = false }) {
         ] })
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: RuntimeStatus_default.installToolbar, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("label", { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { className: RuntimeStatus_default.installToolbar, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("label", { children: [
         "\u4E0B\u8F7D\u6E90",
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("select", { value: sourcePolicy, onChange: (event) => {
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("select", { value: sourcePolicy, onChange: (event) => {
           setSourcePolicy(event.target.value);
         }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("option", { value: "auto", children: "\u81EA\u52A8" }),
-          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("option", { value: "domestic-first", children: "\u56FD\u5185\u4F18\u5148" }),
-          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("option", { value: "official-first", children: "\u5B98\u65B9\u4F18\u5148" })
+          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("option", { value: "auto", children: "\u81EA\u52A8" }),
+          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("option", { value: "domestic-first", children: "\u56FD\u5185\u4F18\u5148" }),
+          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("option", { value: "official-first", children: "\u5B98\u65B9\u4F18\u5148" })
         ] })
       ] }),
-      installError !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("span", { className: RuntimeStatus_default.installError, children: installError })
+      installError !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("span", { className: RuntimeStatus_default.installError, children: installError })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: RuntimeStatus_default.skillCard, "data-state": snapshot.skills.state, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("strong", { children: "Skills" }),
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("span", { children: snapshot.skills.state === "ready" ? `${snapshot.skills.available} \u4E2A\u5DF2\u53D1\u73B0` : "\u52A0\u8F7D\u5F02\u5E38" }),
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("small", { children: snapshot.skills.error ?? `Provider: ${snapshot.skills.provider}` })
+    /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { className: RuntimeStatus_default.skillCard, "data-state": snapshot.skills.state, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("strong", { children: "Skills" }),
+      /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("span", { children: snapshot.skills.state === "ready" ? `${snapshot.skills.available} \u4E2A\u5DF2\u53D1\u73B0` : "\u52A0\u8F7D\u5F02\u5E38" }),
+      /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("small", { children: snapshot.skills.error ?? `Provider: ${snapshot.skills.provider}` })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { className: RuntimeStatus_default.grid, children: snapshot.mcp.map((server) => /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("article", { className: RuntimeStatus_default.card, "data-state": server.availability, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: RuntimeStatus_default.cardTitle, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("strong", { children: server.serverName }),
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("span", { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("div", { className: RuntimeStatus_default.grid, children: snapshot.mcp.map((server) => /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("article", { className: RuntimeStatus_default.card, "data-state": server.availability, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { className: RuntimeStatus_default.cardTitle, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("strong", { children: server.serverName }),
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("span", { children: [
           STATE_LABEL[server.availability],
           " \xB7 ",
           server.mounted ? "\u5DF2\u6302\u8F7D" : "\u672A\u6302\u8F7D"
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("code", { children: server.target }),
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("p", { children: server.installHint }),
-      server.lastProbe !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("details", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("summary", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("code", { children: server.target }),
+      /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("p", { children: server.installHint }),
+      server.lastProbe !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("details", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("summary", { children: [
           "\u6700\u8FD1\u6D4B\u6D3B\uFF1A",
           server.lastProbe.toolCount,
           " \u4E2A\u5DE5\u5177"
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("ul", { children: server.lastProbe.tools.map((tool) => /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("li", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("code", { children: `mcp__${server.serverName}__${tool.name}` }),
-          tool.description !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("small", { children: tool.description })
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("ul", { children: server.lastProbe.tools.map((tool) => /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("li", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("code", { children: `mcp__${server.serverName}__${tool.name}` }),
+          tool.description !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("small", { children: tool.description })
         ] }, tool.name)) })
       ] }),
-      server.installCommand !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("pre", { children: server.installCommand }),
+      server.installCommand !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("pre", { children: server.installCommand }),
       (() => {
         const componentId = MCP_COMPONENT[server.serverName];
         if (componentId === void 0) return null;
         const component = installView.components.find((item) => item.id === componentId);
         const operation = [...installView.operations].reverse().find((item) => item.componentId === componentId);
         const active = operation !== void 0 && !["succeeded", "failed", "cancelled", "external-action-required", "restart-required"].includes(operation.phase);
-        return /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: RuntimeStatus_default.installActions, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("button", { type: "button", disabled: component?.supported !== true || active, onClick: () => {
+        return /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { className: RuntimeStatus_default.installActions, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("button", { type: "button", disabled: component?.supported !== true || active, onClick: () => {
             void startInstall(componentId);
           }, children: operation?.phase === "failed" ? "\u91CD\u8BD5" : "\u4E00\u952E\u8865\u5168" }),
-          active && /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("button", { type: "button", onClick: () => {
+          active && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("button", { type: "button", onClick: () => {
             void cancelInstall(operation.id);
           }, children: "\u53D6\u6D88" }),
-          operation !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: RuntimeStatus_default.installProgress, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("span", { children: [
+          operation !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { className: RuntimeStatus_default.installProgress, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("span", { children: [
               operation.phase,
               " \xB7 ",
               Math.round(operation.progress * 100),
               "%"
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("progress", { value: operation.progress, max: 1 }),
-            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("small", { children: operation.error ?? operation.logs.at(-1) })
+            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("progress", { value: operation.progress, max: 1 }),
+            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("small", { children: operation.error ?? operation.logs.at(-1) })
           ] })
         ] });
       })()
     ] }, server.serverName)) }),
-    configScope !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(RuntimeConfigEditor, { configScope })
+    configScope !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(RuntimeConfigEditor, { configScope })
   ] });
 }
 
 // vendor/ui-autograph/src/client/GraphOverview.tsx
-var import_react9 = require("react");
+var import_react10 = require("react");
 
 // vendor/ui-autograph/src/client/AutoGraphView.module.css
 var AutoGraphView_default = {
@@ -10488,14 +10691,14 @@ var AutoGraphView_default = {
 };
 
 // vendor/ui-autograph/src/client/GraphOverview.tsx
-var import_jsx_runtime9 = require("react/jsx-runtime");
+var import_jsx_runtime10 = require("react/jsx-runtime");
 var NODE_WIDTH = 252;
 var NODE_HEIGHT = 92;
 var PADDING = 40;
 function GraphOverview({ nodes, edges }) {
   const viewport = useViewport();
   const { setCenter } = useReactFlow();
-  const model = (0, import_react9.useMemo)(() => {
+  const model = (0, import_react10.useMemo)(() => {
     const byId = new Map(nodes.map((node) => [node.id, node]));
     const maxX = Math.max(...nodes.map((node) => node.position.x + NODE_WIDTH), NODE_WIDTH);
     const maxY = Math.max(...nodes.map((node) => node.position.y + NODE_HEIGHT), NODE_HEIGHT);
@@ -10511,7 +10714,7 @@ function GraphOverview({ nodes, edges }) {
     const y = (clientY - rect.top) / rect.height * model.height - PADDING;
     void setCenter(x, y, { zoom: viewport.zoom, duration: 180 });
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("aside", { className: AutoGraphView_default.overview, "aria-label": "\u903B\u8F91\u5173\u7CFB\u9E1F\u77B0\u56FE", children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("aside", { className: AutoGraphView_default.overview, "aria-label": "\u903B\u8F91\u5173\u7CFB\u9E1F\u77B0\u56FE", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
     "svg",
     {
       viewBox: `0 0 ${model.width} ${model.height}`,
@@ -10519,7 +10722,7 @@ function GraphOverview({ nodes, edges }) {
       onPointerDown: (event) => {
         locate(event.clientX, event.clientY, event.currentTarget);
       },
-      children: /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("g", { transform: `translate(${PADDING} ${PADDING})`, children: [
+      children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("g", { transform: `translate(${PADDING} ${PADDING})`, children: [
         edges.map((edge) => {
           const source = model.byId.get(edge.source);
           const target = model.byId.get(edge.target);
@@ -10529,7 +10732,7 @@ function GraphOverview({ nodes, edges }) {
           const endX = target.position.x;
           const endY = target.position.y + NODE_HEIGHT / 2;
           const middleX = (startX + endX) / 2;
-          return /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+          return /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
             "polyline",
             {
               className: AutoGraphView_default.overviewEdge,
@@ -10538,7 +10741,7 @@ function GraphOverview({ nodes, edges }) {
             edge.id
           );
         }),
-        nodes.map((node) => /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+        nodes.map((node) => /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
           "rect",
           {
             className: AutoGraphView_default.overviewNode,
@@ -10551,7 +10754,7 @@ function GraphOverview({ nodes, edges }) {
           },
           node.id
         )),
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
           "rect",
           {
             className: AutoGraphView_default.overviewViewport,
@@ -10568,7 +10771,7 @@ function GraphOverview({ nodes, edges }) {
 }
 
 // vendor/ui-autograph/src/client/BoardGraphNode.tsx
-var import_jsx_runtime10 = require("react/jsx-runtime");
+var import_jsx_runtime11 = require("react/jsx-runtime");
 var KIND_LABEL = {
   fact: "\u4E8B\u5B9E",
   goal: "\u76EE\u6807",
@@ -10577,43 +10780,43 @@ var KIND_LABEL = {
 };
 function KindIcon({ kind }) {
   if (kind === "goal") {
-    return /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("svg", { viewBox: "0 0 24 24", "aria-hidden": "true", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("circle", { cx: "12", cy: "12", r: "8" }),
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("circle", { cx: "12", cy: "12", r: "3" })
+    return /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("svg", { viewBox: "0 0 24 24", "aria-hidden": "true", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("circle", { cx: "12", cy: "12", r: "8" }),
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("circle", { cx: "12", cy: "12", r: "3" })
     ] });
   }
   if (kind === "fact") {
-    return /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("svg", { viewBox: "0 0 24 24", "aria-hidden": "true", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("path", { d: "M5 5h14v14H5z" }),
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("path", { d: "m8 12 2.5 2.5L16 9" })
+    return /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("svg", { viewBox: "0 0 24 24", "aria-hidden": "true", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("path", { d: "M5 5h14v14H5z" }),
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("path", { d: "m8 12 2.5 2.5L16 9" })
     ] });
   }
   if (kind === "intent") {
-    return /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("svg", { viewBox: "0 0 24 24", "aria-hidden": "true", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("path", { d: "M5 19 19 5" }),
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("path", { d: "M10 5h9v9" })
+    return /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("svg", { viewBox: "0 0 24 24", "aria-hidden": "true", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("path", { d: "M5 19 19 5" }),
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("path", { d: "M10 5h9v9" })
     ] });
   }
-  return /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("svg", { viewBox: "0 0 24 24", "aria-hidden": "true", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("path", { d: "M12 3a7 7 0 0 0-4 12.7V19h8v-3.3A7 7 0 0 0 12 3Z" }),
-    /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("path", { d: "M9 22h6M9 16h6" })
+  return /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("svg", { viewBox: "0 0 24 24", "aria-hidden": "true", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("path", { d: "M12 3a7 7 0 0 0-4 12.7V19h8v-3.3A7 7 0 0 0 12 3Z" }),
+    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("path", { d: "M9 22h6M9 16h6" })
   ] });
 }
 function BoardGraphNode({ data }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("article", { className: AutoGraphView_default.nodeCard, "data-kind": data.kind, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(Handle, { className: AutoGraphView_default.handle, type: "target", position: Position.Left }),
-    /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("header", { className: AutoGraphView_default.nodeHeader, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { className: AutoGraphView_default.nodeIcon, children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(KindIcon, { kind: data.kind }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { children: KIND_LABEL[data.kind] }),
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { className: AutoGraphView_default.nodeStatus, children: data.status })
+  return /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("article", { className: AutoGraphView_default.nodeCard, "data-kind": data.kind, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Handle, { className: AutoGraphView_default.handle, type: "target", position: Position.Left }),
+    /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("header", { className: AutoGraphView_default.nodeHeader, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("span", { className: AutoGraphView_default.nodeIcon, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(KindIcon, { kind: data.kind }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("span", { children: KIND_LABEL[data.kind] }),
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("span", { className: AutoGraphView_default.nodeStatus, children: data.status })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { className: AutoGraphView_default.nodeLabel, children: data.label }),
-    /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(Handle, { className: AutoGraphView_default.handle, type: "source", position: Position.Right })
+    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: AutoGraphView_default.nodeLabel, children: data.label }),
+    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Handle, { className: AutoGraphView_default.handle, type: "source", position: Position.Right })
   ] });
 }
 
 // vendor/ui-autograph/src/client/AutoGraphView.tsx
-var import_jsx_runtime11 = require("react/jsx-runtime");
+var import_jsx_runtime12 = require("react/jsx-runtime");
 var NODE_TYPES = { board: BoardGraphNode };
 var BOARD_KINDS = ["goal", "intent", "fact", "hint"];
 var KIND_COLUMN = new Map(BOARD_KINDS.map((kind, index2) => [kind, index2]));
@@ -10681,15 +10884,15 @@ var EMPTY_BOARD = {
   complete: false
 };
 function AutoGraphView({ isAutoMode, runtimeStatus, onPause, onResume, onHint, useProjection, t }) {
-  const [hint, setHint] = (0, import_react12.useState)("");
-  const [pending, setPending] = (0, import_react12.useState)(false);
-  const [enabledKinds, setEnabledKinds] = (0, import_react12.useState)(
+  const [hint, setHint] = (0, import_react13.useState)("");
+  const [pending, setPending] = (0, import_react13.useState)(false);
+  const [enabledKinds, setEnabledKinds] = (0, import_react13.useState)(
     () => new Set(BOARD_KINDS)
   );
   const projectedBoard = useProjection("board");
   const board = projectedBoard ?? EMPTY_BOARD;
-  const flow = (0, import_react12.useMemo)(() => toFlow(board), [board]);
-  const { nodes, edges } = (0, import_react12.useMemo)(() => {
+  const flow = (0, import_react13.useMemo)(() => toFlow(board), [board]);
+  const { nodes, edges } = (0, import_react13.useMemo)(() => {
     const visibleNodes = flow.nodes.filter((node) => enabledKinds.has(node.data.kind));
     const visibleIds = new Set(visibleNodes.map((node) => node.id));
     return {
@@ -10708,17 +10911,17 @@ function AutoGraphView({ isAutoMode, runtimeStatus, onPause, onResume, onHint, u
       setPending(false);
     }
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: AutoGraphView_default.panel, "data-autograph": true, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: AutoGraphView_default.header, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("span", { className: AutoGraphView_default.title, children: t("panel.title") }),
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("span", { className: AutoGraphView_default.meta, children: t("panel.cycle", { cycle: board.cycle }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("span", { className: AutoGraphView_default.status, "data-paused": board.paused, "data-complete": board.complete, children: status })
+  return /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { className: AutoGraphView_default.panel, "data-autograph": true, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { className: AutoGraphView_default.header, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("span", { className: AutoGraphView_default.title, children: t("panel.title") }),
+      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("span", { className: AutoGraphView_default.meta, children: t("panel.cycle", { cycle: board.cycle }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("span", { className: AutoGraphView_default.status, "data-paused": board.paused, "data-complete": board.complete, children: status })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(RuntimeStatus, { runtimeStatus, compact: true }),
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("fieldset", { className: AutoGraphView_default.filters, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("legend", { children: "\u7B5B\u9009\u56FE\u5757" }),
-      BOARD_KINDS.map((kind) => /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("label", { "data-kind": kind, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(RuntimeStatus, { runtimeStatus, compact: true }),
+    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("fieldset", { className: AutoGraphView_default.filters, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("legend", { children: "\u7B5B\u9009\u56FE\u5757" }),
+      BOARD_KINDS.map((kind) => /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("label", { "data-kind": kind, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
           "input",
           {
             type: "checkbox",
@@ -10733,17 +10936,17 @@ function AutoGraphView({ isAutoMode, runtimeStatus, onPause, onResume, onHint, u
             }
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("span", { children: KIND_LABEL2[kind] })
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("span", { children: KIND_LABEL2[kind] })
       ] }, kind)),
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("span", { className: AutoGraphView_default.filterCount, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("span", { className: AutoGraphView_default.filterCount, children: [
         nodes.length,
         "/",
         flow.nodes.length,
         " \u4E2A\u56FE\u5757"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: AutoGraphView_default.columnLegend, "aria-hidden": "true", children: BOARD_KINDS.map((kind) => /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("span", { "data-kind": kind, children: KIND_LABEL2[kind] }, kind)) }),
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: AutoGraphView_default.canvas, children: nodes.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: AutoGraphView_default.empty, children: t("panel.empty") }) : /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(
+    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("div", { className: AutoGraphView_default.columnLegend, "aria-hidden": "true", children: BOARD_KINDS.map((kind) => /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("span", { "data-kind": kind, children: KIND_LABEL2[kind] }, kind)) }),
+    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("div", { className: AutoGraphView_default.canvas, children: nodes.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("div", { className: AutoGraphView_default.empty, children: t("panel.empty") }) : /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(
       index,
       {
         nodes,
@@ -10764,15 +10967,15 @@ function AutoGraphView({ isAutoMode, runtimeStatus, onPause, onResume, onHint, u
         preventScrolling: true,
         proOptions: { hideAttribution: true },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Background, { gap: 20, size: 1 }),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(GraphOverview, { nodes, edges }),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Controls, { showInteractive: false })
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(Background, { gap: 20, size: 1 }),
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(GraphOverview, { nodes, edges }),
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(Controls, { showInteractive: false })
         ]
       }
     ) }),
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: AutoGraphView_default.controls, children: [
-      board.paused ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { type: "button", disabled: pending, onClick: () => void run(onResume), children: t("control.resume") }) : /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { type: "button", disabled: pending, onClick: () => void run(onPause), children: t("control.pause") }),
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { className: AutoGraphView_default.controls, children: [
+      board.paused ? /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("button", { type: "button", disabled: pending, onClick: () => void run(onResume), children: t("control.resume") }) : /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("button", { type: "button", disabled: pending, onClick: () => void run(onPause), children: t("control.pause") }),
+      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
         "input",
         {
           type: "text",
@@ -10789,7 +10992,7 @@ function AutoGraphView({ isAutoMode, runtimeStatus, onPause, onResume, onHint, u
           }
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
         "button",
         {
           type: "button",
