@@ -12,6 +12,7 @@ function runtimeConfig(): AntSwordRuntimeConfig {
     disabledSkills: [],
     rules: [],
     thinkingPolicies: [{ providerId: 'custom', modelId: 'reasoner', level: 'high' }],
+    thinkingFallbacks: [],
   }
 }
 

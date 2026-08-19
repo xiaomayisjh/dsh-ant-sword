@@ -5,6 +5,7 @@ import { McpConfigEditor } from './McpConfigEditor.tsx'
 import { RuleEditor } from './RuleEditor.tsx'
 import { SkillEditor } from './SkillEditor.tsx'
 import { ThinkingPolicyEditor } from './ThinkingPolicyEditor.tsx'
+import { ThinkingFallbackEditor } from './ThinkingFallbackEditor.tsx'
 import type { RuntimeApplySnapshot } from './runtime-config-scope.ts'
 import type { RuntimeConfigValue } from './runtime-config-types.ts'
 import css from './RuntimeStatus.module.css'
@@ -29,7 +30,7 @@ interface Props {
   configScope: RuntimeConfigEditorScope
 }
 
-const EMPTY: RuntimeConfigValue = { mcpServers: [], disabledSkills: [], rules: [], thinkingPolicies: [] }
+const EMPTY: RuntimeConfigValue = { mcpServers: [], disabledSkills: [], rules: [], thinkingPolicies: [], thinkingFallbacks: [] }
 
 /** Settings editor for MCP, Skill overlays, runtime rules, and thinking policies. */
 export function RuntimeConfigEditor({ configScope }: Props) {
@@ -42,7 +43,7 @@ export function RuntimeConfigEditor({ configScope }: Props) {
     () => configScope.getRuntimeSnapshot(),
   )
   const [draft, setDraft] = useState<RuntimeConfigValue>(EMPTY)
-  const [tab, setTab] = useState<'mcp' | 'thinking' | 'skills' | 'rules'>('mcp')
+  const [tab, setTab] = useState<'mcp' | 'thinking' | 'fallback' | 'skills' | 'rules'>('mcp')
   const [saving, setSaving] = useState(false)
   const [skillList, setSkillList] = useState<readonly SkillEntry[]>([])
 
@@ -84,7 +85,7 @@ export function RuntimeConfigEditor({ configScope }: Props) {
               : `热应用失败：${runtime.lastFailure.reconciler} · ${runtime.lastFailure.message}`}
       </div>
       <nav className={css.tabs} aria-label="Red Team 配置">
-        {(['mcp', 'thinking', 'skills', 'rules'] as const).map(value => (
+        {(['mcp', 'thinking', 'fallback', 'skills', 'rules'] as const).map(value => (
           <button
             type="button"
             key={value}
@@ -92,7 +93,7 @@ export function RuntimeConfigEditor({ configScope }: Props) {
             data-active={tab === value}
             onClick={() => { setTab(value) }}
           >
-            {value === 'mcp' ? 'MCP' : value === 'thinking' ? '思考强度' : value === 'skills' ? 'Skills' : 'Rules'}
+            {value === 'mcp' ? 'MCP' : value === 'thinking' ? '思考强度' : value === 'fallback' ? 'Fallback' : value === 'skills' ? 'Skills' : 'Rules'}
           </button>
         ))}
       </nav>
@@ -113,6 +114,15 @@ export function RuntimeConfigEditor({ configScope }: Props) {
           saving={saving}
           onChange={thinkingPolicies => setDraft(current => ({ ...current, thinkingPolicies }))}
           onSave={() => save('thinkingPolicies')}
+        />
+      )}
+
+      {tab === 'fallback' && (
+        <ThinkingFallbackEditor
+          fallbacks={draft.thinkingFallbacks}
+          saving={saving}
+          onChange={thinkingFallbacks => setDraft(current => ({ ...current, thinkingFallbacks }))}
+          onSave={() => save('thinkingFallbacks')}
         />
       )}
 

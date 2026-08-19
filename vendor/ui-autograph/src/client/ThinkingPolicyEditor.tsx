@@ -20,6 +20,7 @@ interface Capability {
   supported: boolean
   efforts: readonly { id: string; name: string; description?: string }[]
   defaultEffort?: string
+  fallback?: boolean
 }
 
 interface Props {
@@ -132,8 +133,20 @@ export function ThinkingPolicyEditor({ policies, saving, onChange, onSave }: Pro
       </div>
       {capability !== undefined && <small>
         {capability.supported
-          ? `模型支持 ${capability.efforts.length} 档：${capability.efforts.map(effort => effort.name).join(' / ')}`
-          : '该模型不支持 reasoning effort'}
+          ? <>
+              <span
+                className={css.capabilityStatus}
+                data-supported="true"
+                data-fallback={capability.fallback === true ? 'true' : 'false'}
+              >
+                {capability.fallback === true ? '使用 Fallback 配置' : '原生支持'}
+              </span>
+              {' '}
+              模型支持 {capability.efforts.length} 档：{capability.efforts.map(effort => effort.name).join(' / ')}
+            </>
+          : <span className={css.capabilityStatus} data-supported="false">
+              该模型不支持 reasoning effort，请在 Fallback 标签页添加配置
+            </span>}
       </small>}
       {error !== undefined && <span className={css.installError}>{error}</span>}
     </fieldset>

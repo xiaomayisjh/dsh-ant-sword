@@ -13,6 +13,10 @@ function sameConfig(left: McpServerConfig, right: McpServerConfig): boolean {
   return JSON.stringify(left) === JSON.stringify(right)
 }
 
+function errorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : String(error)
+}
+
 function clientConfig(server: McpServerConfig, pentestswarmApiKey?: string): McpClientConfig {
   if (server.transport === 'stdio') {
     const env = { ...server.env }
@@ -21,13 +25,13 @@ function clientConfig(server: McpServerConfig, pentestswarmApiKey?: string): Mcp
     }
     return {
       transport: 'stdio', serverName: server.serverName, command: server.command ?? '', args: server.args ?? [], env,
-      cwd: server.cwd ?? '', toolCallTimeoutMs: server.toolCallTimeoutMs ?? 60_000, failOnStartupError: true,
+      cwd: server.cwd ?? '', toolCallTimeoutMs: server.toolCallTimeoutMs ?? 60_000, failOnStartupError: false,
       reconnect: { enabled: true, initialDelayMs: 1_000, maxDelayMs: 30_000, maxAttempts: 5 },
     }
   }
   return {
     transport: server.transport, serverName: server.serverName, url: server.url ?? '', headers: server.headers ?? {},
-    toolCallTimeoutMs: server.toolCallTimeoutMs ?? 60_000, failOnStartupError: true,
+    toolCallTimeoutMs: server.toolCallTimeoutMs ?? 60_000, failOnStartupError: false,
     reconnect: { enabled: true, initialDelayMs: 1_000, maxDelayMs: 30_000, maxAttempts: 5 },
   }
 }
@@ -75,6 +79,44 @@ export class McpReconciler implements RuntimeReconciler {
     }
   }
 
+  /** Report one server failure without making it a bundle-level failure. */
+  private reportFailure(serverName: string, phase: string, error: unknown): void {
+    const logger = this.ctx.logger
+    if (logger === undefined || typeof logger.warn !== 'function') return
+    logger.warn(`MCP server "${serverName}" ${phase}; skipping this server: ${errorMessage(error)}`)
+  }
+
+  /** Dispose one fiber and remove only that server from the live set. */
+  private async disposeServer(serverName: string, fiber: PluginFiber): Promise<void> {
+    try {
+      await fiber.dispose()
+    } catch (error) {
+      this.reportFailure(serverName, 'failed to unload', error)
+    } finally {
+      // A disposal failure still must not prevent another server from being
+      // reconciled. Cordis has already transitioned the fiber out of the
+      // active lifecycle by the time dispose() settles.
+      if (this.fibers.get(serverName) === fiber) this.fibers.delete(serverName)
+    }
+  }
+
+  /** Reconcile one changed server; failures are intentionally isolated. */
+  private async reconcileServer(
+    serverName: string,
+    desired: McpServerConfig | undefined,
+  ): Promise<void> {
+    const current = this.fibers.get(serverName)
+    if (current !== undefined) await this.disposeServer(serverName, current)
+    if (desired === undefined || desired.enabled === false) return
+    if (desired.transport === 'stdio' && !this.canResolveCommand(desired.command ?? '')) return
+    try {
+      const fiber = await this.mount(desired)
+      this.fibers.set(serverName, fiber)
+    } catch (error) {
+      this.reportFailure(serverName, 'failed to load', error)
+    }
+  }
+
   /** Probe the applied server configuration, serialized with lifecycle changes. */
   async probe(serverName: string): Promise<mcpClient.McpProbeResult> {
     return this.enqueue(async () => {
@@ -119,52 +161,17 @@ export class McpReconciler implements RuntimeReconciler {
           const after = desired.get(name)
           return before === undefined || after === undefined || !sameConfig(before, after)
         })
-        const disposed: Array<[string, McpServerConfig]> = []
-        const mounted: string[] = []
-        try {
-          for (const name of changed) {
-            const fiber = this.fibers.get(name)
-            const config = previous.get(name)
-            if (fiber !== undefined) {
-              await fiber.dispose()
-              this.fibers.delete(name)
-              if (config !== undefined) disposed.push([name, config])
-            }
-          }
-          for (const name of changed) {
-            const config = desired.get(name)
-            if (config === undefined || config.enabled === false) continue
-            // Missing stdio commands are valid persisted configuration, but
-            // remain unmounted just like the initial catalog path.
-            if (config.transport === 'stdio' && !this.canResolveCommand(config.command ?? '')) continue
-            const fiber = await this.mount(config)
-            this.fibers.set(name, fiber)
-            mounted.push(name)
-          }
-          this.configs = desired
-        } catch (error) {
-          await Promise.allSettled(mounted.map(async name => {
-            await this.fibers.get(name)?.dispose()
-            this.fibers.delete(name)
-          }))
-          // Restore the exact applied set before exposing the failure.
-          for (const [name, config] of disposed) {
-            const fiber = await this.mount(config)
-            this.fibers.set(name, fiber)
-          }
-          this.configs = previous
-          throw error
-        }
+        // Each MCP server owns an independent plugin fiber. A failed mount or
+        // disposal is contained to that name so healthy servers still become
+        // available and the runtime controller can commit the catalog.
+        await Promise.all(changed.map(name => this.reconcileServer(name, desired.get(name))))
+        this.configs = desired
       }),
       rollback: () => this.enqueue(async () => {
         const current = [...this.fibers.values()]
         await Promise.allSettled(current.map(fiber => fiber.dispose()))
         this.fibers.clear()
-        for (const [name, config] of previous) {
-          if (config.enabled === false || (config.transport === 'stdio' && !this.canResolveCommand(config.command ?? ''))) continue
-          const fiber = await this.mount(config)
-          this.fibers.set(name, fiber)
-        }
+        await Promise.all([...previous.entries()].map(([name, config]) => this.reconcileServer(name, config)))
         this.configs = previous
       }),
     }

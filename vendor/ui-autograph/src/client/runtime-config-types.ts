@@ -24,9 +24,24 @@ export interface ChannelThinkingPolicy {
   level: ThinkingLevel
 }
 
+export interface SimulatedEfforts {
+  minimum: string
+  low: string
+  medium: string
+  high: string
+  maximum: string
+}
+
+export interface ThinkingFallbackPolicy {
+  providerId: string
+  modelId: string
+  simulatedEfforts: SimulatedEfforts
+}
+
 export interface RuntimeConfigValue {
   mcpServers: McpConfig[]
   disabledSkills: string[]
   rules: RuntimeRuleConfig[]
   thinkingPolicies: ChannelThinkingPolicy[]
+  thinkingFallbacks: ThinkingFallbackPolicy[]
 }

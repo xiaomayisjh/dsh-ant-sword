@@ -29,6 +29,20 @@ export interface ChannelThinkingPolicy {
   level: ThinkingLevel
 }
 
+export interface SimulatedEfforts {
+  minimum: string
+  low: string
+  medium: string
+  high: string
+  maximum: string
+}
+
+export interface ThinkingFallbackPolicy {
+  providerId: string
+  modelId: string
+  simulatedEfforts: SimulatedEfforts
+}
+
 export type RulePlacement = 'before-persona' | 'after-persona' | 'before-tools' | 'after-tools'
 
 export interface RuntimeRuleConfig {
@@ -45,12 +59,27 @@ export interface AntSwordRuntimeConfig {
   disabledSkills: string[]
   rules: RuntimeRuleConfig[]
   thinkingPolicies: ChannelThinkingPolicy[]
+  thinkingFallbacks: ThinkingFallbackPolicy[]
 }
 
 export const ChannelThinkingPolicySchema: z<ChannelThinkingPolicy> = z.object({
   providerId: z.string().required(),
   modelId: z.string().required(),
   level: z.union(['minimum', 'low', 'medium', 'high', 'maximum'] as const).required(),
+})
+
+export const SimulatedEffortsSchema: z<SimulatedEfforts> = z.object({
+  minimum: z.string().required(),
+  low: z.string().required(),
+  medium: z.string().required(),
+  high: z.string().required(),
+  maximum: z.string().required(),
+})
+
+export const ThinkingFallbackPolicySchema: z<ThinkingFallbackPolicy> = z.object({
+  providerId: z.string().required(),
+  modelId: z.string().required(),
+  simulatedEfforts: SimulatedEffortsSchema.required(),
 })
 
 export const RuntimeRuleSchema: z<RuntimeRuleConfig> = z.object({
@@ -67,6 +96,7 @@ export const AntSwordRuntimeConfigSchema: z<AntSwordRuntimeConfig> = z.object({
   disabledSkills: z.array(z.string()).default([]),
   rules: z.array(RuntimeRuleSchema).default([]),
   thinkingPolicies: z.array(ChannelThinkingPolicySchema).default([]),
+  thinkingFallbacks: z.array(ThinkingFallbackPolicySchema).default([]),
 })
 
 export const DEFAULT_RUNTIME_CONFIG: AntSwordRuntimeConfig = AntSwordRuntimeConfigSchema({
@@ -74,6 +104,7 @@ export const DEFAULT_RUNTIME_CONFIG: AntSwordRuntimeConfig = AntSwordRuntimeConf
   disabledSkills: [],
   rules: [],
   thinkingPolicies: [],
+  thinkingFallbacks: [],
 })
 
 function byteLength(value: string): number {
@@ -139,6 +170,27 @@ function validateThinkingPolicy(policy: ChannelThinkingPolicy): void {
   if (byteLength(modelId) > MAX_MODEL_ID_BYTES) throw new TypeError(`thinking policy modelId exceeds ${String(MAX_MODEL_ID_BYTES)} UTF-8 bytes`)
 }
 
+function validateThinkingFallback(fallback: ThinkingFallbackPolicy): void {
+  const providerId = fallback.providerId.trim()
+  const modelId = fallback.modelId.trim()
+  if (providerId === '' || providerId !== fallback.providerId || /[\0-\x1f]/u.test(providerId)) {
+    throw new TypeError('thinking fallback providerId must be non-empty, trimmed, and contain no control characters')
+  }
+  if (modelId === '' || modelId !== fallback.modelId || /[\0-\x1f]/u.test(modelId)) {
+    throw new TypeError('thinking fallback modelId must be non-empty, trimmed, and contain no control characters')
+  }
+  if (byteLength(providerId) > MAX_PROVIDER_ID_BYTES) throw new TypeError(`thinking fallback providerId exceeds ${String(MAX_PROVIDER_ID_BYTES)} UTF-8 bytes`)
+  if (byteLength(modelId) > MAX_MODEL_ID_BYTES) throw new TypeError(`thinking fallback modelId exceeds ${String(MAX_MODEL_ID_BYTES)} UTF-8 bytes`)
+
+  const efforts = fallback.simulatedEfforts
+  for (const level of ['minimum', 'low', 'medium', 'high', 'maximum'] as const) {
+    const effortId = efforts[level]
+    if (effortId === '' || effortId.trim() !== effortId || /[\0-\x1f]/u.test(effortId)) {
+      throw new TypeError(`thinking fallback simulatedEfforts.${level} must be non-empty, trimmed, and contain no control characters`)
+    }
+  }
+}
+
 export function validateRuntimeConfig(config: AntSwordRuntimeConfig): void {
   assertUnique(config.mcpServers.map(server => server.serverName), 'mcpServers')
   for (const server of config.mcpServers) validateMcpServer(server)
@@ -153,6 +205,9 @@ export function validateRuntimeConfig(config: AntSwordRuntimeConfig): void {
 
   assertUnique(config.thinkingPolicies.map(policy => `${policy.providerId}\0${policy.modelId}`), 'thinkingPolicies')
   for (const policy of config.thinkingPolicies) validateThinkingPolicy(policy)
+
+  assertUnique(config.thinkingFallbacks.map(fallback => `${fallback.providerId}\0${fallback.modelId}`), 'thinkingFallbacks')
+  for (const fallback of config.thinkingFallbacks) validateThinkingFallback(fallback)
 }
 
 export interface RuntimeReconciler {

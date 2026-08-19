@@ -32,6 +32,7 @@ export function applyDynamicRuntime(
     disabledSkills: [],
     rules: [],
     thinkingPolicies: [],
+    thinkingFallbacks: [],
   }
   const scope = ctx.settings.register(
     settingsNamespace(ANT_SWORD_SETTINGS_NAMESPACE),
