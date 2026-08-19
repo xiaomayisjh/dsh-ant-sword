@@ -60,6 +60,30 @@ export interface AntSwordRuntimeConfig {
   rules: RuntimeRuleConfig[]
   thinkingPolicies: ChannelThinkingPolicy[]
   thinkingFallbacks: ThinkingFallbackPolicy[]
+  /**
+   * Default reasoning-effort mapping applied to any model that neither exposes
+   * native reasoning capability nor matches an explicit {@link thinkingFallbacks}
+   * entry. This is what lets custom-channel models (e.g. DeepSeek-family models
+   * relayed through third-party providers) surface the same five-level thinking
+   * UI the official adapter offers, with no per-model configuration. Set to
+   * `null` to keep unmatched models unsupported (the pre-default behaviour).
+   * `undefined` (omitted / legacy config) is treated as the built-in
+   * {@link DEFAULT_THINKING_FALLBACK}.
+   */
+  defaultThinkingFallback?: SimulatedEfforts | null
+}
+
+/**
+ * DeepSeek-family default: most custom relays expose the official
+ * `off`/`high`/`max` effort vocabulary, so the five levels fold onto it
+ * monotonically (minimum silences thinking; the top level reaches `max`).
+ */
+export const DEFAULT_THINKING_FALLBACK: SimulatedEfforts = {
+  minimum: 'off',
+  low: 'high',
+  medium: 'high',
+  high: 'max',
+  maximum: 'max',
 }
 
 export const ChannelThinkingPolicySchema: z<ChannelThinkingPolicy> = z.object({
@@ -97,6 +121,11 @@ export const AntSwordRuntimeConfigSchema: z<AntSwordRuntimeConfig> = z.object({
   rules: z.array(RuntimeRuleSchema).default([]),
   thinkingPolicies: z.array(ChannelThinkingPolicySchema).default([]),
   thinkingFallbacks: z.array(ThinkingFallbackPolicySchema).default([]),
+  // No schema `.default()`: schemastery coerces an explicit `null` back to a
+  // non-null default, which would make disabling impossible. Instead, an
+  // omitted field arrives as `undefined` and the runtime treats that as
+  // "use DEFAULT_THINKING_FALLBACK"; only an explicit `null` disables it.
+  defaultThinkingFallback: z.union([SimulatedEffortsSchema, z.const(null)]),
 })
 
 export const DEFAULT_RUNTIME_CONFIG: AntSwordRuntimeConfig = AntSwordRuntimeConfigSchema({
@@ -105,6 +134,7 @@ export const DEFAULT_RUNTIME_CONFIG: AntSwordRuntimeConfig = AntSwordRuntimeConf
   rules: [],
   thinkingPolicies: [],
   thinkingFallbacks: [],
+  defaultThinkingFallback: { ...DEFAULT_THINKING_FALLBACK },
 })
 
 function byteLength(value: string): number {
@@ -182,11 +212,14 @@ function validateThinkingFallback(fallback: ThinkingFallbackPolicy): void {
   if (byteLength(providerId) > MAX_PROVIDER_ID_BYTES) throw new TypeError(`thinking fallback providerId exceeds ${String(MAX_PROVIDER_ID_BYTES)} UTF-8 bytes`)
   if (byteLength(modelId) > MAX_MODEL_ID_BYTES) throw new TypeError(`thinking fallback modelId exceeds ${String(MAX_MODEL_ID_BYTES)} UTF-8 bytes`)
 
-  const efforts = fallback.simulatedEfforts
+  validateSimulatedEfforts(fallback.simulatedEfforts, 'thinking fallback simulatedEfforts')
+}
+
+function validateSimulatedEfforts(efforts: SimulatedEfforts, label: string): void {
   for (const level of ['minimum', 'low', 'medium', 'high', 'maximum'] as const) {
     const effortId = efforts[level]
     if (effortId === '' || effortId.trim() !== effortId || /[\0-\x1f]/u.test(effortId)) {
-      throw new TypeError(`thinking fallback simulatedEfforts.${level} must be non-empty, trimmed, and contain no control characters`)
+      throw new TypeError(`${label}.${level} must be non-empty, trimmed, and contain no control characters`)
     }
   }
 }
@@ -208,6 +241,10 @@ export function validateRuntimeConfig(config: AntSwordRuntimeConfig): void {
 
   assertUnique(config.thinkingFallbacks.map(fallback => `${fallback.providerId}\0${fallback.modelId}`), 'thinkingFallbacks')
   for (const fallback of config.thinkingFallbacks) validateThinkingFallback(fallback)
+
+  if (config.defaultThinkingFallback !== null && config.defaultThinkingFallback !== undefined) {
+    validateSimulatedEfforts(config.defaultThinkingFallback, 'defaultThinkingFallback')
+  }
 }
 
 export interface RuntimeReconciler {

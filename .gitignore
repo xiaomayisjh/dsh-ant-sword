@@ -1,2 +1,4 @@
 .release*
 node_modules/
+# Local Windows install helper (not a release artifact)
+*-offline.tgz

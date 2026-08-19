@@ -24,13 +24,17 @@ function createSource(config: AntSwordRuntimeConfig): ThinkingPolicySource {
   }
 }
 
-function baseConfig(): AntSwordRuntimeConfig {
+function baseConfig(overrides: Partial<AntSwordRuntimeConfig> = {}): AntSwordRuntimeConfig {
   return AntSwordRuntimeConfigSchema({
     mcpServers: [],
     disabledSkills: [],
     rules: [],
     thinkingPolicies: [],
     thinkingFallbacks: [],
+    // Default off in this suite so each test opts into the exact fallback it
+    // exercises; the default-fallback behaviour is covered in thinking-policy.spec.ts.
+    defaultThinkingFallback: null,
+    ...overrides,
   })
 }
 
@@ -112,6 +116,26 @@ describe('ThinkingPolicy Fallback', () => {
     expect(capability.supported).toBe(false)
     expect(capability.efforts).toHaveLength(0)
     expect(capability.fallback).toBeUndefined()
+  })
+
+  it('uses the config-wide default fallback when no native support and no explicit fallback', async () => {
+    const ctx = createMockContext(async () => ({
+      provider: 'qoder',
+      id: 'deepseek-v4-flash',
+      name: 'DeepSeek V4 Flash',
+      // No reasoning field, no explicit fallback entry
+    }))
+
+    const source = createSource(baseConfig({
+      defaultThinkingFallback: { minimum: 'off', low: 'high', medium: 'high', high: 'max', maximum: 'max' },
+    }))
+    const runtime = new ThinkingPolicyRuntime(ctx, source)
+
+    const capability = await runtime.capability('qoder', 'deepseek-v4-flash')
+
+    expect(capability.supported).toBe(true)
+    expect(capability.fallback).toBe(true)
+    expect(capability.efforts.map(effort => effort.id)).toEqual(['off', 'high', 'high', 'max', 'max'])
   })
 
   it('supports wildcard matching in fallback policies', async () => {

@@ -50,7 +50,24 @@ export interface AntSwordRuntimeConfig {
     rules: RuntimeRuleConfig[];
     thinkingPolicies: ChannelThinkingPolicy[];
     thinkingFallbacks: ThinkingFallbackPolicy[];
+    /**
+     * Default reasoning-effort mapping applied to any model that neither exposes
+     * native reasoning capability nor matches an explicit {@link thinkingFallbacks}
+     * entry. This is what lets custom-channel models (e.g. DeepSeek-family models
+     * relayed through third-party providers) surface the same five-level thinking
+     * UI the official adapter offers, with no per-model configuration. Set to
+     * `null` to keep unmatched models unsupported (the pre-default behaviour).
+     * `undefined` (omitted / legacy config) is treated as the built-in
+     * {@link DEFAULT_THINKING_FALLBACK}.
+     */
+    defaultThinkingFallback?: SimulatedEfforts | null;
 }
+/**
+ * DeepSeek-family default: most custom relays expose the official
+ * `off`/`high`/`max` effort vocabulary, so the five levels fold onto it
+ * monotonically (minimum silences thinking; the top level reaches `max`).
+ */
+export declare const DEFAULT_THINKING_FALLBACK: SimulatedEfforts;
 export declare const ChannelThinkingPolicySchema: z<ChannelThinkingPolicy>;
 export declare const SimulatedEffortsSchema: z<SimulatedEfforts>;
 export declare const ThinkingFallbackPolicySchema: z<ThinkingFallbackPolicy>;

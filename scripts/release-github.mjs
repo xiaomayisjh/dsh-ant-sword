@@ -251,14 +251,19 @@ function makeOfflineTarball(tarball, destination, clearDependencies = false) {
   const staging = join(destination, `.rewrite-${basename(tarball, '.tgz')}`)
   rmSync(staging, { recursive: true, force: true })
   mkdirSync(staging, { recursive: true })
-  run('tar', ['-xzf', tarball, '-C', staging])
+  // GNU/MSYS tar on Windows reads a `C:\...` path as a `host:path` remote spec
+  // and further mangles backslashes it re-emits. Passing forward-slash paths
+  // (which Windows tar accepts natively) plus `--force-local` avoids both, and
+  // `shell: false` keeps the Windows shell from re-quoting the arguments.
+  const tarPath = (p) => p.replace(/\\/g, '/')
+  run('tar', ['--force-local', '-xzf', tarPath(tarball), '-C', tarPath(staging)], { shell: false })
   const manifestPath = join(staging, 'package', 'package.json')
   const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'))
   if (clearDependencies) manifest.dependencies = {}
   manifest.peerDependencies = {}
   writeFileSync(manifestPath, `${JSON.stringify(manifest, undefined, 2)}\n`)
   rmSync(tarball, { force: true })
-  run('tar', ['-czf', tarball, '-C', staging, 'package'])
+  run('tar', ['--force-local', '-czf', tarPath(tarball), '-C', tarPath(staging), 'package'], { shell: false })
   rmSync(staging, { recursive: true, force: true })
   return tarball
 }

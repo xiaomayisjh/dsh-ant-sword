@@ -38,9 +38,48 @@
 
 系统会自动将 `high` 级别映射到该模型的 `high` effort。
 
-## Fallback 机制
+## 对话框原生思考强度选择器（自定义渠道）
 
-对于自定义渠道引入的模型，如果适配器未暴露 reasoning 能力，可以通过配置 **fallback 策略**来启用思考强度调整。
+对话框输入区旁边那个思考强度选择器（与官方 DeepSeek 一致）由 host 的模型目录驱动：host 对每个模型调用 `ctx.llm.resolveModelInfo()`，只有返回 `reasoning` 字段的模型才会显示选择器。自定义渠道的适配器通常不返回该字段，因此原生选择器不出现。
+
+本包在运行时**包裹了 `ctx.llm.resolveModelInfoFor`**：当某模型没有原生 `reasoning` 时，用下面的 fallback 配置合成一份 `reasoning` 注入进去。由于目录构建、effort 校验、请求下发三条路径都走这一个方法，所以：
+
+1. 对话框会显示与官方一致的三档选择器（默认 `off`/`high`/`max`）；
+2. 选中的 effort 通过校验并真正下发给适配器；
+3. 无需任何逐模型配置。
+
+合成的档位是 fallback 五档映射去重后的**不同 effort id**（默认 `{off, high, high, max, max}` → `[off, high, max]`），`defaultEffort` 取 `medium` 档对应值（默认 `high`），与官方 DeepSeek 的默认行为对齐。把 `defaultThinkingFallback` 设为 `null` 可关闭该注入。
+
+## 默认 Fallback（开箱即用）
+
+从当前版本起，系统内置了一个**默认 fallback**（`defaultThinkingFallback`）。任何模型只要满足：
+
+1. 适配器未暴露原生 reasoning 能力，且
+2. 没有匹配到具体的 `thinkingFallbacks` 条目
+
+就会自动套用默认 fallback，因此**自定义渠道引入的模型无需任何配置即可显示与官方 DeepSeek 一致的五档思考强度 UI**。
+
+默认映射（对齐官方 DeepSeek 的 `off`/`high`/`max` 三档 effort）：
+
+```json
+{
+  "defaultThinkingFallback": {
+    "minimum": "off",
+    "low": "high",
+    "medium": "high",
+    "high": "max",
+    "maximum": "max"
+  }
+}
+```
+
+- 想为某个模型使用不同映射：在 `thinkingFallbacks` 里添加**精确或通配符**条目，它优先于默认 fallback。
+- 想恢复旧行为（未配置的模型显示"不支持"）：把 `defaultThinkingFallback` 设为 `null`。
+- 省略该字段（或旧配置文件没有该字段）等同于使用上面的内置默认值。
+
+## 显式 Fallback 机制
+
+对于自定义渠道引入的模型，如果默认 fallback 的映射不合适，可以通过配置**显式 fallback 策略**覆盖它。
 
 ### 配置 Fallback
 

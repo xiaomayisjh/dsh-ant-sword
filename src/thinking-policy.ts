@@ -2,8 +2,9 @@
 
 import type { Context } from '@deepseek-ai/cordis'
 import type { Agent } from '@deepseek-ai/dsh-agent'
-import type { LlmCallConfig, LlmReasoningEffortInfo } from '@deepseek-ai/dsh-llm'
-import type { AntSwordRuntimeConfig, ChannelThinkingPolicy, ThinkingFallbackPolicy, ThinkingLevel } from './runtime-config.ts'
+import type { LlmCallConfig, LlmModelReasoningInfo, LlmReasoningEffortInfo, LlmResolvedModelInfo } from '@deepseek-ai/dsh-llm'
+import { DEFAULT_THINKING_FALLBACK } from './runtime-config.ts'
+import type { AntSwordRuntimeConfig, ChannelThinkingPolicy, SimulatedEfforts, ThinkingFallbackPolicy, ThinkingLevel } from './runtime-config.ts'
 
 export const THINKING_LEVELS = ['minimum', 'low', 'medium', 'high', 'maximum'] as const satisfies readonly ThinkingLevel[]
 
@@ -62,14 +63,43 @@ export function findThinkingFallback(
   })
 }
 
-function syntheticEffortsFromFallback(fallback: ThinkingFallbackPolicy): readonly LlmReasoningEffortInfo[] {
+function syntheticEffortsFromEfforts(efforts: SimulatedEfforts): readonly LlmReasoningEffortInfo[] {
   return [
-    { id: fallback.simulatedEfforts.minimum as any, name: 'Minimum', description: 'Fallback minimum effort' },
-    { id: fallback.simulatedEfforts.low as any, name: 'Low', description: 'Fallback low effort' },
-    { id: fallback.simulatedEfforts.medium as any, name: 'Medium', description: 'Fallback medium effort' },
-    { id: fallback.simulatedEfforts.high as any, name: 'High', description: 'Fallback high effort' },
-    { id: fallback.simulatedEfforts.maximum as any, name: 'Maximum', description: 'Fallback maximum effort' },
+    { id: efforts.minimum as any, name: 'Minimum', description: 'Fallback minimum effort' },
+    { id: efforts.low as any, name: 'Low', description: 'Fallback low effort' },
+    { id: efforts.medium as any, name: 'Medium', description: 'Fallback medium effort' },
+    { id: efforts.high as any, name: 'High', description: 'Fallback high effort' },
+    { id: efforts.maximum as any, name: 'Maximum', description: 'Fallback maximum effort' },
   ]
+}
+
+function syntheticEffortsFromFallback(fallback: ThinkingFallbackPolicy): readonly LlmReasoningEffortInfo[] {
+  return syntheticEffortsFromEfforts(fallback.simulatedEfforts)
+}
+
+/** Title-case a raw effort id for a selector label ("high" -> "High"). */
+function effortLabel(id: string): string {
+  return id.length === 0 ? id : id[0]!.toUpperCase() + id.slice(1)
+}
+
+/**
+ * Collapse the five-level {@link SimulatedEfforts} map to the distinct
+ * adapter-owned effort ids it targets, in ascending order. The DeepSeek-family
+ * default `{off, high, high, max, max}` folds to `[off, high, max]`, so the
+ * native composer selector shows the same clean three-button UI the official
+ * adapter exposes (rather than five buttons where two pairs alias). The
+ * `defaultEffort` is the id the `medium` level maps to (the official default).
+ */
+function distinctReasoningFromEfforts(efforts: SimulatedEfforts): { efforts: readonly LlmReasoningEffortInfo[]; defaultEffort: string } {
+  const ordered = [efforts.minimum, efforts.low, efforts.medium, efforts.high, efforts.maximum]
+  const seen = new Set<string>()
+  const distinct: LlmReasoningEffortInfo[] = []
+  for (const id of ordered) {
+    if (seen.has(id)) continue
+    seen.add(id)
+    distinct.push({ id: id as any, name: effortLabel(id) })
+  }
+  return { efforts: distinct, defaultEffort: efforts.medium }
 }
 
 export class ThinkingPolicyRuntime {
@@ -82,8 +112,66 @@ export class ThinkingPolicyRuntime {
   ) {}
 
   start(): () => void {
+    const stopModelInfo = this.installModelInfoInjection()
     for (const agent of this.ctx.agents.list()) this.install(agent)
-    return this.ctx.on('agent/created', ({ agent }) => this.install(agent))
+    const stopAgents = this.ctx.on('agent/created', ({ agent }) => this.install(agent))
+    return () => {
+      stopAgents()
+      stopModelInfo()
+    }
+  }
+
+  /**
+   * Make custom-channel models surface the SAME native reasoning-effort selector
+   * the official adapter shows in the composer. The host builds its model
+   * catalog (and validates a chosen effort, and materializes it on dispatch) by
+   * calling `ctx.llm.resolveModelInfoFor(registration, model)`; a model whose
+   * adapter returns no `reasoning` gets no selector and rejects any effort. We
+   * wrap that one internal method so a model with no native reasoning is
+   * augmented with synthetic reasoning derived from the same fallback config
+   * used by {@link resolveFallbackCapability} — one patch that the selector,
+   * the effort validation, and the request dispatch all read consistently.
+   */
+  private installModelInfoInjection(): () => void {
+    const llm = this.ctx.llm as unknown as {
+      resolveModelInfoFor: (registration: { provider: { id: string } }, model: string, signal?: AbortSignal) => Promise<LlmResolvedModelInfo>
+    }
+    const original = llm.resolveModelInfoFor
+    if (typeof original !== 'function') return () => undefined
+    const self = this
+    const patched = async function (this: unknown, registration: { provider: { id: string } }, model: string, signal?: AbortSignal): Promise<LlmResolvedModelInfo> {
+      const info = await original.call(this, registration, model, signal)
+      if (info.reasoning !== undefined) return info
+      const reasoning = self.syntheticReasoningFor(registration.provider.id, model)
+      return reasoning === undefined ? info : { ...info, reasoning }
+    }
+    Object.defineProperty(llm, 'resolveModelInfoFor', { value: patched, writable: true, configurable: true })
+    return () => {
+      // Only restore if nothing else re-wrapped after us.
+      if ((llm as { resolveModelInfoFor: unknown }).resolveModelInfoFor === patched) {
+        Object.defineProperty(llm, 'resolveModelInfoFor', { value: original, writable: true, configurable: true })
+      }
+    }
+  }
+
+  /**
+   * Synthetic native-reasoning metadata for a model with no adapter reasoning:
+   * an explicit per-model fallback wins, else the config-wide default
+   * (`undefined` => built-in DeepSeek default; `null` => disabled → no
+   * injection). The efforts are the distinct ids the level map targets, so the
+   * selector matches the official three-button layout.
+   */
+  private syntheticReasoningFor(providerId: string, modelId: string): LlmModelReasoningInfo | undefined {
+    const applied = this.source.snapshot().applied
+    const explicit = findThinkingFallback(applied.thinkingFallbacks, providerId, modelId)
+    const efforts = explicit !== undefined
+      ? explicit.simulatedEfforts
+      : applied.defaultThinkingFallback === undefined
+        ? DEFAULT_THINKING_FALLBACK
+        : applied.defaultThinkingFallback
+    if (efforts === null) return undefined
+    const distinct = distinctReasoningFromEfforts(efforts)
+    return { efforts: distinct.efforts, defaultEffort: distinct.defaultEffort as any }
   }
 
   private install(agent: Agent): void {
@@ -97,6 +185,42 @@ export class ThinkingPolicyRuntime {
 
   clearCapabilities(): void {
     this.capabilityCache.clear()
+  }
+
+  /**
+   * Resolve a synthetic capability for a model with no native reasoning support:
+   * an explicit per-model {@link ThinkingFallbackPolicy} wins, otherwise the
+   * config-wide `defaultThinkingFallback` (when not disabled) makes every
+   * custom-channel model surface the same five-level thinking UI as the
+   * official adapter, with no per-model configuration.
+   */
+  private resolveFallbackCapability(providerId: string, modelId: string): ThinkingCapability | undefined {
+    const applied = this.source.snapshot().applied
+    const explicit = findThinkingFallback(applied.thinkingFallbacks, providerId, modelId)
+    if (explicit !== undefined) {
+      return {
+        providerId,
+        modelId,
+        supported: true,
+        efforts: syntheticEffortsFromFallback(explicit),
+        fallback: true,
+      }
+    }
+    // `null` explicitly disables the config-wide default; `undefined`
+    // (omitted / legacy config) means "use the built-in DeepSeek default".
+    const fallbackDefault = applied.defaultThinkingFallback === undefined
+      ? DEFAULT_THINKING_FALLBACK
+      : applied.defaultThinkingFallback
+    if (fallbackDefault !== null) {
+      return {
+        providerId,
+        modelId,
+        supported: true,
+        efforts: syntheticEffortsFromEfforts(fallbackDefault),
+        fallback: true,
+      }
+    }
+    return undefined
   }
 
   capability(providerId: string, modelId: string, signal?: AbortSignal): Promise<ThinkingCapability> {
@@ -116,22 +240,9 @@ export class ThinkingPolicyRuntime {
         }
       }
 
-      // Otherwise, check for a fallback configuration
-      const fallback = findThinkingFallback(
-        this.source.snapshot().applied.thinkingFallbacks,
-        providerId,
-        modelId,
-      )
-
-      if (fallback !== undefined) {
-        return {
-          providerId,
-          modelId,
-          supported: true,
-          efforts: syntheticEffortsFromFallback(fallback),
-          fallback: true,
-        }
-      }
+      // Otherwise, check for a fallback configuration (explicit, then default)
+      const fallbackCapability = this.resolveFallbackCapability(providerId, modelId)
+      if (fallbackCapability !== undefined) return fallbackCapability
 
       // No native support and no fallback
       return {
@@ -141,22 +252,9 @@ export class ThinkingPolicyRuntime {
         efforts: [],
       }
     }).catch(error => {
-      // If adapter query fails, still try fallback
-      const fallback = findThinkingFallback(
-        this.source.snapshot().applied.thinkingFallbacks,
-        providerId,
-        modelId,
-      )
-
-      if (fallback !== undefined) {
-        return {
-          providerId,
-          modelId,
-          supported: true,
-          efforts: syntheticEffortsFromFallback(fallback),
-          fallback: true,
-        }
-      }
+      // If adapter query fails, still try fallback (explicit, then default)
+      const fallbackCapability = this.resolveFallbackCapability(providerId, modelId)
+      if (fallbackCapability !== undefined) return fallbackCapability
 
       // Both native and fallback failed
       this.capabilityCache.delete(key)
