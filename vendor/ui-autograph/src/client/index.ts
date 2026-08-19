@@ -1,6 +1,6 @@
 /**
  * Autonomous-loop graph plugin, browser half: contributes one entry to the
- * conversation view slot 鈥?a React Flow view of the red-team-auto blackboard
+ * conversation view slot — a React Flow view of the red-team-auto blackboard
  * (the `board` session projection) with Pause / Resume / Inject-hint controls
  * driven through the `/auto` command Remote. The tab reads its live graph via
  * the session-standard `useProjection`; it mounts like any view and renders
@@ -75,7 +75,7 @@ export function apply(ctx: Context): void {
     name: 'settings.section',
     id: 'red-team-runtime',
     order: 18,
-    label: () => 'Red Team 鐜',
+    label: () => 'Red Team 环境',
     inject: () => ({ runtimeStatus, configScope }),
   }, RuntimeStatus))
 

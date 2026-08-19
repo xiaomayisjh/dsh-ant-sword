@@ -1251,7 +1251,7 @@ svg.react-flow__connectionline {
   --xy-controls-button-background-color-hover-default: var(--dsw-alias-interactive-bg-hover-solid);
   --xy-controls-button-color-default: var(--dsw-alias-label-secondary);
   --xy-controls-button-border-color-default: var(--dsw-alias-border-l2);
-  --xy-background-pattern-dot-color-default: var(--dsw-alias-border-l3);
+  --xy-background-pattern-dots-color-default: var(--dsw-alias-border-l3);
 }
 .AutoGraphView_canvas .react-flow__node {
   border-radius: 8px;
@@ -1318,7 +1318,7 @@ svg.react-flow__connectionline {
   stroke: var(--dsw-alias-state-success-primary);
 }
 .AutoGraphView_overviewNode[data-kind=hint] {
-  stroke: var(--dsw-alias-brand-primary-new-colorprimary-new-color);
+  stroke: var(--dsw-alias-brand-primary);
 }
 .AutoGraphView_overviewViewport {
   fill: var(--dsw-alias-bg-mask-2);
@@ -1359,7 +1359,7 @@ svg.react-flow__connectionline {
   border-color: var(--dsw-alias-state-business-primary);
 }
 .AutoGraphView_nodeCard[data-kind=hint] {
-  border-color: var(--dsw-alias-brand-primary-new-colorprimary-new-color);
+  border-color: var(--dsw-alias-brand-primary);
 }
 .AutoGraphView_nodeHeader {
   display: flex;
@@ -1414,7 +1414,7 @@ svg.react-flow__connectionline {
   background: var(--dsw-alias-state-business-primary);
 }
 .AutoGraphView_nodeCard[data-kind=hint] .AutoGraphView_handle {
-  background: var(--dsw-alias-brand-primary-new-colorprimary-new-color);
+  background: var(--dsw-alias-brand-primary);
 }
 .AutoGraphView_controls {
   display: flex;

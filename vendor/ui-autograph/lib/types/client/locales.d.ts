@@ -4,7 +4,7 @@
  */
 declare const en: {
     readonly 'panel.title': "Autonomous run";
-    readonly 'panel.cycle': "cycle {{cycle}}";
+    readonly 'panel.cycle': "cycle {cycle}";
     readonly 'panel.paused': "paused";
     readonly 'panel.complete': "complete";
     readonly 'panel.running': "running";

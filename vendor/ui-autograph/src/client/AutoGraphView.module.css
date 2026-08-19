@@ -285,7 +285,7 @@
   --xy-controls-button-background-color-hover-default: var(--dsw-alias-interactive-bg-hover-solid);
   --xy-controls-button-color-default: var(--dsw-alias-label-secondary);
   --xy-controls-button-border-color-default: var(--dsw-alias-border-l2);
-  --xy-background-pattern-dot-color-default: var(--dsw-alias-border-l3);
+  --xy-background-pattern-dots-color-default: var(--dsw-alias-border-l3);
 }
 
 .canvas :global(.react-flow__node) {
@@ -365,7 +365,7 @@
 }
 
 .overviewNode[data-kind='hint'] {
-  stroke: var(--dsw-alias-brand-primary-new-colorprimary-new-color);
+  stroke: var(--dsw-alias-brand-primary);
 }
 
 .overviewViewport {
@@ -413,7 +413,7 @@
 }
 
 .nodeCard[data-kind='hint'] {
-  border-color: var(--dsw-alias-brand-primary-new-colorprimary-new-color);
+  border-color: var(--dsw-alias-brand-primary);
 }
 
 .nodeHeader {
@@ -478,7 +478,7 @@
 }
 
 .nodeCard[data-kind='hint'] .handle {
-  background: var(--dsw-alias-brand-primary-new-colorprimary-new-color);
+  background: var(--dsw-alias-brand-primary);
 }
 
 .controls {

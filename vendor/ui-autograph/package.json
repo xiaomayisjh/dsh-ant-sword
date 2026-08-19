@@ -1,7 +1,7 @@
 {
     "name":  "@deepseek-ai/dsh-client-ui-autograph",
     "description":  "Autonomous-loop graph and MCP settings surface for the Ant Sword profile",
-    "version":  "0.1.0-rc.18",
+    "version":  "0.1.0-rc.19",
     "private":  true,
     "type":  "module",
     "main":  "lib/index.js",

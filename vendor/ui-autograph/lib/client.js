@@ -267,263 +267,6 @@ var require_with_selector = __commonJS({
   }
 });
 
-// node_modules/.pnpm/react-dom@19.2.8_react@19.2.8/node_modules/react-dom/cjs/react-dom.development.js
-var require_react_dom_development = __commonJS({
-  "node_modules/.pnpm/react-dom@19.2.8_react@19.2.8/node_modules/react-dom/cjs/react-dom.development.js"(exports) {
-    "use strict";
-    (function() {
-      function noop2() {
-      }
-      function testStringCoercion(value) {
-        return "" + value;
-      }
-      function createPortal$1(children2, containerInfo, implementation) {
-        var key2 = 3 < arguments.length && void 0 !== arguments[3] ? arguments[3] : null;
-        try {
-          testStringCoercion(key2);
-          var JSCompiler_inline_result = false;
-        } catch (e) {
-          JSCompiler_inline_result = true;
-        }
-        JSCompiler_inline_result && (console.error(
-          "The provided key is an unsupported type %s. This value must be coerced to a string before using it here.",
-          "function" === typeof Symbol && Symbol.toStringTag && key2[Symbol.toStringTag] || key2.constructor.name || "Object"
-        ), testStringCoercion(key2));
-        return {
-          $$typeof: REACT_PORTAL_TYPE,
-          key: null == key2 ? null : "" + key2,
-          children: children2,
-          containerInfo,
-          implementation
-        };
-      }
-      function getCrossOriginStringAs(as, input) {
-        if ("font" === as) return "";
-        if ("string" === typeof input)
-          return "use-credentials" === input ? input : "";
-      }
-      function getValueDescriptorExpectingObjectForWarning(thing) {
-        return null === thing ? "`null`" : void 0 === thing ? "`undefined`" : "" === thing ? "an empty string" : 'something with type "' + typeof thing + '"';
-      }
-      function getValueDescriptorExpectingEnumForWarning(thing) {
-        return null === thing ? "`null`" : void 0 === thing ? "`undefined`" : "" === thing ? "an empty string" : "string" === typeof thing ? JSON.stringify(thing) : "number" === typeof thing ? "`" + thing + "`" : 'something with type "' + typeof thing + '"';
-      }
-      function resolveDispatcher() {
-        var dispatcher = ReactSharedInternals.H;
-        null === dispatcher && console.error(
-          "Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:\n1. You might have mismatching versions of React and the renderer (such as React DOM)\n2. You might be breaking the Rules of Hooks\n3. You might have more than one copy of React in the same app\nSee https://react.dev/link/invalid-hook-call for tips about how to debug and fix this problem."
-        );
-        return dispatcher;
-      }
-      "undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-      var React = require("react"), Internals = {
-        d: {
-          f: noop2,
-          r: function() {
-            throw Error(
-              "Invalid form element. requestFormReset must be passed a form that was rendered by React."
-            );
-          },
-          D: noop2,
-          C: noop2,
-          L: noop2,
-          m: noop2,
-          X: noop2,
-          S: noop2,
-          M: noop2
-        },
-        p: 0,
-        findDOMNode: null
-      }, REACT_PORTAL_TYPE = /* @__PURE__ */ Symbol.for("react.portal"), ReactSharedInternals = React.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
-      "function" === typeof Map && null != Map.prototype && "function" === typeof Map.prototype.forEach && "function" === typeof Set && null != Set.prototype && "function" === typeof Set.prototype.clear && "function" === typeof Set.prototype.forEach || console.error(
-        "React depends on Map and Set built-in types. Make sure that you load a polyfill in older browsers. https://reactjs.org/link/react-polyfills"
-      );
-      exports.__DOM_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE = Internals;
-      exports.createPortal = function(children2, container) {
-        var key2 = 2 < arguments.length && void 0 !== arguments[2] ? arguments[2] : null;
-        if (!container || 1 !== container.nodeType && 9 !== container.nodeType && 11 !== container.nodeType)
-          throw Error("Target container is not a DOM element.");
-        return createPortal$1(children2, container, null, key2);
-      };
-      exports.flushSync = function(fn) {
-        var previousTransition = ReactSharedInternals.T, previousUpdatePriority = Internals.p;
-        try {
-          if (ReactSharedInternals.T = null, Internals.p = 2, fn)
-            return fn();
-        } finally {
-          ReactSharedInternals.T = previousTransition, Internals.p = previousUpdatePriority, Internals.d.f() && console.error(
-            "flushSync was called from inside a lifecycle method. React cannot flush when React is already rendering. Consider moving this call to a scheduler task or micro task."
-          );
-        }
-      };
-      exports.preconnect = function(href, options) {
-        "string" === typeof href && href ? null != options && "object" !== typeof options ? console.error(
-          "ReactDOM.preconnect(): Expected the `options` argument (second) to be an object but encountered %s instead. The only supported option at this time is `crossOrigin` which accepts a string.",
-          getValueDescriptorExpectingEnumForWarning(options)
-        ) : null != options && "string" !== typeof options.crossOrigin && console.error(
-          "ReactDOM.preconnect(): Expected the `crossOrigin` option (second argument) to be a string but encountered %s instead. Try removing this option or passing a string value instead.",
-          getValueDescriptorExpectingObjectForWarning(options.crossOrigin)
-        ) : console.error(
-          "ReactDOM.preconnect(): Expected the `href` argument (first) to be a non-empty string but encountered %s instead.",
-          getValueDescriptorExpectingObjectForWarning(href)
-        );
-        "string" === typeof href && (options ? (options = options.crossOrigin, options = "string" === typeof options ? "use-credentials" === options ? options : "" : void 0) : options = null, Internals.d.C(href, options));
-      };
-      exports.prefetchDNS = function(href) {
-        if ("string" !== typeof href || !href)
-          console.error(
-            "ReactDOM.prefetchDNS(): Expected the `href` argument (first) to be a non-empty string but encountered %s instead.",
-            getValueDescriptorExpectingObjectForWarning(href)
-          );
-        else if (1 < arguments.length) {
-          var options = arguments[1];
-          "object" === typeof options && options.hasOwnProperty("crossOrigin") ? console.error(
-            "ReactDOM.prefetchDNS(): Expected only one argument, `href`, but encountered %s as a second argument instead. This argument is reserved for future options and is currently disallowed. It looks like the you are attempting to set a crossOrigin property for this DNS lookup hint. Browsers do not perform DNS queries using CORS and setting this attribute on the resource hint has no effect. Try calling ReactDOM.prefetchDNS() with just a single string argument, `href`.",
-            getValueDescriptorExpectingEnumForWarning(options)
-          ) : console.error(
-            "ReactDOM.prefetchDNS(): Expected only one argument, `href`, but encountered %s as a second argument instead. This argument is reserved for future options and is currently disallowed. Try calling ReactDOM.prefetchDNS() with just a single string argument, `href`.",
-            getValueDescriptorExpectingEnumForWarning(options)
-          );
-        }
-        "string" === typeof href && Internals.d.D(href);
-      };
-      exports.preinit = function(href, options) {
-        "string" === typeof href && href ? null == options || "object" !== typeof options ? console.error(
-          "ReactDOM.preinit(): Expected the `options` argument (second) to be an object with an `as` property describing the type of resource to be preinitialized but encountered %s instead.",
-          getValueDescriptorExpectingEnumForWarning(options)
-        ) : "style" !== options.as && "script" !== options.as && console.error(
-          'ReactDOM.preinit(): Expected the `as` property in the `options` argument (second) to contain a valid value describing the type of resource to be preinitialized but encountered %s instead. Valid values for `as` are "style" and "script".',
-          getValueDescriptorExpectingEnumForWarning(options.as)
-        ) : console.error(
-          "ReactDOM.preinit(): Expected the `href` argument (first) to be a non-empty string but encountered %s instead.",
-          getValueDescriptorExpectingObjectForWarning(href)
-        );
-        if ("string" === typeof href && options && "string" === typeof options.as) {
-          var as = options.as, crossOrigin = getCrossOriginStringAs(as, options.crossOrigin), integrity = "string" === typeof options.integrity ? options.integrity : void 0, fetchPriority = "string" === typeof options.fetchPriority ? options.fetchPriority : void 0;
-          "style" === as ? Internals.d.S(
-            href,
-            "string" === typeof options.precedence ? options.precedence : void 0,
-            {
-              crossOrigin,
-              integrity,
-              fetchPriority
-            }
-          ) : "script" === as && Internals.d.X(href, {
-            crossOrigin,
-            integrity,
-            fetchPriority,
-            nonce: "string" === typeof options.nonce ? options.nonce : void 0
-          });
-        }
-      };
-      exports.preinitModule = function(href, options) {
-        var encountered = "";
-        "string" === typeof href && href || (encountered += " The `href` argument encountered was " + getValueDescriptorExpectingObjectForWarning(href) + ".");
-        void 0 !== options && "object" !== typeof options ? encountered += " The `options` argument encountered was " + getValueDescriptorExpectingObjectForWarning(options) + "." : options && "as" in options && "script" !== options.as && (encountered += " The `as` option encountered was " + getValueDescriptorExpectingEnumForWarning(options.as) + ".");
-        if (encountered)
-          console.error(
-            "ReactDOM.preinitModule(): Expected up to two arguments, a non-empty `href` string and, optionally, an `options` object with a valid `as` property.%s",
-            encountered
-          );
-        else
-          switch (encountered = options && "string" === typeof options.as ? options.as : "script", encountered) {
-            case "script":
-              break;
-            default:
-              encountered = getValueDescriptorExpectingEnumForWarning(encountered), console.error(
-                'ReactDOM.preinitModule(): Currently the only supported "as" type for this function is "script" but received "%s" instead. This warning was generated for `href` "%s". In the future other module types will be supported, aligning with the import-attributes proposal. Learn more here: (https://github.com/tc39/proposal-import-attributes)',
-                encountered,
-                href
-              );
-          }
-        if ("string" === typeof href)
-          if ("object" === typeof options && null !== options) {
-            if (null == options.as || "script" === options.as)
-              encountered = getCrossOriginStringAs(
-                options.as,
-                options.crossOrigin
-              ), Internals.d.M(href, {
-                crossOrigin: encountered,
-                integrity: "string" === typeof options.integrity ? options.integrity : void 0,
-                nonce: "string" === typeof options.nonce ? options.nonce : void 0
-              });
-          } else null == options && Internals.d.M(href);
-      };
-      exports.preload = function(href, options) {
-        var encountered = "";
-        "string" === typeof href && href || (encountered += " The `href` argument encountered was " + getValueDescriptorExpectingObjectForWarning(href) + ".");
-        null == options || "object" !== typeof options ? encountered += " The `options` argument encountered was " + getValueDescriptorExpectingObjectForWarning(options) + "." : "string" === typeof options.as && options.as || (encountered += " The `as` option encountered was " + getValueDescriptorExpectingObjectForWarning(options.as) + ".");
-        encountered && console.error(
-          'ReactDOM.preload(): Expected two arguments, a non-empty `href` string and an `options` object with an `as` property valid for a `<link rel="preload" as="..." />` tag.%s',
-          encountered
-        );
-        if ("string" === typeof href && "object" === typeof options && null !== options && "string" === typeof options.as) {
-          encountered = options.as;
-          var crossOrigin = getCrossOriginStringAs(
-            encountered,
-            options.crossOrigin
-          );
-          Internals.d.L(href, encountered, {
-            crossOrigin,
-            integrity: "string" === typeof options.integrity ? options.integrity : void 0,
-            nonce: "string" === typeof options.nonce ? options.nonce : void 0,
-            type: "string" === typeof options.type ? options.type : void 0,
-            fetchPriority: "string" === typeof options.fetchPriority ? options.fetchPriority : void 0,
-            referrerPolicy: "string" === typeof options.referrerPolicy ? options.referrerPolicy : void 0,
-            imageSrcSet: "string" === typeof options.imageSrcSet ? options.imageSrcSet : void 0,
-            imageSizes: "string" === typeof options.imageSizes ? options.imageSizes : void 0,
-            media: "string" === typeof options.media ? options.media : void 0
-          });
-        }
-      };
-      exports.preloadModule = function(href, options) {
-        var encountered = "";
-        "string" === typeof href && href || (encountered += " The `href` argument encountered was " + getValueDescriptorExpectingObjectForWarning(href) + ".");
-        void 0 !== options && "object" !== typeof options ? encountered += " The `options` argument encountered was " + getValueDescriptorExpectingObjectForWarning(options) + "." : options && "as" in options && "string" !== typeof options.as && (encountered += " The `as` option encountered was " + getValueDescriptorExpectingObjectForWarning(options.as) + ".");
-        encountered && console.error(
-          'ReactDOM.preloadModule(): Expected two arguments, a non-empty `href` string and, optionally, an `options` object with an `as` property valid for a `<link rel="modulepreload" as="..." />` tag.%s',
-          encountered
-        );
-        "string" === typeof href && (options ? (encountered = getCrossOriginStringAs(
-          options.as,
-          options.crossOrigin
-        ), Internals.d.m(href, {
-          as: "string" === typeof options.as && "script" !== options.as ? options.as : void 0,
-          crossOrigin: encountered,
-          integrity: "string" === typeof options.integrity ? options.integrity : void 0
-        })) : Internals.d.m(href));
-      };
-      exports.requestFormReset = function(form) {
-        Internals.d.r(form);
-      };
-      exports.unstable_batchedUpdates = function(fn, a) {
-        return fn(a);
-      };
-      exports.useFormState = function(action, initialState, permalink) {
-        return resolveDispatcher().useFormState(action, initialState, permalink);
-      };
-      exports.useFormStatus = function() {
-        return resolveDispatcher().useHostTransitionStatus();
-      };
-      exports.version = "19.2.8";
-      "undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStop(Error());
-    })();
-  }
-});
-
-// node_modules/.pnpm/react-dom@19.2.8_react@19.2.8/node_modules/react-dom/index.js
-var require_react_dom = __commonJS({
-  "node_modules/.pnpm/react-dom@19.2.8_react@19.2.8/node_modules/react-dom/index.js"(exports, module2) {
-    "use strict";
-    if (false) {
-      checkDCE();
-      module2.exports = null;
-    } else {
-      module2.exports = require_react_dom_development();
-    }
-  }
-});
-
 // vendor/ui-autograph/src/client/index.ts
 var index_exports = {};
 __export(index_exports, {
@@ -6264,7 +6007,7 @@ function shallow(objA, objB) {
 }
 
 // node_modules/.pnpm/@xyflow+react@12.11.3_@type_2f4206708d2ff87c461454428d0e71ff/node_modules/@xyflow/react/dist/esm/index.js
-var import_react_dom = __toESM(require_react_dom());
+var import_react_dom = require("react-dom");
 var StoreContext = (0, import_react2.createContext)(null);
 var Provider$1 = StoreContext.Provider;
 var zustandErrorMessage = errorMessages["error001"]("react");
@@ -10883,7 +10626,7 @@ var KIND_LABEL2 = {
 var KIND_EDGE_COLOR = {
   fact: "var(--dsw-alias-state-success-primary)",
   intent: "var(--dsw-alias-state-business-primary)",
-  hint: "var(--dsw-alias-brand-primary-new-colorprimary-new-color)",
+  hint: "var(--dsw-alias-brand-primary)",
   goal: "var(--dsw-alias-state-warn-primary)"
 };
 function edgeOpacity(node) {
@@ -11250,7 +10993,7 @@ var RuntimeConfigScope = class {
 // vendor/ui-autograph/src/client/locales.ts
 var en = {
   "panel.title": "Autonomous run",
-  "panel.cycle": "cycle {{cycle}}",
+  "panel.cycle": "cycle {cycle}",
   "panel.paused": "paused",
   "panel.complete": "complete",
   "panel.running": "running",
@@ -11266,7 +11009,7 @@ var en = {
 };
 var zh = {
   "panel.title": "\u81EA\u4E3B\u6E17\u900F",
-  "panel.cycle": "\u5FAA\u73AF {{cycle}}",
+  "panel.cycle": "\u5FAA\u73AF {cycle}",
   "panel.paused": "\u5DF2\u6682\u505C",
   "panel.complete": "\u5DF2\u5B8C\u6210",
   "panel.running": "\u8FD0\u884C\u4E2D",
@@ -11314,7 +11057,7 @@ function apply(ctx) {
     name: "settings.section",
     id: "red-team-runtime",
     order: 18,
-    label: () => "Red Team \u941C\uE21A\uE568",
+    label: () => "Red Team \u73AF\u5883",
     inject: () => ({ runtimeStatus, configScope })
   }, RuntimeStatus));
   ctx.slots.inject("conversation.view", () => ctx.slots.register({
@@ -11362,17 +11105,15 @@ use-sync-external-store/cjs/use-sync-external-store-shim/with-selector.developme
    * This source code is licensed under the MIT license found in the
    * LICENSE file in the root directory of this source tree.
    *)
-
-react-dom/cjs/react-dom.development.js:
-  (**
-   * @license React
-   * react-dom.development.js
-   *
-   * Copyright (c) Meta Platforms, Inc. and affiliates.
-   *
-   * This source code is licensed under the MIT license found in the
-   * LICENSE file in the root directory of this source tree.
-   *)
 */
+const __autographCss = "/* node_modules/.pnpm/@xyflow+react@12.11.3_@type_2f4206708d2ff87c461454428d0e71ff/node_modules/@xyflow/react/dist/style.css */\n.react-flow {\n  direction: ltr;\n  --xy-edge-stroke-default: #b1b1b7;\n  --xy-edge-stroke-width-default: 1;\n  --xy-edge-stroke-selected-default: #555;\n  --xy-connectionline-stroke-default: #b1b1b7;\n  --xy-connectionline-stroke-width-default: 1;\n  --xy-attribution-background-color-default: rgba(255, 255, 255, 0.5);\n  --xy-minimap-background-color-default: #fff;\n  --xy-minimap-mask-background-color-default: rgba(240, 240, 240, 0.6);\n  --xy-minimap-mask-stroke-color-default: transparent;\n  --xy-minimap-mask-stroke-width-default: 1;\n  --xy-minimap-node-background-color-default: #e2e2e2;\n  --xy-minimap-node-stroke-color-default: transparent;\n  --xy-minimap-node-stroke-width-default: 2;\n  --xy-background-color-default: transparent;\n  --xy-background-pattern-dots-color-default: #91919a;\n  --xy-background-pattern-lines-color-default: #eee;\n  --xy-background-pattern-cross-color-default: #e2e2e2;\n  background-color: var(--xy-background-color, var(--xy-background-color-default));\n  --xy-node-color-default: inherit;\n  --xy-node-border-default: 1px solid #1a192b;\n  --xy-node-background-color-default: #fff;\n  --xy-node-group-background-color-default: rgba(240, 240, 240, 0.25);\n  --xy-node-boxshadow-hover-default: 0 1px 4px 1px rgba(0, 0, 0, 0.08);\n  --xy-node-boxshadow-selected-default: 0 0 0 0.5px #1a192b;\n  --xy-node-border-radius-default: 3px;\n  --xy-handle-background-color-default: #1a192b;\n  --xy-handle-border-color-default: #fff;\n  --xy-selection-background-color-default: rgba(0, 89, 220, 0.08);\n  --xy-selection-border-default: 1px dotted rgba(0, 89, 220, 0.8);\n  --xy-controls-button-background-color-default: #fefefe;\n  --xy-controls-button-background-color-hover-default: #f4f4f4;\n  --xy-controls-button-color-default: inherit;\n  --xy-controls-button-color-hover-default: inherit;\n  --xy-controls-button-border-color-default: #eee;\n  --xy-controls-box-shadow-default: 0 0 2px 1px rgba(0, 0, 0, 0.08);\n  --xy-edge-label-background-color-default: #ffffff;\n  --xy-edge-label-color-default: inherit;\n  --xy-resize-background-color-default: #3367d9;\n}\n.react-flow.dark {\n  --xy-edge-stroke-default: #3e3e3e;\n  --xy-edge-stroke-width-default: 1;\n  --xy-edge-stroke-selected-default: #727272;\n  --xy-connectionline-stroke-default: #b1b1b7;\n  --xy-connectionline-stroke-width-default: 1;\n  --xy-attribution-background-color-default: rgba(150, 150, 150, 0.25);\n  --xy-minimap-background-color-default: #141414;\n  --xy-minimap-mask-background-color-default: rgba(60, 60, 60, 0.6);\n  --xy-minimap-mask-stroke-color-default: transparent;\n  --xy-minimap-mask-stroke-width-default: 1;\n  --xy-minimap-node-background-color-default: #2b2b2b;\n  --xy-minimap-node-stroke-color-default: transparent;\n  --xy-minimap-node-stroke-width-default: 2;\n  --xy-background-color-default: #141414;\n  --xy-background-pattern-dots-color-default: #555;\n  --xy-background-pattern-lines-color-default: #333;\n  --xy-background-pattern-cross-color-default: #333;\n  --xy-node-color-default: #f8f8f8;\n  --xy-node-border-default: 1px solid #3c3c3c;\n  --xy-node-background-color-default: #1e1e1e;\n  --xy-node-group-background-color-default: rgba(240, 240, 240, 0.25);\n  --xy-node-boxshadow-hover-default: 0 1px 4px 1px rgba(255, 255, 255, 0.08);\n  --xy-node-boxshadow-selected-default: 0 0 0 0.5px #999;\n  --xy-handle-background-color-default: #bebebe;\n  --xy-handle-border-color-default: #1e1e1e;\n  --xy-selection-background-color-default: rgba(200, 200, 220, 0.08);\n  --xy-selection-border-default: 1px dotted rgba(200, 200, 220, 0.8);\n  --xy-controls-button-background-color-default: #2b2b2b;\n  --xy-controls-button-background-color-hover-default: #3e3e3e;\n  --xy-controls-button-color-default: #f8f8f8;\n  --xy-controls-button-color-hover-default: #fff;\n  --xy-controls-button-border-color-default: #5b5b5b;\n  --xy-controls-box-shadow-default: 0 0 2px 1px rgba(0, 0, 0, 0.08);\n  --xy-edge-label-background-color-default: #141414;\n  --xy-edge-label-color-default: #f8f8f8;\n}\n.react-flow__background {\n  background-color: var(--xy-background-color-props, var(--xy-background-color, var(--xy-background-color-default)));\n  pointer-events: none;\n  z-index: -1;\n}\n.react-flow__container {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  top: 0;\n  left: 0;\n}\n.react-flow__pane {\n  z-index: 1;\n  touch-action: none;\n}\n.react-flow__pane.draggable {\n  cursor: grab;\n}\n.react-flow__pane.dragging {\n  cursor: grabbing;\n}\n.react-flow__pane.selection {\n  cursor: pointer;\n}\n.react-flow__viewport {\n  transform-origin: 0 0;\n  z-index: 2;\n  pointer-events: none;\n}\n.react-flow__renderer {\n  z-index: 4;\n}\n.react-flow__selection {\n  z-index: 6;\n}\n.react-flow__nodesselection-rect:focus,\n.react-flow__nodesselection-rect:focus-visible {\n  outline: none;\n}\n.react-flow__edge-path {\n  stroke: var(--xy-edge-stroke, var(--xy-edge-stroke-default));\n  stroke-width: var(--xy-edge-stroke-width, var(--xy-edge-stroke-width-default));\n  fill: none;\n}\n.react-flow__connection-path {\n  stroke: var(--xy-connectionline-stroke, var(--xy-connectionline-stroke-default));\n  stroke-width: var(--xy-connectionline-stroke-width, var(--xy-connectionline-stroke-width-default));\n  fill: none;\n}\n.react-flow .react-flow__edges {\n  position: absolute;\n}\n.react-flow .react-flow__edges svg {\n  overflow: visible;\n  position: absolute;\n  pointer-events: none;\n}\n.react-flow__edge {\n  pointer-events: visibleStroke;\n}\n.react-flow__edge.selectable {\n  cursor: pointer;\n}\n.react-flow__edge.animated path {\n  stroke-dasharray: 5;\n  animation: dashdraw 0.5s linear infinite;\n}\n.react-flow__edge.animated path.react-flow__edge-interaction {\n  stroke-dasharray: none;\n  animation: none;\n}\n.react-flow__edge.inactive {\n  pointer-events: none;\n}\n.react-flow__edge.selected,\n.react-flow__edge:focus,\n.react-flow__edge:focus-visible {\n  outline: none;\n}\n.react-flow__edge.selected .react-flow__edge-path,\n.react-flow__edge.selectable:focus .react-flow__edge-path,\n.react-flow__edge.selectable:focus-visible .react-flow__edge-path {\n  stroke: var(--xy-edge-stroke-selected, var(--xy-edge-stroke-selected-default));\n}\n.react-flow__edge-textwrapper {\n  pointer-events: all;\n}\n.react-flow__edge .react-flow__edge-text {\n  pointer-events: none;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  user-select: none;\n}\n.react-flow__arrowhead polyline {\n  stroke: var(--xy-edge-stroke, var(--xy-edge-stroke-default));\n}\n.react-flow__arrowhead polyline.arrowclosed {\n  fill: var(--xy-edge-stroke, var(--xy-edge-stroke-default));\n}\n.react-flow__connection {\n  pointer-events: none;\n}\n.react-flow__connection .animated {\n  stroke-dasharray: 5;\n  animation: dashdraw 0.5s linear infinite;\n}\nsvg.react-flow__connectionline {\n  z-index: 1001;\n  overflow: visible;\n  position: absolute;\n}\n.react-flow__nodes {\n  pointer-events: none;\n  transform-origin: 0 0;\n}\n.react-flow__node {\n  position: absolute;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  user-select: none;\n  pointer-events: all;\n  transform-origin: 0 0;\n  box-sizing: border-box;\n  cursor: default;\n}\n.react-flow__node.selectable {\n  cursor: pointer;\n}\n.react-flow__node.draggable {\n  cursor: grab;\n  pointer-events: all;\n}\n.react-flow__node.draggable.dragging {\n  cursor: grabbing;\n}\n.react-flow__nodesselection {\n  z-index: 3;\n  transform-origin: left top;\n  pointer-events: none;\n}\n.react-flow__nodesselection-rect {\n  position: absolute;\n  pointer-events: all;\n  cursor: grab;\n}\n.react-flow__handle {\n  position: absolute;\n  pointer-events: none;\n  min-width: 5px;\n  min-height: 5px;\n  width: 6px;\n  height: 6px;\n  background-color: var(--xy-handle-background-color, var(--xy-handle-background-color-default));\n  border: 1px solid var(--xy-handle-border-color, var(--xy-handle-border-color-default));\n  border-radius: 100%;\n}\n.react-flow__handle.connectingfrom {\n  pointer-events: all;\n}\n.react-flow__handle.connectionindicator {\n  pointer-events: all;\n  cursor: crosshair;\n}\n.react-flow__handle-bottom {\n  top: auto;\n  left: 50%;\n  bottom: 0;\n  transform: translate(-50%, 50%);\n}\n.react-flow__handle-top {\n  top: 0;\n  left: 50%;\n  transform: translate(-50%, -50%);\n}\n.react-flow__handle-left {\n  top: 50%;\n  left: 0;\n  transform: translate(-50%, -50%);\n}\n.react-flow__handle-right {\n  top: 50%;\n  right: 0;\n  transform: translate(50%, -50%);\n}\n.react-flow__edgeupdater {\n  cursor: move;\n  pointer-events: all;\n}\n.react-flow__pane.selection .react-flow__panel {\n  pointer-events: none;\n}\n.react-flow__panel {\n  position: absolute;\n  z-index: 5;\n  margin: 15px;\n}\n.react-flow__panel.top {\n  top: 0;\n}\n.react-flow__panel.bottom {\n  bottom: 0;\n}\n.react-flow__panel.top.center,\n.react-flow__panel.bottom.center {\n  left: 50%;\n  transform: translateX(-15px) translateX(-50%);\n}\n.react-flow__panel.left {\n  left: 0;\n}\n.react-flow__panel.right {\n  right: 0;\n}\n.react-flow__panel.left.center,\n.react-flow__panel.right.center {\n  top: 50%;\n  transform: translateY(-15px) translateY(-50%);\n}\n.react-flow__attribution {\n  font-size: 10px;\n  background: var(--xy-attribution-background-color, var(--xy-attribution-background-color-default));\n  padding: 2px 3px;\n  margin: 0;\n}\n.react-flow__attribution a {\n  text-decoration: none;\n  color: #999;\n}\n@keyframes dashdraw {\n  from {\n    stroke-dashoffset: 10;\n  }\n}\n.react-flow__edgelabel-renderer {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  pointer-events: none;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  user-select: none;\n  left: 0;\n  top: 0;\n}\n.react-flow__viewport-portal {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  left: 0;\n  top: 0;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  user-select: none;\n}\n.react-flow__minimap {\n  background: var( --xy-minimap-background-color-props, var(--xy-minimap-background-color, var(--xy-minimap-background-color-default)) );\n}\n.react-flow__minimap-svg {\n  display: block;\n}\n.react-flow__minimap-mask {\n  fill: var( --xy-minimap-mask-background-color-props, var(--xy-minimap-mask-background-color, var(--xy-minimap-mask-background-color-default)) );\n  stroke: var( --xy-minimap-mask-stroke-color-props, var(--xy-minimap-mask-stroke-color, var(--xy-minimap-mask-stroke-color-default)) );\n  stroke-width: var( --xy-minimap-mask-stroke-width-props, var(--xy-minimap-mask-stroke-width, var(--xy-minimap-mask-stroke-width-default)) );\n}\n.react-flow__minimap-node {\n  fill: var( --xy-minimap-node-background-color-props, var(--xy-minimap-node-background-color, var(--xy-minimap-node-background-color-default)) );\n  stroke: var( --xy-minimap-node-stroke-color-props, var(--xy-minimap-node-stroke-color, var(--xy-minimap-node-stroke-color-default)) );\n  stroke-width: var( --xy-minimap-node-stroke-width-props, var(--xy-minimap-node-stroke-width, var(--xy-minimap-node-stroke-width-default)) );\n}\n.react-flow__background-pattern.dots {\n  fill: var( --xy-background-pattern-color-props, var(--xy-background-pattern-color, var(--xy-background-pattern-dots-color-default)) );\n}\n.react-flow__background-pattern.lines {\n  stroke: var( --xy-background-pattern-color-props, var(--xy-background-pattern-color, var(--xy-background-pattern-lines-color-default)) );\n}\n.react-flow__background-pattern.cross {\n  stroke: var( --xy-background-pattern-color-props, var(--xy-background-pattern-color, var(--xy-background-pattern-cross-color-default)) );\n}\n.react-flow__controls {\n  display: flex;\n  flex-direction: column;\n  box-shadow: var(--xy-controls-box-shadow, var(--xy-controls-box-shadow-default));\n}\n.react-flow__controls.horizontal {\n  flex-direction: row;\n}\n.react-flow__controls-button {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  height: 26px;\n  width: 26px;\n  padding: 4px;\n  border: none;\n  background: var(--xy-controls-button-background-color, var(--xy-controls-button-background-color-default));\n  border-bottom: 1px solid var( --xy-controls-button-border-color-props, var(--xy-controls-button-border-color, var(--xy-controls-button-border-color-default)) );\n  color: var( --xy-controls-button-color-props, var(--xy-controls-button-color, var(--xy-controls-button-color-default)) );\n  cursor: pointer;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  user-select: none;\n}\n.react-flow__controls-button svg {\n  width: 100%;\n  max-width: 12px;\n  max-height: 12px;\n  fill: currentColor;\n}\n.react-flow__edge.updating .react-flow__edge-path {\n  stroke: #777;\n}\n.react-flow__edge-text {\n  font-size: 10px;\n}\n.react-flow__node.selectable:focus,\n.react-flow__node.selectable:focus-visible {\n  outline: none;\n}\n.react-flow__node-input,\n.react-flow__node-default,\n.react-flow__node-output,\n.react-flow__node-group {\n  padding: 10px;\n  border-radius: var(--xy-node-border-radius, var(--xy-node-border-radius-default));\n  width: 150px;\n  font-size: 12px;\n  color: var(--xy-node-color, var(--xy-node-color-default));\n  text-align: center;\n  border: var(--xy-node-border, var(--xy-node-border-default));\n  background-color: var(--xy-node-background-color, var(--xy-node-background-color-default));\n}\n.react-flow__node-input.selectable:hover,\n.react-flow__node-default.selectable:hover,\n.react-flow__node-output.selectable:hover,\n.react-flow__node-group.selectable:hover {\n  box-shadow: var(--xy-node-boxshadow-hover, var(--xy-node-boxshadow-hover-default));\n}\n.react-flow__node-input.selectable.selected,\n.react-flow__node-input.selectable:focus,\n.react-flow__node-input.selectable:focus-visible,\n.react-flow__node-default.selectable.selected,\n.react-flow__node-default.selectable:focus,\n.react-flow__node-default.selectable:focus-visible,\n.react-flow__node-output.selectable.selected,\n.react-flow__node-output.selectable:focus,\n.react-flow__node-output.selectable:focus-visible,\n.react-flow__node-group.selectable.selected,\n.react-flow__node-group.selectable:focus,\n.react-flow__node-group.selectable:focus-visible {\n  box-shadow: var(--xy-node-boxshadow-selected, var(--xy-node-boxshadow-selected-default));\n}\n.react-flow__node-group {\n  background-color: var(--xy-node-group-background-color, var(--xy-node-group-background-color-default));\n}\n.react-flow__nodesselection-rect,\n.react-flow__selection {\n  background: var(--xy-selection-background-color, var(--xy-selection-background-color-default));\n  border: var(--xy-selection-border, var(--xy-selection-border-default));\n}\n.react-flow__nodesselection-rect:focus,\n.react-flow__nodesselection-rect:focus-visible,\n.react-flow__selection:focus,\n.react-flow__selection:focus-visible {\n  outline: none;\n}\n.react-flow__controls-button:hover {\n  background: var( --xy-controls-button-background-color-hover-props, var(--xy-controls-button-background-color-hover, var(--xy-controls-button-background-color-hover-default)) );\n  color: var( --xy-controls-button-color-hover-props, var(--xy-controls-button-color-hover, var(--xy-controls-button-color-hover-default)) );\n}\n.react-flow__controls-button:disabled {\n  pointer-events: none;\n}\n.react-flow__controls-button:disabled svg {\n  fill-opacity: 0.4;\n}\n.react-flow__controls-button:last-child {\n  border-bottom: none;\n}\n.react-flow__controls.horizontal .react-flow__controls-button {\n  border-bottom: none;\n  border-right: 1px solid var( --xy-controls-button-border-color-props, var(--xy-controls-button-border-color, var(--xy-controls-button-border-color-default)) );\n}\n.react-flow__controls.horizontal .react-flow__controls-button:last-child {\n  border-right: none;\n}\n.react-flow__resize-control {\n  position: absolute;\n}\n.react-flow__resize-control.left,\n.react-flow__resize-control.right {\n  cursor: ew-resize;\n}\n.react-flow__resize-control.top,\n.react-flow__resize-control.bottom {\n  cursor: ns-resize;\n}\n.react-flow__resize-control.top.left,\n.react-flow__resize-control.bottom.right {\n  cursor: nwse-resize;\n}\n.react-flow__resize-control.bottom.left,\n.react-flow__resize-control.top.right {\n  cursor: nesw-resize;\n}\n.react-flow__resize-control.handle {\n  width: 5px;\n  height: 5px;\n  border: 1px solid #fff;\n  border-radius: 1px;\n  background-color: var(--xy-resize-background-color, var(--xy-resize-background-color-default));\n  translate: -50% -50%;\n}\n.react-flow__resize-control.handle.left {\n  left: 0;\n  top: 50%;\n}\n.react-flow__resize-control.handle.right {\n  left: 100%;\n  top: 50%;\n}\n.react-flow__resize-control.handle.top {\n  left: 50%;\n  top: 0;\n}\n.react-flow__resize-control.handle.bottom {\n  left: 50%;\n  top: 100%;\n}\n.react-flow__resize-control.handle.top.left {\n  left: 0;\n}\n.react-flow__resize-control.handle.bottom.left {\n  left: 0;\n}\n.react-flow__resize-control.handle.top.right {\n  left: 100%;\n}\n.react-flow__resize-control.handle.bottom.right {\n  left: 100%;\n}\n.react-flow__resize-control.line {\n  border-color: var(--xy-resize-background-color, var(--xy-resize-background-color-default));\n  border-width: 0;\n  border-style: solid;\n}\n.react-flow__resize-control.line.left,\n.react-flow__resize-control.line.right {\n  width: 1px;\n  transform: translate(-50%, 0);\n  top: 0;\n  height: 100%;\n}\n.react-flow__resize-control.line.left {\n  left: 0;\n  border-left-width: 1px;\n}\n.react-flow__resize-control.line.right {\n  left: 100%;\n  border-right-width: 1px;\n}\n.react-flow__resize-control.line.top,\n.react-flow__resize-control.line.bottom {\n  height: 1px;\n  transform: translate(0, -50%);\n  left: 0;\n  width: 100%;\n}\n.react-flow__resize-control.line.top {\n  top: 0;\n  border-top-width: 1px;\n}\n.react-flow__resize-control.line.bottom {\n  border-bottom-width: 1px;\n  top: 100%;\n}\n.react-flow__edge-textbg {\n  fill: var(--xy-edge-label-background-color, var(--xy-edge-label-background-color-default));\n}\n.react-flow__edge-text {\n  fill: var(--xy-edge-label-color, var(--xy-edge-label-color-default));\n}\n\n/* vendor/ui-autograph/src/client/RuntimeStatus.module.css */\n.RuntimeStatus_rail {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  padding: 7px 16px;\n  border-bottom: 1px solid var(--dsw-alias-border-l2);\n  background: color-mix(in srgb, var(--dsw-alias-bg-layer-2) 88%, transparent);\n  font-size: 11px;\n}\n.RuntimeStatus_metric {\n  color: var(--dsw-alias-label-secondary);\n}\n.RuntimeStatus_metric strong {\n  color: var(--dsw-alias-label-primary);\n}\n.RuntimeStatus_warning {\n  margin-left: auto;\n  color: var(--dsw-alias-state-warn-label);\n}\n.RuntimeStatus_settings {\n  display: flex;\n  flex-direction: column;\n  gap: 14px;\n  color: var(--dsw-alias-label-primary);\n  --dsh-scrollbar-thumb: var(--dsw-alias-scrollbar-bg-l2);\n  --dsh-scrollbar-thumb-hover: var(--dsw-alias-scrollbar-hover-l2);\n}\n.RuntimeStatus_settingsHeader {\n  display: flex;\n  justify-content: space-between;\n  gap: 20px;\n  align-items: flex-start;\n}\n.RuntimeStatus_settingsHeader h2 {\n  margin: 0 0 6px;\n  font-size: 18px;\n}\n.RuntimeStatus_settingsHeader p,\n.RuntimeStatus_card p {\n  margin: 0;\n  color: var(--dsw-alias-label-secondary);\n  font-size: 12px;\n  line-height: 1.5;\n}\n.RuntimeStatus_summary {\n  display: flex;\n  gap: 8px;\n}\n.RuntimeStatus_summary span,\n.RuntimeStatus_cardTitle span {\n  padding: 3px 8px;\n  border-radius: 999px;\n  background: var(--dsw-alias-bg-layer-2);\n  font-size: 11px;\n  white-space: nowrap;\n}\n.RuntimeStatus_skillCard,\n.RuntimeStatus_card {\n  padding: 12px;\n  border: 1px solid var(--dsw-alias-border-l2);\n  border-radius: 8px;\n  background: var(--dsw-alias-bg-layer-3);\n}\n.RuntimeStatus_skillCard {\n  display: grid;\n  grid-template-columns: auto auto 1fr;\n  gap: 12px;\n  align-items: center;\n}\n.RuntimeStatus_skillCard small {\n  color: var(--dsw-alias-label-secondary);\n  text-align: right;\n}\n.RuntimeStatus_grid {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));\n  gap: 10px;\n}\n.RuntimeStatus_card {\n  display: flex;\n  flex-direction: column;\n  gap: 9px;\n}\n.RuntimeStatus_card[data-state=missing] {\n  border-color: var(--dsw-alias-state-warn-primary);\n}\n.RuntimeStatus_card[data-state=available],\n.RuntimeStatus_card[data-state=configured] {\n  border-color: var(--dsw-alias-state-success-primary);\n}\n.RuntimeStatus_cardTitle {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}\n.RuntimeStatus_card code,\n.RuntimeStatus_card pre {\n  overflow-x: auto;\n  margin: 0;\n  padding: 7px;\n  border-radius: 5px;\n  background: var(--dsw-alias-bg-layer-1);\n  color: var(--dsw-alias-label-primary);\n  font-size: 11px;\n  white-space: pre-wrap;\n  word-break: break-all;\n}\n.RuntimeStatus_installToolbar,\n.RuntimeStatus_installActions {\n  display: flex;\n  gap: 8px;\n  align-items: center;\n  flex-wrap: wrap;\n}\n.RuntimeStatus_installToolbar label {\n  display: flex;\n  gap: 8px;\n  align-items: center;\n  color: var(--dsw-alias-label-secondary);\n  font-size: 12px;\n}\n.RuntimeStatus_installToolbar select,\n.RuntimeStatus_installActions button {\n  border: 1px solid var(--dsw-alias-border-l2);\n  border-radius: 6px;\n  background: var(--dsw-alias-bg-layer-2);\n  color: var(--dsw-alias-label-primary);\n  padding: 6px 9px;\n}\n.RuntimeStatus_installActions button:focus-visible,\n.RuntimeStatus_installToolbar select:focus-visible {\n  outline: 2px solid var(--dsw-alias-state-business-primary);\n  outline-offset: 2px;\n}\n.RuntimeStatus_installActions button:disabled {\n  opacity: 0.5;\n}\n.RuntimeStatus_installError {\n  color: var(--dsw-alias-state-error-primary);\n  font-size: 12px;\n}\n.RuntimeStatus_installProgress {\n  display: grid;\n  flex: 1 1 100%;\n  gap: 4px;\n  color: var(--dsw-alias-label-secondary);\n  font-size: 11px;\n}\n.RuntimeStatus_installProgress progress {\n  width: 100%;\n  accent-color: var(--dsw-alias-state-business-primary);\n}\n.RuntimeStatus_configEditor {\n  display: grid;\n  gap: 12px;\n  padding-top: 14px;\n  border-top: 1px solid var(--dsw-alias-border-l2);\n}\n.RuntimeStatus_tabs,\n.RuntimeStatus_editorActions {\n  display: flex;\n  gap: 8px;\n  flex-wrap: wrap;\n}\n.RuntimeStatus_tabs button,\n.RuntimeStatus_editorActions button,\n.RuntimeStatus_editorList fieldset > button {\n  border: 1px solid var(--dsw-alias-border-l2);\n  border-radius: 6px;\n  padding: 6px 10px;\n  background: var(--dsw-alias-bg-layer-2);\n  color: var(--dsw-alias-label-primary);\n}\n.RuntimeStatus_tabs button[data-active=true] {\n  border-color: var(--dsw-alias-state-business-primary);\n  color: var(--dsw-alias-state-business-primary);\n}\n.RuntimeStatus_editorList {\n  display: grid;\n  gap: 10px;\n}\n.RuntimeStatus_editorList fieldset {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));\n  gap: 10px;\n  min-width: 0;\n  border: 1px solid var(--dsw-alias-border-l2);\n  border-radius: 8px;\n}\n.RuntimeStatus_editorList label {\n  display: grid;\n  gap: 5px;\n  color: var(--dsw-alias-label-secondary);\n  font-size: 11px;\n}\n.RuntimeStatus_editorList input,\n.RuntimeStatus_editorList select,\n.RuntimeStatus_editorList textarea {\n  box-sizing: border-box;\n  width: 100%;\n  min-width: 0;\n  border: 1px solid var(--dsw-alias-border-l2);\n  border-radius: 6px;\n  padding: 7px;\n  background: var(--dsw-alias-bg-layer-1);\n  color: var(--dsw-alias-label-primary);\n}\n.RuntimeStatus_editorList textarea {\n  min-height: 84px;\n  resize: vertical;\n}\n.RuntimeStatus_keyValues {\n  display: grid;\n  gap: 5px;\n}\n.RuntimeStatus_keyValues > div {\n  display: grid;\n  grid-template-columns: minmax(80px, 1fr) minmax(100px, 2fr) auto;\n  gap: 5px;\n}\n.RuntimeStatus_keyValues button {\n  border: 1px solid var(--dsw-alias-border-l2);\n  border-radius: 5px;\n  background: var(--dsw-alias-bg-layer-2);\n  color: var(--dsw-alias-label-primary);\n}\n.RuntimeStatus_editorList :is(input, select, textarea, button):focus-visible,\n.RuntimeStatus_tabs button:focus-visible {\n  outline: 2px solid var(--dsw-alias-state-business-primary);\n  outline-offset: 2px;\n}\n.RuntimeStatus_card details,\n.RuntimeStatus_editorList details {\n  color: var(--dsw-alias-label-secondary);\n  font-size: 11px;\n}\n.RuntimeStatus_card details ul,\n.RuntimeStatus_editorList details ul {\n  display: grid;\n  gap: 6px;\n  max-height: 220px;\n  overflow: auto;\n  padding-left: 18px;\n}\n.RuntimeStatus_card details li,\n.RuntimeStatus_editorList details li {\n  display: grid;\n  gap: 3px;\n}\n.RuntimeStatus_card details small,\n.RuntimeStatus_editorList details small {\n  line-height: 1.4;\n}\n.RuntimeStatus_mcpEditor {\n  display: grid;\n  gap: 12px;\n  min-width: 0;\n}\n.RuntimeStatus_mcpHeader,\n.RuntimeStatus_serverRailHeader,\n.RuntimeStatus_detailToolbar,\n.RuntimeStatus_runtimeActions,\n.RuntimeStatus_saveBar {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 10px;\n}\n.RuntimeStatus_mcpHeader h3,\n.RuntimeStatus_mcpHeader p,\n.RuntimeStatus_serverRail p,\n.RuntimeStatus_emptyDetail p,\n.RuntimeStatus_editorMessage {\n  margin: 0;\n}\n.RuntimeStatus_mcpHeader p,\n.RuntimeStatus_jsonEditor p,\n.RuntimeStatus_serverRail p,\n.RuntimeStatus_emptyDetail p {\n  color: var(--dsw-alias-label-secondary);\n  font-size: 12px;\n}\n.RuntimeStatus_modeSwitch,\n.RuntimeStatus_detailToolbar,\n.RuntimeStatus_runtimeActions,\n.RuntimeStatus_saveBar {\n  display: flex;\n  flex-wrap: wrap;\n}\n.RuntimeStatus_modeSwitch button,\n.RuntimeStatus_serverRail button,\n.RuntimeStatus_detailToolbar button,\n.RuntimeStatus_runtimeActions button,\n.RuntimeStatus_saveBar button,\n.RuntimeStatus_emptyDetail button {\n  border: 1px solid var(--dsw-alias-border-l2);\n  border-radius: 6px;\n  padding: 7px 10px;\n  background: var(--dsw-alias-bg-layer-2);\n  color: var(--dsw-alias-label-primary);\n}\n.RuntimeStatus_modeSwitch button[aria-pressed=true] {\n  border-color: var(--dsw-alias-state-business-primary);\n  color: var(--dsw-alias-state-business-primary);\n}\n.RuntimeStatus_masterDetail {\n  display: grid;\n  grid-template-columns: minmax(190px, 28%) minmax(0, 1fr);\n  min-height: 430px;\n  overflow: hidden;\n  border: 1px solid var(--dsw-alias-border-l2);\n  border-radius: 9px;\n  background: var(--dsw-alias-bg-layer-2);\n}\n.RuntimeStatus_serverRail {\n  display: grid;\n  align-content: start;\n  gap: 10px;\n  padding: 12px;\n  border-right: 1px solid var(--dsw-alias-border-l2);\n}\n.RuntimeStatus_serverRail [role=listbox] {\n  display: grid;\n  gap: 4px;\n}\n.RuntimeStatus_serverRail [role=option] {\n  display: grid;\n  gap: 3px;\n  width: 100%;\n  text-align: left;\n}\n.RuntimeStatus_serverRail [role=option] small {\n  color: var(--dsw-alias-label-secondary);\n}\n.RuntimeStatus_serverRail [role=option][aria-selected=true] {\n  border-color: var(--dsw-alias-state-business-primary);\n  background: var(--dsw-alias-bg-layer-3);\n}\n.RuntimeStatus_serverDetail {\n  min-width: 0;\n  padding: 16px;\n  background: var(--dsw-alias-bg-layer-1);\n}\n.RuntimeStatus_detailFields,\n.RuntimeStatus_jsonEditor,\n.RuntimeStatus_emptyDetail {\n  display: grid;\n  gap: 12px;\n}\n.RuntimeStatus_detailFields {\n  grid-template-columns: repeat(2, minmax(0, 1fr));\n  margin-top: 14px;\n}\n.RuntimeStatus_detailFields label,\n.RuntimeStatus_jsonEditor label {\n  display: grid;\n  gap: 5px;\n  color: var(--dsw-alias-label-secondary);\n  font-size: 12px;\n}\n.RuntimeStatus_detailFields input,\n.RuntimeStatus_detailFields select,\n.RuntimeStatus_detailFields textarea,\n.RuntimeStatus_jsonEditor textarea {\n  box-sizing: border-box;\n  width: 100%;\n  min-width: 0;\n  border: 1px solid var(--dsw-alias-border-l2);\n  border-radius: 6px;\n  padding: 8px;\n  background: var(--dsw-alias-bg-layer-2);\n  color: var(--dsw-alias-label-primary);\n}\n.RuntimeStatus_detailFields textarea {\n  min-height: 86px;\n  resize: vertical;\n}\n.RuntimeStatus_jsonEditor textarea {\n  min-height: 360px;\n  resize: vertical;\n  font-family: monospace;\n}\n.RuntimeStatus_detailFields .RuntimeStatus_keyValues {\n  grid-column: 1 / -1;\n  min-width: 0;\n}\n.RuntimeStatus_runtimeActions {\n  justify-content: flex-start;\n  margin-top: 14px;\n}\n.RuntimeStatus_runtimeActions span[data-state=error],\n.RuntimeStatus_validation {\n  color: var(--dsw-alias-state-error-primary);\n}\n.RuntimeStatus_runtimeActions span[data-state=success] {\n  color: var(--dsw-alias-state-success-primary);\n}\n.RuntimeStatus_validation {\n  margin: 0;\n  padding-left: 20px;\n  font-size: 12px;\n}\n.RuntimeStatus_editorMessage {\n  color: var(--dsw-alias-label-secondary);\n  font-size: 12px;\n}\n.RuntimeStatus_saveBar {\n  justify-content: flex-end;\n  position: sticky;\n  bottom: 0;\n  padding: 10px;\n  border-top: 1px solid var(--dsw-alias-border-l2);\n  background: var(--dsw-alias-bg-layer-2);\n}\n.RuntimeStatus_saveBar span {\n  margin-right: auto;\n  color: var(--dsw-alias-label-secondary);\n  font-size: 12px;\n}\n.RuntimeStatus_mcpEditor :is(button, input, select, textarea):focus-visible {\n  outline: 2px solid var(--dsw-alias-state-business-primary);\n  outline-offset: 2px;\n}\n@media (max-width: 760px) {\n  .RuntimeStatus_masterDetail,\n  .RuntimeStatus_detailFields {\n    grid-template-columns: 1fr;\n  }\n  .RuntimeStatus_serverRail {\n    border-right: 0;\n    border-bottom: 1px solid var(--dsw-alias-border-l2);\n  }\n}\n@media (max-width: 640px) {\n  .RuntimeStatus_settingsHeader,\n  .RuntimeStatus_skillCard {\n    grid-template-columns: 1fr;\n    flex-direction: column;\n  }\n  .RuntimeStatus_skillCard small {\n    text-align: left;\n  }\n}\n\n/* vendor/ui-autograph/src/client/AutoGraphView.module.css */\n.AutoGraphView_panel {\n  display: flex;\n  flex-direction: column;\n  box-sizing: border-box;\n  width: 100%;\n  height: 100%;\n  min-height: 0;\n  overflow: hidden;\n  background: var(--dsw-alias-bg-layer-1);\n  color: var(--dsw-alias-label-primary);\n}\n.AutoGraphView_header {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n  padding: 10px 16px;\n  border-bottom: 1px solid var(--dsw-alias-border-l2);\n  font: var(--dsw-font-xs-13);\n}\n.AutoGraphView_title {\n  font-weight: 600;\n}\n.AutoGraphView_meta {\n  color: var(--dsw-alias-label-secondary);\n}\n.AutoGraphView_status {\n  margin-left: auto;\n  padding: 2px 8px;\n  border-radius: 10px;\n  background: var(--dsw-alias-state-success-tertiary);\n  color: var(--dsw-alias-state-success-primary);\n  font-size: 11px;\n  line-height: 18px;\n}\n.AutoGraphView_status[data-paused=true] {\n  background: var(--dsw-alias-state-warn-tertiary);\n  color: var(--dsw-alias-state-warn-label);\n}\n.AutoGraphView_status[data-complete=true] {\n  background: var(--dsw-alias-state-business-tertiary);\n  color: var(--dsw-alias-state-business-primary);\n}\n.AutoGraphView_filters {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  min-width: 0;\n  margin: 0;\n  padding: 8px 16px;\n  border: 0;\n  border-bottom: 1px solid var(--dsw-alias-border-l2);\n  background: var(--dsw-alias-bg-layer-1);\n}\n.AutoGraphView_filters legend {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  overflow: hidden;\n  clip-path: inset(50%);\n}\n.AutoGraphView_filters label {\n  display: inline-flex;\n  align-items: center;\n  gap: 5px;\n  padding: 3px 8px;\n  border: 1px solid var(--dsw-alias-border-l2);\n  border-radius: 999px;\n  color: var(--dsw-alias-label-secondary);\n  font-size: 11px;\n  line-height: 18px;\n  cursor: pointer;\n  user-select: none;\n}\n.AutoGraphView_filters label:has(input:checked) {\n  border-color: var(--dsw-alias-state-business-primary);\n  background: var(--dsw-alias-state-business-tertiary);\n  color: var(--dsw-alias-label-primary);\n}\n.AutoGraphView_filters input {\n  width: 13px;\n  height: 13px;\n  margin: 0;\n  accent-color: var(--dsw-alias-state-business-primary);\n}\n.AutoGraphView_filterCount {\n  margin-left: auto;\n  color: var(--dsw-alias-label-tertiary);\n  font-size: 11px;\n  line-height: 18px;\n  white-space: nowrap;\n}\n.AutoGraphView_columnLegend {\n  display: grid;\n  grid-template-columns: repeat(4, minmax(0, 1fr));\n  gap: 16px;\n  padding: 6px 16px;\n  border-bottom: 1px solid var(--dsw-alias-border-l1);\n  background: var(--dsw-alias-bg-layer-2);\n  color: var(--dsw-alias-label-tertiary);\n  font-size: 11px;\n  line-height: 18px;\n  text-align: center;\n}\n.AutoGraphView_columnLegend span {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n.AutoGraphView_columnLegend span[data-kind=goal] {\n  color: var(--dsw-alias-state-warn-label);\n}\n.AutoGraphView_columnLegend span[data-kind=intent] {\n  color: var(--dsw-alias-state-business-primary);\n}\n.AutoGraphView_columnLegend span[data-kind=fact] {\n  color: var(--dsw-alias-state-success-primary);\n}\n.AutoGraphView_canvas {\n  position: relative;\n  flex: 1;\n  min-height: 0;\n  background: var(--dsw-alias-bg-layer-1);\n}\n.AutoGraphView_canvas .react-flow {\n  position: relative;\n  direction: ltr;\n  overflow: hidden;\n}\n.AutoGraphView_canvas .react-flow__container {\n  position: absolute;\n  inset: 0;\n  width: 100%;\n  height: 100%;\n}\n.AutoGraphView_canvas .react-flow__pane {\n  z-index: 1;\n  touch-action: none;\n}\n.AutoGraphView_canvas .react-flow__viewport {\n  z-index: 2;\n  transform-origin: 0 0;\n  pointer-events: none;\n}\n.AutoGraphView_canvas .react-flow__renderer {\n  z-index: 4;\n}\n.AutoGraphView_canvas .react-flow__nodes {\n  z-index: 2;\n  pointer-events: none;\n  transform-origin: 0 0;\n}\n.AutoGraphView_canvas .react-flow__edges {\n  z-index: 1;\n}\n.AutoGraphView_canvas .react-flow__node {\n  position: absolute;\n  box-sizing: border-box;\n  transform-origin: 0 0;\n  pointer-events: all;\n  user-select: none;\n}\n.AutoGraphView_canvas .react-flow__edges,\n.AutoGraphView_canvas .react-flow__edges svg {\n  position: absolute;\n  overflow: visible;\n  pointer-events: none;\n}\n.AutoGraphView_canvas .react-flow__edge {\n  pointer-events: visibleStroke;\n}\n.AutoGraphView_canvas .react-flow__edge-path {\n  fill: none;\n}\n.AutoGraphView_canvas .react-flow__edge.animated path {\n  stroke-dasharray: 5;\n  animation: AutoGraphView_autographDash 0.5s linear infinite;\n}\n.AutoGraphView_canvas .react-flow__handle {\n  position: absolute;\n  border-radius: 50%;\n}\n.AutoGraphView_canvas .react-flow__handle-left {\n  top: 50%;\n  left: 0;\n  transform: translate(-50%, -50%);\n}\n.AutoGraphView_canvas .react-flow__handle-right {\n  top: 50%;\n  right: 0;\n  transform: translate(50%, -50%);\n}\n.AutoGraphView_canvas .react-flow__panel {\n  position: absolute;\n  z-index: 5;\n  margin: 15px;\n}\n.AutoGraphView_canvas .react-flow__panel.bottom {\n  bottom: 0;\n}\n.AutoGraphView_canvas .react-flow__panel.left {\n  left: 0;\n}\n.AutoGraphView_canvas .react-flow__panel.right {\n  right: 0;\n}\n.AutoGraphView_canvas .react-flow__minimap-svg {\n  display: block;\n}\n.AutoGraphView_canvas .react-flow__controls {\n  display: flex;\n  flex-direction: column;\n}\n.AutoGraphView_canvas .react-flow__controls-button {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 26px;\n  height: 26px;\n  padding: 4px;\n  border: 0;\n  border-bottom: 1px solid var(--dsw-alias-border-l2);\n  cursor: pointer;\n}\n.AutoGraphView_canvas .react-flow__controls-button svg {\n  width: 100%;\n  max-width: 12px;\n  max-height: 12px;\n  fill: currentColor;\n}\n@keyframes AutoGraphView_autographDash {\n  from {\n    stroke-dashoffset: 10;\n  }\n}\n.AutoGraphView_canvas .react-flow {\n  width: 100%;\n  height: 100%;\n  --xy-background-color: var(--dsw-alias-bg-layer-1);\n  --xy-edge-stroke-default: var(--dsw-alias-border-l4);\n  --xy-minimap-background-color-default: var(--dsw-alias-bg-layer-2);\n  --xy-controls-button-background-color-default: var(--dsw-alias-bg-layer-2);\n  --xy-controls-button-background-color-hover-default: var(--dsw-alias-interactive-bg-hover-solid);\n  --xy-controls-button-color-default: var(--dsw-alias-label-secondary);\n  --xy-controls-button-border-color-default: var(--dsw-alias-border-l2);\n  --xy-background-pattern-dots-color-default: var(--dsw-alias-border-l3);\n}\n.AutoGraphView_canvas .react-flow__node {\n  border-radius: 8px;\n  font-size: 11px;\n  line-height: 18px;\n}\n.AutoGraphView_canvas .react-flow__controls {\n  overflow: hidden;\n  border: 1px solid var(--dsw-alias-border-l2);\n  border-radius: 8px;\n  box-shadow: var(--dsw-shadow-lv1);\n}\n.AutoGraphView_canvas .react-flow__controls-button {\n  border-bottom-color: var(--dsw-alias-border-l2);\n}\n.AutoGraphView_canvas .react-flow__edge-path {\n  stroke-width: 1.75;\n  vector-effect: non-scaling-stroke;\n  filter: drop-shadow(0 0 1px var(--dsw-alias-bg-layer-1));\n}\n.AutoGraphView_canvas .react-flow__edge.selected .react-flow__edge-path,\n.AutoGraphView_canvas .react-flow__edge:focus-visible .react-flow__edge-path {\n  stroke: var(--dsw-alias-state-business-primary);\n  stroke-width: 2.5;\n}\n.AutoGraphView_overview {\n  position: absolute;\n  right: 15px;\n  bottom: 15px;\n  z-index: 6;\n  width: 220px;\n  height: 140px;\n  overflow: hidden;\n  border: 1px solid var(--dsw-alias-border-l2);\n  border-radius: 8px;\n  background: var(--dsw-alias-bg-layer-2);\n  box-shadow: var(--dsw-shadow-lv1);\n  touch-action: none;\n}\n.AutoGraphView_overview svg {\n  display: block;\n  width: 100%;\n  height: 100%;\n  cursor: crosshair;\n}\n.AutoGraphView_overviewEdge {\n  fill: none;\n  stroke: var(--dsw-alias-border-l4);\n  stroke-width: 5;\n  vector-effect: non-scaling-stroke;\n}\n.AutoGraphView_overviewNode {\n  fill: var(--dsw-alias-bg-layer-3);\n  stroke-width: 5;\n  vector-effect: non-scaling-stroke;\n}\n.AutoGraphView_overviewNode[data-kind=goal] {\n  stroke: var(--dsw-alias-state-warn-primary);\n}\n.AutoGraphView_overviewNode[data-kind=intent] {\n  stroke: var(--dsw-alias-state-business-primary);\n}\n.AutoGraphView_overviewNode[data-kind=fact] {\n  stroke: var(--dsw-alias-state-success-primary);\n}\n.AutoGraphView_overviewNode[data-kind=hint] {\n  stroke: var(--dsw-alias-brand-primary);\n}\n.AutoGraphView_overviewViewport {\n  fill: var(--dsw-alias-bg-mask-2);\n  stroke: var(--dsw-alias-state-business-primary);\n  stroke-width: 6;\n  vector-effect: non-scaling-stroke;\n  pointer-events: none;\n}\n.AutoGraphView_empty {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  height: 100%;\n  padding: 24px;\n  color: var(--dsw-alias-label-secondary);\n  font: var(--dsw-font-xs-13);\n  text-align: center;\n}\n.AutoGraphView_nodeCard {\n  position: relative;\n  box-sizing: border-box;\n  width: 252px;\n  min-height: 92px;\n  overflow: visible;\n  border: 1.5px solid var(--dsw-alias-border-l3);\n  border-radius: 10px;\n  background: var(--dsw-alias-bg-layer-3);\n  color: var(--dsw-alias-label-primary);\n  box-shadow: var(--dsw-shadow-lv1);\n}\n.AutoGraphView_nodeCard[data-kind=goal] {\n  border-color: var(--dsw-alias-state-warn-primary);\n}\n.AutoGraphView_nodeCard[data-kind=fact] {\n  border-color: var(--dsw-alias-state-success-primary);\n}\n.AutoGraphView_nodeCard[data-kind=intent] {\n  border-color: var(--dsw-alias-state-business-primary);\n}\n.AutoGraphView_nodeCard[data-kind=hint] {\n  border-color: var(--dsw-alias-brand-primary);\n}\n.AutoGraphView_nodeHeader {\n  display: flex;\n  align-items: center;\n  gap: 6px;\n  padding: 8px 10px;\n  border-bottom: 1px solid var(--dsw-alias-border-l1);\n  color: var(--dsw-alias-label-secondary);\n  font-size: 11px;\n  line-height: 18px;\n}\n.AutoGraphView_nodeIcon {\n  display: inline-flex;\n  width: 16px;\n  height: 16px;\n  color: currentColor;\n}\n.AutoGraphView_nodeIcon svg {\n  width: 100%;\n  height: 100%;\n  fill: none;\n  stroke: currentColor;\n  stroke-linecap: round;\n  stroke-linejoin: round;\n  stroke-width: 1.75;\n  vector-effect: non-scaling-stroke;\n}\n.AutoGraphView_nodeStatus {\n  margin-left: auto;\n  color: var(--dsw-alias-label-tertiary);\n}\n.AutoGraphView_nodeLabel {\n  padding: 10px 12px 12px;\n  font-size: 13px;\n  line-height: 20px;\n  overflow-wrap: anywhere;\n  white-space: pre-wrap;\n}\n.AutoGraphView_handle {\n  width: 9px;\n  height: 9px;\n  border: 2px solid var(--dsw-alias-bg-layer-3);\n  background: var(--dsw-alias-label-tertiary);\n}\n.AutoGraphView_nodeCard[data-kind=goal] .AutoGraphView_handle {\n  background: var(--dsw-alias-state-warn-primary);\n}\n.AutoGraphView_nodeCard[data-kind=fact] .AutoGraphView_handle {\n  background: var(--dsw-alias-state-success-primary);\n}\n.AutoGraphView_nodeCard[data-kind=intent] .AutoGraphView_handle {\n  background: var(--dsw-alias-state-business-primary);\n}\n.AutoGraphView_nodeCard[data-kind=hint] .AutoGraphView_handle {\n  background: var(--dsw-alias-brand-primary);\n}\n.AutoGraphView_controls {\n  display: flex;\n  gap: 8px;\n  padding: 10px 16px;\n  border-top: 1px solid var(--dsw-alias-border-l2);\n  background: var(--dsw-alias-bg-layer-1);\n}\n.AutoGraphView_controls button,\n.AutoGraphView_controls input {\n  box-sizing: border-box;\n  min-height: 32px;\n  border: 1px solid var(--dsw-alias-border-l2);\n  border-radius: 8px;\n  background: var(--dsw-alias-bg-layer-2);\n  color: var(--dsw-alias-label-primary);\n  font-size: 12px;\n  line-height: 18px;\n}\n.AutoGraphView_controls button {\n  padding: 6px 14px;\n  cursor: pointer;\n}\n.AutoGraphView_controls button:hover:not(:disabled) {\n  background: var(--dsw-alias-interactive-bg-hover-solid);\n}\n.AutoGraphView_controls button:disabled {\n  opacity: 0.5;\n  cursor: default;\n}\n.AutoGraphView_controls input {\n  flex: 1;\n  min-width: 0;\n  padding: 6px 10px;\n}\n.AutoGraphView_controls input::placeholder {\n  color: var(--dsw-alias-label-tertiary);\n}\n.AutoGraphView_controls :is(button, input):focus-visible {\n  outline: 2px solid var(--dsw-alias-state-business-primary);\n  outline-offset: 2px;\n}";
+const __autographCssId = "@deepseek-ai/dsh-client-ui-autograph/client.css";
+if (typeof document !== "undefined" && document.querySelector(`style[data-plugin-css=${JSON.stringify(__autographCssId)}]`) === null) {
+  const tag = document.createElement("style");
+  tag.dataset.plugin = "@deepseek-ai/dsh-client-ui-autograph";
+  tag.dataset.pluginCss = __autographCssId;
+  tag.textContent = __autographCss;
+  document.head.appendChild(tag);
+}
 return module.exports; } });
 //# sourceMappingURL=client.js.map

@@ -52,7 +52,7 @@ const KIND_LABEL: Record<BoardNodeKind, string> = {
 const KIND_EDGE_COLOR: Record<BoardNodeKind, string> = {
   fact: 'var(--dsw-alias-state-success-primary)',
   intent: 'var(--dsw-alias-state-business-primary)',
-  hint: 'var(--dsw-alias-brand-primary-new-colorprimary-new-color)',
+  hint: 'var(--dsw-alias-brand-primary)',
   goal: 'var(--dsw-alias-state-warn-primary)',
 }
 

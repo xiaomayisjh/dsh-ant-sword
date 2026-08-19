@@ -5,7 +5,7 @@
 
 const en = {
   'panel.title': 'Autonomous run',
-  'panel.cycle': 'cycle {{cycle}}',
+  'panel.cycle': 'cycle {cycle}',
   'panel.paused': 'paused',
   'panel.complete': 'complete',
   'panel.running': 'running',
@@ -24,7 +24,7 @@ export type AutographKey = keyof typeof en
 
 const zh: Record<AutographKey, string> = {
   'panel.title': '自主渗透',
-  'panel.cycle': '循环 {{cycle}}',
+  'panel.cycle': '循环 {cycle}',
   'panel.paused': '已暂停',
   'panel.complete': '已完成',
   'panel.running': '运行中',
