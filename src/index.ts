@@ -20,6 +20,7 @@ import { applyInstallApi } from './installer/api.ts'
 import { DEFAULT_MCP_SERVERS, McpServerSchema } from './mcp-servers.ts'
 import { applyDynamicRuntime } from './dynamic-runtime.ts'
 import { applySkillApi, SkillsReconciler } from './skill-runtime.ts'
+import { reconcilePiAiReasoning } from './pi-ai-reasoning.ts'
 import type { McpServerConfig } from './mcp-servers.ts'
 
 /** Cordis plugin name. */
@@ -80,6 +81,11 @@ export function apply(ctx: Context, config: Config): void {
   applyThinkingPolicyApi(ctx, runtime.thinking)
   applyInstallApi(ctx)
   applySkillApi(ctx, skillsReconciler)
+  // Fill format-correct reasoningEfforts into custom pi-ai channels so their
+  // models expose (and correctly dispatch) the native thinking-intensity
+  // selector. Best-effort: a missing namespace or write refusal never blocks
+  // the composition.
+  void reconcilePiAiReasoning(ctx).catch(() => undefined)
   if (config.syncRedTeamPreset ?? true) {
     // Materialize both presets into the harness's writable preset root so the
     // roster discovers them; a sync failure never blocks the composition.

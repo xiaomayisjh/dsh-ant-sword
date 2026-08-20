@@ -90,51 +90,6 @@ describe('thinking policy', () => {
     })
   })
 
-  it('injects native reasoning into resolveModelInfoFor for custom-channel models', async () => {
-    const registration = { provider: { id: 'qoder' } }
-    const rawResolve = vi.fn(async () => ({ provider: 'qoder', id: 'deepseek-v4-flash', name: 'DeepSeek V4 Flash' }))
-    const llm = {
-      resolveModelInfoFor: rawResolve,
-      resolveModelInfo: vi.fn(),
-    }
-    const ctx = {
-      llm,
-      agents: { list: () => [] },
-      on: vi.fn(() => () => undefined),
-    } as unknown as Context
-
-    const runtime = new ThinkingPolicyRuntime(ctx, {
-      snapshot: () => ({ applied: runtimeConfig({ defaultThinkingFallback: { minimum: 'off', low: 'high', medium: 'high', high: 'max', maximum: 'max' } }) }),
-    })
-    const stop = runtime.start()
-
-    // The host resolves model info through this internal method; after start()
-    // it must be the patched version that injects synthetic reasoning.
-    const info = await (llm.resolveModelInfoFor as unknown as (r: typeof registration, m: string) => Promise<any>)(registration, 'deepseek-v4-flash')
-    expect(info.reasoning).toBeDefined()
-    // {off, high, high, max, max} collapses to the official three-button layout.
-    expect(info.reasoning.efforts.map((e: { id: string }) => e.id)).toEqual(['off', 'high', 'max'])
-    expect(info.reasoning.defaultEffort).toBe('high')
-
-    stop()
-    // After teardown the original is restored.
-    expect(llm.resolveModelInfoFor).toBe(rawResolve)
-  })
-
-  it('does not override a model that already exposes native reasoning', async () => {
-    const registration = { provider: { id: 'deepseek-official' } }
-    const native = { efforts: [{ id: 'off', name: 'Off' }, { id: 'high', name: 'High' }, { id: 'max', name: 'Max' }], defaultEffort: 'high' }
-    const rawResolve = vi.fn(async () => ({ provider: 'deepseek-official', id: 'deepseek-v4-flash', name: 'Flash', reasoning: native }))
-    const llm = { resolveModelInfoFor: rawResolve, resolveModelInfo: vi.fn() }
-    const ctx = { llm, agents: { list: () => [] }, on: vi.fn(() => () => undefined) } as unknown as Context
-
-    const runtime = new ThinkingPolicyRuntime(ctx, { snapshot: () => ({ applied: runtimeConfig() }) })
-    const stop = runtime.start()
-    const info = await (llm.resolveModelInfoFor as unknown as (r: typeof registration, m: string) => Promise<any>)(registration, 'deepseek-v4-flash')
-    expect(info.reasoning).toBe(native)
-    stop()
-  })
-
   it('prefers an explicit per-model fallback over the default', async () => {
     const applied = runtimeConfig({
       thinkingPolicies: [{ providerId: 'qoder', modelId: 'custom-model', level: 'minimum' }],

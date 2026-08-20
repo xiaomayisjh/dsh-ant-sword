@@ -12,8 +12,8 @@ import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync, createReadS
 import { join, resolve } from 'node:path'
 import { spawnSync } from 'node:child_process'
 
-const SRC = resolve(process.argv[2] ?? 'deepseek-ai-dsh-ant-sword-harness-0.1.0-rc.20.tgz')
-const OUT = resolve(process.argv[3] ?? 'deepseek-ai-dsh-ant-sword-harness-0.1.0-rc.20-offline.tgz')
+const SRC = resolve(process.argv[2] ?? 'deepseek-ai-dsh-ant-sword-harness-0.1.0-rc.21.tgz')
+const OUT = resolve(process.argv[3] ?? 'deepseek-ai-dsh-ant-sword-harness-0.1.0-rc.21-offline.tgz')
 
 if (!existsSync(SRC)) throw new Error(`source tarball not found: ${SRC}`)
 

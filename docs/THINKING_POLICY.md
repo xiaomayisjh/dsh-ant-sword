@@ -38,17 +38,29 @@
 
 系统会自动将 `high` 级别映射到该模型的 `high` effort。
 
-## 对话框原生思考强度选择器（自定义渠道）
+## 对话框原生思考强度选择器（自定义渠道，按 wire 格式区分）
 
-对话框输入区旁边那个思考强度选择器（与官方 DeepSeek 一致）由 host 的模型目录驱动：host 对每个模型调用 `ctx.llm.resolveModelInfo()`，只有返回 `reasoning` 字段的模型才会显示选择器。自定义渠道的适配器通常不返回该字段，因此原生选择器不出现。
+对话框输入区旁边那个思考强度选择器（与官方 DeepSeek 一致）由 host 的模型目录驱动：host 对每个模型调用适配器的 `resolveModel()`，只有报告 `reasoning` 能力的模型才会显示选择器，且**选中的 effort 必须是该 wire 格式真正接受的取值**，否则下发时会被适配器以 `UNSUPPORTED_REASONING_EFFORT` 拒绝（接口不兼容）。
 
-本包在运行时**包裹了 `ctx.llm.resolveModelInfoFor`**：当某模型没有原生 `reasoning` 时，用下面的 fallback 配置合成一份 `reasoning` 注入进去。由于目录构建、effort 校验、请求下发三条路径都走这一个方法，所以：
+自定义渠道通常是 `@deepseek-ai/dsh-llm-pi-ai` 的路由，pi-ai 有三种 wire 协议，思考强度的档位、取值、表达、格式各不相同：
 
-1. 对话框会显示与官方一致的三档选择器（默认 `off`/`high`/`max`）；
-2. 选中的 effort 通过校验并真正下发给适配器；
-3. 无需任何逐模型配置。
+| pi-ai `api` | 档位词汇 | wire 形态 |
+| --- | --- | --- |
+| `openai-responses` | `minimal / low / medium / high` | `reasoning: { effort }`（无 `max`、无 `off` 线值） |
+| `anthropic-messages` | `low / medium / high` | 自适应 `output_config.effort` 或 `thinking.budget_tokens` |
+| `openai-completions` | `low / medium / high` | `reasoning_effort` |
 
-合成的档位是 fallback 五档映射去重后的**不同 effort id**（默认 `{off, high, high, max, max}` → `[off, high, max]`），`defaultEffort` 取 `medium` 档对应值（默认 `high`），与官方 DeepSeek 的默认行为对齐。把 `defaultThinkingFallback` 设为 `null` 可关闭该注入。
+pi-ai 只有在路由模型声明了 `reasoningEfforts` 时才把它当作可推理模型（否则 `reasoning: false`，既不显示选择器，下发任何非 `off` effort 也会被拒）。
+
+本包在启动时运行 **pi-ai 推理协调器**（`src/pi-ai-reasoning.ts`）：读取 `llm-pi-ai` 设置，按每条路由的 `api` 把**格式正确的 `reasoningEfforts`** 写入所有尚未声明该字段的模型。于是：
+
+1. 每个自定义渠道模型都以其 wire 格式原生暴露思考强度选择器；
+2. 选中的 effort 用该格式接受的取值下发，不再出现接口不兼容；
+3. 无需逐模型手工配置。
+
+已显式声明 `reasoningEfforts`（映射或 `false`）的模型不会被改写 —— 用户的选择永远优先。协调器每次启动只补齐缺失项，是幂等的。
+
+> 注：ant-sword 设置页的"渠道思考强度"标签（`/ant-sword/thinking/*`）是另一套面向策略的 UI，仍使用下述 fallback 机制；它与对话框原生选择器相互独立。
 
 ## 默认 Fallback（开箱即用）
 
