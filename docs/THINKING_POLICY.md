@@ -46,9 +46,17 @@
 
 | pi-ai `api` | 档位词汇 | wire 形态 |
 | --- | --- | --- |
-| `openai-responses` | `minimal / low / medium / high` | `reasoning: { effort }`（无 `max`、无 `off` 线值） |
-| `anthropic-messages` | `low / medium / high` | 自适应 `output_config.effort` 或 `thinking.budget_tokens` |
+| `openai-responses` | `minimal / low / medium / high` | `reasoning: { effort }`（无 `xhigh`/`max`，这是 OpenAI 侧的枚举天花板） |
+| `anthropic-messages` | `low / medium / high / xhigh / max` | **自适应** `output_config.effort`（本包强制自适应，见下） |
 | `openai-completions` | `low / medium / high` | `reasoning_effort` |
+
+### Anthropic 自适应思考（xhigh / max）
+
+pi-ai 对**手动声明的** anthropic 路由默认走"预算模式"（`thinking.budget_tokens`），该模式会把 `xhigh`/`max` 压成 `high`（`clampReasoning`）。而 Anthropic 官方（Opus 5 / Fable 5 等）的做法是**自适应思考**：`thinking.type: "adaptive"` + `output_config.effort`，effort 直接取 `low/medium/high/max`（新模型加 `xhigh`），Claude Code / Codex 就是这么下发的。
+
+pi-ai 提供了 `compat.forceAdaptiveThinking` 开关（其文档明确写"Custom Anthropic-compatible providers can set this to true"），但 `llm-pi-ai` 的配置 schema 没暴露它。因此本包在运行时对 anthropic-messages 路由的可推理模型注入 `compat.forceAdaptiveThinking = true`（`installPiAiAdaptiveThinking`），让选中的 effort 以 `output_config.effort` 原样下发 —— `xhigh`/`max` 成为**真实档位**，不再被降成 `high`。
+
+因此 Kimi、GLM 这类走 anthropic-messages 中转、且本体支持更强思考的模型，现在能在对话框显示并正确下发 `xhigh` / `max`。
 
 pi-ai 只有在路由模型声明了 `reasoningEfforts` 时才把它当作可推理模型（否则 `reasoning: false`，既不显示选择器，下发任何非 `off` effort 也会被拒）。
 

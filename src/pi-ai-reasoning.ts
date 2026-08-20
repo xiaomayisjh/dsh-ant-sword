@@ -41,12 +41,49 @@ export type ReasoningEffortsMap = Record<string, string | null>
  * button whose value the endpoint would reject.
  */
 export const REASONING_EFFORTS_BY_API: Record<string, ReasoningEffortsMap> = {
-  // OpenAI Responses: minimal/low/medium/high (no max, no off wire value).
+  // OpenAI Responses: minimal/low/medium/high — the effort enum the API defines
+  // (no xhigh/max; those are not Responses values).
   'openai-responses': { off: null, minimal: 'minimal', low: 'low', medium: 'medium', high: 'high' },
-  // Anthropic Messages: adaptive effort / budget thinking keyed by low/medium/high.
-  'anthropic-messages': { off: null, low: 'low', medium: 'medium', high: 'high' },
+  // Anthropic Messages (adaptive thinking): the full effort ladder. `max` is
+  // accepted by every adaptive-thinking Claude model; `xhigh` by the newest.
+  // Custom Anthropic-compatible relays (GLM/Kimi/etc.) expose the same ladder,
+  // so offer it and let dispatch send the chosen effort verbatim. Requires
+  // forceAdaptiveThinking (installPiAiAdaptiveThinking) so these are real
+  // effort levels, not budget-clamped down to `high`.
+  'anthropic-messages': { off: null, low: 'low', medium: 'medium', high: 'high', xhigh: 'xhigh', max: 'max' },
   // OpenAI Chat Completions reasoning models: low/medium/high.
   'openai-completions': { off: null, low: 'low', medium: 'medium', high: 'high' },
+}
+
+/** pi-ai wire protocols that use Anthropic adaptive thinking (effort, not budget). */
+export const ADAPTIVE_THINKING_APIS: ReadonlySet<string> = new Set(['anthropic-messages'])
+
+/**
+ * Effort maps this reconciler wrote in earlier versions, keyed by api. A model
+ * carrying exactly one of these is a prior *default* (not a user edit), so the
+ * reconciler may upgrade it to the current {@link REASONING_EFFORTS_BY_API}
+ * value. A map that differs from every entry here is treated as a deliberate
+ * user customization and left untouched.
+ */
+export const SUPERSEDED_DEFAULTS_BY_API: Record<string, readonly ReasoningEffortsMap[]> = {
+  // rc.21 anthropic-messages default (before the adaptive xhigh/max ladder).
+  'anthropic-messages': [{ off: null, low: 'low', medium: 'medium', high: 'high' }],
+}
+
+/** Deep-equal two reasoning-effort maps by their key/value pairs. */
+function effortsEqual(a: ReasoningEffortsMap, b: ReasoningEffortsMap): boolean {
+  const keysA = Object.keys(a)
+  const keysB = Object.keys(b)
+  if (keysA.length !== keysB.length) return false
+  return keysA.every(key => key in b && a[key] === b[key])
+}
+
+/**
+ * Whether `current` is a default this reconciler wrote in an earlier version
+ * for `api` — safe to upgrade — as opposed to a user's own map.
+ */
+function isSupersededDefault(api: string, current: ReasoningEffortsMap): boolean {
+  return (SUPERSEDED_DEFAULTS_BY_API[api] ?? []).some(old => effortsEqual(old, current))
 }
 
 /** One model entry inside a pi-ai route's `models` list (partial shape). */
@@ -89,11 +126,20 @@ export function fillReasoningEfforts(
       continue
     }
     const nextModels = models.map(model => {
-      // A model that already declares reasoningEfforts (a map, or `false` to
-      // opt out) keeps its own choice — the user's decision always wins.
-      if (model.reasoningEfforts !== undefined) return model
-      changed += 1
-      return { ...model, reasoningEfforts: { ...efforts } }
+      const declared = model.reasoningEfforts
+      // No declaration yet → fill the current format-correct default.
+      if (declared === undefined) {
+        changed += 1
+        return { ...model, reasoningEfforts: { ...efforts } }
+      }
+      // `false` (opt-out) or a genuine user map is left untouched — the user's
+      // decision always wins. The one exception: a map this reconciler itself
+      // wrote in an earlier version is a stale default, safe to upgrade.
+      if (declared !== false && isSupersededDefault(route.api!, declared) && !effortsEqual(declared, efforts)) {
+        changed += 1
+        return { ...model, reasoningEfforts: { ...efforts } }
+      }
+      return model
     })
     next[routeId] = { ...route, models: nextModels }
   }
@@ -131,4 +177,87 @@ export async function reconcilePiAiReasoning(ctx: Context, attempts = 20, delayM
     if (attempt < attempts - 1) await new Promise(resolve => setTimeout(resolve, delayMs))
   }
   return 0
+}
+
+/** Minimal shape of the pi-ai model descriptor `modelOf` returns. */
+interface PiAiResolvedModel {
+  api?: string
+  reasoning?: boolean
+  compat?: Record<string, unknown>
+  [key: string]: unknown
+}
+
+/** The pi-ai adapter instance exposes a synchronous `modelOf(snapshot, provider, model)`. */
+interface PiAiAdapterLike {
+  modelOf?: (snapshot: unknown, provider: string, model: string) => PiAiResolvedModel
+}
+
+/** The registration object the llm runtime passes to `resolveModelInfoFor`. */
+interface AdapterRegistrationLike {
+  provider: { id: string }
+  adapter: PiAiAdapterLike
+}
+
+/**
+ * Force Anthropic **adaptive** thinking on custom pi-ai channels that speak an
+ * adaptive protocol, so a chosen effort dispatches as the real
+ * `output_config.effort` (e.g. `max`) instead of pi-ai's budget-mode path,
+ * which clamps `xhigh`/`max` down to `high`.
+ *
+ * `forceAdaptiveThinking` lives on the pi-ai model descriptor's `compat`, which
+ * the `llm-pi-ai` settings schema does not expose — so it cannot be set through
+ * configuration. Instead we wrap `ctx.llm.resolveModelInfoFor` to reach the
+ * adapter registration, then patch that adapter's own `modelOf` once so every
+ * resolved model on an adaptive route (both the catalog/selector path and the
+ * dispatch path go through `modelOf`) carries
+ * `compat.forceAdaptiveThinking = true`. The descriptor is cloned, never
+ * mutated in pi-ai's snapshot cache. A model with no reasoning is left as-is.
+ *
+ * @param ctx - plugin context carrying the llm runtime.
+ * @param adaptiveApis - the set of pi-ai `api`s that use adaptive thinking.
+ * @returns a disposer that restores the original methods.
+ */
+export function installPiAiAdaptiveThinking(ctx: Context, adaptiveApis: ReadonlySet<string> = ADAPTIVE_THINKING_APIS): () => void {
+  const llm = ctx.llm as unknown as {
+    resolveModelInfoFor?: (registration: AdapterRegistrationLike, model: string, signal?: AbortSignal) => Promise<unknown>
+  }
+  const original = llm.resolveModelInfoFor
+  if (typeof original !== 'function') return () => undefined
+
+  const patchedAdapters = new WeakSet<object>()
+  const restores: Array<() => void> = []
+
+  function patchAdapter(adapter: PiAiAdapterLike): void {
+    if (typeof adapter.modelOf !== 'function' || patchedAdapters.has(adapter)) return
+    patchedAdapters.add(adapter)
+    const originalModelOf = adapter.modelOf.bind(adapter)
+    const patchedModelOf = (snapshot: unknown, provider: string, model: string): PiAiResolvedModel => {
+      const resolved = originalModelOf(snapshot, provider, model)
+      if (resolved.api === undefined || !adaptiveApis.has(resolved.api)) return resolved
+      if (resolved.reasoning !== true) return resolved
+      if (resolved.compat?.forceAdaptiveThinking === true) return resolved
+      // Clone (never mutate pi-ai's cached descriptor) and force adaptive effort.
+      return { ...resolved, compat: { ...resolved.compat, forceAdaptiveThinking: true } }
+    }
+    Object.defineProperty(adapter, 'modelOf', { value: patchedModelOf, writable: true, configurable: true })
+    restores.push(() => {
+      const current = (adapter as { modelOf?: unknown }).modelOf
+      if (current === patchedModelOf) {
+        Object.defineProperty(adapter, 'modelOf', { value: originalModelOf, writable: true, configurable: true })
+      }
+    })
+  }
+
+  const wrapped = async function (this: unknown, registration: AdapterRegistrationLike, model: string, signal?: AbortSignal): Promise<unknown> {
+    if (registration?.adapter !== undefined) patchAdapter(registration.adapter)
+    return original.call(this, registration, model, signal)
+  }
+  Object.defineProperty(llm, 'resolveModelInfoFor', { value: wrapped, writable: true, configurable: true })
+
+  return () => {
+    if ((llm as { resolveModelInfoFor?: unknown }).resolveModelInfoFor === wrapped) {
+      Object.defineProperty(llm, 'resolveModelInfoFor', { value: original, writable: true, configurable: true })
+    }
+    for (const restore of restores) restore()
+  }
 }

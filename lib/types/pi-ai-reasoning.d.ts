@@ -36,6 +36,16 @@ export type ReasoningEffortsMap = Record<string, string | null>;
  * button whose value the endpoint would reject.
  */
 export declare const REASONING_EFFORTS_BY_API: Record<string, ReasoningEffortsMap>;
+/** pi-ai wire protocols that use Anthropic adaptive thinking (effort, not budget). */
+export declare const ADAPTIVE_THINKING_APIS: ReadonlySet<string>;
+/**
+ * Effort maps this reconciler wrote in earlier versions, keyed by api. A model
+ * carrying exactly one of these is a prior *default* (not a user edit), so the
+ * reconciler may upgrade it to the current {@link REASONING_EFFORTS_BY_API}
+ * value. A map that differs from every entry here is treated as a deliberate
+ * user customization and left untouched.
+ */
+export declare const SUPERSEDED_DEFAULTS_BY_API: Record<string, readonly ReasoningEffortsMap[]>;
 /** One model entry inside a pi-ai route's `models` list (partial shape). */
 export interface PiAiModelEntry {
     id: string;
@@ -82,4 +92,24 @@ export declare function fillReasoningEfforts(providers: Record<string, PiAiRoute
  * @returns the number of models updated (0 when nothing changed).
  */
 export declare function reconcilePiAiReasoning(ctx: Context, attempts?: number, delayMs?: number): Promise<number>;
+/**
+ * Force Anthropic **adaptive** thinking on custom pi-ai channels that speak an
+ * adaptive protocol, so a chosen effort dispatches as the real
+ * `output_config.effort` (e.g. `max`) instead of pi-ai's budget-mode path,
+ * which clamps `xhigh`/`max` down to `high`.
+ *
+ * `forceAdaptiveThinking` lives on the pi-ai model descriptor's `compat`, which
+ * the `llm-pi-ai` settings schema does not expose — so it cannot be set through
+ * configuration. Instead we wrap `ctx.llm.resolveModelInfoFor` to reach the
+ * adapter registration, then patch that adapter's own `modelOf` once so every
+ * resolved model on an adaptive route (both the catalog/selector path and the
+ * dispatch path go through `modelOf`) carries
+ * `compat.forceAdaptiveThinking = true`. The descriptor is cloned, never
+ * mutated in pi-ai's snapshot cache. A model with no reasoning is left as-is.
+ *
+ * @param ctx - plugin context carrying the llm runtime.
+ * @param adaptiveApis - the set of pi-ai `api`s that use adaptive thinking.
+ * @returns a disposer that restores the original methods.
+ */
+export declare function installPiAiAdaptiveThinking(ctx: Context, adaptiveApis?: ReadonlySet<string>): () => void;
 //# sourceMappingURL=pi-ai-reasoning.d.ts.map

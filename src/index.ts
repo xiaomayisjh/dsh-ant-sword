@@ -20,7 +20,7 @@ import { applyInstallApi } from './installer/api.ts'
 import { DEFAULT_MCP_SERVERS, McpServerSchema } from './mcp-servers.ts'
 import { applyDynamicRuntime } from './dynamic-runtime.ts'
 import { applySkillApi, SkillsReconciler } from './skill-runtime.ts'
-import { reconcilePiAiReasoning } from './pi-ai-reasoning.ts'
+import { reconcilePiAiReasoning, installPiAiAdaptiveThinking } from './pi-ai-reasoning.ts'
 import type { McpServerConfig } from './mcp-servers.ts'
 
 /** Cordis plugin name. */
@@ -86,6 +86,11 @@ export function apply(ctx: Context, config: Config): void {
   // selector. Best-effort: a missing namespace or write refusal never blocks
   // the composition.
   void reconcilePiAiReasoning(ctx).catch(() => undefined)
+  // Force Anthropic adaptive thinking on adaptive-protocol pi-ai channels, so a
+  // chosen effort (e.g. max) dispatches as output_config.effort instead of
+  // being budget-clamped to high. Disposed with the plugin fiber.
+  const stopAdaptive = installPiAiAdaptiveThinking(ctx)
+  ctx.effect(() => stopAdaptive, 'ant-sword-runtime.pi-ai-adaptive-thinking')
   if (config.syncRedTeamPreset ?? true) {
     // Materialize both presets into the harness's writable preset root so the
     // roster discovers them; a sync failure never blocks the composition.
