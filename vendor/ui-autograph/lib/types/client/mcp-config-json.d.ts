@@ -3,7 +3,7 @@
 export interface McpConfig {
     enabled?: boolean;
     serverName: string;
-    transport: 'stdio' | 'sse' | 'streamable-http';
+    transport: 'stdio' | 'streamable-http';
     command?: string;
     args?: string[];
     cwd?: string;

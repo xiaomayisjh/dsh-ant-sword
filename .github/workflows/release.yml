@@ -27,6 +27,10 @@ jobs:
           corepack enable
           pnpm --version
 
+      - name: Install locked dependencies
+        shell: pwsh
+        run: pnpm install --frozen-lockfile
+
       - name: Publish complete offline release
         shell: pwsh
         env:

@@ -6,7 +6,6 @@ export const RELEASE_MANIFEST = 'ant-sword-release-manifest.json'
 export const RELEASE_PACKAGES = [
   { packageName: '@deepseek-ai/dsh-ant-sword-harness', key: 'bundle' },
   { packageName: '@deepseek-ai/dsh-client-ui-autograph', key: 'ui' },
-  { packageName: '@nanmicoder/dsh-agent-teams', key: 'agentTeams' },
   { packageName: 'dshmarket', key: 'dshmarket' },
 ]
 

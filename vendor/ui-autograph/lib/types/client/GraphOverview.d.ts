@@ -5,6 +5,6 @@ interface OverviewProps {
     readonly edges: readonly Edge[];
 }
 /** Live SVG overview of both blocks and their logical connections. */
-export declare function GraphOverview({ nodes, edges }: OverviewProps): any;
+export declare function GraphOverview({ nodes, edges }: OverviewProps): import("react").JSX.Element;
 export {};
 //# sourceMappingURL=GraphOverview.d.ts.map

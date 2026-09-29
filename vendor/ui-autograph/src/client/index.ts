@@ -8,12 +8,14 @@
  */
 import '@xyflow/react/dist/style.css'
 import type { Context } from '@deepseek-ai/cordis'
-import { createSnapshotStore } from '@deepseek-ai/dsh-client-runtime/client'
-import type { SessionId } from '@deepseek-ai/dsh-client-runtime/client'
+import { createSnapshotStore } from '@deepseek-ai/dsh-client-store'
+import type { SessionId } from '@deepseek-ai/dsh-session/types'
 // Type-only: pulls the locale plugin's Context merge (ctx.locale).
 import type {} from '@deepseek-ai/dsh-client-locale/client'
 // Type-only: the 'conversation.view' SlotMap row, declared by the owning package.
 import type {} from '@deepseek-ai/dsh-client-ui-conversation/client'
+import type {} from '@deepseek-ai/dsh-client-ui-renderer/client'
+import type {} from '@deepseek-ai/dsh-client-ui-session/client'
 // Type-only: the settings shell's SlotMap merge.
 import type {} from '@deepseek-ai/dsh-client-ui-settings/client'
 // Type-only: pulls the generated command Remote (ctx.remote.commands).
@@ -35,7 +37,7 @@ declare module '@deepseek-ai/dsh-client-ui-slots' {
 const NS = 'autograph'
 
 /** Required services: view slot, sessions binding, command Remote, locale. */
-export const inject = ['slots', 'sessions', 'remote', 'remote.commands', 'locale', 'settingsScope', 'connection']
+export const inject = ['slots', 'remote', 'remote.commands', 'locale', 'configForms']
 
 /**
  * Client plugin body: register the autonomous graph view tab. The
@@ -47,7 +49,7 @@ export function apply(ctx: Context): void {
   ctx.effect(() => ctx.locale.register(NS, { zh, en }), 'ui-autograph: dictionaries')
   const t = ctx.locale.bind(NS)
   const runtimeStatus = createSnapshotStore<RedTeamRuntimeStatus>(INITIAL_RUNTIME_STATUS)
-  const nativeConfigScope = ctx.settingsScope.bind<RuntimeConfigValue>({ namespace: 'ant-sword-runtime' })
+  const nativeConfigScope = ctx.configForms.get<RuntimeConfigValue>('ant-sword-harness')
   const configScope = new RuntimeConfigScope(nativeConfigScope)
   ctx.effect(() => () => configScope.dispose(), 'ui-autograph: runtime config scope')
 
@@ -87,12 +89,11 @@ export function apply(ctx: Context): void {
     label: () => t('panel.title'),
     inject: (sessionId: SessionId): AutoGraphActions => {
       const run = async (input: string): Promise<string | null> => {
-        const result = await ctx.remote.commands.execute(sessionId, input)
+        const result = await ctx.remote.commands.execute(sessionId, input, [])
         if (!result.ok) return `${result.error.message} (${result.error.code})`
         return null
       }
       return {
-        isAutoMode: ctx.sessions.list.getSnapshot().byId[sessionId]?.agentPreset === 'red-team-auto',
         runtimeStatus,
         onPause: () => run('/auto pause'),
         onResume: () => run('/auto resume'),

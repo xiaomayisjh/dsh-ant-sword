@@ -22,8 +22,8 @@ export interface McpServerConfig {
   enabled?: boolean
   /** Namespace for the model-facing tool names (`mcp__<serverName>__<tool>`). */
   serverName: string
-  /** Transport: spawned stdio child, legacy SSE, or Streamable HTTP. */
-  transport: 'stdio' | 'sse' | 'streamable-http'
+  /** Transport supported by DSH 0.2: spawned stdio or Streamable HTTP. */
+  transport: 'stdio' | 'streamable-http'
   /** stdio: executable to spawn. */
   command?: string
   /** stdio: arguments. */
@@ -44,7 +44,7 @@ export interface McpServerConfig {
 export const McpServerSchema: z<McpServerConfig> = z.object({
   enabled: z.boolean().default(true).description('启用此 MCP 服务器；关闭则不挂载，其 mcp__* 工具不出现。'),
   serverName: z.string().required().description('工具命名空间，模型看到的是 mcp__<serverName>__<tool>。'),
-  transport: z.union(['stdio', 'sse', 'streamable-http'] as const).required().description('stdio=拉起子进程；sse=旧版 HTTP+SSE；streamable-http=当前 HTTP MCP。'),
+  transport: z.union(['stdio', 'streamable-http'] as const).required().description('stdio=拉起子进程；streamable-http=当前 HTTP MCP。'),
   command: z.string().description('stdio：要启动的可执行文件。'),
   args: z.array(z.string()).description('stdio：命令参数。'),
   cwd: z.string().description('stdio：工作目录；留空使用 Harness 工作目录。'),

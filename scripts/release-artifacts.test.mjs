@@ -23,7 +23,6 @@ test('resolves a release directory and manifest to all local tarballs', () => {
     const fromManifest = resolveLocalRelease(release.manifestPath)
     assert.equal(fromDirectory.bundle, fromManifest.bundle)
     assert.equal(fromDirectory.ui, fromManifest.ui)
-    assert.equal(fromDirectory.agentTeams, fromManifest.agentTeams)
     assert.equal(fromDirectory.dshmarket, fromManifest.dshmarket)
   } finally {
     rmSync(release.directory, { recursive: true, force: true })

@@ -17,8 +17,8 @@ export interface McpServerConfig {
     enabled?: boolean;
     /** Namespace for the model-facing tool names (`mcp__<serverName>__<tool>`). */
     serverName: string;
-    /** Transport: spawned stdio child, legacy SSE, or Streamable HTTP. */
-    transport: 'stdio' | 'sse' | 'streamable-http';
+    /** Transport supported by DSH 0.2: spawned stdio or Streamable HTTP. */
+    transport: 'stdio' | 'streamable-http';
     /** stdio: executable to spawn. */
     command?: string;
     /** stdio: arguments. */

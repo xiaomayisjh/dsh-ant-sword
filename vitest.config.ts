@@ -9,11 +9,9 @@ export default defineConfig({
       'vendor/ui-autograph/tests/**/*.spec.tsx',
     ],
     exclude: [
-      'tests/ant-sword-harness.spec.ts',
-      'tests/auto-loop.spec.ts',
-      'tests/rewind-standalone.spec.ts',
       'node_modules/**',
       'skills/**',
-      '**/node_modules/**',    ],
+      '**/node_modules/**',
+    ],
   },
 })

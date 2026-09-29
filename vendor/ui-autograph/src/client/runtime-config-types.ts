@@ -44,4 +44,5 @@ export interface RuntimeConfigValue {
   rules: RuntimeRuleConfig[]
   thinkingPolicies: ChannelThinkingPolicy[]
   thinkingFallbacks: ThinkingFallbackPolicy[]
+  defaultThinkingFallback?: SimulatedEfforts | null
 }

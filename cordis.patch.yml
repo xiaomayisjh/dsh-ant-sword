@@ -1,14 +1,11 @@
-# The ant-sword-harness bundle patch: composes three capabilities over the
+# The ant-sword-harness bundle patch: composes its Host capabilities over the
 # profile's existing layers as ONE insert. Later bundle patches and the user's
 # profile cordis.patch.yml address these rows by id; the last write wins per row.
 #
-# The first-party rows mount this package's two Cordis plugins: the main one
-# serves the bundled reverse/CTF skill pack on ctx.skills (plus the OODA loop),
-# and the dedicated rewind row mounts the self-contained workspace-snapshot /
-# /rewind capability under its narrower service set. Two further rows mount the
-# third-party agent-teams and plugin-market bundles, whose forward compatibility
-# with the official harness is owned by their respective authors and followed
-# through their npm version ranges in package.json.
+# The Host row serves the bundled skills and OODA loop. The dedicated rewind
+# row retains its narrower service set. DSH 0.2's scoped red-team presets are
+# declared by preset/*.patch.yml; the independent browser UI and plugin market
+# remain separate rows.
 #
 # Row order carries no load semantics (activation is service-availability
 # driven); the grouping is for readers.
@@ -33,15 +30,6 @@
         provider: auto
         preRewindCheckpoint: warn
         pruneOnTurnEnd: true
-
-    # Multi-agent teams: captain-led delegation, dependency-aware tasks, mailbox.
-    - id: agent-teams
-      name: '@nanmicoder/dsh-agent-teams'
-      config:
-        stateDir: .agent-teams
-        memberProvider: spawn
-        memberMaxDepth: 1
-        maxMembers: 8
 
     # The autonomous-loop decision-graph Web view, installed from the Release's
     # vendored UI tarball alongside this bundle.

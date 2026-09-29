@@ -9,7 +9,7 @@
  */
 import type { Edge } from '@xyflow/react';
 import type { PropsLocale } from '@deepseek-ai/dsh-client-ui-slots';
-import type { SnapshotStore } from '@deepseek-ai/dsh-client-runtime/client';
+import type { SnapshotStore } from '@deepseek-ai/dsh-client-store';
 import type { ConvViewProps } from '@deepseek-ai/dsh-client-ui-conversation/client';
 import type { RedTeamRuntimeStatus } from './RuntimeStatus.tsx';
 import { type BoardFlowNode } from './BoardGraphNode.tsx';
@@ -18,8 +18,6 @@ import type { BoardSnapshot } from './board.ts';
 export interface AutoGraphActions {
     /** Shared deployment-level Skill/MCP status source. */
     runtimeStatus: SnapshotStore<RedTeamRuntimeStatus>;
-    /** Whether the session was composed from the autonomous red-team preset. */
-    isAutoMode: boolean;
     /** Pause the loop after the current step. */
     onPause: () => Promise<string | null>;
     /** Resume a paused loop. */
@@ -36,5 +34,5 @@ export declare function toFlow(board: BoardSnapshot): {
     nodes: BoardFlowNode[];
     edges: Edge[];
 };
-export declare function AutoGraphView({ isAutoMode, runtimeStatus, onPause, onResume, onHint, useProjection, t }: ConvViewProps & AutoGraphActions & PropsLocale<'autograph'>): any;
+export declare function AutoGraphView({ runtimeStatus, onPause, onResume, onHint, useProjection, t }: ConvViewProps & AutoGraphActions & PropsLocale<'autograph'>): import("react").JSX.Element | null;
 //# sourceMappingURL=AutoGraphView.d.ts.map

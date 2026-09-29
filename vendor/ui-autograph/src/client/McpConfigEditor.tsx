@@ -23,7 +23,7 @@ interface Props {
   savedServers: readonly McpConfig[]
   saving: boolean
   onChange: (servers: McpConfig[]) => void
-  onSave: () => Promise<void>
+  onSave: () => Promise<boolean>
 }
 
 function replaceServer(servers: readonly McpConfig[], index: number, value: McpConfig): McpConfig[] {
@@ -102,8 +102,12 @@ export function McpConfigEditor({ servers, savedServers, saving, onChange, onSav
       setMessage(`保存前请修正：${issues[0]?.message ?? '配置无效'}`)
       return
     }
-    await onSave()
-    setMessage('MCP 配置已保存并热应用。')
+    try {
+      const saved = await onSave()
+      setMessage(saved ? 'MCP 配置已保存。' : 'MCP 配置未保存。')
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : String(error))
+    }
   }
 
   const runtimeAction = async (action: 'probe' | 'reload'): Promise<void> => {
@@ -171,7 +175,7 @@ export function McpConfigEditor({ servers, savedServers, saving, onChange, onSav
               <select value={selected.transport} onChange={(event) => {
                 update(selectedIndex, switchMcpTransport(selected, event.target.value as McpConfig['transport']))
               }}>
-                <option value="stdio">stdio</option><option value="sse">HTTP + SSE（旧版）</option>
+                <option value="stdio">stdio</option>
                 <option value="streamable-http">Streamable HTTP</option>
               </select>
             </label>

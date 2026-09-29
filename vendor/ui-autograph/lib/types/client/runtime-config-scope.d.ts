@@ -1,6 +1,8 @@
 /** Official settings bridge with a loopback HTTP fallback for private namespaces. */
-import type { SettingsScope, SettingsScopeSnapshot } from '@deepseek-ai/dsh-client-runtime/client';
+import type { ConfigForm, ConfigFormSnapshot } from '@deepseek-ai/dsh-client-ui-settings/client';
 import type { RuntimeConfigValue } from './runtime-config-types.ts';
+/** The settings methods used by this bridge; the Host form also supports mutate. */
+export type RuntimeConfigForm = Pick<ConfigForm<RuntimeConfigValue>, 'getSnapshot' | 'subscribe' | 'set' | 'unset'>;
 interface RuntimeApplyFailure {
     reconciler: string;
     message: string;
@@ -26,7 +28,7 @@ export type RuntimeConfigFetch = (input: string, init?: RequestInit) => Promise<
  * the owning plugin's loopback endpoint. Writes remain serialized and carry
  * the latest revision, matching the official scope's conflict behavior.
  */
-export declare class RuntimeConfigScope implements SettingsScope<RuntimeConfigValue> {
+export declare class RuntimeConfigScope implements RuntimeConfigForm {
     private readonly native;
     private readonly request;
     private readonly store;
@@ -34,13 +36,13 @@ export declare class RuntimeConfigScope implements SettingsScope<RuntimeConfigVa
     private readonly unsubscribeNative;
     private tail;
     private disposed;
-    constructor(native: SettingsScope<RuntimeConfigValue>, request?: RuntimeConfigFetch);
-    getSnapshot(): SettingsScopeSnapshot<RuntimeConfigValue>;
+    constructor(native: RuntimeConfigForm, request?: RuntimeConfigFetch);
+    getSnapshot(): ConfigFormSnapshot<RuntimeConfigValue>;
     subscribe(listener: () => void): () => void;
     getRuntimeSnapshot(): RuntimeApplySnapshot;
     subscribeRuntime(listener: () => void): () => void;
-    set(field: string, value: unknown): Promise<void>;
-    unset(field: string): Promise<void>;
+    set(field: string, value: unknown): Promise<boolean>;
+    unset(field: string): Promise<boolean>;
     refresh(): Promise<void>;
     dispose(): Promise<void>;
     whenIdle(): Promise<void>;

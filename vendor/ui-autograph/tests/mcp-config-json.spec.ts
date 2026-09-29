@@ -20,12 +20,14 @@ describe('MCP config JSON conversion', () => {
     }])
   })
 
-  it('imports legacy SSE and Streamable HTTP entries', () => {
-    const servers = parseMcpJson(JSON.stringify({
+  it('rejects legacy SSE and imports Streamable HTTP entries', () => {
+    expect(() => parseMcpJson(JSON.stringify({
       legacy: { type: 'sse', url: 'http://localhost:3000/sse' },
+    }))).toThrow(/旧 SSE 传输.*streamable-http.*不会被覆盖/)
+    const servers = parseMcpJson(JSON.stringify({
       current: { transport: 'streamable-http', url: 'http://localhost:3001/mcp' },
     }))
-    expect(servers.map(server => server.transport)).toEqual(['sse', 'streamable-http'])
+    expect(servers.map(server => server.transport)).toEqual(['streamable-http'])
   })
 
   it('round-trips visual configuration through a named catalog', () => {

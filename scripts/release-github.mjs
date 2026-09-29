@@ -29,10 +29,11 @@
  */
 
 import { spawnSync } from 'node:child_process'
-import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
-import { join, resolve, isAbsolute, basename } from 'node:path'
+import { existsSync, mkdirSync, readFileSync, readdirSync, renameSync, rmSync, writeFileSync } from 'node:fs'
+import { join, resolve, isAbsolute, basename, dirname, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { parseArgs } from 'node:util'
+import { gunzipSync, gzipSync } from 'node:zlib'
 import { RELEASE_MANIFEST, writeReleaseManifest } from './release-artifacts.mjs'
 
 const PACKAGE_DIR = resolve(fileURLToPath(new URL('..', import.meta.url)))
@@ -247,23 +248,158 @@ function prepareDestination(directory) {
   }
 }
 
-function makeOfflineTarball(tarball, destination, clearDependencies = false) {
+function assertInside(parent, child) {
+  const path = relative(resolve(parent), resolve(child))
+  if (path === '' || path === '..' || path.startsWith(`..${process.platform === 'win32' ? '\\' : '/'}`) || isAbsolute(path)) {
+    throw new Error(`release staging path must be inside ${parent}: ${child}`)
+  }
+}
+
+function topLevelPackages(nodeModules) {
+  const names = []
+  for (const entry of readdirSync(nodeModules, { withFileTypes: true })) {
+    if (!entry.isDirectory() || entry.name.startsWith('.')) continue
+    if (entry.name.startsWith('@')) {
+      for (const scoped of readdirSync(join(nodeModules, entry.name), { withFileTypes: true })) {
+        if (scoped.isDirectory()) names.push(`${entry.name}/${scoped.name}`)
+      }
+    } else {
+      names.push(entry.name)
+    }
+  }
+  return names.sort()
+}
+
+/** Install only a registry package's production dependency graph into its tarball. */
+function vendorRuntimeDependencies(staging, manifest) {
+  const dependencies = manifest.dependencies ?? {}
+  if (Object.keys(dependencies).length === 0) return []
+
+  // Installing from the full registry manifest would also resolve its large
+  // devDependency graph. A minimal temporary project resolves only runtime
+  // dependencies, including their transitive dependencies.
+  const runtimeProject = join(staging, '.runtime-dependencies')
+  assertInside(staging, runtimeProject)
+  mkdirSync(runtimeProject)
+  writeFileSync(join(runtimeProject, 'package.json'), `${JSON.stringify({
+    name: 'ant-sword-release-runtime-dependencies',
+    version: '0.0.0',
+    private: true,
+    dependencies,
+  }, undefined, 2)}\n`)
+  run('npm', [
+    'install', '--prefix', runtimeProject, '--ignore-scripts', '--no-package-lock',
+    '--legacy-peer-deps', '--no-audit', '--no-fund', '--offline=false',
+  ], {
+    cwd: runtimeProject,
+    env: { ...process.env, npm_config_offline: 'false', PNPM_CONFIG_OFFLINE: 'false' },
+  })
+
+  const nodeModules = join(runtimeProject, 'node_modules')
+  if (!existsSync(nodeModules)) throw new Error('npm installed no runtime dependency tree')
+  const bundled = topLevelPackages(nodeModules)
+  for (const name of Object.keys(dependencies)) {
+    if (!bundled.includes(name)) throw new Error(`npm did not install runtime dependency ${name}`)
+  }
+  rmSync(join(nodeModules, '.bin'), { recursive: true, force: true })
+  rmSync(join(nodeModules, '.package-lock.json'), { force: true })
+  const target = join(staging, 'package', 'node_modules')
+  if (existsSync(target)) throw new Error(`registry tarball already contains node_modules: ${target}`)
+  renameSync(nodeModules, target)
+  return bundled
+}
+
+const TAR_BLOCK_SIZE = 512
+
+function tarString(bytes) {
+  const end = bytes.indexOf(0)
+  return bytes.subarray(0, end < 0 ? bytes.length : end).toString('utf8')
+}
+
+function tarSize(field) {
+  if ((field[0] & 0x80) !== 0) {
+    let value = BigInt(field[0] & 0x7f)
+    for (const byte of field.subarray(1)) value = (value << 8n) | BigInt(byte)
+    if (value > BigInt(Number.MAX_SAFE_INTEGER)) throw new Error('tar entry exceeds JavaScript safe integer range')
+    return Number(value)
+  }
+  const value = tarString(field).trim()
+  if (!/^[0-7]+$/.test(value)) throw new Error(`invalid tar entry size: ${value}`)
+  return Number.parseInt(value, 8)
+}
+
+function rewriteTarHeaderSize(header, size) {
+  const octal = size.toString(8)
+  if (octal.length > 11) throw new Error('package manifest exceeds tar size field')
+  const updated = Buffer.from(header)
+  updated.fill(0, 124, 136)
+  updated.write(octal.padStart(11, '0'), 124, 11, 'ascii')
+  updated.fill(0x20, 148, 156)
+  let checksum = 0
+  for (const byte of updated) checksum += byte
+  updated.write(`${checksum.toString(8).padStart(6, '0')}\0 `, 148, 8, 'ascii')
+  return updated
+}
+
+/** Rewrite only package/package.json; every other tar entry remains byte-for-byte intact. */
+function rewriteManifestInMemory(tarball, clearDependencies) {
+  const archive = gunzipSync(readFileSync(tarball))
+  const chunks = []
+  let offset = 0
+  let rewritten = 0
+  while (offset + TAR_BLOCK_SIZE <= archive.length) {
+    const header = archive.subarray(offset, offset + TAR_BLOCK_SIZE)
+    if (header.every((byte) => byte === 0)) break
+    const name = tarString(header.subarray(0, 100))
+    const prefix = tarString(header.subarray(345, 500))
+    const path = prefix === '' ? name : `${prefix}/${name}`
+    const size = tarSize(header.subarray(124, 136))
+    const padded = Math.ceil(size / TAR_BLOCK_SIZE) * TAR_BLOCK_SIZE
+    const end = offset + TAR_BLOCK_SIZE + padded
+    if (end > archive.length) throw new Error(`truncated tar entry: ${path}`)
+
+    if (path === 'package/package.json' || path === './package/package.json') {
+      if (++rewritten !== 1) throw new Error('tarball contains duplicate package/package.json entries')
+      const type = header[156]
+      if (type !== 0 && type !== 0x30) throw new Error('package/package.json is not a regular tar file')
+      const manifest = JSON.parse(archive.subarray(offset + TAR_BLOCK_SIZE, offset + TAR_BLOCK_SIZE + size).toString('utf8'))
+      if (clearDependencies) manifest.dependencies = {}
+      manifest.peerDependencies = {}
+      const data = Buffer.from(`${JSON.stringify(manifest, undefined, 2)}\n`)
+      chunks.push(rewriteTarHeaderSize(header, data.length), data)
+      if (data.length % TAR_BLOCK_SIZE !== 0) chunks.push(Buffer.alloc(TAR_BLOCK_SIZE - data.length % TAR_BLOCK_SIZE))
+    } else {
+      chunks.push(archive.subarray(offset, end))
+    }
+    offset = end
+  }
+  if (rewritten !== 1) throw new Error('tarball has no package/package.json entry')
+  chunks.push(archive.subarray(offset))
+  writeFileSync(tarball, gzipSync(Buffer.concat(chunks)))
+  return tarball
+}
+
+export function makeOfflineTarball(tarball, destination, options = {}) {
+  const { clearDependencies = false, vendorDependencies = false } = options
+  if (resolve(dirname(tarball)) !== resolve(destination)) {
+    throw new Error(`release tarball must be inside destination: ${tarball}`)
+  }
+  if (!vendorDependencies) return rewriteManifestInMemory(tarball, clearDependencies)
   const staging = join(destination, `.rewrite-${basename(tarball, '.tgz')}`)
+  assertInside(destination, staging)
   rmSync(staging, { recursive: true, force: true })
   mkdirSync(staging, { recursive: true })
-  // GNU/MSYS tar on Windows reads a `C:\...` path as a `host:path` remote spec
-  // and further mangles backslashes it re-emits. Passing forward-slash paths
-  // (which Windows tar accepts natively) plus `--force-local` avoids both, and
-  // `shell: false` keeps the Windows shell from re-quoting the arguments.
-  const tarPath = (p) => p.replace(/\\/g, '/')
-  run('tar', ['--force-local', '-xzf', tarPath(tarball), '-C', tarPath(staging)], { shell: false })
+  // Relative paths avoid GNU tar's drive-letter remote syntax and also work
+  // with Windows/macOS bsdtar, which does not support --force-local.
+  run('tar', ['-xzf', basename(tarball), '-C', basename(staging)], { cwd: destination, shell: false })
   const manifestPath = join(staging, 'package', 'package.json')
   const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'))
-  if (clearDependencies) manifest.dependencies = {}
+  if (vendorDependencies) manifest.bundleDependencies = vendorRuntimeDependencies(staging, manifest)
+  if (clearDependencies || vendorDependencies) manifest.dependencies = {}
   manifest.peerDependencies = {}
   writeFileSync(manifestPath, `${JSON.stringify(manifest, undefined, 2)}\n`)
   rmSync(tarball, { force: true })
-  run('tar', ['--force-local', '-czf', tarPath(tarball), '-C', tarPath(staging), 'package'], { shell: false })
+  run('tar', ['-czf', basename(tarball), '-C', basename(staging), 'package'], { cwd: destination, shell: false })
   rmSync(staging, { recursive: true, force: true })
   return tarball
 }
@@ -296,7 +432,6 @@ async function main() {
   const version = manifest.version
   const tag = values.tag ?? `v${version}`
   const destination = resolve(values.output ?? join(REPO_ROOT, '.release', `ant-sword-${tag}`))
-  const agentTeamsVersion = pinnedVersion(manifest.dependencies['@nanmicoder/dsh-agent-teams'], '@nanmicoder/dsh-agent-teams')
   const dshmarketVersion = pinnedVersion(manifest.dependencies.dshmarket, 'dshmarket')
   const isPrivate = values.private || values.create
 
@@ -305,10 +440,9 @@ async function main() {
   prepareDestination(destination)
 
   const artifacts = [
-    { path: makeOfflineTarball(packWorkspace(PACKAGE_DIR, destination), destination, true), packageName: manifest.name, version },
+    { path: makeOfflineTarball(packWorkspace(PACKAGE_DIR, destination), destination, { clearDependencies: true }), packageName: manifest.name, version },
     { path: makeOfflineTarball(packWorkspace(UI_PACKAGE_DIR, destination), destination), packageName: uiManifest.name, version: uiManifest.version },
-    { path: makeOfflineTarball(packRegistry('@nanmicoder/dsh-agent-teams', agentTeamsVersion, destination), destination), packageName: '@nanmicoder/dsh-agent-teams', version: agentTeamsVersion },
-    { path: makeOfflineTarball(packRegistry('dshmarket', dshmarketVersion, destination), destination), packageName: 'dshmarket', version: dshmarketVersion },
+    { path: makeOfflineTarball(packRegistry('dshmarket', dshmarketVersion, destination), destination, { vendorDependencies: true }), packageName: 'dshmarket', version: dshmarketVersion },
   ]
   const manifestPath = writeReleaseManifest(destination, artifacts)
   const assets = [...artifacts.map((artifact) => artifact.path), manifestPath]
@@ -346,4 +480,6 @@ async function main() {
   console.log(`  curl -fsSL "https://raw.githubusercontent.com/${values.repo}/main/install-ant-sword.sh" | bash`)
 }
 
-main().catch((error) => { console.error(`release: ${error.message}`); process.exit(1) })
+if (process.argv[1] !== undefined && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  main().catch((error) => { console.error(`release: ${error.message}`); process.exit(1) })
+}

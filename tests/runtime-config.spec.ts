@@ -1,5 +1,4 @@
 import { describe, expect, it, vi } from 'vitest'
-import type { SettingsScope } from '@deepseek-ai/dsh-settings'
 import {
   AntSwordRuntimeConfigSchema,
   RuntimeController,
@@ -17,32 +16,9 @@ function config(patch: Partial<AntSwordRuntimeConfig> = {}): AntSwordRuntimeConf
     disabledSkills: [],
     rules: [],
     thinkingPolicies: [],
+    thinkingFallbacks: [],
     ...patch,
   })
-}
-
-function settingsScope(initial: AntSwordRuntimeConfig): {
-  scope: SettingsScope<AntSwordRuntimeConfig>
-  publish(next: AntSwordRuntimeConfig): Promise<void>
-} {
-  let current = initial
-  let watcher: ((next: AntSwordRuntimeConfig, previous: AntSwordRuntimeConfig) => void | Promise<void>) | undefined
-  return {
-    scope: {
-      get: () => current,
-      watch: (callback) => {
-        watcher = callback
-        return () => { watcher = undefined }
-      },
-      update: async () => undefined,
-      replace: async () => undefined,
-    },
-    publish: async (next) => {
-      const previous = current
-      current = next
-      await watcher?.(next, previous)
-    },
-  }
 }
 
 function reconciler(name: string, change: RuntimePreparedChange): RuntimeReconciler {
@@ -95,16 +71,15 @@ describe('ant-sword runtime config', () => {
     }))).toThrow('providerId')
   })
 
-  it('serializes committed settings generations', async () => {
-    const state = settingsScope(config())
+  it('serializes committed Loader config generations', async () => {
     const commits: string[] = []
-    const controller = new RuntimeController(state.scope, [reconciler('mcp', {
+    const controller = new RuntimeController(config(), [reconciler('mcp', {
       commit: () => { commits.push('commit') },
       rollback: () => { commits.push('rollback') },
     })])
     const stop = controller.start()
     await controller.whenIdle()
-    await state.publish(config({ disabledSkills: ['reverse-engineering'] }))
+    await controller.update(config({ disabledSkills: ['reverse-engineering'] }))
     await controller.whenIdle()
 
     expect(controller.snapshot().generation).toBe(2)
@@ -117,9 +92,8 @@ describe('ant-sword runtime config', () => {
 
   it('rolls back committed reconcilers and retains the last good config', async () => {
     const initial = config()
-    const state = settingsScope(initial)
     const firstRollback = vi.fn()
-    const controller = new RuntimeController(state.scope, [
+    const controller = new RuntimeController(initial, [
       reconciler('mcp', { commit: vi.fn(), rollback: firstRollback }),
       reconciler('rules', { commit: () => { throw new Error('rules unavailable') }, rollback: vi.fn() }),
     ])

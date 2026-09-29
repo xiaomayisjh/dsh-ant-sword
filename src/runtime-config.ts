@@ -8,11 +8,11 @@
  */
 
 import z from '@deepseek-ai/schemastery'
-import type { SettingsScope } from '@deepseek-ai/dsh-settings'
 import { DEFAULT_MCP_SERVERS, McpServerSchema } from './mcp-servers.ts'
 import type { McpServerConfig } from './mcp-servers.ts'
 
-export const ANT_SWORD_SETTINGS_NAMESPACE = 'ant-sword-runtime'
+/** DSH 0.2 settings addresses the live Loader row id, not a private namespace. */
+export const ANT_SWORD_SETTINGS_ENTRY_ID = 'ant-sword-harness'
 export const SERVER_NAME_PATTERN = /^[A-Za-z0-9_-]{1,32}$/
 export const SKILL_NAME_PATTERN = /^[a-z0-9][a-z0-9_-]{0,63}$/
 export const RULE_ID_PATTERN = /^[A-Za-z0-9_-]{1,64}$/
@@ -282,7 +282,7 @@ function errorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error)
 }
 
-/** Serializes settings commits and publishes desired and applied generations independently. */
+/** Serializes Loader config commits and publishes desired and applied generations independently. */
 export class RuntimeController {
   private desired: AntSwordRuntimeConfig
   private applied: AntSwordRuntimeConfig
@@ -295,23 +295,27 @@ export class RuntimeController {
   private readonly listeners = new Set<SnapshotListener>()
 
   constructor(
-    private readonly scope: SettingsScope<AntSwordRuntimeConfig>,
+    initialConfig: AntSwordRuntimeConfig,
     private readonly reconcilers: readonly RuntimeReconciler[],
   ) {
-    this.desired = cloneConfig(scope.get())
+    this.desired = cloneConfig(initialConfig)
     this.applied = cloneConfig(this.desired)
     validateRuntimeConfig(this.desired)
   }
 
   start(): () => Promise<void> {
-    const unwatch = this.scope.watch(next => this.enqueue(next))
     void this.enqueue(this.desired)
     return async () => {
       this.stopped = true
-      unwatch()
       await this.tail
       this.listeners.clear()
     }
+  }
+
+  /** Apply a replacement received from this plugin's Loader config. */
+  update(next: AntSwordRuntimeConfig): Promise<void> {
+    if (this.stopped) return Promise.resolve()
+    return this.enqueue(next)
   }
 
   subscribe(listener: SnapshotListener): () => void {
@@ -365,9 +369,12 @@ export class RuntimeController {
           committed.push(entry)
         }
       } catch (error) {
-        await Promise.allSettled(committed.reverse().map(async (entry) => {
-          await entry.change.rollback()
-        }))
+        // Reconcilers may depend on earlier commits. Unwind in reverse order,
+        // awaiting each rollback before touching the next registration layer.
+        for (const entry of committed.reverse()) {
+          try { await entry.change.rollback() }
+          catch { /* Preserve the original failed commit as the reported cause. */ }
+        }
         throw error
       }
       this.applied = cloneConfig(next)

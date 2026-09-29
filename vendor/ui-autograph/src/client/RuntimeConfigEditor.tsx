@@ -1,12 +1,11 @@
 /* eslint-disable @stylistic/max-len -- compact controlled form markup stays readable as field-level JSX. */
 import { useEffect, useState, useSyncExternalStore } from 'react'
-import type { SettingsScope } from '@deepseek-ai/dsh-client-runtime/client'
 import { McpConfigEditor } from './McpConfigEditor.tsx'
 import { RuleEditor } from './RuleEditor.tsx'
 import { SkillEditor } from './SkillEditor.tsx'
 import { ThinkingPolicyEditor } from './ThinkingPolicyEditor.tsx'
 import { ThinkingFallbackEditor } from './ThinkingFallbackEditor.tsx'
-import type { RuntimeApplySnapshot } from './runtime-config-scope.ts'
+import type { RuntimeApplySnapshot, RuntimeConfigForm } from './runtime-config-scope.ts'
 import type { RuntimeConfigValue } from './runtime-config-types.ts'
 import css from './RuntimeStatus.module.css'
 
@@ -21,7 +20,7 @@ interface SkillEntry {
   userOwned: boolean
 }
 
-export interface RuntimeConfigEditorScope extends SettingsScope<RuntimeConfigValue> {
+export interface RuntimeConfigEditorScope extends RuntimeConfigForm {
   getRuntimeSnapshot(): RuntimeApplySnapshot
   subscribeRuntime(listener: () => void): () => void
 }
@@ -45,16 +44,23 @@ export function RuntimeConfigEditor({ configScope }: Props) {
   const [draft, setDraft] = useState<RuntimeConfigValue>(EMPTY)
   const [tab, setTab] = useState<'mcp' | 'thinking' | 'fallback' | 'skills' | 'rules'>('mcp')
   const [saving, setSaving] = useState(false)
+  const [saveError, setSaveError] = useState<string>()
   const [skillList, setSkillList] = useState<readonly SkillEntry[]>([])
 
   useEffect(() => {
     if (snapshot.status === 'ready' && snapshot.value !== undefined) setDraft(structuredClone(snapshot.value))
   }, [snapshot.revision, snapshot.status, snapshot.value])
 
-  const save = async (field: keyof RuntimeConfigValue): Promise<void> => {
+  const save = async (field: keyof RuntimeConfigValue): Promise<boolean> => {
     setSaving(true)
+    setSaveError(undefined)
     try {
-      await configScope.set(field, draft[field])
+      const saved = await configScope.set(field, draft[field])
+      if (!saved) setSaveError('配置未保存，请检查 Host 连接和写入权限。')
+      return saved
+    } catch (error) {
+      setSaveError(error instanceof Error ? error.message : String(error))
+      return false
     } finally {
       setSaving(false)
     }
@@ -75,6 +81,7 @@ export function RuntimeConfigEditor({ configScope }: Props) {
 
   return (
     <section className={css.configEditor}>
+      {saveError !== undefined && <p role="alert" className={css.installError}>{saveError}</p>}
       <div className={runtime.lastFailure !== undefined ? css.installError : css.summary} role="status">
         {runtime.applying
           ? `正在热应用配置（目标代 ${runtime.desiredGeneration}）`
@@ -113,7 +120,7 @@ export function RuntimeConfigEditor({ configScope }: Props) {
           policies={draft.thinkingPolicies}
           saving={saving}
           onChange={thinkingPolicies => setDraft(current => ({ ...current, thinkingPolicies }))}
-          onSave={() => save('thinkingPolicies')}
+          onSave={async () => { await save('thinkingPolicies') }}
         />
       )}
 
@@ -122,7 +129,7 @@ export function RuntimeConfigEditor({ configScope }: Props) {
           fallbacks={draft.thinkingFallbacks}
           saving={saving}
           onChange={thinkingFallbacks => setDraft(current => ({ ...current, thinkingFallbacks }))}
-          onSave={() => save('thinkingFallbacks')}
+          onSave={async () => { await save('thinkingFallbacks') }}
         />
       )}
 
@@ -139,7 +146,7 @@ export function RuntimeConfigEditor({ configScope }: Props) {
           rules={draft.rules}
           saving={saving}
           onChange={rules => setDraft(current => ({ ...current, rules: [...rules] }))}
-          onSave={() => save('rules')}
+          onSave={async () => { await save('rules') }}
         />
       )}
     </section>

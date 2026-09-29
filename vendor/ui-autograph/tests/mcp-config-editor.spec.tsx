@@ -11,7 +11,7 @@ const SAVED: McpConfig[] = [{
 
 function Harness() {
   const [servers, setServers] = useState<McpConfig[]>(structuredClone(SAVED))
-  return <McpConfigEditor servers={servers} savedServers={SAVED} saving={false} onChange={setServers} onSave={vi.fn()} />
+  return <McpConfigEditor servers={servers} savedServers={SAVED} saving={false} onChange={setServers} onSave={vi.fn(async () => true)} />
 }
 
 afterEach(cleanup)
@@ -51,6 +51,7 @@ describe('MCP configuration editor', () => {
 
   it('shows transport-specific fields and keyboard list navigation', () => {
     render(<Harness />)
+    expect(screen.queryByRole('option', { name: /SSE/ })).toBeNull()
     fireEvent.change(screen.getByLabelText('传输'), { target: { value: 'streamable-http' } })
     expect(screen.getByLabelText('URL')).toBeTruthy()
     expect(screen.queryByLabelText('命令')).toBeNull()

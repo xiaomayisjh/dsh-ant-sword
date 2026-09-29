@@ -4,7 +4,7 @@
 export interface McpConfig {
   enabled?: boolean
   serverName: string
-  transport: 'stdio' | 'sse' | 'streamable-http'
+  transport: 'stdio' | 'streamable-http'
   command?: string
   args?: string[]
   cwd?: string
@@ -47,9 +47,8 @@ function normalizeImportedMcp(fallbackName: string, value: unknown): McpConfig {
       : fallbackName
   if (serverName.trim() === '') fail('每个 MCP 都需要非空名称。')
   const requested = input.transport ?? input.type
-  const transport: McpConfig['transport'] = requested === 'sse'
-    ? 'sse'
-    : requested === 'streamable-http' || requested === 'http'
+  if (requested === 'sse') fail(`MCP“${serverName}”使用旧 SSE 传输；DSH 0.2 仅支持 streamable-http，请先升级服务器端点。`)
+  const transport: McpConfig['transport'] = requested === 'streamable-http' || requested === 'http'
       ? 'streamable-http'
       : requested === 'stdio' || typeof input.command === 'string'
         ? 'stdio'

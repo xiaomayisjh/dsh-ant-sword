@@ -1,12 +1,8 @@
 /**
- * OODA loop controller (`applyAutoLoop`): drives the autonomous cycle —
- * Observe the blackboard, Orient to current state, Decide next Intents, Act
- * on the top one — and exposes the operator's pause / resume / inject-hint
- * surface. Concrete execution is delegated to the preset's own tools (shell,
- * subagent, workflow, the eight MCP servers); this controller owns only the
- * loop, the stall detector, and the budget guardrails (CHYing ABANDON-style).
- * The model reaches the board through the registered `board_*` tools; the UI
- * reaches the controller through `ctx.autoLoop`.
+ * The autonomous preset's Fact/Intent/Hint board and operator controls.
+ * DSH Goal owns continuation and round limits; this plugin only keeps the
+ * board in sync with admitted goal rounds and enforces its wall-clock budget.
+ * The model reaches the board through `board_*`; the UI uses `ctx.autoLoop`.
  *
  * @module @deepseek-ai/dsh-ant-sword-harness/auto/loop
  */
@@ -14,8 +10,14 @@ import { Service } from '@deepseek-ai/cordis';
 import type { Context } from '@deepseek-ai/cordis';
 import z from '@deepseek-ai/schemastery';
 import type { Agent } from '@deepseek-ai/dsh-agent';
-import type { Session } from '@deepseek-ai/dsh-session';
 import type { AutoLoopConfig } from './types.ts';
+declare module '@deepseek-ai/dsh-llm' {
+    interface MessageSourceMap {
+        'auto-loop': {
+            kind: 'auto-loop';
+        };
+    }
+}
 /** Schemastery validation for {@link AutoLoopConfig}. */
 export declare const AutoLoopConfigSchema: z<AutoLoopConfig>;
 declare module '@deepseek-ai/cordis' {
@@ -24,25 +26,22 @@ declare module '@deepseek-ai/cordis' {
     }
 }
 /**
- * Operator-facing control surface for the autonomous loop. The UI control bar
- * drives it through the `/auto` command (pause/resume/hint/status); these
- * methods are deliberately thin over the agent's own cancel/steer primitives
- * plus the blackboard's pause flag.
+ * Operator-facing control surface. GoalService owns pause and resume; the
+ * board's flag mirrors that durable lifecycle for the graph view.
  */
 export declare class AutoLoopService extends Service {
     static inject: string[];
     constructor(ctx: Context);
-    /** Pause the loop for a session: halts scheduling after the current step. */
-    pause(session: Session): void;
-    /** Resume a paused loop by nudging the agent with a continue steer. */
-    resume(agent: Agent): void;
-    /** Inject an operator Hint mid-run: recorded on the board and steered in. */
+    /** Pause the current DSH Goal, then update the board view. */
+    pause(agent: Agent): Promise<void>;
+    /** Rearm the current DSH Goal; its round driver schedules the next turn. */
+    resume(agent: Agent): Promise<void>;
+    /** Persist a Hint and place it in the next admitted step without waking work. */
     injectHint(agent: Agent, text: string): Promise<void>;
 }
 /**
- * Mount the autonomous loop: registers the model-facing `board_*` tools, the
- * `ctx.autoLoop` control surface, and the idle-transition driver that advances
- * the OODA cycle. Everything disposes with ctx.
+ * Mount model-facing board tools, operator controls, and one Goal budget guard.
+ * DSH goal-round-driver is the sole continuation scheduler.
  * @param ctx - plugin context carrying tools, blackboard, and the agent events.
  * @param config - loop configuration; defaults applied per key.
  */

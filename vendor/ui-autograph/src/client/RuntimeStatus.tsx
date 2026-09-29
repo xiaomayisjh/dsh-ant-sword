@@ -1,19 +1,25 @@
 import { useEffect, useState, useSyncExternalStore } from 'react'
-import type { SnapshotStore } from '@deepseek-ai/dsh-client-runtime/client'
+import type { SnapshotStore } from '@deepseek-ai/dsh-client-store'
 import { RuntimeConfigEditor } from './RuntimeConfigEditor.tsx'
 import type { RuntimeConfigEditorScope } from './RuntimeConfigEditor.tsx'
 import css from './RuntimeStatus.module.css'
 
-export type RuntimeAvailability = 'available' | 'missing' | 'configured' | 'disabled'
+export type RuntimeAvailability = 'available' | 'degraded' | 'missing' | 'configured' | 'disabled' | 'pending' | 'unavailable'
+export type McpMountState = 'disabled' | 'missing-command' | 'pending' | 'mounting' | 'mounted' | 'failed'
 
 export interface McpRuntimeStatus {
   readonly serverName: string
   readonly transport: 'stdio' | 'sse' | 'streamable-http'
   readonly availability: RuntimeAvailability
+  readonly mount?: McpMountState
+  readonly toolNames?: readonly string[]
+  readonly toolCount?: number
+  readonly lastCall?: { readonly at: number; readonly ok: boolean; readonly error?: string }
+  readonly error?: string
   readonly target: string
   readonly installCommand?: string
   readonly installHint: string
-  readonly mounted: boolean
+  readonly mounted?: boolean
   readonly lastProbe?: {
     readonly checkedAt: number
     readonly toolCount: number
@@ -23,6 +29,11 @@ export interface McpRuntimeStatus {
 
 export interface RedTeamRuntimeStatus {
   readonly checkedAt: number
+  readonly runtimeConfig?: {
+    readonly generation: number
+    readonly applying: boolean
+    readonly lastFailure?: { readonly reconciler: string; readonly message: string }
+  }
   readonly skills: {
     readonly available: number
     readonly provider: string
@@ -43,10 +54,14 @@ const STATE_LABEL: Record<RuntimeAvailability, string> = {
   configured: '已配置',
   missing: '未安装',
   disabled: '已停用',
+  degraded: '需复查',
+  pending: '连接中',
+  unavailable: '不可用',
 }
 
 export const INITIAL_RUNTIME_STATUS: RedTeamRuntimeStatus = {
   checkedAt: 0,
+  runtimeConfig: { generation: 0, applying: false },
   skills: { available: 0, provider: 'ant-sword-skills', state: 'ready' },
   mcp: [
     ['kali', 'stdio', 'kali-server-mcp', 'pip install kali-server-mcp', '安装 kali-server-mcp，并确保命令已加入 PATH。'],
@@ -60,7 +75,10 @@ export const INITIAL_RUNTIME_STATUS: RedTeamRuntimeStatus = {
   ].map(([serverName, transport, target, installCommand, installHint]) => ({
     serverName: serverName as string,
     transport: transport as 'stdio' | 'streamable-http',
-    availability: 'missing' as const,
+    availability: (transport === 'stdio' ? 'missing' : 'pending') as RuntimeAvailability,
+    mount: (transport === 'stdio' ? 'missing-command' : 'pending') as McpMountState,
+    toolNames: [],
+    toolCount: 0,
     mounted: false,
     target: target as string,
     ...(installCommand === undefined ? {} : { installCommand }),
@@ -119,8 +137,9 @@ export function RuntimeStatus({ runtimeStatus, configScope, compact = false }: R
   const [installView, setInstallView] = useState<InstallView>(EMPTY_INSTALL_VIEW)
   const [sourcePolicy, setSourcePolicy] = useState<SourcePolicy>('auto')
   const [installError, setInstallError] = useState<string>()
-  const available = snapshot.mcp.filter(item => item.availability === 'available' || item.availability === 'configured').length
+  const available = snapshot.mcp.filter(item => item.availability === 'available').length
   const missing = snapshot.mcp.filter(item => item.availability === 'missing').length
+  const configFailure = snapshot.runtimeConfig?.lastFailure
 
   useEffect(() => {
     if (compact) return
@@ -171,6 +190,7 @@ export function RuntimeStatus({ runtimeStatus, configScope, compact = false }: R
         <span className={css.metric}>Skills <strong>{snapshot.skills.available}</strong></span>
         <span className={css.metric}>MCP <strong>{available}/{snapshot.mcp.length}</strong></span>
         {missing > 0 && <span className={css.warning}>{missing} 项待安装</span>}
+        {configFailure !== undefined && <span className={css.warning} title={`${configFailure.reconciler}: ${configFailure.message}`}>配置应用失败</span>}
       </div>
     )
   }
@@ -187,6 +207,11 @@ export function RuntimeStatus({ runtimeStatus, configScope, compact = false }: R
           <span>MCP {available}/{snapshot.mcp.length}</span>
         </div>
       </header>
+      {configFailure !== undefined && (
+        <p role="alert" className={css.installError}>
+          配置应用失败（{configFailure.reconciler}）：{configFailure.message}
+        </p>
+      )}
       <div className={css.installToolbar}>
         <label>
           下载源
@@ -208,10 +233,17 @@ export function RuntimeStatus({ runtimeStatus, configScope, compact = false }: R
           <article key={server.serverName} className={css.card} data-state={server.availability}>
             <div className={css.cardTitle}>
               <strong>{server.serverName}</strong>
-              <span>{STATE_LABEL[server.availability]} · {server.mounted ? '已挂载' : '未挂载'}</span>
+              <span>{STATE_LABEL[server.availability]} · {server.mount ?? (server.mounted ? '已挂载' : '未挂载')}</span>
             </div>
             <code>{server.target}</code>
+            {server.toolCount !== undefined && <small>{server.toolCount} 个可见工具</small>}
+            {server.error !== undefined && <small title={server.error}>{server.error}</small>}
+            {server.lastCall?.ok === false && <small title={server.lastCall.error}>最近一次工具调用失败</small>}
             <p>{server.installHint}</p>
+            {server.toolNames !== undefined && server.toolNames.length > 0 && <details>
+              <summary>工具列表</summary>
+              <ul>{server.toolNames.map(name => <li key={name}><code>{name}</code></li>)}</ul>
+            </details>}
             {server.lastProbe !== undefined && <details>
               <summary>最近测活：{server.lastProbe.toolCount} 个工具</summary>
               <ul>

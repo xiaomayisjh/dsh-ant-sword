@@ -4,23 +4,17 @@ import { McpReconciler } from '../src/mcp-reconciler.ts'
 import { AntSwordRuntimeConfigSchema } from '../src/runtime-config.ts'
 import type { AntSwordRuntimeConfig } from '../src/runtime-config.ts'
 
-const probeMcpServer = vi.hoisted(() => vi.fn())
-vi.mock('@deepseek-ai/dsh-mcp-client', async importOriginal => ({
-  ...(await importOriginal<typeof import('@deepseek-ai/dsh-mcp-client')>()),
-  probeMcpServer,
-}))
-
 function config(command = 'one', serverName = 'server'): AntSwordRuntimeConfig {
   return AntSwordRuntimeConfigSchema({
     mcpServers: [{ serverName, transport: 'stdio', command }],
-    disabledSkills: [], rules: [], thinkingPolicies: [],
+    disabledSkills: [], rules: [], thinkingPolicies: [], thinkingFallbacks: [],
   })
 }
 
 function configWithServers(servers: Array<{ serverName: string; command: string }>): AntSwordRuntimeConfig {
   return AntSwordRuntimeConfigSchema({
     mcpServers: servers.map(server => ({ ...server, transport: 'stdio' as const })),
-    disabledSkills: [], rules: [], thinkingPolicies: [],
+    disabledSkills: [], rules: [], thinkingPolicies: [], thinkingFallbacks: [],
   })
 }
 
@@ -29,10 +23,12 @@ function fakeContext(): {
   mounts: Array<{ config: { serverName: string; command: string; failOnStartupError: boolean }; dispose: ReturnType<typeof vi.fn> }>
   failNextMount: (serverName?: string) => void
   warnings: ReturnType<typeof vi.fn>
+  observeToolCall: (name: string, result: { isError: false } | { isError: true; error: { message: string } }) => Promise<void>
 } {
   const mounts: Array<{ config: { serverName: string; command: string; failOnStartupError: boolean }; dispose: ReturnType<typeof vi.fn> }> = []
   const failures = new Set<string>()
   const warnings = vi.fn()
+  let postExecute: ((exec: { name: string }, result: { isError: false } | { isError: true; error: { message: string } }, next: () => Promise<{ kind: 'accept' }>) => Promise<unknown>) | undefined
   const ctx = {
     plugin: (_plugin: unknown, value: unknown) => {
       const config = value as { serverName: string; command: string; failOnStartupError: boolean }
@@ -49,8 +45,19 @@ function fakeContext(): {
       }
     },
     logger: { warn: warnings },
+    on: vi.fn((_event: string, listener: typeof postExecute) => {
+      postExecute = listener
+      return () => { postExecute = undefined }
+    }),
+    tools: { schemas: () => [{ name: 'mcp__server__scan', description: 'Scan target' }] },
   } as unknown as Context
-  return { ctx, mounts, failNextMount: (serverName = 'server') => { failures.add(serverName) }, warnings }
+  return {
+    ctx, mounts, failNextMount: (serverName = 'server') => { failures.add(serverName) }, warnings,
+    observeToolCall: async (name, result) => {
+      if (postExecute === undefined) throw new Error('post-execute observer was not registered')
+      await postExecute({ name }, result, async () => ({ kind: 'accept' }))
+    },
+  }
 }
 
 describe('MCP reconciler', () => {
@@ -58,11 +65,13 @@ describe('MCP reconciler', () => {
     const { ctx, mounts } = fakeContext()
     const reconciler = new McpReconciler(ctx, undefined, () => true)
     await reconciler.prepare(config('applied'), config()).commit()
-    expect(mounts[0]?.config.failOnStartupError).toBe(false)
-    probeMcpServer.mockResolvedValueOnce({ toolCount: 0, tools: [] })
+    expect(mounts[0]?.config.failOnStartupError).toBe(true)
 
-    await reconciler.probe('server')
-    expect(probeMcpServer).toHaveBeenCalledWith(expect.objectContaining({ command: 'applied' }))
+    expect(mounts[0]?.config.command).toBe('applied')
+    await expect(reconciler.probe('server')).resolves.toEqual({
+      toolCount: 1,
+      tools: [{ name: 'scan', description: 'Scan target' }],
+    })
     await expect(reconciler.probe('missing')).rejects.toThrow('unknown MCP server')
   })
 
@@ -75,6 +84,18 @@ describe('MCP reconciler', () => {
 
     expect(mounts.map(item => item.config.command)).toEqual(['new', 'new'])
     expect(reconciler.isMounted('server')).toBe(true)
+  })
+
+  it('records a failed tool call without disrupting the MCP mount', async () => {
+    const { ctx, observeToolCall } = fakeContext()
+    const reconciler = new McpReconciler(ctx, undefined, () => true)
+    const current = config()
+    await reconciler.prepare(current, current).commit()
+
+    await observeToolCall('mcp__server__scan', { isError: true, error: { message: 'tool failed' } })
+
+    expect(reconciler.isMounted('server')).toBe(true)
+    expect(reconciler.statusFor(current.mcpServers)[0]?.lastCall).toMatchObject({ ok: false, error: 'tool failed' })
   })
 
   it('isolates one failed server without rolling back healthy servers', async () => {

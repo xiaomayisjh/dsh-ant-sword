@@ -10,6 +10,14 @@
   color: var(--dsw-alias-label-primary);
 }
 
+.actionError {
+  margin: 0;
+  padding: 6px 16px;
+  color: var(--dsw-alias-state-warn-label);
+  background: var(--dsw-alias-state-warn-tertiary);
+  font: var(--dsw-font-xs-13);
+}
+
 .header {
   display: flex;
   align-items: center;

@@ -1,4 +1,4 @@
-/* node_modules/.pnpm/@xyflow+react@12.11.3_@type_2f4206708d2ff87c461454428d0e71ff/node_modules/@xyflow/react/dist/style.css */
+/* node_modules/.pnpm/@xyflow+react@12.11.3_@type_2e17f17186cbc59320c77330926b2681/node_modules/@xyflow/react/dist/style.css */
 .react-flow {
   direction: ltr;
   --xy-edge-stroke-default: #b1b1b7;
@@ -1017,6 +1017,13 @@ svg.react-flow__connectionline {
   overflow: hidden;
   background: var(--dsw-alias-bg-layer-1);
   color: var(--dsw-alias-label-primary);
+}
+.AutoGraphView_actionError {
+  margin: 0;
+  padding: 6px 16px;
+  color: var(--dsw-alias-state-warn-label);
+  background: var(--dsw-alias-state-warn-tertiary);
+  font: var(--dsw-font-xs-13);
 }
 .AutoGraphView_header {
   display: flex;

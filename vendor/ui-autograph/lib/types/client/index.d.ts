@@ -6,6 +6,7 @@
  * the session-standard `useProjection`; it mounts like any view and renders
  * the empty state when the session has no blackboard.
  */
+import '@xyflow/react/dist/style.css';
 import type { Context } from '@deepseek-ai/cordis';
 import { type AutographKey } from './locales.ts';
 declare module '@deepseek-ai/dsh-client-ui-slots' {

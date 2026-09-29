@@ -25,10 +25,9 @@
  */
 
 import type { Context } from '@deepseek-ai/cordis'
-import { settingsNamespace } from '@deepseek-ai/dsh-settings'
 
-/** The pi-ai plugin's settings namespace. */
-export const PI_AI_SETTINGS_NAMESPACE = 'llm-pi-ai'
+/** The pi-ai plugin's Loader entry id in the DSH web profile. */
+export const PI_AI_SETTINGS_ENTRY_ID = 'llm-pi-ai'
 
 /** A `reasoningEfforts` map: harness thinking level → wire spelling, or null. */
 export type ReasoningEffortsMap = Record<string, string | null>
@@ -149,13 +148,12 @@ export function fillReasoningEfforts(
 /**
  * Fill format-correct `reasoningEfforts` into every unconfigured pi-ai model
  * once, so custom channels expose (and correctly dispatch) the native
- * thinking-intensity selector. Reads and writes the `llm-pi-ai` namespace
+ * thinking-intensity selector. Reads and writes the `llm-pi-ai` Loader row
  * through the shared settings service; an empty catalog or an already-complete
  * config is a silent no-op.
  *
- * pi-ai registers its namespace inside a deferred `ctx.inject(['settings'])`
- * callback, so at the moment this bundle's `apply()` runs the namespace may not
- * exist yet (`get` returns `undefined`). `attempts`/`delayMs` poll briefly for
+ * pi-ai may activate after this bundle, so at the moment `apply()` runs its
+ * settings form may not exist yet. `attempts`/`delayMs` poll briefly for
  * it to appear before giving up, which turns the load-order race into a bounded
  * wait rather than a silent miss.
  * @param ctx - plugin context carrying the settings service.
@@ -164,14 +162,13 @@ export function fillReasoningEfforts(
  * @returns the number of models updated (0 when nothing changed).
  */
 export async function reconcilePiAiReasoning(ctx: Context, attempts = 20, delayMs = 250): Promise<number> {
-  const ns = settingsNamespace(PI_AI_SETTINGS_NAMESPACE)
   for (let attempt = 0; attempt < Math.max(1, attempts); attempt += 1) {
-    const current = ctx.settings.get(ns) as PiAiConfig | undefined
+    const current = ctx.settings.describe().find(entry => entry.ns === PI_AI_SETTINGS_ENTRY_ID)?.value as PiAiConfig | undefined
     const providers = current?.providers
     if (providers !== undefined && Object.keys(providers).length > 0) {
       const result = fillReasoningEfforts(providers)
       if (result === undefined) return 0
-      await ctx.settings.update(ns, { providers: result.providers })
+      await ctx.settings.update(PI_AI_SETTINGS_ENTRY_ID, { providers: result.providers })
       return result.changed
     }
     if (attempt < attempts - 1) await new Promise(resolve => setTimeout(resolve, delayMs))

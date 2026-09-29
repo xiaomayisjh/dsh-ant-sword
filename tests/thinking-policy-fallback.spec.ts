@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import type { Context } from '@deepseek-ai/cordis'
 import type { LlmResolvedModelInfo } from '@deepseek-ai/dsh-llm'
-import { ThinkingPolicyRuntime, findThinkingFallback, THINKING_LEVELS } from '../src/thinking-policy.ts'
+import { ThinkingPolicyRuntime, findThinkingFallback } from '../src/thinking-policy.ts'
 import type { ThinkingPolicySource } from '../src/thinking-policy.ts'
 import { AntSwordRuntimeConfigSchema } from '../src/runtime-config.ts'
 import type { AntSwordRuntimeConfig, ThinkingFallbackPolicy } from '../src/runtime-config.ts'

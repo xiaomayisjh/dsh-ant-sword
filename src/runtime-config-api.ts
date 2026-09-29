@@ -1,24 +1,21 @@
-/** Loopback configuration bridge for Ant Sword's private settings namespace. */
+/** Loopback configuration bridge for the Ant Sword Loader row. */
 
 import { isDeepStrictEqual } from 'node:util'
 import type { IncomingMessage, ServerResponse } from 'node:http'
 import type { Context } from '@deepseek-ai/cordis'
-import {
-  SettingsConflictError, settingsNamespace,
-} from '@deepseek-ai/dsh-settings'
+import { SettingsConflictError } from '@deepseek-ai/dsh-settings'
 import type {
-  SettingsDescriptor, SettingsPathOp, SettingsProvider,
+  SettingsDescriptor, SettingsPathOp, SettingsForms,
 } from '@deepseek-ai/dsh-settings'
-import {
-  ANT_SWORD_SETTINGS_NAMESPACE,
-} from './runtime-config.ts'
+import { ANT_SWORD_SETTINGS_ENTRY_ID } from './runtime-config.ts'
 import type {
   AntSwordRuntimeConfig, RuntimeApplyFailure, RuntimeController,
 } from './runtime-config.ts'
 
 const MAX_BODY_BYTES = 512 * 1024
-const MUTABLE_FIELDS = new Set<keyof AntSwordRuntimeConfig>(['mcpServers', 'disabledSkills', 'rules', 'thinkingPolicies'])
-const NAMESPACE = settingsNamespace(ANT_SWORD_SETTINGS_NAMESPACE)
+const MUTABLE_FIELDS = new Set<keyof AntSwordRuntimeConfig>([
+  'mcpServers', 'disabledSkills', 'rules', 'thinkingPolicies', 'thinkingFallbacks', 'defaultThinkingFallback',
+])
 
 export interface RuntimeConfigApiView {
   value: AntSwordRuntimeConfig
@@ -39,7 +36,7 @@ export type RuntimeConfigApiMutation =
   | { op: 'set'; field: keyof AntSwordRuntimeConfig; value: unknown; expectedRevision?: number }
   | { op: 'unset'; field: keyof AntSwordRuntimeConfig; expectedRevision?: number }
 
-type RuntimeSettings = Pick<SettingsProvider, 'describe' | 'mutate' | 'writable'>
+type RuntimeSettings = Pick<SettingsForms, 'describe' | 'mutate' | 'writable'>
 type RuntimeControllerView = Pick<RuntimeController, 'snapshot' | 'whenIdle'>
 
 interface RuntimeApiError {
@@ -91,7 +88,7 @@ export function parseRuntimeConfigMutation(value: unknown): RuntimeConfigApiMuta
   if (!isRecord(value)) throw new TypeError('runtime config request must be a JSON object')
   if (value.op !== 'set' && value.op !== 'unset') throw new TypeError('op must be "set" or "unset"')
   if (typeof value.field !== 'string' || !MUTABLE_FIELDS.has(value.field as keyof AntSwordRuntimeConfig)) {
-    throw new TypeError('field must be one of mcpServers, disabledSkills, rules, or thinkingPolicies')
+    throw new TypeError('field must be a runtime config field')
   }
   const allowed = value.op === 'set'
     ? new Set(['op', 'field', 'value', 'expectedRevision'])
@@ -105,9 +102,18 @@ export function parseRuntimeConfigMutation(value: unknown): RuntimeConfigApiMuta
 }
 
 function descriptor(settings: RuntimeSettings): SettingsDescriptor {
-  const found = settings.describe({ redactSecrets: true }).find(candidate => candidate.ns === NAMESPACE)
-  if (found === undefined) throw new Error(`settings namespace "${ANT_SWORD_SETTINGS_NAMESPACE}" is not registered`)
+  const found = settings.describe({ redactSecrets: true }).find(candidate => candidate.ns === ANT_SWORD_SETTINGS_ENTRY_ID)
+  if (found === undefined) throw new Error(`settings entry "${ANT_SWORD_SETTINGS_ENTRY_ID}" is not registered`)
   return found
+}
+
+function runtimeFields(value: unknown): Partial<AntSwordRuntimeConfig> {
+  if (!isRecord(value)) return {}
+  const fields: Partial<AntSwordRuntimeConfig> = {}
+  for (const field of MUTABLE_FIELDS) {
+    if (Object.hasOwn(value, field)) Object.assign(fields, { [field]: value[field] })
+  }
+  return fields
 }
 
 export function runtimeConfigApiView(
@@ -117,11 +123,11 @@ export function runtimeConfigApiView(
   const settingsView = descriptor(settings)
   const runtime = controller.snapshot()
   return {
-    value: settingsView.value as AntSwordRuntimeConfig,
+    value: { ...runtime.desired, ...runtimeFields(settingsView.value) },
     desired: runtime.desired,
     applied: runtime.applied,
-    ...(settingsView.base === undefined ? {} : { base: settingsView.base as Partial<AntSwordRuntimeConfig> }),
-    ...(settingsView.user === undefined ? {} : { user: settingsView.user as Partial<AntSwordRuntimeConfig> }),
+    ...(settingsView.base === undefined ? {} : { base: runtimeFields(settingsView.base) }),
+    ...(settingsView.user === undefined ? {} : { user: runtimeFields(settingsView.user) }),
     revision: settingsView.revision,
     writable: settings.writable,
     generation: runtime.generation,
@@ -140,7 +146,7 @@ export async function mutateRuntimeConfig(
   const op: SettingsPathOp = mutation.op === 'set'
     ? { op: 'set', path: [mutation.field], value: mutation.value }
     : { op: 'unset', path: [mutation.field] }
-  await settings.mutate(NAMESPACE, [op], mutation.expectedRevision)
+  await settings.mutate(ANT_SWORD_SETTINGS_ENTRY_ID, [op], mutation.expectedRevision)
   // Settings commits enqueue owner watchers on their per-listener microtask
   // chain. Yield once so RuntimeController observes the generation before its
   // quiescence promise is sampled.

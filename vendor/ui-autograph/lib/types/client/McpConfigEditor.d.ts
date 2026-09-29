@@ -4,9 +4,9 @@ interface Props {
     savedServers: readonly McpConfig[];
     saving: boolean;
     onChange: (servers: McpConfig[]) => void;
-    onSave: () => Promise<void>;
+    onSave: () => Promise<boolean>;
 }
 /** Rich master-detail MCP editor with safe JSON import and runtime actions. */
-export declare function McpConfigEditor({ servers, savedServers, saving, onChange, onSave }: Props): any;
+export declare function McpConfigEditor({ servers, savedServers, saving, onChange, onSave }: Props): import("react").JSX.Element;
 export {};
 //# sourceMappingURL=McpConfigEditor.d.ts.map

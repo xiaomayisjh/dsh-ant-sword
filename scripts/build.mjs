@@ -168,10 +168,9 @@ function buildBundles() {
 function emitTypes() {
   const tsc = requireCommand('tsc')
   rmSync(join(ROOT, 'lib', 'types'), { recursive: true, force: true })
+  rmSync(join(UI_ROOT, 'lib', 'types'), { recursive: true, force: true })
   run(tsc, ['--project', 'tsconfig.build.json'])
-  // UI client declarations are supplied by the host-facing declaration tree.
-  // The browser bundle is type-checked by esbuild and does not require the
-  // host application's private React peer graph during package assembly.
+  run(tsc, ['--project', 'vendor/ui-autograph/tsconfig.build.json'])
 }
 
 function typecheck() {
@@ -205,6 +204,11 @@ function verify() {
   const localeTypes = readFileSync(join(UI_ROOT, 'lib', 'types', 'client', 'locales.d.ts'), 'utf8')
   if (!localeTypes.includes('"cycle {cycle}"') || localeTypes.includes('{{cycle}}')) {
     throw new Error('UI locale declaration is stale')
+  }
+  for (const path of uiSourceFiles(join(UI_ROOT, 'lib', 'types'))) {
+    if (readFileSync(path, 'utf8').includes('@deepseek-ai/dsh-client-runtime')) {
+      throw new Error(`UI declaration still imports removed DSH client-runtime: ${relative(ROOT, path)}`)
+    }
   }
 }
 

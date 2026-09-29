@@ -6,14 +6,15 @@ import { isAbsolute, join, resolve } from 'node:path'
 import { homedir } from 'node:os'
 import { createServer } from 'node:net'
 import { parseArgs } from 'node:util'
+import { fileURLToPath } from 'node:url'
 import { resolveLocalRelease } from './release-artifacts.mjs'
 
-function run(command, args, cwd = process.cwd(), env = process.env) {
+function run(command, args, cwd = process.cwd(), env = process.env, stdio = 'inherit') {
   const result = spawnSync(command, args, {
     cwd,
     env,
-    stdio: 'inherit',
-    shell: process.platform === 'win32',
+    stdio,
+    shell: process.platform === 'win32' && !/\.exe$/i.test(command),
   })
   if (result.error !== undefined) throw result.error
   if (result.status !== 0) throw new Error(`${command} ${args.join(' ')} exited ${String(result.status)}`)
@@ -91,6 +92,13 @@ function stripBundleLayers(profileDir, packageNames) {
   if (duplicates.length > 0) throw new Error(`failed to remove duplicate bundle layers: ${duplicates.join(', ')}`)
 }
 
+function alignRuntimePackages(profileName) {
+  if (process.platform !== 'win32') return
+  const script = fileURLToPath(new URL('./align-dsh-scope.ps1', import.meta.url))
+  if (!existsSync(script)) throw new Error(`runtime alignment script is missing: ${script}`)
+  run('powershell.exe', ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', script, '-ProfileName', profileName, '-DshHome', dshHome()])
+}
+
 const { values } = parseArgs({
   options: {
     profile: { type: 'string', default: 'web' },
@@ -100,6 +108,10 @@ const { values } = parseArgs({
   },
   allowPositionals: false,
 })
+
+if (!/^[A-Za-z0-9][A-Za-z0-9._-]*$/.test(values.profile) || values.profile === '.' || values.profile === '..') {
+  throw new Error('profile must be a single profile directory name')
+}
 
 const hasExplicitTarballs = values.bundle !== undefined || values.ui !== undefined
 if (values.release !== undefined && hasExplicitTarballs) {
@@ -123,13 +135,14 @@ const profileDir = join(dshHome(), 'profiles', values.profile)
 if (values.release === undefined) {
   run('dsh', ['plugin', '--profile', values.profile, 'add', artifacts.bundle])
   if (!existsSync(join(profileDir, 'package.json'))) throw new Error(`profile was not created at ${profileDir}`)
-  run('pnpm', ['add', '@nanmicoder/dsh-agent-teams@^0.1.4', 'dshmarket@^1.4.1', installSpec(artifacts.ui)], profileDir)
+  run('pnpm', ['add', 'dshmarket@1.66.5', installSpec(artifacts.ui)], profileDir)
 } else {
-  run('dsh', ['--profile', values.profile, '--dump-config'], process.cwd(), installEnvironment)
+  run('dsh', ['--profile', values.profile, '--dump-config'], process.cwd(), installEnvironment, ['ignore', 'ignore', 'inherit'])
   if (!existsSync(join(profileDir, 'package.json'))) throw new Error(`profile was not created at ${profileDir}`)
-  run('pnpm', ['add', ...offline, installSpec(artifacts.bundle), installSpec(artifacts.ui), installSpec(artifacts.agentTeams), installSpec(artifacts.dshmarket)], profileDir, installEnvironment)
+  run('pnpm', ['add', ...offline, installSpec(artifacts.bundle), installSpec(artifacts.ui), installSpec(artifacts.dshmarket)], profileDir, installEnvironment)
   addBundleLayer(profileDir, '@deepseek-ai/dsh-ant-sword-harness')
 }
 stripBundleLayers(profileDir, ['@nanmicoder/dsh-agent-teams', 'dshmarket'])
+alignRuntimePackages(values.profile)
 console.log(`ant-sword: installed complete bundle into profile ${values.profile}`)
 console.log(`ant-sword: start with dsh ${values.profile === 'web' ? 'web' : `--profile ${values.profile}`}`)

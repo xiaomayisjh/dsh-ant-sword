@@ -24,8 +24,8 @@
  * @module @deepseek-ai/dsh-ant-sword-harness/pi-ai-reasoning
  */
 import type { Context } from '@deepseek-ai/cordis';
-/** The pi-ai plugin's settings namespace. */
-export declare const PI_AI_SETTINGS_NAMESPACE = "llm-pi-ai";
+/** The pi-ai plugin's Loader entry id in the DSH web profile. */
+export declare const PI_AI_SETTINGS_ENTRY_ID = "llm-pi-ai";
 /** A `reasoningEfforts` map: harness thinking level → wire spelling, or null. */
 export type ReasoningEffortsMap = Record<string, string | null>;
 /**
@@ -77,13 +77,12 @@ export declare function fillReasoningEfforts(providers: Record<string, PiAiRoute
 /**
  * Fill format-correct `reasoningEfforts` into every unconfigured pi-ai model
  * once, so custom channels expose (and correctly dispatch) the native
- * thinking-intensity selector. Reads and writes the `llm-pi-ai` namespace
+ * thinking-intensity selector. Reads and writes the `llm-pi-ai` Loader row
  * through the shared settings service; an empty catalog or an already-complete
  * config is a silent no-op.
  *
- * pi-ai registers its namespace inside a deferred `ctx.inject(['settings'])`
- * callback, so at the moment this bundle's `apply()` runs the namespace may not
- * exist yet (`get` returns `undefined`). `attempts`/`delayMs` poll briefly for
+ * pi-ai may activate after this bundle, so at the moment `apply()` runs its
+ * settings form may not exist yet. `attempts`/`delayMs` poll briefly for
  * it to appear before giving up, which turns the load-order race into a bounded
  * wait rather than a silent miss.
  * @param ctx - plugin context carrying the settings service.

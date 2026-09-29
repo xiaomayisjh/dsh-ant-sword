@@ -1,12 +1,12 @@
 /** Official settings bridge with a loopback HTTP fallback for private namespaces. */
 
-import {
-  createSnapshotStore,
-} from '@deepseek-ai/dsh-client-runtime/client'
-import type {
-  SettingsScope, SettingsScopeSnapshot, SnapshotStore,
-} from '@deepseek-ai/dsh-client-runtime/client'
+import { createSnapshotStore } from '@deepseek-ai/dsh-client-store'
+import type { SnapshotStore } from '@deepseek-ai/dsh-client-store'
+import type { ConfigForm, ConfigFormSnapshot } from '@deepseek-ai/dsh-client-ui-settings/client'
 import type { RuntimeConfigValue } from './runtime-config-types.ts'
+
+/** The settings methods used by this bridge; the Host form also supports mutate. */
+export type RuntimeConfigForm = Pick<ConfigForm<RuntimeConfigValue>, 'getSnapshot' | 'subscribe' | 'set' | 'unset'>
 
 const ENDPOINT = '/ant-sword/runtime-config'
 
@@ -59,6 +59,7 @@ function isRuntimeConfig(value: unknown): value is RuntimeConfigValue {
     && Array.isArray(value.disabledSkills)
     && Array.isArray(value.rules)
     && Array.isArray(value.thinkingPolicies)
+    && Array.isArray(value.thinkingFallbacks)
 }
 
 function decodeFailure(value: unknown): RuntimeApplyFailure | undefined {
@@ -91,7 +92,7 @@ function decodeView(value: unknown): RuntimeConfigApiView | undefined {
   }
 }
 
-function initialSnapshot(): SettingsScopeSnapshot<RuntimeConfigValue> {
+function initialSnapshot(): ConfigFormSnapshot<RuntimeConfigValue> {
   return {
     status: 'loading',
     value: undefined,
@@ -108,8 +109,8 @@ function initialSnapshot(): SettingsScopeSnapshot<RuntimeConfigValue> {
  * the owning plugin's loopback endpoint. Writes remain serialized and carry
  * the latest revision, matching the official scope's conflict behavior.
  */
-export class RuntimeConfigScope implements SettingsScope<RuntimeConfigValue> {
-  private readonly store: SnapshotStore<SettingsScopeSnapshot<RuntimeConfigValue>>
+export class RuntimeConfigScope implements RuntimeConfigForm {
+  private readonly store: SnapshotStore<ConfigFormSnapshot<RuntimeConfigValue>>
   private readonly runtimeStore = createSnapshotStore<RuntimeApplySnapshot>({
     generation: 0,
     desiredGeneration: 0,
@@ -121,7 +122,7 @@ export class RuntimeConfigScope implements SettingsScope<RuntimeConfigValue> {
   private disposed = false
 
   constructor(
-    private readonly native: SettingsScope<RuntimeConfigValue>,
+    private readonly native: RuntimeConfigForm,
     private readonly request: RuntimeConfigFetch = globalThis.fetch.bind(globalThis),
   ) {
     this.store = createSnapshotStore(initialSnapshot())
@@ -130,7 +131,7 @@ export class RuntimeConfigScope implements SettingsScope<RuntimeConfigValue> {
     void this.refresh()
   }
 
-  getSnapshot(): SettingsScopeSnapshot<RuntimeConfigValue> {
+  getSnapshot(): ConfigFormSnapshot<RuntimeConfigValue> {
     return this.store.getSnapshot()
   }
 
@@ -146,11 +147,11 @@ export class RuntimeConfigScope implements SettingsScope<RuntimeConfigValue> {
     return this.runtimeStore.subscribe(listener)
   }
 
-  set(field: string, value: unknown): Promise<void> {
+  set(field: string, value: unknown): Promise<boolean> {
     return this.write({ op: 'set', field, value })
   }
 
-  unset(field: string): Promise<void> {
+  unset(field: string): Promise<boolean> {
     return this.write({ op: 'unset', field })
   }
 
@@ -166,7 +167,7 @@ export class RuntimeConfigScope implements SettingsScope<RuntimeConfigValue> {
         // Keep the last accepted value. The settings panel renders its existing
         // unavailable state when neither bridge can reach the local Host.
       }
-    })
+    }, undefined)
   }
 
   async dispose(): Promise<void> {
@@ -179,14 +180,15 @@ export class RuntimeConfigScope implements SettingsScope<RuntimeConfigValue> {
     return this.tail
   }
 
-  private write(operation: { op: 'set' | 'unset'; field: string; value?: unknown }): Promise<void> {
+  private write(operation: { op: 'set' | 'unset'; field: string; value?: unknown }): Promise<boolean> {
     return this.enqueue(async () => {
       if (this.native.getSnapshot().status === 'ready') {
-        if (operation.op === 'set') await this.native.set(operation.field, operation.value)
-        else await this.native.unset(operation.field)
+        const accepted = operation.op === 'set'
+          ? await this.native.set(operation.field, operation.value)
+          : await this.native.unset(operation.field)
         this.syncNative()
         await this.reloadFallback()
-        return
+        return accepted
       }
       const revision = this.store.getSnapshot().revision
       try {
@@ -202,22 +204,25 @@ export class RuntimeConfigScope implements SettingsScope<RuntimeConfigValue> {
         })
         if (!response.ok) {
           await this.reloadFallback()
-          return
+          return false
         }
         const view = decodeView(await response.json())
-        if (view !== undefined) this.accept(view)
+        if (view === undefined) return false
+        this.accept(view)
+        return true
       } catch {
         await this.reloadFallback()
+        return false
       }
-    })
+    }, false)
   }
 
-  private enqueue(operation: () => Promise<void>): Promise<void> {
-    if (this.disposed) return Promise.resolve()
+  private enqueue<T>(operation: () => Promise<T>, disposedValue: T): Promise<T> {
+    if (this.disposed) return Promise.resolve(disposedValue)
     const task = this.tail.then(async () => {
-      if (!this.disposed) await operation()
+      return this.disposed ? disposedValue : operation()
     })
-    this.tail = task.catch(() => undefined)
+    this.tail = task.then(() => undefined, () => undefined)
     return task
   }
 

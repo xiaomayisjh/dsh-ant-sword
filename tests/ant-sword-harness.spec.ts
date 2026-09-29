@@ -22,23 +22,27 @@ describe('dsh-ant-sword-harness bundle patch', () => {
     const root = fileURLToPath(new URL('..', import.meta.url))
     const manifest = JSON.parse(
       readFileSync(resolve(root, 'package.json'), 'utf8'),
-    ) as { dsh?: { bundle?: { patch?: string } } }
-    expect(manifest.dsh?.bundle?.patch).toBe('./cordis.patch.yml')
-    const parsed = yaml.load(
-      readFileSync(resolve(root, manifest.dsh!.bundle!.patch!), 'utf8'),
-      { schema: entryListSchema },
-    )
-    expect(Array.isArray(parsed)).toBe(true)
-    const rows = (parsed as { insert?: { id?: string; name?: string }[] }[]).flatMap(
-      patch => patch.insert ?? [],
-    )
+    ) as { dsh?: { bundle?: { patch?: string[] } } }
+    const patchFiles = manifest.dsh?.bundle?.patch
+    expect(patchFiles).toEqual([
+      './cordis.patch.yml',
+      './preset/red-team.patch.yml',
+      './preset/red-team-auto.patch.yml',
+    ])
+    if (!Array.isArray(patchFiles)) throw new Error('bundle patch list is missing')
+    const rows = patchFiles.flatMap(path => {
+      const parsed = yaml.load(readFileSync(resolve(root, path), 'utf8'), { schema: entryListSchema })
+      if (!Array.isArray(parsed)) throw new Error(`bundle patch is not a list: ${path}`)
+      return (parsed as { insert?: { id?: string; name?: string }[] }[]).flatMap(patch => patch.insert ?? [])
+    })
     const byId = new Map(rows.map(row => [row.id, row.name]))
     expect(byId.get('ant-sword-harness')).toBe('@deepseek-ai/dsh-ant-sword-harness')
     expect(byId.get('ant-sword-rewind')).toBe('@deepseek-ai/dsh-ant-sword-harness/rewind')
-    expect(byId.get('agent-teams')).toBe('@nanmicoder/dsh-agent-teams')
     expect(byId.get('ui-autograph')).toBe('@deepseek-ai/dsh-client-ui-autograph')
     expect(byId.get('dsh-market')).toBe('dshmarket')
-    expect(rows.length).toBe(5)
+    expect(byId.get('preset-red-team')).toBe('@deepseek-ai/dsh-agent-preset')
+    expect(byId.get('preset-red-team-auto')).toBe('@deepseek-ai/dsh-agent-preset')
+    expect(rows.length).toBe(6)
   })
 })
 

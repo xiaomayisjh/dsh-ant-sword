@@ -1,17 +1,15 @@
 // @vitest-environment jsdom
 import { describe, expect, it, vi } from 'vitest'
-import type {
-  SettingsScope, SettingsScopeSnapshot,
-} from '@deepseek-ai/dsh-client-runtime/client'
+import type { ConfigFormSnapshot } from '@deepseek-ai/dsh-client-ui-settings/client'
 import {
-  RuntimeConfigScope,
+  RuntimeConfigScope, type RuntimeConfigForm,
 } from '../src/client/runtime-config-scope.ts'
 import type {
   RuntimeConfigFetch,
 } from '../src/client/runtime-config-scope.ts'
 import type { RuntimeConfigValue } from '../src/client/runtime-config-types.ts'
 
-vi.mock('@deepseek-ai/dsh-client-runtime/client', () => ({
+vi.mock('@deepseek-ai/dsh-client-store', () => ({
   createSnapshotStore: <T,>(initial: T) => {
     let snapshot = initial
     const listeners = new Set<() => void>()
@@ -29,7 +27,7 @@ vi.mock('@deepseek-ai/dsh-client-runtime/client', () => ({
   },
 }))
 
-const EMPTY: RuntimeConfigValue = { mcpServers: [], disabledSkills: [], rules: [], thinkingPolicies: [] }
+const EMPTY: RuntimeConfigValue = { mcpServers: [], disabledSkills: [], rules: [], thinkingPolicies: [], thinkingFallbacks: [] }
 
 function view(value: RuntimeConfigValue, revision: number) {
   return {
@@ -53,8 +51,8 @@ function response(value: unknown, status = 200): Awaited<ReturnType<RuntimeConfi
   }
 }
 
-function nativeScope(initial: SettingsScopeSnapshot<RuntimeConfigValue>): {
-  scope: SettingsScope<RuntimeConfigValue>
+function nativeScope(initial: ConfigFormSnapshot<RuntimeConfigValue>): {
+  scope: RuntimeConfigForm
   set: ReturnType<typeof vi.fn>
   unset: ReturnType<typeof vi.fn>
 } {
@@ -66,8 +64,9 @@ function nativeScope(initial: SettingsScopeSnapshot<RuntimeConfigValue>): {
       value: current.value === undefined ? undefined : { ...current.value, [field]: value },
     }
     for (const listener of listeners) listener()
+    return true
   })
-  const unset = vi.fn(async () => undefined)
+  const unset = vi.fn(async () => true)
   return {
     scope: {
       getSnapshot: () => current,
@@ -97,7 +96,7 @@ describe('runtime config scope', () => {
     await scope.whenIdle()
 
     expect(scope.getSnapshot()).toMatchObject({ status: 'ready', value: EMPTY, revision: 3, writable: true })
-    await scope.set('disabledSkills', next.disabledSkills)
+    expect(await scope.set('disabledSkills', next.disabledSkills)).toBe(true)
 
     expect(request).toHaveBeenNthCalledWith(2, '/ant-sword/runtime-config', expect.objectContaining({
       method: 'POST',
@@ -126,7 +125,7 @@ describe('runtime config scope', () => {
     const request = vi.fn<RuntimeConfigFetch>().mockResolvedValue(response(view(EMPTY, 7)))
     const scope = new RuntimeConfigScope(native.scope, request)
     await scope.whenIdle()
-    await scope.set('rules', [])
+    expect(await scope.set('rules', [])).toBe(true)
 
     expect(request).toHaveBeenCalledWith('/ant-sword/runtime-config', { method: 'GET', cache: 'no-store' })
     expect(native.set).toHaveBeenCalledWith('rules', [])

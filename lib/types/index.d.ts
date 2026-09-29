@@ -1,45 +1,40 @@
-/**
- * @deepseek-ai/dsh-ant-sword-harness — a security-research profile bundle. Its
- * composition is the `cordis.patch.yml` declared by `dsh.bundle.patch`: the
- * main Cordis row mounts the bundled reverse/CTF skill pack, a dedicated row
- * mounts the self-contained rewind capability, and the patch additionally
- * mounts the UI, agent-teams, and plugin-market bundles.
- *
- * @module @deepseek-ai/dsh-ant-sword-harness
- */
-import type { Context } from '@deepseek-ai/cordis';
+/** Ant Sword Host plugin for DSH 0.2 scoped agent presets. */
+import type { Context, Volatile } from '@deepseek-ai/cordis';
 import z from '@deepseek-ai/schemastery';
 import type { AutoLoopConfig } from './auto/index.ts';
 import type { McpServerConfig } from './mcp-servers.ts';
-/** Cordis plugin name. */
+import type { ChannelThinkingPolicy, RuntimeRuleConfig, SimulatedEfforts, ThinkingFallbackPolicy } from './runtime-config.ts';
 export declare const name = "ant-sword-harness";
-/** Services required by the bundled skill provider, the auto loop, and MCP tools. */
 export declare const inject: string[];
-/**
- * Plugin config. Every tunable lives here — the dsh plugin-config UI renders
- * and edits this schema. Nothing is read from environment variables.
- */
+/** Loader-owned fields are editable through DSH 0.2 SettingsForms. */
 export interface Config {
-    /** Auto-loop configuration; omitted mounts the loop with its defaults. */
     autoLoop?: AutoLoopConfig;
-    /**
-     * Embedded offensive-security MCP servers. Omitted mounts the default
-     * eight-server catalog; each entry's transport/command/env/url is editable.
-     */
-    mcpServers?: McpServerConfig[];
-    /** Pentest Swarm orchestrator API key, injected into that server's env. */
-    pentestswarmApiKey?: string;
-    /** Sync the bundled presets into the user preset root. Default true. */
-    syncRedTeamPreset?: boolean;
+    mcpServers: Volatile<McpServerConfig[]>;
+    disabledSkills: Volatile<string[]>;
+    rules: Volatile<RuntimeRuleConfig[]>;
+    thinkingPolicies: Volatile<ChannelThinkingPolicy[]>;
+    thinkingFallbacks: Volatile<ThinkingFallbackPolicy[]>;
+    defaultThinkingFallback: Volatile<SimulatedEfforts | null | undefined>;
+    pentestswarmApiKey: Volatile<string | undefined>;
 }
-/** Schemastery validation for {@link Config}. */
-export declare const Config: z<Config>;
-/**
- * Mount the bundled skill pack, the auto loop, and the red-team preset.
- * Workspace snapshots and `/rewind` mount through their own row
- * (`./rewind-plugin.ts`); this row mounts no rewind listeners.
- * @param ctx - plugin context carrying skills, sessions, storageDomain, commands.
- * @param config - validated plugin config.
- */
+export declare const Config: z<Schemastery.ObjectS<NoInfer<{
+    autoLoop: z<AutoLoopConfig>;
+    mcpServers: z<NoInfer<McpServerConfig[]>, NoInfer<McpServerConfig[]>, "volatile-defined">;
+    disabledSkills: z<NoInfer<string[]>, NoInfer<string[]>, "volatile-defined">;
+    rules: z<NoInfer<RuntimeRuleConfig[]>, NoInfer<RuntimeRuleConfig[]>, "volatile-defined">;
+    thinkingPolicies: z<NoInfer<ChannelThinkingPolicy[]>, NoInfer<ChannelThinkingPolicy[]>, "volatile-defined">;
+    thinkingFallbacks: z<NoInfer<ThinkingFallbackPolicy[]>, NoInfer<ThinkingFallbackPolicy[]>, "volatile-defined">;
+    defaultThinkingFallback: z<NoInfer<SimulatedEfforts | null>, NoInfer<SimulatedEfforts | null>, "volatile">;
+    pentestswarmApiKey: z<string, string, "volatile">;
+}>>, Schemastery.ObjectT<NoInfer<{
+    autoLoop: z<AutoLoopConfig>;
+    mcpServers: z<NoInfer<McpServerConfig[]>, NoInfer<McpServerConfig[]>, "volatile-defined">;
+    disabledSkills: z<NoInfer<string[]>, NoInfer<string[]>, "volatile-defined">;
+    rules: z<NoInfer<RuntimeRuleConfig[]>, NoInfer<RuntimeRuleConfig[]>, "volatile-defined">;
+    thinkingPolicies: z<NoInfer<ChannelThinkingPolicy[]>, NoInfer<ChannelThinkingPolicy[]>, "volatile-defined">;
+    thinkingFallbacks: z<NoInfer<ThinkingFallbackPolicy[]>, NoInfer<ThinkingFallbackPolicy[]>, "volatile-defined">;
+    defaultThinkingFallback: z<NoInfer<SimulatedEfforts | null>, NoInfer<SimulatedEfforts | null>, "volatile">;
+    pentestswarmApiKey: z<string, string, "volatile">;
+}>>, "plain">;
 export declare function apply(ctx: Context, config: Config): void;
 //# sourceMappingURL=index.d.ts.map

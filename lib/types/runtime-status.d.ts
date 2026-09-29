@@ -1,7 +1,25 @@
 /** Deployment-level runtime status for the red-team bundle. */
 import type { Context } from '@deepseek-ai/cordis';
-import type { McpServerConfig } from './mcp-servers.ts';
-export type RuntimeAvailability = 'available' | 'missing' | 'configured' | 'disabled';
+import type { McpReconciler } from './mcp-reconciler.ts';
+import type { McpCallObservation, McpMountState } from './mcp-reconciler.ts';
+import type { RuntimeController, RuntimeControllerSnapshot } from './runtime-config.ts';
+export type RuntimeAvailability = 'available' | 'degraded' | 'missing' | 'configured' | 'disabled' | 'pending' | 'unavailable';
+export interface McpRuntimeStatus {
+    readonly serverName: string;
+    readonly transport: 'stdio' | 'streamable-http';
+    readonly availability: RuntimeAvailability;
+    readonly mount: McpMountState;
+    readonly toolNames: readonly string[];
+    readonly toolCount: number;
+    readonly mounted: boolean;
+    readonly lastProbe?: McpProbeSnapshot;
+    readonly initialConnectedAt?: number;
+    readonly lastCall?: McpCallObservation;
+    readonly error?: string;
+    readonly target: string;
+    readonly installCommand?: string;
+    readonly installHint: string;
+}
 export interface McpProbeSnapshot {
     readonly checkedAt: number;
     readonly toolCount: number;
@@ -9,16 +27,6 @@ export interface McpProbeSnapshot {
         readonly name: string;
         readonly description?: string;
     }[];
-}
-export interface McpRuntimeStatus {
-    readonly serverName: string;
-    readonly transport: 'stdio' | 'sse' | 'streamable-http';
-    readonly availability: RuntimeAvailability;
-    readonly target: string;
-    readonly installCommand?: string;
-    readonly installHint: string;
-    readonly mounted: boolean;
-    readonly lastProbe?: McpProbeSnapshot;
 }
 export interface RedTeamRuntimeStatus {
     readonly checkedAt: number;
@@ -29,22 +37,13 @@ export interface RedTeamRuntimeStatus {
         readonly error?: string;
     };
     readonly mcp: readonly McpRuntimeStatus[];
+    readonly runtimeConfig: Pick<RuntimeControllerSnapshot, 'generation' | 'applying' | 'lastFailure'>;
 }
 declare module '@deepseek-ai/cordis' {
     interface Events {
-        /**
-         * Publishes the latest Ant Sword skill and MCP availability snapshot.
-         * @mode emit
-         * @param snapshot - Complete runtime status observed by WebUI consumers.
-         */
         'ant-sword/runtime-status'(snapshot: RedTeamRuntimeStatus): void;
     }
 }
-export declare function applyRuntimeStatus(ctx: Context, getServers: () => readonly McpServerConfig[], reloadMcp: (serverName: string) => Promise<void>, probeMcp: (serverName: string) => Promise<{
-    toolCount: number;
-    tools: readonly {
-        name: string;
-        description?: string;
-    }[];
-}>, isMcpMounted: (serverName: string) => boolean): void;
+export declare function mcpAvailability(mount: McpMountState, toolCount: number, lastCall?: McpCallObservation): RuntimeAvailability;
+export declare function applyRuntimeStatus(ctx: Context, controller: RuntimeController, mcpReconciler: McpReconciler): void;
 //# sourceMappingURL=runtime-status.d.ts.map

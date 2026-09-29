@@ -10,6 +10,11 @@
 export type BoardNodeKind = 'fact' | 'intent' | 'hint' | 'goal';
 /** Lifecycle of an Intent node; facts and hints are terminal once written. */
 export type IntentStatus = 'open' | 'claimed' | 'done' | 'abandoned';
+/** A bounded claim on an Intent; expiry allows recovery after an interrupted turn. */
+export interface IntentClaim {
+    readonly owner: string;
+    readonly leaseUntil: number;
+}
 /**
  * One node on the blackboard. A Fact is a confirmed, objective finding; an
  * Intent is a declared direction of exploration not yet executed; a Hint is
@@ -22,6 +27,8 @@ export interface BoardNode {
     readonly id: string;
     /** Session that owns this board. */
     readonly sessionId: string;
+    /** Board run generation; omitted on nodes from the original run. */
+    readonly generation?: number;
     /** Node kind. */
     readonly kind: BoardNodeKind;
     /** Human-facing summary (one line). */
@@ -32,6 +39,8 @@ export interface BoardNode {
     readonly parentId?: string;
     /** Intent lifecycle; undefined for non-intent kinds. */
     readonly status?: IntentStatus;
+    /** Active claim metadata, present only while an Intent is claimed. */
+    readonly claim?: IntentClaim;
     /** Monotonic creation time (ms since epoch). */
     readonly time: number;
     /** OODA cycle index that produced this node. */
@@ -48,7 +57,20 @@ export interface BoardSnapshot {
     /** Whether the goal has been reached. */
     readonly complete: boolean;
 }
+/** Durable controller state for one session. A zero start means no cycle has run. */
+export interface BoardRunState {
+    readonly sessionId: string;
+    /** Incremented when a completed DSH Goal is replaced in this session. */
+    readonly generation?: number;
+    readonly cycle: number;
+    readonly paused: boolean;
+    readonly complete: boolean;
+    readonly startedAt: number;
+}
 declare module '@deepseek-ai/dsh-session-projection/types' {
+    interface SessionProjectionStateMap {
+        board: BoardSnapshot | null;
+    }
     interface SessionProjectionMap {
         /**
          * The session's autonomous-loop blackboard graph (every Fact/Intent/Hint
@@ -62,14 +84,13 @@ declare module '@deepseek-ai/dsh-session-projection/types' {
 export interface AutoLoopConfig {
     /** Master switch; `false` removes the loop and tools. Default true. */
     readonly enabled?: boolean;
-    /** Maximum OODA cycles before the loop stops itself. Default 64. */
+    /** DSH Goal round cap requested at autonomous Goal creation. Default 64. */
     readonly maxCycles?: number;
     /**
-     * Stall detector: abandon an Intent signature after this many consecutive
-     * equivalent attempts. Default 3.
+     * Model guidance threshold for equivalent attempts without evidence. Default 3.
      */
     readonly stallThreshold?: number;
-    /** Wall-clock budget in ms; the loop stops when exceeded. Default 30 min. */
+    /** Wall-clock budget checked before each new DSH Goal round. Default 30 min. */
     readonly maxDurationMs?: number;
 }
 /** Resolved configuration with every default applied. */

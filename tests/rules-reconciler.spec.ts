@@ -5,7 +5,7 @@ import type { AntSwordRuntimeConfig } from '../src/runtime-config.ts'
 
 function runtime(content: string): AntSwordRuntimeConfig {
   return {
-    mcpServers: [], disabledSkills: [], thinkingPolicies: [],
+    mcpServers: [], disabledSkills: [], thinkingPolicies: [], thinkingFallbacks: [],
     rules: [{ id: 'one', title: 'One', enabled: true, order: 10, placement: 'after-persona', content }],
   }
 }

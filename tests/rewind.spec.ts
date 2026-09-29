@@ -11,6 +11,7 @@ import { describe, expect, it, afterEach } from 'vitest'
 import { makeCopyProvider } from '../src/rewind/providers/copy.ts'
 import { makeGitProvider } from '../src/rewind/providers/git.ts'
 import { SnapshotProviderRegistry } from '../src/rewind/registry.ts'
+import { rewindDomain } from '../src/rewind/domain.ts'
 import type { ResolvedRewindConfig } from '../src/rewind/types.ts'
 
 const dirs: string[] = []
@@ -40,6 +41,12 @@ function config(overrides: Partial<ResolvedRewindConfig> = {}): ResolvedRewindCo
 
 afterEach(async () => {
   await Promise.all(dirs.splice(0).map(dir => rm(dir, { recursive: true, force: true })))
+})
+
+describe('rewind storage domain', () => {
+  it('uses a name accepted by the DSH storage backend', () => {
+    expect(rewindDomain.name).toMatch(/^[a-z][a-z0-9_]*$/)
+  })
 })
 
 describe('copy snapshot provider', () => {

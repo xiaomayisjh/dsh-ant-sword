@@ -76,6 +76,7 @@ try {
   $raw = "https://raw.githubusercontent.com/$Repository/main/scripts"
   Invoke-WebRequest -UseBasicParsing -Uri "$raw/install-profile.mjs" -OutFile (Join-Path $scripts 'install-profile.mjs')
   Invoke-WebRequest -UseBasicParsing -Uri "$raw/release-artifacts.mjs" -OutFile (Join-Path $scripts 'release-artifacts.mjs')
+  Invoke-WebRequest -UseBasicParsing -Uri "$raw/align-dsh-scope.ps1" -OutFile (Join-Path $scripts 'align-dsh-scope.ps1')
 
   Install-AntSwordRelease -ReleasePath $workspace -InstallerPath (Join-Path $scripts 'install-profile.mjs')
 } finally {

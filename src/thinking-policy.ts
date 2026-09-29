@@ -88,7 +88,10 @@ export class ThinkingPolicyRuntime {
 
   start(): () => void {
     for (const agent of this.ctx.agents.list()) this.install(agent)
-    return this.ctx.on('agent/created', ({ agent }) => this.install(agent))
+    return this.ctx.on('agent/created', ({ agent }) => {
+      this.install(agent)
+      return undefined
+    })
   }
 
   private install(agent: Agent): void {

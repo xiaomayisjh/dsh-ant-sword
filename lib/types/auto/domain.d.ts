@@ -5,15 +5,19 @@
  *
  * @module @deepseek-ai/dsh-ant-sword-harness/auto/domain
  */
-import type { BoardNode } from './types.ts';
+import type { BoardNode, BoardRunState, IntentClaim, IntentStatus } from './types.ts';
 /** Wire payload of one `board/change` session event. */
 export type BoardChangeMeta = {
     readonly op: 'add';
     readonly node: BoardNode;
 } | {
+    readonly op: 'reset';
+    readonly generation: number;
+} | {
     readonly op: 'status';
     readonly nodeId: string;
-    readonly status: string;
+    readonly status: IntentStatus;
+    readonly claim?: IntentClaim;
 } | {
     readonly op: 'cycle';
     readonly cycle: number;
@@ -36,6 +40,7 @@ export declare const blackboardDomain: {
     version: number;
     tables: {
         nodes: import("@deepseek-ai/dsh-storage-domain").DomainTableSpec<string, BoardNode>;
+        run_states: import("@deepseek-ai/dsh-storage-domain").DomainTableSpec<string, BoardRunState>;
     };
 };
 //# sourceMappingURL=domain.d.ts.map

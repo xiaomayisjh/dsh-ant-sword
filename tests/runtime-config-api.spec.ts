@@ -1,19 +1,20 @@
 import { describe, expect, it, vi } from 'vitest'
-import { settingsNamespace } from '@deepseek-ai/dsh-settings'
-import type { SettingsDescriptor } from '@deepseek-ai/dsh-settings'
+import type { SettingsDescriptor, SettingsNamespace } from '@deepseek-ai/dsh-settings'
 import {
   mutateRuntimeConfig,
   parseRuntimeConfigMutation,
   runtimeConfigApiView,
 } from '../src/runtime-config-api.ts'
 import {
-  ANT_SWORD_SETTINGS_NAMESPACE,
+  ANT_SWORD_SETTINGS_ENTRY_ID,
   AntSwordRuntimeConfigSchema,
 } from '../src/runtime-config.ts'
 import type { AntSwordRuntimeConfig } from '../src/runtime-config.ts'
 
+const TEST_ENTRY_ID = ANT_SWORD_SETTINGS_ENTRY_ID as SettingsNamespace
+
 function config(patch: Partial<AntSwordRuntimeConfig> = {}): AntSwordRuntimeConfig {
-  return AntSwordRuntimeConfigSchema({ mcpServers: [], disabledSkills: [], rules: [], thinkingPolicies: [], ...patch })
+  return AntSwordRuntimeConfigSchema({ mcpServers: [], disabledSkills: [], rules: [], thinkingPolicies: [], thinkingFallbacks: [], ...patch })
 }
 
 describe('runtime config loopback API', () => {
@@ -33,7 +34,8 @@ describe('runtime config loopback API', () => {
     let value = config()
     let revision = 4
     const descriptor = (): SettingsDescriptor => ({
-      ns: settingsNamespace(ANT_SWORD_SETTINGS_NAMESPACE),
+      ns: TEST_ENTRY_ID,
+      autoGenerate: false,
       schema: {},
       value,
       base: config(),
@@ -81,7 +83,8 @@ describe('runtime config loopback API', () => {
     const settings = {
       writable: true,
       describe: () => [{
-        ns: settingsNamespace(ANT_SWORD_SETTINGS_NAMESPACE),
+        ns: TEST_ENTRY_ID,
+        autoGenerate: false,
         schema: {},
         value: desired,
         applies: 'live' as const,

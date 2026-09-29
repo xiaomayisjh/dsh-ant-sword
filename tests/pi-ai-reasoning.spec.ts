@@ -5,6 +5,7 @@ import {
   fillReasoningEfforts,
   reconcilePiAiReasoning,
   installPiAiAdaptiveThinking,
+  PI_AI_SETTINGS_ENTRY_ID,
 } from '../src/pi-ai-reasoning.ts'
 import type { PiAiRoute } from '../src/pi-ai-reasoning.ts'
 
@@ -99,8 +100,8 @@ describe('fillReasoningEfforts', () => {
 })
 
 describe('reconcilePiAiReasoning', () => {
-  function ctxWith(config: unknown, update = vi.fn(async () => undefined)): { ctx: Context; update: typeof update } {
-    const ctx = { settings: { get: () => config, update } } as unknown as Context
+  function ctxWith(config: unknown, update = vi.fn(async (_entryId: string, _patch: object) => undefined)): { ctx: Context; update: typeof update } {
+    const ctx = { settings: { describe: () => config === undefined ? [] : [{ ns: PI_AI_SETTINGS_ENTRY_ID, value: config }], update } } as unknown as Context
     return { ctx, update }
   }
 
@@ -111,25 +112,26 @@ describe('reconcilePiAiReasoning', () => {
     const changed = await reconcilePiAiReasoning(ctx)
     expect(changed).toBe(1)
     expect(update).toHaveBeenCalledOnce()
-    const [, patch] = update.mock.calls[0]!
+    const [entryId, patch] = update.mock.calls[0]!
+    expect(entryId).toBe(PI_AI_SETTINGS_ENTRY_ID)
     expect((patch as { providers: Record<string, PiAiRoute> }).providers.qoder!.models![0]!.reasoningEfforts)
       .toEqual(REASONING_EFFORTS_BY_API['openai-responses'])
   })
 
-  it('no-ops when the namespace is unregistered (bounded, no long poll)', async () => {
+  it('no-ops when the Loader row is unregistered (bounded, no long poll)', async () => {
     const { ctx, update } = ctxWith(undefined)
     // attempts=1 so the test does not wait through the real retry budget.
     expect(await reconcilePiAiReasoning(ctx, 1, 0)).toBe(0)
     expect(update).not.toHaveBeenCalled()
   })
 
-  it('retries until the namespace appears, then reconciles', async () => {
+  it('retries until the Loader row appears, then reconciles', async () => {
     let calls = 0
     const config = { providers: { qoder: { api: 'openai-responses', models: [{ id: 'deepseek-v4-flash' }] } } }
-    const update = vi.fn(async () => undefined)
+    const update = vi.fn(async (_entryId: string, _patch: object) => undefined)
     const ctx = {
       settings: {
-        get: () => (++calls >= 3 ? config : undefined),
+        describe: () => ++calls >= 3 ? [{ ns: PI_AI_SETTINGS_ENTRY_ID, value: config }] : [],
         update,
       },
     } as unknown as Context
@@ -200,7 +202,7 @@ describe('installPiAiAdaptiveThinking', () => {
     const modelOf = vi.fn(() => cached)
     const adapter = { modelOf }
     const registration = { provider: { id: 'zgonline' }, adapter }
-    const resolveModelInfoFor = vi.fn(async (reg: { adapter: { modelOf: typeof modelOf } }, m: string) => reg.adapter.modelOf())
+    const resolveModelInfoFor = vi.fn(async (reg: { adapter: { modelOf: typeof modelOf } }, _m: string) => reg.adapter.modelOf())
     const ctx = { llm: { resolveModelInfoFor } } as unknown as Context
     const stop = installPiAiAdaptiveThinking(ctx)
     await (ctx.llm as unknown as { resolveModelInfoFor: (r: unknown, m: string) => Promise<unknown> }).resolveModelInfoFor(registration, 'glm-5.3')

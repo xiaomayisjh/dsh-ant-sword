@@ -12,6 +12,7 @@
 import { randomBytes } from 'node:crypto'
 import type { Context } from '@deepseek-ai/cordis'
 import z from '@deepseek-ai/schemastery'
+import { SessionSeq } from '@deepseek-ai/dsh-session'
 import type { Session, SessionEvent } from '@deepseek-ai/dsh-session'
 import type { CommandInvocation } from '@deepseek-ai/dsh-commands'
 import type { PreToolDecision, ToolExecution } from '@deepseek-ai/dsh-tools'
@@ -347,7 +348,7 @@ async function handleRewind(
 
   let child: Session
   try {
-    child = ctx.sessions.fork(session, record.forkSeq)
+    child = ctx.sessions.fork(session, SessionSeq(record.forkSeq))
   } catch (error) {
     return {
       kind: 'error',

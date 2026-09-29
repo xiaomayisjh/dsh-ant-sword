@@ -1,7 +1,7 @@
-/** Loopback configuration bridge for Ant Sword's private settings namespace. */
+/** Loopback configuration bridge for the Ant Sword Loader row. */
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import type { Context } from '@deepseek-ai/cordis';
-import type { SettingsProvider } from '@deepseek-ai/dsh-settings';
+import type { SettingsForms } from '@deepseek-ai/dsh-settings';
 import type { AntSwordRuntimeConfig, RuntimeApplyFailure, RuntimeController } from './runtime-config.ts';
 export interface RuntimeConfigApiView {
     value: AntSwordRuntimeConfig;
@@ -27,7 +27,7 @@ export type RuntimeConfigApiMutation = {
     field: keyof AntSwordRuntimeConfig;
     expectedRevision?: number;
 };
-type RuntimeSettings = Pick<SettingsProvider, 'describe' | 'mutate' | 'writable'>;
+type RuntimeSettings = Pick<SettingsForms, 'describe' | 'mutate' | 'writable'>;
 type RuntimeControllerView = Pick<RuntimeController, 'snapshot' | 'whenIdle'>;
 interface RuntimeApiError {
     error: string;

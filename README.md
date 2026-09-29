@@ -1,10 +1,10 @@
 # dsh-ant-sword
 
-`@deepseek-ai/dsh-ant-sword-harness` 的独立分发仓库。它为 DeepSeek Harness 提供安全研究技能包、自主 loop、独立 Rewind 插件、MCP 管理界面、多智能体团队和插件市场。本仓库携带已构建的 `lib/`，Release 安装不需要在消费端编译。
+`@deepseek-ai/dsh-ant-sword-harness` 的独立分发仓库。它为 DeepSeek Harness 提供安全研究技能包、自主 loop、独立 Rewind 插件、MCP 管理界面和插件市场。本仓库携带已构建的 `lib/`，Release 安装不需要在消费端编译。
 
 ## 一行安装
 
-安装器下载最新 GitHub Release 的四个 tgz 与 SHA-256 manifest，校验完整后以离线模式安装到 `web` profile。需要本机已有 `gh`、`dsh`、Node.js 和 pnpm；私有仓库先执行 `gh auth login`。
+安装器下载最新 GitHub Release 的三个 tgz 与 SHA-256 manifest，校验完整后以离线模式安装到 `web` profile。需要本机已有 `gh`、DSH 0.2、Node.js 和 pnpm；私有仓库先执行 `gh auth login`。Windows 安装后自动对齐 profile 与全局 DSH 的 `dsh-scope`、`dsh-tools` 实例。
 
 Windows PowerShell：
 
@@ -27,7 +27,7 @@ dsh web
 可通过参数指定 profile 或 Release tag：
 
 ```powershell
-& ([scriptblock]::Create((irm 'https://raw.githubusercontent.com/xiaomayisjh/dsh-ant-sword/main/install-ant-sword.ps1'))) -Profile web -Tag v0.1.0-rc.14
+& ([scriptblock]::Create((irm 'https://raw.githubusercontent.com/xiaomayisjh/dsh-ant-sword/main/install-ant-sword.ps1'))) -Profile web -Tag v0.1.0-rc.23
 ```
 
 ## 从本地 Release 安装
@@ -36,8 +36,7 @@ dsh web
 
 - `deepseek-ai-dsh-ant-sword-harness-<version>.tgz`
 - `deepseek-ai-dsh-client-ui-autograph-<version>.tgz`
-- `nanmicoder-dsh-agent-teams-0.1.4.tgz`
-- `dshmarket-1.4.1.tgz`
+- `dshmarket-1.66.5.tgz`
 - `ant-sword-release-manifest.json`
 
 manifest 记录每项资产的包名、版本、文件名与 SHA-256。安装器在修改 profile 前拒绝缺失、重复、额外或哈希不匹配的 tgz。
@@ -61,7 +60,6 @@ manifest 记录每项资产的包名、版本、文件名与 SHA-256。安装器
 | 红队 agent 预设 | `red-team` 与 `red-team-auto` 两个预设 |
 | 自主 loop | `src/auto/` blackboard（Fact/Intent/Hint/Goal 图）驱动 |
 | MCP 管理 | Codex 风格服务器列表与详情；可视化/JSON 双模式，支持直接粘贴常见 MCP JSON 格式；基础 DSH 未暴露私有 settings namespace 时自动使用仅限 loopback、仍复用同一 Host settings 事务的兼容桥接 |
-| 多智能体团队 | `@nanmicoder/dsh-agent-teams` |
 | 插件市场 | `dshmarket` |
 
 ## 仓库内容
@@ -71,19 +69,19 @@ manifest 记录每项资产的包名、版本、文件名与 SHA-256。安装器
 - `src/` — bundle TypeScript 源码
 - `lib/` — bundle 已构建产物
 - `vendor/ui-autograph/` — MCP/Autograph UI 源码与构建产物
-- `vendor/mcp-client/` — standalone MCP client 快照
+- `vendor/mcp-client/` — 旧版 MCP client 快照，仅作历史参照，不参与打包
 - `scripts/` — Release 生成、manifest 校验与 profile 安装模块
 - `kali/`、`docs/`、`RULES*.md` — 平台引导与执行契约
 - `.github/workflows/release.yml` — 手动触发的完整 Release 工作流
 
 ## 发版
 
-Actions 中手动运行 **release** workflow；tag 默认取 `v<package.json version>`。工作流调用与本地相同的发布脚本，上传四个 tgz 与 manifest。
+Actions 中手动运行 **release** workflow；tag 默认取 `v<package.json version>`。工作流调用与本地相同的发布脚本，上传三个 tgz 与 manifest。
 
 本地 dry-run 会保留可直接安装的 Release 目录，不上传 GitHub：
 
 ```powershell
-node scripts/release-github.mjs --repo xiaomayisjh/dsh-ant-sword --tag v0.1.0-rc.14 --output .release\v0.1.0-rc.14 --dry-run
+node scripts/release-github.mjs --repo xiaomayisjh/dsh-ant-sword --tag v0.1.0-rc.23 --output .release\v0.1.0-rc.23 --dry-run
 ```
 
 正式上传去掉 `--dry-run`。同一 tag 重跑会替换同名资产。

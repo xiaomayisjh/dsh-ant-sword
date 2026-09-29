@@ -12,8 +12,10 @@ import { useMemo, useState } from 'react'
 import { Background, Controls, MarkerType, ReactFlow } from '@xyflow/react'
 import type { Edge } from '@xyflow/react'
 import type { PropsLocale } from '@deepseek-ai/dsh-client-ui-slots'
-import type { SnapshotStore } from '@deepseek-ai/dsh-client-runtime/client'
+import type { SnapshotStore } from '@deepseek-ai/dsh-client-store'
 import type { ConvViewProps } from '@deepseek-ai/dsh-client-ui-conversation/client'
+import type {} from '@deepseek-ai/dsh-agent-preset-registry/types'
+import type {} from '@deepseek-ai/dsh-client-ui-session/client'
 import type { RedTeamRuntimeStatus } from './RuntimeStatus.tsx'
 import { RuntimeStatus } from './RuntimeStatus.tsx'
 import { GraphOverview } from './GraphOverview.tsx'
@@ -25,8 +27,6 @@ import css from './AutoGraphView.module.css'
 export interface AutoGraphActions {
   /** Shared deployment-level Skill/MCP status source. */
   runtimeStatus: SnapshotStore<RedTeamRuntimeStatus>
-  /** Whether the session was composed from the autonomous red-team preset. */
-  isAutoMode: boolean
   /** Pause the loop after the current step. */
   onPause: () => Promise<string | null>
   /** Resume a paused loop. */
@@ -113,13 +113,15 @@ const EMPTY_BOARD: BoardSnapshot = {
   complete: false,
 }
 
-export function AutoGraphView({ isAutoMode, runtimeStatus, onPause, onResume, onHint, useProjection, t }: ConvViewProps & AutoGraphActions & PropsLocale<'autograph'>) {
+export function AutoGraphView({ runtimeStatus, onPause, onResume, onHint, useProjection, t }: ConvViewProps & AutoGraphActions & PropsLocale<'autograph'>) {
   const [hint, setHint] = useState('')
   const [pending, setPending] = useState(false)
+  const [actionError, setActionError] = useState<string>()
   const [enabledKinds, setEnabledKinds] = useState<ReadonlySet<BoardNodeKind>>(
     () => new Set(BOARD_KINDS),
   )
   const projectedBoard = useProjection('board')
+  const isAutoMode = useProjection('agentPreset') === 'red-team-auto'
   const board = projectedBoard ?? EMPTY_BOARD
 
   const flow = useMemo(() => toFlow(board), [board])
@@ -136,10 +138,20 @@ export function AutoGraphView({ isAutoMode, runtimeStatus, onPause, onResume, on
 
   const status = board.complete ? t('panel.complete') : board.paused ? t('panel.paused') : t('panel.running')
 
-  const run = async (action: () => Promise<string | null>): Promise<void> => {
-    if (pending) return
+  const run = async (action: () => Promise<string | null>): Promise<boolean> => {
+    if (pending) return false
     setPending(true)
-    try { await action() } finally { setPending(false) }
+    setActionError(undefined)
+    try {
+      const error = await action()
+      if (error !== null) setActionError(error)
+      return error === null
+    } catch (error) {
+      setActionError(error instanceof Error ? error.message : String(error))
+      return false
+    } finally {
+      setPending(false)
+    }
   }
 
   return (
@@ -214,8 +226,8 @@ export function AutoGraphView({ isAutoMode, runtimeStatus, onPause, onResume, on
           onChange={(e) => { setHint(e.target.value) }}
           onKeyDown={(e) => {
             if (e.key === 'Enter' && hint.trim().length > 0) {
-              void run(() => onHint(hint.trim()))
-              setHint('')
+              const text = hint.trim()
+              void run(() => onHint(text)).then(ok => { if (ok) setHint('') })
             }
           }}
         />
@@ -223,13 +235,14 @@ export function AutoGraphView({ isAutoMode, runtimeStatus, onPause, onResume, on
           type="button"
           disabled={pending || hint.trim().length === 0}
           onClick={() => {
-            void run(() => onHint(hint.trim()))
-            setHint('')
+            const text = hint.trim()
+            void run(() => onHint(text)).then(ok => { if (ok) setHint('') })
           }}
         >
           {t('control.hint')}
         </button>
       </div>
+      {actionError !== undefined && <p role="alert" className={css.actionError}>{actionError}</p>}
     </div>
   )
 }

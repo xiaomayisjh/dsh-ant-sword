@@ -7,9 +7,9 @@
  * @module @deepseek-ai/dsh-ant-sword-harness/runtime-config
  */
 import z from '@deepseek-ai/schemastery';
-import type { SettingsScope } from '@deepseek-ai/dsh-settings';
 import type { McpServerConfig } from './mcp-servers.ts';
-export declare const ANT_SWORD_SETTINGS_NAMESPACE = "ant-sword-runtime";
+/** DSH 0.2 settings addresses the live Loader row id, not a private namespace. */
+export declare const ANT_SWORD_SETTINGS_ENTRY_ID = "ant-sword-harness";
 export declare const SERVER_NAME_PATTERN: RegExp;
 export declare const SKILL_NAME_PATTERN: RegExp;
 export declare const RULE_ID_PATTERN: RegExp;
@@ -97,9 +97,8 @@ export interface RuntimeControllerSnapshot {
     lastFailure?: RuntimeApplyFailure;
 }
 type SnapshotListener = (snapshot: RuntimeControllerSnapshot) => void;
-/** Serializes settings commits and publishes desired and applied generations independently. */
+/** Serializes Loader config commits and publishes desired and applied generations independently. */
 export declare class RuntimeController {
-    private readonly scope;
     private readonly reconcilers;
     private desired;
     private applied;
@@ -110,8 +109,10 @@ export declare class RuntimeController {
     private tail;
     private stopped;
     private readonly listeners;
-    constructor(scope: SettingsScope<AntSwordRuntimeConfig>, reconcilers: readonly RuntimeReconciler[]);
+    constructor(initialConfig: AntSwordRuntimeConfig, reconcilers: readonly RuntimeReconciler[]);
     start(): () => Promise<void>;
+    /** Apply a replacement received from this plugin's Loader config. */
+    update(next: AntSwordRuntimeConfig): Promise<void>;
     subscribe(listener: SnapshotListener): () => void;
     snapshot(): RuntimeControllerSnapshot;
     whenIdle(): Promise<void>;
