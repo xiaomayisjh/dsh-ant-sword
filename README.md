@@ -48,7 +48,7 @@ manifest 记录每项资产的包名、版本、文件名与 SHA-256。安装器
 ```
 
 ```bash
-./install-ant-sword.sh --release /path/to/ant-sword-release
+bash ./install-ant-sword.sh --release /path/to/ant-sword-release
 ```
 
 ## 能力
@@ -58,8 +58,8 @@ manifest 记录每项资产的包名、版本、文件名与 SHA-256。安装器
 | 逆向 / CTF 技能包 | 93 个逆向工程、渗透测试、CTF 技能，注册到 `ctx.skills` |
 | 独立 Rewind | 单独的 `@deepseek-ai/dsh-ant-sword-harness/rewind` Cordis 行，仅依赖 sessions、storageDomain、commands、tools |
 | 红队 agent 预设 | `red-team` 与 `red-team-auto` 两个预设 |
-| 自主 loop | `src/auto/` blackboard（Fact/Intent/Hint/Goal 图）驱动 |
-| MCP 管理 | Codex 风格服务器列表与详情；可视化/JSON 双模式，支持直接粘贴常见 MCP JSON 格式；基础 DSH 未暴露私有 settings namespace 时自动使用仅限 loopback、仍复用同一 Host settings 事务的兼容桥接 |
+| 自主 loop | DSH Goal 负责自动续轮；`src/auto/` blackboard 持久记录 Fact/Intent/Hint/Goal 证据图 |
+| MCP 管理 | Codex 风格服务器列表与详情；可视化/JSON 双模式，支持直接粘贴常见 MCP JSON 格式；配置通过 DSH 0.2 SettingsForms 管理，Web 界面经 loopback 接口写入同一 Host settings 事务 |
 | 插件市场 | `dshmarket` |
 
 ## 仓库内容
@@ -88,4 +88,4 @@ node scripts/release-github.mjs --repo xiaomayisjh/dsh-ant-sword --tag v0.1.0-rc
 
 ## 编辑源码
 
-`src/` 或 `vendor/ui-autograph/src/` 的 TypeScript 改动应在 ant-dsh monorepo 中完成构建，并将对应 `lib/` 一并同步。本仓库的 `tsconfig.json` 自包含，可用于源码与测试工具解析；发布使用已提交的构建产物。
+`src/` 或 `vendor/ui-autograph/src/` 的 TypeScript 改动直接在本仓库运行 `pnpm run build` 和 `pnpm run typecheck`，并将对应 `lib/` 构建产物一并提交。发布脚本会重新构建和测试。

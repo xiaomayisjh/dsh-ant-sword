@@ -56,11 +56,19 @@ if ($Release) {
 }
 
 if ($null -eq (Get-Command 'gh' -ErrorAction SilentlyContinue)) { throw 'Required command not found: gh' }
+if ($Repository -notmatch '^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$') { throw 'Repository must be owner/name.' }
+$releaseArgs = @('release', 'view')
+if (-not [string]::IsNullOrWhiteSpace($Tag)) { $releaseArgs += $Tag }
+$releaseArgs += @('--repo', $Repository, '--json', 'tagName', '--jq', '.tagName')
+$releaseTag = [string](& gh @releaseArgs | Select-Object -First 1)
+$releaseTag = $releaseTag.Trim()
+if ($LASTEXITCODE -ne 0 -or $releaseTag -notmatch '^[A-Za-z0-9][A-Za-z0-9._-]*$') {
+  throw 'Could not resolve a valid Release tag.'
+}
 $workspace = Join-Path ([System.IO.Path]::GetTempPath()) ("dsh-ant-sword-" + [guid]::NewGuid().ToString('N'))
 try {
   New-Item -ItemType Directory -Path $workspace | Out-Null
-  $downloadArgs = @('release', 'download')
-  if (-not [string]::IsNullOrWhiteSpace($Tag)) { $downloadArgs += $Tag }
+  $downloadArgs = @('release', 'download', $releaseTag)
   $downloadArgs += @(
     '--repo', $Repository,
     '--pattern', '*.tgz',
@@ -73,10 +81,14 @@ try {
 
   $scripts = Join-Path $workspace 'scripts'
   New-Item -ItemType Directory -Path $scripts | Out-Null
-  $raw = "https://raw.githubusercontent.com/$Repository/main/scripts"
+  $raw = "https://raw.githubusercontent.com/$Repository/$releaseTag/scripts"
   Invoke-WebRequest -UseBasicParsing -Uri "$raw/install-profile.mjs" -OutFile (Join-Path $scripts 'install-profile.mjs')
   Invoke-WebRequest -UseBasicParsing -Uri "$raw/release-artifacts.mjs" -OutFile (Join-Path $scripts 'release-artifacts.mjs')
-  Invoke-WebRequest -UseBasicParsing -Uri "$raw/align-dsh-scope.ps1" -OutFile (Join-Path $scripts 'align-dsh-scope.ps1')
+  try {
+    Invoke-WebRequest -UseBasicParsing -Uri "$raw/align-dsh-scope.ps1" -OutFile (Join-Path $scripts 'align-dsh-scope.ps1')
+  } catch {
+    if ($null -eq $_.Exception.Response -or [int]$_.Exception.Response.StatusCode -ne 404) { throw }
+  }
 
   Install-AntSwordRelease -ReleasePath $workspace -InstallerPath (Join-Path $scripts 'install-profile.mjs')
 } finally {

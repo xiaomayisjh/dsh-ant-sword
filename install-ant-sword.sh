@@ -80,12 +80,14 @@ else
   for required in gh curl; do
     command -v "$required" >/dev/null 2>&1 || { echo "Required command not found: $required" >&2; exit 1; }
   done
+  [[ "$repository" =~ ^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$ ]] || { echo "Repository must be owner/name" >&2; exit 2; }
+  [[ -n "$tag" ]] || tag="$(gh release view --repo "$repository" --json tagName --jq .tagName)"
+  [[ "$tag" =~ ^[A-Za-z0-9][A-Za-z0-9._-]*$ ]] || { echo "Could not resolve a valid Release tag" >&2; exit 2; }
 
   workspace="$(mktemp -d "${TMPDIR:-/tmp}/dsh-ant-sword.XXXXXX")"
   trap 'rm -rf "$workspace"' EXIT INT TERM
 
-  download=(release download)
-  [[ -n "$tag" ]] && download+=("$tag")
+  download=(release download "$tag")
   download+=(
     --repo "$repository"
     --pattern '*.tgz'
@@ -96,7 +98,7 @@ else
   gh "${download[@]}"
 
   mkdir -p "$workspace/scripts"
-  raw="https://raw.githubusercontent.com/$repository/main/scripts"
+  raw="https://raw.githubusercontent.com/$repository/$tag/scripts"
   curl -fsSL "$raw/install-profile.mjs" -o "$workspace/scripts/install-profile.mjs"
   curl -fsSL "$raw/release-artifacts.mjs" -o "$workspace/scripts/release-artifacts.mjs"
   node "$workspace/scripts/install-profile.mjs" --profile "$profile" --release "$workspace"
