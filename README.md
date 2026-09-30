@@ -27,7 +27,7 @@ dsh web
 可通过参数指定 profile 或 Release tag：
 
 ```powershell
-& ([scriptblock]::Create((irm 'https://raw.githubusercontent.com/xiaomayisjh/dsh-ant-sword/main/install-ant-sword.ps1'))) -Profile web -Tag v0.1.0-rc.23
+& ([scriptblock]::Create((irm 'https://raw.githubusercontent.com/xiaomayisjh/dsh-ant-sword/main/install-ant-sword.ps1'))) -Profile web -Tag v0.1.0-rc.25
 ```
 
 ## 从本地 Release 安装
@@ -82,7 +82,7 @@ Actions 中手动运行 **release** workflow；tag 默认取 `v<package.json ver
 本地 dry-run 会保留可直接安装的 Release 目录，不上传 GitHub：
 
 ```powershell
-node scripts/release-github.mjs --repo xiaomayisjh/dsh-ant-sword --tag v0.1.0-rc.23 --output .release\v0.1.0-rc.23 --dry-run
+node scripts/release-github.mjs --repo xiaomayisjh/dsh-ant-sword --tag v0.1.0-rc.25 --output .release\v0.1.0-rc.25 --dry-run
 ```
 
 正式上传去掉 `--dry-run`。同一 tag 重跑会替换同名资产。

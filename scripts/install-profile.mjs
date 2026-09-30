@@ -10,6 +10,7 @@ import { fileURLToPath } from 'node:url'
 import { resolveLocalRelease } from './release-artifacts.mjs'
 
 const STANDALONE_UI_PACKAGE = '@deepseek-ai/dsh-client-ui-autograph'
+const HARNESS_PACKAGE = '@deepseek-ai/dsh-ant-sword-harness'
 
 function run(command, args, cwd = process.cwd(), env = process.env, stdio = 'inherit') {
   const result = spawnSync(command, args, {
@@ -115,6 +116,31 @@ function removeStandaloneUiDependency(profileDir) {
   if (changed) writeFileSync(manifestPath, `${JSON.stringify(manifest, undefined, 2)}\n`)
 }
 
+/** Keep pnpm on the store already backing this profile's node_modules. */
+function profileStoreArgs(profileDir) {
+  const modulesPath = join(profileDir, 'node_modules', '.modules.yaml')
+  if (!existsSync(modulesPath)) return []
+  const source = readFileSync(modulesPath, 'utf8')
+  let storeDir
+  if (source.trimStart().startsWith('{')) {
+    storeDir = JSON.parse(source).storeDir
+  } else {
+    const value = source.match(/^storeDir:\s*(.+)$/m)?.[1]?.trim()
+    storeDir = value?.replace(/^['"]|['"]$/g, '')
+  }
+  return typeof storeDir === 'string' && isAbsolute(storeDir) ? ['--store-dir', storeDir] : []
+}
+
+/** Replace stale local-tarball paths before pnpm reads the old lockfile. */
+function stageReleaseDependencies(profileDir, bundle, dshmarket) {
+  const manifestPath = join(profileDir, 'package.json')
+  const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'))
+  if (manifest.dependencies === null || typeof manifest.dependencies !== 'object') manifest.dependencies = {}
+  manifest.dependencies[HARNESS_PACKAGE] = `file:${resolve(bundle).replaceAll('\\', '/')}`
+  manifest.dependencies.dshmarket = `file:${resolve(dshmarket).replaceAll('\\', '/')}`
+  writeFileSync(manifestPath, `${JSON.stringify(manifest, undefined, 2)}\n`)
+}
+
 /**
  * A profile can already contain a tarball with the same package version.  In
  * that case `pnpm add` updates the manifest but may keep the package-store
@@ -122,8 +148,8 @@ function removeStandaloneUiDependency(profileDir) {
  * the embedded client and its inline stylesheet always come from the artifact
  * just selected by this invocation.
  */
-function refreshProfileDependencies(profileDir, offline, env) {
-  run('pnpm', ['install', ...offline, '--force'], profileDir, env)
+function refreshProfileDependencies(profileDir, offline, storeArgs, env) {
+  run('pnpm', ['install', ...offline, ...storeArgs, '--force'], profileDir, env)
 }
 
 function alignRuntimePackages(profileName) {
@@ -173,15 +199,18 @@ if (values.release === undefined) {
   run('dsh', ['plugin', '--profile', values.profile, 'add', artifacts.bundle])
   if (!existsSync(join(profileDir, 'package.json'))) throw new Error(`profile was not created at ${profileDir}`)
   removeStandaloneUiDependency(profileDir)
-  run('pnpm', ['add', installSpec(artifacts.dshmarket)], profileDir)
-  refreshProfileDependencies(profileDir, offline, installEnvironment)
+  const storeArgs = profileStoreArgs(profileDir)
+  run('pnpm', ['add', ...storeArgs, installSpec(artifacts.dshmarket)], profileDir)
+  refreshProfileDependencies(profileDir, offline, storeArgs, installEnvironment)
 } else {
   run('dsh', ['--profile', values.profile, '--dump-config'], process.cwd(), installEnvironment, ['ignore', 'ignore', 'inherit'])
   if (!existsSync(join(profileDir, 'package.json'))) throw new Error(`profile was not created at ${profileDir}`)
   removeStandaloneUiDependency(profileDir)
-  run('pnpm', ['add', ...offline, installSpec(artifacts.bundle), installSpec(artifacts.dshmarket)], profileDir, installEnvironment)
-  refreshProfileDependencies(profileDir, offline, installEnvironment)
-  addBundleLayer(profileDir, '@deepseek-ai/dsh-ant-sword-harness')
+  const storeArgs = profileStoreArgs(profileDir)
+  stageReleaseDependencies(profileDir, artifacts.bundle, artifacts.dshmarket)
+  run('pnpm', ['add', ...offline, ...storeArgs, installSpec(artifacts.bundle), installSpec(artifacts.dshmarket)], profileDir, installEnvironment)
+  refreshProfileDependencies(profileDir, offline, storeArgs, installEnvironment)
+  addBundleLayer(profileDir, HARNESS_PACKAGE)
 }
 stripBundleLayers(profileDir, ['@nanmicoder/dsh-agent-teams', 'dshmarket', STANDALONE_UI_PACKAGE])
 alignRuntimePackages(values.profile)
