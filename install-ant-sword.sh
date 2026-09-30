@@ -43,6 +43,16 @@ for required in dsh pnpm node; do
   command -v "$required" >/dev/null 2>&1 || { echo "Required command not found: $required" >&2; exit 1; }
 done
 
+dsh_version="$(dsh --version 2>/dev/null || true)"
+if [[ -z "$dsh_version" ]]; then
+  echo "Could not determine the installed DSH version." >&2
+  exit 1
+fi
+if [[ "$dsh_version" =~ ^0\.2\.0-rc\.([0-9]+)$ ]] && (( ${BASH_REMATCH[1]} < 2 )); then
+  echo "DSH $dsh_version is too old for the embedded client. Upgrade with: npm install -g @deepseek-ai/dsh@0.2.0-rc.2" >&2
+  exit 1
+fi
+
 stop_stale_dsh_web() {
   local port="${1:-3080}"
   local pids
@@ -96,6 +106,20 @@ else
     --clobber
   )
   gh "${download[@]}"
+
+  # A release tag can retain assets from an older layout (such as the
+  # standalone Autograph tarball). Keep only files declared by the manifest;
+  # the resolver can then verify hashes without rejecting stale GitHub assets.
+  node -e '
+    const fs = require("node:fs");
+    const path = require("node:path");
+    const root = process.argv[1];
+    const manifest = JSON.parse(fs.readFileSync(path.join(root, "ant-sword-release-manifest.json"), "utf8"));
+    const declared = new Set((manifest.artifacts ?? []).map(entry => entry.filename));
+    for (const name of fs.readdirSync(root)) {
+      if (name.endsWith(".tgz") && !declared.has(name)) fs.rmSync(path.join(root, name), { force: true });
+    }
+  ' "$workspace"
 
   mkdir -p "$workspace/scripts"
   raw="https://raw.githubusercontent.com/$repository/$tag/scripts"

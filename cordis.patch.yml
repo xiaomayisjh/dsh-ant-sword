@@ -4,8 +4,8 @@
 #
 # The Host row serves the bundled skills and OODA loop. The dedicated rewind
 # row retains its narrower service set. DSH 0.2's scoped red-team presets are
-# declared by preset/*.patch.yml; the independent browser UI and plugin market
-# remain separate rows.
+# declared by preset/*.patch.yml; this package's browser half is discovered
+# through its dsh.client declaration and ./client export.
 #
 # Row order carries no load semantics (activation is service-availability
 # driven); the grouping is for readers.
@@ -30,11 +30,6 @@
         provider: auto
         preRewindCheckpoint: warn
         pruneOnTurnEnd: true
-
-    # The autonomous-loop decision-graph Web view, installed from the Release's
-    # vendored UI tarball alongside this bundle.
-    - id: ui-autograph
-      name: '@deepseek-ai/dsh-client-ui-autograph'
 
     # The in-app plugin market (Web settings section + HTTP routes).
     - id: dsh-market

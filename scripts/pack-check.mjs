@@ -1,13 +1,12 @@
 import { createHash } from 'node:crypto'
 import { spawnSync } from 'node:child_process'
-import { mkdtempSync, readFileSync, rmSync } from 'node:fs'
+import { existsSync, mkdtempSync, readFileSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { basename, dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { smokeTarball } from './install-smoke.mjs'
 
 const ROOT = resolve(fileURLToPath(new URL('..', import.meta.url)))
-const UI_ROOT = join(ROOT, 'vendor', 'ui-autograph')
 
 function quoteWindows(value) {
   return `"${value.replaceAll('"', '""')}"`
@@ -77,8 +76,30 @@ function assertPacked(packageRoot, workspaceRoot, expectedVersion, paths) {
   }
 }
 
+function exportTarget(value, depth = 0) {
+  if (depth > 4 || value === null || value === undefined) return undefined
+  if (typeof value === 'string') return value
+  if (typeof value !== 'object' || Array.isArray(value)) return undefined
+  for (const condition of ['browser', 'default']) {
+    const target = exportTarget(value[condition], depth + 1)
+    if (target !== undefined) return target
+  }
+  return undefined
+}
+
+function assertEmbeddedClient(packageRoot) {
+  const manifest = JSON.parse(readFileSync(join(packageRoot, 'package.json'), 'utf8'))
+  const clientTarget = exportTarget(manifest.exports?.['./client'])
+  if (clientTarget === undefined || !clientTarget.startsWith('./')) {
+    throw new Error('packed root package does not expose a relative ./client export')
+  }
+  const clientPath = join(packageRoot, clientTarget.slice(2))
+  if (!existsSync(clientPath)) throw new Error(`packed root client export is missing: ${clientTarget}`)
+  if (manifest.dsh?.client === undefined) throw new Error('packed root package has no dsh.client declaration')
+  if (manifest.dsh?.bundle === undefined) throw new Error('packed root package has no dsh.bundle declaration')
+}
+
 const rootManifest = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8'))
-const uiManifest = JSON.parse(readFileSync(join(UI_ROOT, 'package.json'), 'utf8'))
 const temporary = mkdtempSync(join(tmpdir(), 'ant-sword-pack-check-'))
 
 try {
@@ -98,22 +119,9 @@ try {
     'vendor/ui-autograph/lib/client.css.map',
     'vendor/ui-autograph/lib/types/client/index.d.ts',
   ])
+  assertEmbeddedClient(rootPackage)
   await smokeTarball(rootTarball)
-  rmSync(rootPackage, { recursive: true, force: true })
-
-  const uiTarball = pack(UI_ROOT, temporary)
-  const uiPackage = inspect(uiTarball, temporary)
-  assertPacked(uiPackage, UI_ROOT, uiManifest.version, [
-    'lib/index.js',
-    'lib/invariant.js',
-    'lib/client.js',
-    'lib/client.js.map',
-    'lib/client.css',
-    'lib/client.css.map',
-    'lib/types/index.d.ts',
-    'lib/types/client/index.d.ts',
-  ])
-  console.log(`pack-check: verified ${rootManifest.name}@${rootManifest.version} and ${uiManifest.name}@${uiManifest.version}`)
+  console.log(`pack-check: verified ${rootManifest.name}@${rootManifest.version} with embedded ./client`)
 } finally {
   rmSync(temporary, { recursive: true, force: true })
 }

@@ -116,7 +116,7 @@ function inlineUiStyles() {
   const clientPath = join(UI_ROOT, 'lib', 'client.js')
   const cssPath = join(UI_ROOT, 'lib', 'client.css')
   const footer = 'return module.exports; } });'
-  const tagId = '@deepseek-ai/dsh-client-ui-autograph/client.css'
+  const tagId = '@deepseek-ai/dsh-ant-sword-harness/client.css'
   const client = readFileSync(clientPath, 'utf8')
   const css = readFileSync(cssPath, 'utf8')
     .replace(/\r?\n?\/\*# sourceMappingURL=client\.css\.map \*\/\s*$/u, '')
@@ -126,7 +126,7 @@ function inlineUiStyles() {
     `const __autographCssId = ${JSON.stringify(tagId)};`,
     'if (typeof document !== "undefined" && document.querySelector(`style[data-plugin-css=${JSON.stringify(__autographCssId)}]`) === null) {',
     '  const tag = document.createElement("style");',
-    '  tag.dataset.plugin = "@deepseek-ai/dsh-client-ui-autograph";',
+    '  tag.dataset.plugin = "@deepseek-ai/dsh-ant-sword-harness";',
     '  tag.dataset.pluginCss = __autographCssId;',
     '  tag.textContent = __autographCss;',
     '  document.head.appendChild(tag);',
@@ -158,7 +158,7 @@ function buildBundles() {
     '--external:react',
     '--external:react-dom',
     '--external:@deepseek-ai/*',
-    '--banner:js=window.__ModuleLoader__.load({ id: "@deepseek-ai/dsh-client-ui-autograph", factory: (require) => { var module = { exports: {} }; var exports = module.exports;',
+    '--banner:js=window.__ModuleLoader__.load({ id: "@deepseek-ai/dsh-ant-sword-harness", factory: (require) => { var module = { exports: {} }; var exports = module.exports;',
     '--footer:js=return module.exports; } });',
     '--outfile=vendor/ui-autograph/lib/client.js',
   ])
@@ -185,6 +185,7 @@ function verify() {
   const client = readFileSync(join(UI_ROOT, 'lib', 'client.js'), 'utf8')
   if (!client.includes('sourceMappingURL=client.js.map')) throw new Error('UI client bundle is missing its source map reference')
   if (!client.includes('__ModuleLoader__.load')) throw new Error('UI client bundle is missing the DSH module loader registration')
+  if (!client.includes('id: "@deepseek-ai/dsh-ant-sword-harness"')) throw new Error('UI client bundle is registered under the wrong package id')
   if (!client.includes('__export(index_exports')) throw new Error('UI client bundle is missing esbuild CJS export table')
   if (!client.includes('apply: () => apply')) throw new Error('UI client bundle does not export apply')
   if (!client.includes('require("react-dom")')) throw new Error('UI client bundle does not use the host ReactDOM module')

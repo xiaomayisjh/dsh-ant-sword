@@ -9,7 +9,6 @@
 import '@xyflow/react/dist/style.css'
 import type { Context } from '@deepseek-ai/cordis'
 import { createSnapshotStore } from '@deepseek-ai/dsh-client-store'
-import type { SessionId } from '@deepseek-ai/dsh-session/types'
 // Type-only: pulls the locale plugin's Context merge (ctx.locale).
 import type {} from '@deepseek-ai/dsh-client-locale/client'
 // Type-only: the 'conversation.view' SlotMap row, declared by the owning package.
@@ -87,7 +86,7 @@ export function apply(ctx: Context): void {
     order: 20,
     locale: NS,
     label: () => t('panel.title'),
-    inject: (sessionId: SessionId): AutoGraphActions => {
+    inject: (sessionId): AutoGraphActions => {
       const run = async (input: string): Promise<string | null> => {
         const result = await ctx.remote.commands.execute(sessionId, input, [])
         if (!result.ok) return `${result.error.message} (${result.error.code})`

@@ -1,7 +1,7 @@
 {
     "name": "@deepseek-ai/dsh-ant-sword-harness",
     "description": "Security-research agent bundle with reverse/CTF skills, workspace rewind, autonomous loop, and plugin-market integration",
-    "version": "0.1.0-rc.23",
+    "version": "0.1.0-rc.24",
     "publishConfig": {
         "access": "public"
     },
@@ -24,6 +24,10 @@
         "./invariant": {
             "types": "./lib/types/invariant.d.ts",
             "default": "./lib/invariant.js"
+        },
+        "./client": {
+            "types": "./vendor/ui-autograph/lib/types/client/index.d.ts",
+            "default": "./vendor/ui-autograph/lib/client.js"
         },
         "./cordis.patch.yml": "./cordis.patch.yml",
         "./ui-autograph": "./vendor/ui-autograph/lib/index.js",
@@ -50,6 +54,18 @@
     ],
     "license": "MIT",
     "dsh": {
+        "client": {
+            "inject": [
+                "@deepseek-ai/dsh-api-remotes",
+                "@deepseek-ai/dsh-client-locale",
+                "@deepseek-ai/dsh-client-ui-conversation",
+                "@deepseek-ai/dsh-client-ui-layout",
+                "@deepseek-ai/dsh-client-ui-settings",
+                "@deepseek-ai/dsh-client-ui-renderer",
+                "@deepseek-ai/dsh-client-ui-session"
+            ],
+            "platform": "web"
+        },
         "bundle": {
             "patch": [
                 "./cordis.patch.yml",

@@ -28,7 +28,7 @@ Linux / macOS：
 curl -fsSL https://raw.githubusercontent.com/xiaomayisjh/dsh-ant-sword/main/install-ant-sword.sh | bash
 ```
 
-安装器下载 Release 中的 bundle、Autograph UI、agent-teams、dshmarket 四个 tgz 与 `ant-sword-release-manifest.json`，校验包名、版本、文件名和 SHA-256 后，以离线模式安装到 profile。
+安装器下载 Release 中的 harness bundle 与 dshmarket 两个 tgz 以及 `ant-sword-release-manifest.json`，校验包名、版本、文件名和 SHA-256 后，以离线模式安装到 profile。Autograph 黑板 UI 已内嵌在 harness 的 `./client` 导出中，不再安装独立 UI 包；旧 profile 中的 standalone UI 会在安装时自动清理。
 
 ### 从本地 Release 安装
 
@@ -49,7 +49,7 @@ curl -fsSL https://raw.githubusercontent.com/xiaomayisjh/dsh-ant-sword/main/inst
 node scripts/release-github.mjs --repo xiaomayisjh/dsh-ant-sword --tag v<version> --output .release\v<version> --dry-run
 ```
 
-`--dry-run` 生成完整五资产目录但不上传；正式发布去掉该参数。同一 tag 重跑会替换同名 GitHub Release 资产。
+`--dry-run` 生成两个 tgz 与 manifest 但不上传；正式发布去掉该参数。同一 tag 重跑会替换同名 GitHub Release 资产。
 
 ## 兼容性
 

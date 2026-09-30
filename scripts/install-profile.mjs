@@ -9,6 +9,8 @@ import { parseArgs } from 'node:util'
 import { fileURLToPath } from 'node:url'
 import { resolveLocalRelease } from './release-artifacts.mjs'
 
+const STANDALONE_UI_PACKAGE = '@deepseek-ai/dsh-client-ui-autograph'
+
 function run(command, args, cwd = process.cwd(), env = process.env, stdio = 'inherit') {
   const result = spawnSync(command, args, {
     cwd,
@@ -92,6 +94,38 @@ function stripBundleLayers(profileDir, packageNames) {
   if (duplicates.length > 0) throw new Error(`failed to remove duplicate bundle layers: ${duplicates.join(', ')}`)
 }
 
+/**
+ * Remove the pre-rc24 standalone Autograph package from an existing profile.
+ * The root harness now owns the `./client` bundle, so leaving this direct
+ * dependency behind makes the market mount two UI registrations and can make
+ * an older board win during boot.  pnpm rewrites the lockfile on the next add
+ * or install after the importer entry is removed here.
+ */
+function removeStandaloneUiDependency(profileDir) {
+  const manifestPath = join(profileDir, 'package.json')
+  const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'))
+  let changed = false
+  for (const field of ['dependencies', 'devDependencies', 'optionalDependencies', 'peerDependencies']) {
+    if (manifest[field] !== null && typeof manifest[field] === 'object'
+      && Object.prototype.hasOwnProperty.call(manifest[field], STANDALONE_UI_PACKAGE)) {
+      delete manifest[field][STANDALONE_UI_PACKAGE]
+      changed = true
+    }
+  }
+  if (changed) writeFileSync(manifestPath, `${JSON.stringify(manifest, undefined, 2)}\n`)
+}
+
+/**
+ * A profile can already contain a tarball with the same package version.  In
+ * that case `pnpm add` updates the manifest but may keep the package-store
+ * entry that came from an older checkout.  Force one lockfile installation so
+ * the embedded client and its inline stylesheet always come from the artifact
+ * just selected by this invocation.
+ */
+function refreshProfileDependencies(profileDir, offline, env) {
+  run('pnpm', ['install', ...offline, '--force'], profileDir, env)
+}
+
 function alignRuntimePackages(profileName) {
   if (process.platform !== 'win32') return
   const script = fileURLToPath(new URL('./align-dsh-scope.ps1', import.meta.url))
@@ -103,6 +137,9 @@ const { values } = parseArgs({
   options: {
     profile: { type: 'string', default: 'web' },
     bundle: { type: 'string' },
+    dshmarket: { type: 'string' },
+    // Accepted for callers built against the old three-artifact installer.
+    // It is intentionally ignored; the root bundle now embeds the client.
     ui: { type: 'string' },
     release: { type: 'string' },
   },
@@ -113,18 +150,18 @@ if (!/^[A-Za-z0-9][A-Za-z0-9._-]*$/.test(values.profile) || values.profile === '
   throw new Error('profile must be a single profile directory name')
 }
 
-const hasExplicitTarballs = values.bundle !== undefined || values.ui !== undefined
+const hasExplicitTarballs = values.bundle !== undefined || values.dshmarket !== undefined || values.ui !== undefined
 if (values.release !== undefined && hasExplicitTarballs) {
-  throw new Error('--release cannot be combined with --bundle or --ui')
+  throw new Error('--release cannot be combined with --bundle, --dshmarket, or --ui')
 }
-if (values.release === undefined && (values.bundle === undefined || values.ui === undefined)) {
-  throw new Error('usage: dsh-ant-sword-install (--release <release-directory-or-manifest> | --bundle <bundle-tarball-or-path> --ui <ui-tarball-or-path>) [--profile web]')
+if (values.release === undefined && values.bundle === undefined) {
+  throw new Error('usage: dsh-ant-sword-install (--release <release-directory-or-manifest> | --bundle <bundle-tarball-or-path> [--dshmarket <dshmarket-tarball-or-path>]) [--profile web]')
 }
 
 await assertWebPortFree(values.profile, false)
 
 const artifacts = values.release === undefined
-  ? { bundle: values.bundle, ui: values.ui }
+  ? { bundle: values.bundle, dshmarket: values.dshmarket ?? 'dshmarket@1.66.5' }
   : resolveLocalRelease(values.release)
 const offline = values.release === undefined ? [] : ['--offline']
 const installEnvironment = values.release === undefined
@@ -135,14 +172,18 @@ const profileDir = join(dshHome(), 'profiles', values.profile)
 if (values.release === undefined) {
   run('dsh', ['plugin', '--profile', values.profile, 'add', artifacts.bundle])
   if (!existsSync(join(profileDir, 'package.json'))) throw new Error(`profile was not created at ${profileDir}`)
-  run('pnpm', ['add', 'dshmarket@1.66.5', installSpec(artifacts.ui)], profileDir)
+  removeStandaloneUiDependency(profileDir)
+  run('pnpm', ['add', installSpec(artifacts.dshmarket)], profileDir)
+  refreshProfileDependencies(profileDir, offline, installEnvironment)
 } else {
   run('dsh', ['--profile', values.profile, '--dump-config'], process.cwd(), installEnvironment, ['ignore', 'ignore', 'inherit'])
   if (!existsSync(join(profileDir, 'package.json'))) throw new Error(`profile was not created at ${profileDir}`)
-  run('pnpm', ['add', ...offline, installSpec(artifacts.bundle), installSpec(artifacts.ui), installSpec(artifacts.dshmarket)], profileDir, installEnvironment)
+  removeStandaloneUiDependency(profileDir)
+  run('pnpm', ['add', ...offline, installSpec(artifacts.bundle), installSpec(artifacts.dshmarket)], profileDir, installEnvironment)
+  refreshProfileDependencies(profileDir, offline, installEnvironment)
   addBundleLayer(profileDir, '@deepseek-ai/dsh-ant-sword-harness')
 }
-stripBundleLayers(profileDir, ['@nanmicoder/dsh-agent-teams', 'dshmarket'])
+stripBundleLayers(profileDir, ['@nanmicoder/dsh-agent-teams', 'dshmarket', STANDALONE_UI_PACKAGE])
 alignRuntimePackages(values.profile)
 console.log(`ant-sword: installed complete bundle into profile ${values.profile}`)
 console.log(`ant-sword: start with dsh ${values.profile === 'web' ? 'web' : `--profile ${values.profile}`}`)

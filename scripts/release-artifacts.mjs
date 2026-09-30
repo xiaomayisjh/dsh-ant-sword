@@ -3,7 +3,21 @@ import { existsSync, readdirSync, readFileSync, statSync, writeFileSync } from '
 import { basename, dirname, join, resolve } from 'node:path'
 
 export const RELEASE_MANIFEST = 'ant-sword-release-manifest.json'
+
+// The current release is self-contained: the root harness package includes
+// the Autograph browser client at its `./client` export.  dshmarket remains a
+// separate artifact because it owns the profile installer and client-only
+// dependency shim.
 export const RELEASE_PACKAGES = [
+  { packageName: '@deepseek-ai/dsh-ant-sword-harness', key: 'bundle' },
+  { packageName: 'dshmarket', key: 'dshmarket' },
+]
+
+// Releases produced before the embedded client migration had a third,
+// standalone UI tarball.  Keep accepting those manifests so an already
+// downloaded release can still be installed; install-profile deliberately
+// ignores the returned `ui` path.
+export const LEGACY_RELEASE_PACKAGES = [
   { packageName: '@deepseek-ai/dsh-ant-sword-harness', key: 'bundle' },
   { packageName: '@deepseek-ai/dsh-client-ui-autograph', key: 'ui' },
   { packageName: 'dshmarket', key: 'dshmarket' },
@@ -42,12 +56,26 @@ export function resolveLocalRelease(input) {
   } catch (error) {
     fail(`cannot parse ${manifestPath}: ${error.message}`)
   }
-  if (manifest.schemaVersion !== 1 || !Array.isArray(manifest.artifacts)) fail('expected schemaVersion 1 and an artifacts array')
-  if (manifest.artifacts.length !== RELEASE_PACKAGES.length) fail(`expected exactly ${RELEASE_PACKAGES.length} artifacts`)
+  if (![1, 2].includes(manifest.schemaVersion) || !Array.isArray(manifest.artifacts)) {
+    fail('expected schemaVersion 1 or 2 and an artifacts array')
+  }
+
+  // Schema version 1 was used for both layouts.  Schema version 2 is emitted
+  // by newer tooling and is reserved for the embedded-client layout.  Select
+  // the expected layout from the artifact count, then validate every package
+  // name below so duplicate/missing entries get an actionable error.
+  const layout = manifest.artifacts.length === RELEASE_PACKAGES.length
+    ? RELEASE_PACKAGES
+    : manifest.schemaVersion === 1 && manifest.artifacts.length === LEGACY_RELEASE_PACKAGES.length
+      ? LEGACY_RELEASE_PACKAGES
+      : undefined
+  if (layout === undefined) {
+    fail(`expected exactly ${RELEASE_PACKAGES.length} current artifacts (or one legacy three-artifact manifest)`)
+  }
 
   const directory = dirname(manifestPath)
   const result = {}
-  for (const { packageName, key } of RELEASE_PACKAGES) {
+  for (const { packageName, key } of layout) {
     const matches = manifest.artifacts.filter((entry) => entry?.package === packageName)
     if (matches.length !== 1) fail(`expected exactly one ${packageName} artifact, found ${matches.length}`)
     const entry = matches[0]

@@ -38,7 +38,6 @@ import { RELEASE_MANIFEST, writeReleaseManifest } from './release-artifacts.mjs'
 
 const PACKAGE_DIR = resolve(fileURLToPath(new URL('..', import.meta.url)))
 const REPO_ROOT = PACKAGE_DIR
-const UI_PACKAGE_DIR = join(REPO_ROOT, 'vendor', 'ui-autograph')
 const API = 'https://api.github.com'
 
 /** Run a command, inheriting stdio, and throw on failure. */
@@ -428,7 +427,6 @@ async function main() {
   if (values.repo === undefined) throw new Error('usage: release-github.mjs --repo <owner>/<name> [--tag v<x.y.z>] [--profile <name>] [--output <directory>] [--create] [--private] [--token <pat>] [--dry-run]')
 
   const manifest = JSON.parse(readFileSync(join(PACKAGE_DIR, 'package.json'), 'utf8'))
-  const uiManifest = JSON.parse(readFileSync(join(UI_PACKAGE_DIR, 'package.json'), 'utf8'))
   const version = manifest.version
   const tag = values.tag ?? `v${version}`
   const destination = resolve(values.output ?? join(REPO_ROOT, '.release', `ant-sword-${tag}`))
@@ -441,7 +439,6 @@ async function main() {
 
   const artifacts = [
     { path: makeOfflineTarball(packWorkspace(PACKAGE_DIR, destination), destination, { clearDependencies: true }), packageName: manifest.name, version },
-    { path: makeOfflineTarball(packWorkspace(UI_PACKAGE_DIR, destination), destination), packageName: uiManifest.name, version: uiManifest.version },
     { path: makeOfflineTarball(packRegistry('dshmarket', dshmarketVersion, destination), destination, { vendorDependencies: true }), packageName: 'dshmarket', version: dshmarketVersion },
   ]
   const manifestPath = writeReleaseManifest(destination, artifacts)

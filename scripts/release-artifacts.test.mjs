@@ -3,7 +3,7 @@ import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import test from 'node:test'
-import { RELEASE_MANIFEST, RELEASE_PACKAGES, resolveLocalRelease, writeReleaseManifest } from './release-artifacts.mjs'
+import { LEGACY_RELEASE_PACKAGES, RELEASE_MANIFEST, RELEASE_PACKAGES, resolveLocalRelease, writeReleaseManifest } from './release-artifacts.mjs'
 
 function fixture() {
   const directory = mkdtempSync(join(tmpdir(), 'ant-sword-artifacts-'))
@@ -22,10 +22,28 @@ test('resolves a release directory and manifest to all local tarballs', () => {
     const fromDirectory = resolveLocalRelease(release.directory)
     const fromManifest = resolveLocalRelease(release.manifestPath)
     assert.equal(fromDirectory.bundle, fromManifest.bundle)
-    assert.equal(fromDirectory.ui, fromManifest.ui)
     assert.equal(fromDirectory.dshmarket, fromManifest.dshmarket)
+    assert.equal(fromDirectory.ui, undefined)
   } finally {
     rmSync(release.directory, { recursive: true, force: true })
+  }
+})
+
+test('accepts a legacy three-artifact manifest while exposing the standalone UI for compatibility callers', () => {
+  const directory = mkdtempSync(join(tmpdir(), 'ant-sword-legacy-artifacts-'))
+  try {
+    const artifacts = LEGACY_RELEASE_PACKAGES.map(({ packageName }, index) => {
+      const path = join(directory, `legacy-${index}.tgz`)
+      writeFileSync(path, `legacy-${index}`)
+      return { path, packageName, version: `0.1.${index}` }
+    })
+    writeReleaseManifest(directory, artifacts)
+    const resolved = resolveLocalRelease(directory)
+    assert.match(resolved.ui, /legacy-1\.tgz$/)
+    assert.match(resolved.bundle, /legacy-0\.tgz$/)
+    assert.match(resolved.dshmarket, /legacy-2\.tgz$/)
+  } finally {
+    rmSync(directory, { recursive: true, force: true })
   }
 })
 

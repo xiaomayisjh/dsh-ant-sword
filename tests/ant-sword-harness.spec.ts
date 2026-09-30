@@ -18,6 +18,29 @@ import { skillProvider, resetSkillCatalogCache } from '../src/skills.ts'
 const SKILL_NAME = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
 
 describe('dsh-ant-sword-harness bundle patch', () => {
+  it('declares the rc2 web client half on the root package', () => {
+    const root = fileURLToPath(new URL('..', import.meta.url))
+    const manifest = JSON.parse(
+      readFileSync(resolve(root, 'package.json'), 'utf8'),
+    ) as {
+      exports?: Record<string, unknown>
+      dsh?: { client?: { platform?: string; inject?: string[] } }
+    }
+    const clientExport = manifest.exports?.['./client'] as { default?: string; types?: string } | undefined
+    expect(clientExport?.default).toBe('./vendor/ui-autograph/lib/client.js')
+    expect(clientExport?.types).toBe('./vendor/ui-autograph/lib/types/client/index.d.ts')
+    expect(manifest.dsh?.client?.platform).toBe('web')
+    expect(manifest.dsh?.client?.inject).toEqual([
+      '@deepseek-ai/dsh-api-remotes',
+      '@deepseek-ai/dsh-client-locale',
+      '@deepseek-ai/dsh-client-ui-conversation',
+      '@deepseek-ai/dsh-client-ui-layout',
+      '@deepseek-ai/dsh-client-ui-settings',
+      '@deepseek-ai/dsh-client-ui-renderer',
+      '@deepseek-ai/dsh-client-ui-session',
+    ])
+  })
+
   it('declares a parseable patch list mounting its capability rows', () => {
     const root = fileURLToPath(new URL('..', import.meta.url))
     const manifest = JSON.parse(
@@ -38,11 +61,11 @@ describe('dsh-ant-sword-harness bundle patch', () => {
     const byId = new Map(rows.map(row => [row.id, row.name]))
     expect(byId.get('ant-sword-harness')).toBe('@deepseek-ai/dsh-ant-sword-harness')
     expect(byId.get('ant-sword-rewind')).toBe('@deepseek-ai/dsh-ant-sword-harness/rewind')
-    expect(byId.get('ui-autograph')).toBe('@deepseek-ai/dsh-client-ui-autograph')
+    expect(byId.has('ui-autograph')).toBe(false)
     expect(byId.get('dsh-market')).toBe('dshmarket')
     expect(byId.get('preset-red-team')).toBe('@deepseek-ai/dsh-agent-preset')
     expect(byId.get('preset-red-team-auto')).toBe('@deepseek-ai/dsh-agent-preset')
-    expect(rows.length).toBe(6)
+    expect(rows.length).toBe(5)
   })
 })
 

@@ -11,6 +11,18 @@ foreach ($command in @('dsh', 'pnpm', 'node')) {
   if ($null -eq (Get-Command $command -ErrorAction SilentlyContinue)) { throw "Required command not found: $command" }
 }
 
+function Assert-DshRc2 {
+  $version = [string](& dsh --version 2>$null)
+  if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($version)) {
+    throw 'Could not determine the installed DSH version.'
+  }
+  if ($version -match '^0\.2\.0-rc\.(\d+)$' -and [int]$Matches[1] -lt 2) {
+    throw "DSH $version is too old for the embedded client. Upgrade with: npm install -g @deepseek-ai/dsh@0.2.0-rc.2"
+  }
+}
+
+Assert-DshRc2
+
 function Stop-StaleDshWeb {
   param([int]$Port = 3080)
 
@@ -78,6 +90,16 @@ try {
   )
   & gh @downloadArgs
   if ($LASTEXITCODE -ne 0) { throw 'Release download failed.' }
+
+  # A release tag can have assets left over from an older layout (for example
+  # the standalone Autograph tarball). Keep only the tarballs declared by the
+  # signed manifest so the installer can enforce its no-extra-artifacts check.
+  $manifestFile = Join-Path $workspace 'ant-sword-release-manifest.json'
+  $manifest = Get-Content -Raw -LiteralPath $manifestFile | ConvertFrom-Json
+  $declared = @($manifest.artifacts | ForEach-Object { [string]$_.filename })
+  Get-ChildItem -LiteralPath $workspace -Filter '*.tgz' -File |
+    Where-Object { $declared -notcontains $_.Name } |
+    Remove-Item -Force
 
   $scripts = Join-Path $workspace 'scripts'
   New-Item -ItemType Directory -Path $scripts | Out-Null

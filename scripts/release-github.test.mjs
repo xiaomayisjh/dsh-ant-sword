@@ -40,7 +40,7 @@ function readTarFile(tarball, name) {
   return result.stdout
 }
 
-test('three release tarballs install from an empty offline pnpm store with dshmarket runtime imports', async () => {
+test('two release tarballs install from an empty offline pnpm store with the embedded client and dshmarket runtime imports', async () => {
   const directory = mkdtempSync(join(tmpdir(), 'ant-sword-offline-release-'))
   try {
     const dependencies = join(directory, 'dependencies')
@@ -66,40 +66,42 @@ test('three release tarballs install from an empty offline pnpm store with dshma
       name: '@deepseek-ai/dsh-ant-sword-harness', version: '1.0.0', type: 'module', main: 'index.js',
       dependencies: { 'registry-only-package': '1.0.0' },
       peerDependencies: { '@deepseek-ai/dsh-agent': '^0.2.0-rc.1' },
+      exports: { '.': './index.js', './client': './client.js' },
+      dsh: { client: { platform: 'web' }, bundle: { patch: [] } },
     }, `export const bundleValue = 'bundle'\n`, {
       'opaque.bin': Buffer.from(Array.from({ length: 2049 }, (_, index) => index % 256)),
+      'client.js': `module.exports = { apply() {} }\n`,
     })
-    const ui = packageTarball(release, 'ui', {
-      name: '@deepseek-ai/dsh-client-ui-autograph', version: '1.0.0', type: 'module', main: 'index.js',
-      peerDependencies: { '@deepseek-ai/dsh-client-ui-session': '^0.2.0-rc.1' },
-    }, `export const uiValue = 'ui'\n`)
 
     const bundleIndex = readTarFile(bundle, 'package/index.js')
     const bundleBinary = readTarFile(bundle, 'package/opaque.bin')
-    const uiIndex = readTarFile(ui, 'package/index.js')
+    const clientIndex = readTarFile(bundle, 'package/client.js')
     makeOfflineTarball(bundle, release, { clearDependencies: true })
-    makeOfflineTarball(ui, release)
     makeOfflineTarball(market, release, { vendorDependencies: true })
     assert.deepEqual(readTarFile(bundle, 'package/index.js'), bundleIndex)
     assert.deepEqual(readTarFile(bundle, 'package/opaque.bin'), bundleBinary)
-    assert.deepEqual(readTarFile(ui, 'package/index.js'), uiIndex)
+    assert.deepEqual(readTarFile(bundle, 'package/client.js'), clientIndex)
     const rewrittenBundle = JSON.parse(readTarFile(bundle, 'package/package.json').toString('utf8'))
     assert.deepEqual(rewrittenBundle.dependencies, {})
     assert.deepEqual(rewrittenBundle.peerDependencies, {})
-    const rewrittenUi = JSON.parse(readTarFile(ui, 'package/package.json').toString('utf8'))
-    assert.deepEqual(rewrittenUi.peerDependencies, {})
     writeReleaseManifest(release, [
       { path: bundle, packageName: '@deepseek-ai/dsh-ant-sword-harness', version: '1.0.0' },
-      { path: ui, packageName: '@deepseek-ai/dsh-client-ui-autograph', version: '1.0.0' },
       { path: market, packageName: 'dshmarket', version: '1.66.5' },
     ])
     const artifacts = resolveLocalRelease(release)
+    assert.equal(artifacts.ui, undefined)
     const project = join(directory, 'install')
     mkdirSync(project)
     writeFileSync(join(project, 'package.json'), '{"name":"offline-install-test","version":"1.0.0","private":true}\n')
-    run('pnpm', ['--dir', project, 'add', '--offline', '--store-dir', join(directory, 'empty-store'), artifacts.bundle, artifacts.ui, artifacts.dshmarket], project, {
+    run('pnpm', ['--dir', project, 'add', '--offline', '--store-dir', join(directory, 'empty-store'), artifacts.bundle, artifacts.dshmarket], project, {
       ...process.env, npm_config_offline: 'true', PNPM_CONFIG_OFFLINE: 'true',
     })
+
+    const installedBundle = join(project, 'node_modules', '@deepseek-ai', 'dsh-ant-sword-harness')
+    const bundleManifest = JSON.parse(readFileSync(join(installedBundle, 'package.json'), 'utf8'))
+    assert.equal(bundleManifest.dsh.client.platform, 'web')
+    assert.equal(bundleManifest.exports['./client'], './client.js')
+    assert.equal(readFileSync(join(installedBundle, 'client.js'), 'utf8'), clientIndex.toString('utf8'))
 
     const installed = join(project, 'node_modules', 'dshmarket')
     const manifest = JSON.parse(readFileSync(join(installed, 'package.json'), 'utf8'))

@@ -4,7 +4,7 @@
 
 ## 一行安装
 
-安装器下载最新 GitHub Release 的三个 tgz 与 SHA-256 manifest，校验完整后以离线模式安装到 `web` profile。需要本机已有 `gh`、DSH 0.2、Node.js 和 pnpm；私有仓库先执行 `gh auth login`。Windows 安装后自动对齐 profile 与全局 DSH 的 `dsh-scope`、`dsh-tools` 实例。
+安装器下载最新 GitHub Release 的两个 tgz 与 SHA-256 manifest，校验完整后以离线模式安装到 `web` profile。Autograph 黑板 UI 已内嵌在 harness 的 `./client` 导出中，不再安装独立 UI 包。需要本机已有 `gh`、DSH 0.2、Node.js 和 pnpm；私有仓库先执行 `gh auth login`。Windows 安装后自动对齐 profile 与全局 DSH 的 `dsh-scope`、`dsh-tools` 实例。
 
 Windows PowerShell：
 
@@ -35,9 +35,10 @@ dsh web
 完整 Release 目录包含：
 
 - `deepseek-ai-dsh-ant-sword-harness-<version>.tgz`
-- `deepseek-ai-dsh-client-ui-autograph-<version>.tgz`
 - `dshmarket-1.66.5.tgz`
 - `ant-sword-release-manifest.json`
+
+旧 profile 中的 `@deepseek-ai/dsh-client-ui-autograph` 会在安装时自动移除，避免旧黑板与内嵌 client 同时注册。
 
 manifest 记录每项资产的包名、版本、文件名与 SHA-256。安装器在修改 profile 前拒绝缺失、重复、额外或哈希不匹配的 tgz。
 
@@ -76,7 +77,7 @@ bash ./install-ant-sword.sh --release /path/to/ant-sword-release
 
 ## 发版
 
-Actions 中手动运行 **release** workflow；tag 默认取 `v<package.json version>`。工作流调用与本地相同的发布脚本，上传三个 tgz 与 manifest。
+Actions 中手动运行 **release** workflow；tag 默认取 `v<package.json version>`。工作流调用与本地相同的发布脚本，上传两个 tgz 与 manifest。
 
 本地 dry-run 会保留可直接安装的 Release 目录，不上传 GitHub：
 
